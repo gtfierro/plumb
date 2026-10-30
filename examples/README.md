@@ -38,7 +38,7 @@ Reusable configurations and value schemas come from RDF and SHACL in
 `plumb.watr.drinking_water`. Regenerate the packages after editing their sources:
 
 ```bash
-uv run python scripts/generate_example_domains.py
+make regen
 ```
 
 The EPANET converter supplies explicit units with `QuantityAmount` for source

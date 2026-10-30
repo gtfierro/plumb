@@ -1,0 +1,17 @@
+{
+  "compiler": {
+    "name": "plumb",
+    "sha256": "06d7408b77db1c2e44a0b630c7f0fd37dc08063e397006120f89394d75168984"
+  },
+  "format": 1,
+  "sources": {
+    "s223": {
+      "identity": "https://open223.info/223p.ttl",
+      "kind": "closure-snapshot",
+      "note": "Captured from the committed validation graph; upstream retrieval date/version unavailable.",
+      "path": "snapshots/s223-closure.ttl",
+      "sha256": "1a86af1c9641fff374f9b9e9320ed5eabb2176263c1ac06f1cb9076c8ecc2b68",
+      "version": null
+    }
+  }
+}

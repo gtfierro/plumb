@@ -1,0 +1,21 @@
+{
+  "compiler": {
+    "name": "plumb",
+    "sha256": "06d7408b77db1c2e44a0b630c7f0fd37dc08063e397006120f89394d75168984"
+  },
+  "format": 1,
+  "sources": {
+    "watr": {
+      "identity": "https://watermetadata.org/ontology/watr",
+      "includes": [
+        "s223",
+        "asm2d-components",
+        "QUDT 3.3.0 imports (document boundaries unavailable)"
+      ],
+      "kind": "closure-snapshot",
+      "path": "snapshots/watr-closure.ttl",
+      "sha256": "ef922adeae857b40debab32147e725cea7095566016a8c22ad10bfbfb695881d",
+      "version": "0.3.rc1"
+    }
+  }
+}

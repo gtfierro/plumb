@@ -53,5 +53,5 @@ solve the WaterTAP process equations.
 Regenerate the domain packages with:
 
 ```bash
-uv run python scripts/generate_example_domains.py
+make regen
 ```

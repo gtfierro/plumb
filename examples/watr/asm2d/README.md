@@ -57,5 +57,5 @@ its generated ports explicitly. See the [extension compiler reference](../../../
 for extension authoring, validation, and supported constraints. Regenerate with:
 
 ```bash
-uv run python scripts/generate_asm2d.py
+make regen
 ```

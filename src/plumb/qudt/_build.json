@@ -1,0 +1,24 @@
+{
+  "compiler": {
+    "name": "plumb",
+    "sha256": "06d7408b77db1c2e44a0b630c7f0fd37dc08063e397006120f89394d75168984"
+  },
+  "format": 1,
+  "sources": {
+    "qudt-catalog": {
+      "identity": "http://qudt.org/3.4.0/qudt-all",
+      "kind": "recovered-vocabulary-projection",
+      "note": "RDF projection recovered from committed units.py and quantity_kinds.py; not an upstream QUDT distribution.",
+      "path": "snapshots/qudt-catalog.ttl",
+      "sha256": "960dfb21b2191bc9cbbd7ecc9ca9c6ec79dc0cfd410e16741b64bff71b1b4312",
+      "version": "3.4.0"
+    },
+    "qudt-extras": {
+      "identity": "urn:plumb:qudt-extras",
+      "kind": "local-addition",
+      "path": "qudt-catalog-extras.ttl",
+      "sha256": "af86a86e0dd2297cd569f540a10d099e929ce7d0df3c8cb9a273542050e78cb5",
+      "version": null
+    }
+  }
+}

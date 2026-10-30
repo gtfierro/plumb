@@ -1,0 +1,9 @@
+{
+  "format": 1,
+  "files": [
+    "__init__.py",
+    "_build.json",
+    "_shapes.ttl",
+    "enums.py"
+  ]
+}

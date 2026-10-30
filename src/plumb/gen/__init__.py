@@ -106,8 +106,8 @@ def generate(
 ) -> Path:
     """Compile and write a generated package; returns the package __init__."""
     out = Path(out_dir)
-    out.mkdir(parents=True, exist_ok=True)
     modules = compile_modules(graph, name=name, source=source, overlay=overlay)
-    for filename, text in modules.items():
-        (out / filename).write_text(text)
+    from .artifacts import write_modules
+
+    write_modules(modules, out)
     return out / "__init__.py"

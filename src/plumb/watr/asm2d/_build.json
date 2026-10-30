@@ -1,0 +1,16 @@
+{
+  "compiler": {
+    "name": "plumb",
+    "sha256": "06d7408b77db1c2e44a0b630c7f0fd37dc08063e397006120f89394d75168984"
+  },
+  "format": 1,
+  "sources": {
+    "asm2d": {
+      "identity": "urn:plumb:asm2d",
+      "kind": "local-document",
+      "path": "asm2d.ttl",
+      "sha256": "4f6cb3b1dcf48c4909b1aa96eb6bf29c73b165cd4df8de6d059299df52a8cfcf",
+      "version": null
+    }
+  }
+}

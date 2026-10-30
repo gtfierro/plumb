@@ -69,28 +69,29 @@ uv run python scripts/generate_brick.py
 uv run pytest tests/test_brick.py
 ```
 
-The script bundles Brick's RealEstateCore, QUDT, and other imports into
-`_shapes.ttl` through ontoenv. S223 is compiled from the published 223P
-document alone, since units and quantity kinds come from `plumb.qudt`:
+The Brick script bundles its imports through ontoenv. S223, WaTr, QUDT, and
+the example domain packages instead use locked local inputs:
 
 ```bash
-uv run python scripts/generate_s223.py
+make regen
+make regen-check
 ```
 
-Base-package generation first relabels blank nodes from their content and
-sorts the input triples, so the output does not depend on how an imports
-closure happened to be assembled. Regenerating against unchanged upstream
-documents is byte-identical.
+`scripts/regenerate.py` verifies the SHA-256 of each input recorded in
+`ontology/sources.lock.json`, builds in a temporary source tree, and publishes
+only after every package compiles. Configurations link against the freshly
+built base packages. `_generated.json` records owned files, so removed output
+is cleaned up without touching handwritten files or nested packages.
+`_build.json` records input provenance. The check command compares both file
+sets and bytes and runs in CI.
 
-WaTr is compiled from the checked-in
-[v0.3.0.rc1 release](../ontology/README.md) plus its S223 and QUDT imports.
-The complete graph is saved in the generated package's `_shapes.ttl`.
-The WaTr overlay gives extension terms priority when names collide and
-installs the same deferred connection solver:
+Generation never fetches sources or follows network imports. The starting
+inputs are captured closure snapshots and a recovered vocabulary projection;
+see [snapshot provenance](../ontology/snapshots/README.md). Source updates are
+explicit: acquire and review documents, record their identities, versions,
+imports, and hashes in the lock, regenerate, then review the changes.
 
-```bash
-uv run python scripts/generate_watr.py
-```
-
-The snapshot carries WaTr's 0.2 ontology IRI and version metadata. The
-combined PR content is local and is not a published release.
+Base-package generation relabels blank nodes from their content and sorts the
+input triples, so output is independent of input assembly order. The original
+WaTr release asset remains archived in `ontology/watr-0.3.0rc1.ttl`; current
+compilation uses the locked complete closure, including local component pools.

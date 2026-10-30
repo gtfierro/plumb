@@ -29,6 +29,7 @@ jobs:
           enable-cache: true
       - run: uv sync
       - run: make lint format-check typecheck
+      - run: make regen-check
 
   test:
     name: Tests (Python ${{ matrix.python-version }})

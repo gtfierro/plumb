@@ -1,0 +1,16 @@
+{
+  "compiler": {
+    "name": "plumb",
+    "sha256": "06d7408b77db1c2e44a0b630c7f0fd37dc08063e397006120f89394d75168984"
+  },
+  "format": 1,
+  "sources": {
+    "hvac": {
+      "identity": "urn:plumb:hvac",
+      "kind": "local-document",
+      "path": "hvac.ttl",
+      "sha256": "6ea7da5e420893321e48000054d40606e8c6a1f7a452a6da9c1019e77527b36f",
+      "version": null
+    }
+  }
+}

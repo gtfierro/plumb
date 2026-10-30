@@ -1,0 +1,16 @@
+{
+  "compiler": {
+    "name": "plumb",
+    "sha256": "06d7408b77db1c2e44a0b630c7f0fd37dc08063e397006120f89394d75168984"
+  },
+  "format": 1,
+  "sources": {
+    "seawater-ro": {
+      "identity": "urn:plumb:seawater-ro",
+      "kind": "local-document",
+      "path": "seawater-ro.ttl",
+      "sha256": "9dce79cb6ad2b1f4aeae178659bd957258f1ad4c8e5460c5f308aecdf4ee070d",
+      "version": null
+    }
+  }
+}

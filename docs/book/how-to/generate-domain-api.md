@@ -113,5 +113,5 @@ The sources are `ontology/drinking-water.ttl`, `asm2d.ttl`,
 `seawater-ro.ttl`, and `hvac.ttl`:
 
 ```bash
-uv run python scripts/generate_example_domains.py
+make regen
 ```

@@ -9,7 +9,7 @@ DOCS_DIR := docs/book
 FORMAT_EXCLUDE := src/plumb/qudt/units.py,src/plumb/qudt/quantity_kinds.py
 
 .PHONY: help setup check test lint format-check typecheck format build dist-check docs docs-rebuild \
-	docs-check docs-open docs-clean regen examples clean
+	docs-check docs-open docs-clean regen regen-check examples clean
 
 help: ## Show available commands
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -57,8 +57,11 @@ docs-open: docs ## Build documentation and open it in the default browser
 docs-clean: ## Remove generated documentation and notebook caches
 	$(UV) run --group docs jupyter-book clean $(DOCS_DIR) --all
 
-regen: ## Regenerate supplied domain packages from local SHACL
-	$(UV) run python scripts/generate_example_domains.py
+regen: ## Regenerate S223, WaTr, QUDT, and domain packages from locked local inputs
+	$(UV) run python scripts/regenerate.py
+
+regen-check: ## Check offline regeneration, including generated file ownership
+	$(UV) run python scripts/regenerate.py --check
 
 examples: ## Run every example, refreshing its committed Turtle output
 	cd examples/brick/quickstart && $(UV) run python brick_quickstart.py

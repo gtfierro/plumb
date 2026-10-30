@@ -106,7 +106,7 @@ See [domain extensions](docs/book/explanation/domain-extensions.md), the
 [ASM2d tutorial](docs/book/tutorials/domain-configurations.md), and the
 [extension compiler reference](docs/book/reference/extension-compiler.md).
 Regenerate the supplied domains with
-`uv run python scripts/generate_example_domains.py`.
+`make regen`.
 
 ## Development
 

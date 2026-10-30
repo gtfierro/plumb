@@ -1,0 +1,16 @@
+{
+  "compiler": {
+    "name": "plumb",
+    "sha256": "06d7408b77db1c2e44a0b630c7f0fd37dc08063e397006120f89394d75168984"
+  },
+  "format": 1,
+  "sources": {
+    "drinking-water": {
+      "identity": "urn:plumb:drinking-water",
+      "kind": "local-document",
+      "path": "drinking-water.ttl",
+      "sha256": "f4aff2d2ac970e0ab4958b05664a47f98dfb402d9868e057c9edd56aa4ed3786",
+      "version": null
+    }
+  }
+}

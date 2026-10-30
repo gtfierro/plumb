@@ -9,6 +9,6 @@ fixed media are defined in [ontology/hvac.ttl](../../../ontology/hvac.ttl).
 The same configuration is used by the [AHU example](../ahu/).
 
 Edit the RDF/SHACL source and run
-`uv run python scripts/generate_example_domains.py` to regenerate the API.
+`make regen` to regenerate the API.
 Model authors need no handwritten subclasses, policy dictionaries, or point
 declarations.
