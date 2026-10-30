@@ -1,0 +1,92 @@
+{
+  "format": 1,
+  "sources": {
+    "s223": {
+      "path": "snapshots/s223-closure.ttl",
+      "identity": "https://open223.info/223p.ttl",
+      "version": null,
+      "kind": "closure-snapshot",
+      "sha256": "1a86af1c9641fff374f9b9e9320ed5eabb2176263c1ac06f1cb9076c8ecc2b68",
+      "note": "Captured from the committed validation graph; upstream retrieval date/version unavailable."
+    },
+    "watr": {
+      "path": "snapshots/watr-closure.ttl",
+      "identity": "https://watermetadata.org/ontology/watr",
+      "version": "0.3.rc1",
+      "kind": "closure-snapshot",
+      "sha256": "ef922adeae857b40debab32147e725cea7095566016a8c22ad10bfbfb695881d",
+      "includes": [
+        "s223",
+        "asm2d-components",
+        "QUDT 3.3.0 imports (document boundaries unavailable)"
+      ]
+    },
+    "qudt-catalog": {
+      "path": "snapshots/qudt-catalog.ttl",
+      "identity": "http://qudt.org/3.4.0/qudt-all",
+      "version": "3.4.0",
+      "kind": "recovered-vocabulary-projection",
+      "sha256": "960dfb21b2191bc9cbbd7ecc9ca9c6ec79dc0cfd410e16741b64bff71b1b4312",
+      "note": "RDF projection recovered from committed units.py and quantity_kinds.py; not an upstream QUDT distribution."
+    },
+    "qudt-extras": {
+      "path": "qudt-catalog-extras.ttl",
+      "identity": "urn:plumb:qudt-extras",
+      "version": null,
+      "kind": "local-addition",
+      "sha256": "af86a86e0dd2297cd569f540a10d099e929ce7d0df3c8cb9a273542050e78cb5"
+    },
+    "asm2d": {
+      "path": "asm2d.ttl",
+      "identity": "urn:plumb:asm2d",
+      "version": null,
+      "kind": "local-document",
+      "sha256": "4f6cb3b1dcf48c4909b1aa96eb6bf29c73b165cd4df8de6d059299df52a8cfcf"
+    },
+    "seawater-ro": {
+      "path": "seawater-ro.ttl",
+      "identity": "urn:plumb:seawater-ro",
+      "version": null,
+      "kind": "local-document",
+      "sha256": "9dce79cb6ad2b1f4aeae178659bd957258f1ad4c8e5460c5f308aecdf4ee070d"
+    },
+    "drinking-water": {
+      "path": "drinking-water.ttl",
+      "identity": "urn:plumb:drinking-water",
+      "version": null,
+      "kind": "local-document",
+      "sha256": "f4aff2d2ac970e0ab4958b05664a47f98dfb402d9868e057c9edd56aa4ed3786"
+    },
+    "hvac": {
+      "path": "hvac.ttl",
+      "identity": "urn:plumb:hvac",
+      "version": null,
+      "kind": "local-document",
+      "sha256": "6ea7da5e420893321e48000054d40606e8c6a1f7a452a6da9c1019e77527b36f"
+    }
+  },
+  "graphs": {
+    "s223": [
+      "s223"
+    ],
+    "watr": [
+      "watr"
+    ],
+    "qudt": [
+      "qudt-catalog",
+      "qudt-extras"
+    ],
+    "asm2d": [
+      "asm2d"
+    ],
+    "seawater-ro": [
+      "seawater-ro"
+    ],
+    "drinking-water": [
+      "drinking-water"
+    ],
+    "hvac": [
+      "hvac"
+    ]
+  }
+}
