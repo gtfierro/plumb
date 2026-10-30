@@ -2015,8 +2015,6 @@ class AirHeatExchanger(Equipment):
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=0, max_count=0),
         ),
     )
@@ -7010,10 +7008,10 @@ class Connection(Concept):
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None)),
+                    _CPConstraint(operator='opaque'),
+                    _CPConstraint(operator='opaque'),
                 )),
-                _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=1, max_count=None)),
+                _CPConstraint(operator='opaque'),
             )),
         ),
     )
@@ -15870,8 +15868,6 @@ class HydronicHeatExchanger(Equipment):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=0, max_count=0),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=None),
         ),
     )
 

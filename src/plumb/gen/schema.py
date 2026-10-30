@@ -20,15 +20,15 @@ labels from ``rdfs:label``.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field, replace
-from typing import Literal
+from dataclasses import asdict, replace
 
 import rdflib
 from rdflib import OWL, RDF, RDFS, SKOS, XSD, URIRef
 from rdflib.collection import Collection
 from rdflib.namespace import SH
 
-from . import naming
+from . import naming, s223
+from .ir import ClassIR, CPConstraintIR, EnumIR, PropIR, SchemaIR
 from .constraints import cardinality, class_groups, property_shapes
 
 _SCHEMA_DOMAIN = (
@@ -39,8 +39,6 @@ _SCHEMA_RANGE = (
     URIRef("https://schema.org/rangeIncludes"),
     URIRef("http://schema.org/rangeIncludes"),
 )
-
-_S223 = rdflib.Namespace("http://data.ashrae.org/standard223#")
 
 _UNCONSTRAINED_VALUE_PREDICATES = {
     "http://data.ashrae.org/standard223#hasValue",
@@ -74,97 +72,6 @@ _DATATYPES: dict[URIRef, str] = {
     XSD.positiveInteger: "int",
     XSD.boolean: "bool",
 }
-
-
-@dataclass
-class PropIR:
-    """One attribute on one class, ready to emit."""
-
-    name: str
-    predicate: str
-    kind: str  # "object" | "class" | "literal" | "enum" | "term" | "value"
-    label: str | None = None
-    definition: str | None = None
-    ranges: tuple[str, ...] = ()  # python class names (object props)
-    range_groups: tuple[tuple[str, ...], ...] = ()  # conjunction of IRI unions
-    sources: tuple[str, ...] = ()  # contributing property shapes/declarations
-    datatype: str = "str"  # python type name (literal props)
-    required: bool = False
-    min_count: int = 0  # graph requirement; survives constructor deferral
-    max_count: int | None = None
-    inverse: str | None = None
-    enum_ranges: tuple[str, ...] = ()  # enum member IRIs (enum props)
-    deferred: bool = False  # value may be a deferred port or connection
-
-
-@dataclass
-class CPSlotIR:
-    """A connection-point requirement (223 qualified shape)."""
-
-    cp_class: str  # python class name
-    direction: str  # "in" | "out" | "bi"
-    medium: str | None  # enum IRI
-    medium_options: tuple[str, ...] = ()  # sh:or alternatives
-    min_count: int = 1
-    max_count: int | None = None
-
-
-@dataclass
-class CPConstraintIR:
-    """A constructive projection of a SHACL connection-point expression."""
-
-    operator: Literal["slot", "and", "or", "xone", "opaque"]
-    slot: CPSlotIR | None = None
-    children: list[CPConstraintIR] = field(default_factory=list)
-
-
-@dataclass
-class ClassIR:
-    """One generated class."""
-
-    name: str
-    iri: str
-    label: str | None = None
-    definition: str | None = None
-    parents: tuple[str, ...] = ()  # python names; empty -> Entity
-    parent_iris: tuple[str, ...] = ()  # RDF edges, independent of Python bases
-    ancestor_iris: tuple[str, ...] = ()
-    own_props: list[PropIR] = field(default_factory=list)
-    effective_props: dict[str, PropIR] = field(default_factory=dict, repr=False)
-    cp_slots: list[CPSlotIR] = field(default_factory=list)
-    cp_constraints: list[CPConstraintIR] = field(default_factory=list)
-    abstract: bool = False
-    # (property name, python class name): a value of that class (or a
-    # subclass) the shapes require, filled in when the author gives none.
-    class_defaults: list[tuple[str, str]] = field(default_factory=list)
-
-
-@dataclass
-class EnumIR:
-    """One enumeration member (punned class under the enum root)."""
-
-    name: str  # python constant name (Fluid-Air -> Fluid_Air)
-    iri: str
-    label: str | None = None
-    definition: str | None = None
-    parent: str | None = None  # python name of the parent member
-    parents: tuple[str, ...] = ()  # all direct parents, including the primary
-    constituents: tuple[str, ...] = ()  # python names, via composedOf/ofConstituent
-
-
-@dataclass
-class SchemaIR:
-    """Everything the emitter needs."""
-
-    ontology_name: str
-    ontology_iri: str
-    version: str | None
-    source: str | None
-    classes: list[ClassIR]  # topologically ordered, parents first
-    enums: list[EnumIR] = field(default_factory=list)  # parents first
-
-    def class_names(self) -> set[str]:
-        return {c.name for c in self.classes}
 
 
 def extract(
@@ -231,7 +138,10 @@ def extract(
     canonical = _canonical_predicates(graph, primary_ns)
 
     _attach_domain_properties(graph, classes, names, canonical)
-    _attach_shape_properties(graph, classes, names, canonical, enum_iris)
+    connection_support: list[dict[str, object]] = []
+    _attach_shape_properties(
+        graph, classes, names, canonical, enum_iris, connection_support
+    )
     for cls in classes.values():
         for prop in cls.own_props:
             if prop.predicate in class_properties:
@@ -252,6 +162,7 @@ def extract(
         version=version,
         source=source,
         classes=ordered,
+        connection_support=connection_support,
         enums=_enum_ir(
             graph,
             enum_iris,
@@ -323,10 +234,7 @@ def _is_deprecated(graph: rdflib.Graph, iri: str) -> bool:
 
 def _is_abstract(graph: rdflib.Graph, iri: str) -> bool:
     """223 convention: typed by an ``AbstractClass`` metaclass."""
-    return any(
-        isinstance(t, URIRef) and naming.local_name(str(t)) == "AbstractClass"
-        for t in graph.objects(URIRef(iri), RDF.type)
-    )
+    return (URIRef(iri), RDF.type, s223.NS.AbstractClass) in graph
 
 
 def _collect_enum_iris(graph: rdflib.Graph, enum_root: str | None) -> set[str]:
@@ -398,9 +306,9 @@ def _enum_ir(
                 {
                     names[str(constituent)]
                     for composition in graph.objects(
-                        URIRef(member.iri), _S223.composedOf
+                        URIRef(member.iri), s223.NS.composedOf
                     )
-                    for constituent in graph.objects(composition, _S223.ofConstituent)
+                    for constituent in graph.objects(composition, s223.NS.ofConstituent)
                     if str(constituent) in enum_iris
                 }
             )
@@ -501,9 +409,14 @@ def _attach_prop(cls: ClassIR, ir: PropIR) -> None:
     if existing is None:
         cls.own_props.append(ir)
         return
-    class_ns = _ns(cls.iri)
-    if _ns(ir.predicate) == class_ns and _ns(existing.predicate) != class_ns:
-        cls.own_props[cls.own_props.index(existing)] = ir
+    if existing.kind != ir.kind:
+        raise ValueError(
+            f"{ir.predicate}: equivalent declarations disagree on value kind"
+        )
+    existing.range_groups = tuple(
+        sorted(set(existing.range_groups) | set(ir.range_groups))
+    )
+    existing.sources = tuple(sorted(set(existing.sources) | set(ir.sources)))
 
 
 def _ns(iri: str) -> str:
@@ -579,6 +492,7 @@ def _attach_shape_properties(
     names: dict[str, str],
     canonical: dict[str, str],
     enum_iris: set[str],
+    connection_support: list[dict[str, object]],
 ) -> None:
     """Fold SHACL node-shape constraints into per-class properties.
 
@@ -593,18 +507,38 @@ def _attach_shape_properties(
     pairs = sorted(_shape_class_pairs(graph, classes), key=lambda p: (p[1], str(p[0])))
     for shape, class_iri in pairs:
         for referenced in graph.objects(shape, SH.node):
-            classes[class_iri].cp_constraints.append(
-                _cp_expression(graph, referenced, names, enum_iris, set())
+            expression = s223.connection_expression(
+                graph, referenced, names, enum_iris, set()
+            )
+            classes[class_iri].cp_constraints.append(expression)
+            connection_support.append(
+                {
+                    "target": class_iri,
+                    "source": str(referenced),
+                    "projection": asdict(expression),
+                    "support": "validation-only"
+                    if s223.contains_opaque(expression)
+                    else "solver",
+                }
             )
         for operator in ("and", "or", "xone"):
             predicate = SH[operator]
             for members in graph.objects(shape, predicate):
                 children = [
-                    _cp_expression(graph, member, names, enum_iris, set())
+                    s223.connection_expression(graph, member, names, enum_iris, set())
                     for member in graph.items(members)
                 ]
-                classes[class_iri].cp_constraints.append(
-                    CPConstraintIR(operator=operator, children=children)
+                expression = CPConstraintIR(operator=operator, children=children)
+                classes[class_iri].cp_constraints.append(expression)
+                connection_support.append(
+                    {
+                        "target": class_iri,
+                        "source": str(shape),
+                        "projection": asdict(expression),
+                        "support": "validation-only"
+                        if s223.contains_opaque(expression)
+                        else "solver",
+                    }
                 )
         direct_properties = set(graph.objects(shape, SH.property))
         for pshape in property_shapes(graph, shape):
@@ -620,9 +554,23 @@ def _attach_shape_properties(
 
             qualified = graph.value(pshape, SH.qualifiedValueShape)
             if qualified is not None:
-                slot = _cp_slot(graph, pshape, qualified, names, enum_iris)
+                slot, reason = s223.connection_slot(
+                    graph, pshape, qualified, names, enum_iris
+                )
                 if slot is not None and pshape in direct_properties:
                     classes[class_iri].cp_slots.append(slot)
+                connection_support.append(
+                    {
+                        "target": class_iri,
+                        "source": str(pshape),
+                        "path": str(path),
+                        "support": "solver" if slot is not None else "validation-only",
+                        "projection": asdict(slot) if slot is not None else None,
+                        "reason": reason,
+                        "asserted_directly": slot is not None
+                        and pshape in direct_properties,
+                    }
+                )
                 continue  # qualified constraints are not plain attributes
 
             min_count, max_count = cardinality(graph, [pshape])
@@ -726,121 +674,6 @@ def _attach_class_defaults(
         cls.class_defaults.sort()
 
 
-_CP_DIRECTIONS = {
-    "InletConnectionPoint": "in",
-    "OutletConnectionPoint": "out",
-    "BidirectionalConnectionPoint": "bi",
-}
-
-
-def _cp_slot(
-    graph: rdflib.Graph,
-    pshape,
-    qualified,
-    names: dict[str, str],
-    enum_iris: set[str],
-) -> CPSlotIR | None:
-    """Interpret a qualified shape as a connection-point requirement.
-
-    Only qualified shapes whose value class is a known connection-point
-    class are meaningful to the negotiator; others are ignored (they still
-    apply at validation time).
-    """
-    value_class = graph.value(qualified, SH["class"])
-    if not isinstance(value_class, URIRef) or str(value_class) not in names:
-        return None
-    cp_name = names[str(value_class)]
-    direction = _CP_DIRECTIONS.get(cp_name)
-    if direction is None:
-        return None
-    # The qualified shape itself, or a node shape it references, may
-    # constrain the medium. WaTr uses the direct form while S223 commonly
-    # wraps the properties in sh:node.
-    media: set[str] = set()
-    medium_shapes = [qualified, *graph.objects(qualified, SH.node)]
-    for medium_shape in medium_shapes:
-        for nested in graph.objects(medium_shape, SH.property):
-            nested_path = graph.value(nested, SH.path)
-            nested_class = graph.value(nested, SH["class"])
-            if (
-                isinstance(nested_path, URIRef)
-                and naming.local_name(str(nested_path)) == "hasMedium"
-                and isinstance(nested_class, URIRef)
-                and str(nested_class) in enum_iris
-            ):
-                media.add(str(nested_class))
-            if (
-                isinstance(nested_path, URIRef)
-                and naming.local_name(str(nested_path)) == "hasMedium"
-            ):
-                for alternatives in graph.objects(nested, SH["or"]):
-                    for alternative in graph.items(alternatives):
-                        option = graph.value(alternative, SH["class"])
-                        if isinstance(option, URIRef) and str(option) in enum_iris:
-                            media.add(str(option))
-    # SHACL has no minimum when qualifiedMinCount is absent: a shape with only
-    # qualifiedMaxCount 0 forbids such points rather than requiring one.
-    min_count = _int(graph, pshape, SH.qualifiedMinCount) or 0
-    max_count = _int(graph, pshape, SH.qualifiedMaxCount)
-    return CPSlotIR(
-        cp_class=cp_name,
-        direction=direction,
-        medium=next(iter(media)) if len(media) == 1 else None,
-        medium_options=tuple(sorted(media)) if len(media) > 1 else (),
-        min_count=min_count,
-        max_count=max_count,
-    )
-
-
-def _cp_expression(
-    graph: rdflib.Graph,
-    shape,
-    names: dict[str, str],
-    enum_iris: set[str],
-    active: set[rdflib.term.Node],
-) -> CPConstraintIR:
-    """Project a nested SHACL shape into constructive CP constraints.
-
-    Constraints unrelated to connection points remain validation-only. A
-    recursive ``sh:node`` reference is ignored here rather than recursively
-    expanding forever; the original SHACL graph remains authoritative during
-    validation.
-    """
-    if shape in active:
-        return CPConstraintIR(operator="opaque")
-    active = active | {shape}
-    conjuncts: list[CPConstraintIR] = []
-
-    for pshape in graph.objects(shape, SH.property):
-        path = graph.value(pshape, SH.path)
-        qualified = graph.value(pshape, SH.qualifiedValueShape)
-        if not isinstance(path, URIRef) or qualified is None:
-            continue
-        slot = _cp_slot(graph, pshape, qualified, names, enum_iris)
-        if slot is not None:
-            conjuncts.append(CPConstraintIR(operator="slot", slot=slot))
-
-    for referenced in graph.objects(shape, SH.node):
-        expression = _cp_expression(graph, referenced, names, enum_iris, active)
-        conjuncts.append(expression)
-
-    for operator in ("and", "or", "xone"):
-        for members in graph.objects(shape, SH[operator]):
-            children = [
-                _cp_expression(graph, member, names, enum_iris, active)
-                for member in graph.items(members)
-            ]
-            conjuncts.append(CPConstraintIR(operator=operator, children=children))
-
-    if not conjuncts:
-        # Preserve validation-only branches of or/xone. Dropping one would
-        # incorrectly make the remaining constructive branches unconditional.
-        return CPConstraintIR(operator="opaque")
-    if len(conjuncts) == 1:
-        return conjuncts[0]
-    return CPConstraintIR(operator="and", children=conjuncts)
-
-
 def _shape_class_pairs(graph: rdflib.Graph, classes: dict[str, ClassIR]):
     """Yield (shape node, class IRI) for every shape that governs a class."""
     seen: set[tuple[rdflib.term.Node, str]] = set()
@@ -879,11 +712,7 @@ def _inverse_map(graph: rdflib.Graph, canonical: dict[str, str]) -> dict[str, st
     Recognizes ``owl:inverseOf`` plus ontology-local inverse predicates
     (223 declares ``s223:inverseOf`` instead of OWL's).
     """
-    inverse_preds = {OWL.inverseOf} | {
-        p
-        for p in set(graph.predicates())
-        if isinstance(p, URIRef) and naming.local_name(str(p)) == "inverseOf"
-    }
+    inverse_preds = (OWL.inverseOf, s223.NS.inverseOf)
     inverses: dict[str, str] = {}
     for pred in inverse_preds:
         for a, b in graph.subject_objects(pred):
@@ -1128,6 +957,7 @@ def _demote_cyclic_required(ordered: list[ClassIR]) -> None:
 def _complete_properties(ordered: list[ClassIR]) -> None:
     """Materialize constraints Python's chosen bases would otherwise lose."""
     by_name = {cls.name: cls for cls in ordered}
+    by_iri = {cls.iri: cls for cls in ordered}
     stand_ins: dict[str, type] = {}
     for cls in ordered:
         stand_ins[cls.name] = type(
@@ -1149,6 +979,33 @@ def _complete_properties(ordered: list[ClassIR]) -> None:
             prop.ranges = projections[prop.ranges]
     for cls in ordered:
         stand_in = stand_ins[cls.name]
+        represented = [
+            cls,
+            *(
+                by_name[base.__name__]
+                for base in stand_in.__mro__[1:]
+                if base.__name__ in by_name
+            ),
+        ]
+        slots = [slot for item in represented for slot in item.cp_slots]
+        expressions = [expr for item in represented for expr in item.cp_constraints]
+        defaults = [entry for item in represented for entry in item.class_defaults]
+        for iri in cls.ancestor_iris:
+            ancestor = by_iri.get(iri)
+            if ancestor is None:
+                continue
+            for slot in ancestor.cp_slots:
+                if slot not in slots:
+                    cls.cp_slots.append(slot)
+                    slots.append(slot)
+            for expression in ancestor.cp_constraints:
+                if expression not in expressions:
+                    cls.cp_constraints.append(expression)
+                    expressions.append(expression)
+            for entry in ancestor.class_defaults:
+                if entry not in defaults:
+                    cls.class_defaults.append(entry)
+                    defaults.append(entry)
         inherited: dict[str, PropIR] = {}
         for base in reversed(stand_in.__mro__[1:]):
             parent = by_name.get(base.__name__)

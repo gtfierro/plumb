@@ -2,9 +2,11 @@
 
 import pytest
 from rdflib import URIRef
+from typing import Any, cast
 
 from plumb import Model, connect
-from plumb import watr
+from plumb import s223, watr
+from plumb.core.errors import RangeError
 from plumb.qudt import QuantityAmount as Q, quantity_kinds, units
 from plumb.watr import enums
 from plumb.watr.drinking_water import RapidSandFiltrationStage
@@ -27,6 +29,26 @@ def test_extension_terms_keep_public_names():
     # refrigerant.
     assert not issubclass(watr.Pump, watr.Pump_2)
     assert issubclass(watr.Pump, watr.Equipment)
+
+
+def test_shared_ontology_ranges_work_across_package_boundaries(m):
+    # Exercise runtime semantics. Canonical import linking still needs to
+    # remove the nominal Python typing split between these packages.
+    fan = s223.Fan("s223-fan")
+    property_ = watr.QuantifiableObservableProperty(
+        "watr-temperature", has_quantity_kind=quantity_kinds.Temperature
+    )
+    cast(Any, fan.has_property).add(property_)
+    assert property_ in fan.has_property
+    assert property_.meta.is_a(s223.Property)
+    tank = watr.Tank("watr-tank")
+    other = s223.QuantifiableObservableProperty(
+        "s223-temperature", has_quantity_kind=quantity_kinds.Temperature
+    )
+    cast(Any, tank.has_property).add(other)
+    assert other in tank.has_property
+    with pytest.raises(RangeError):
+        cast(Any, fan.has_property).add(tank)
 
 
 def test_latest_watr_terms_are_available():

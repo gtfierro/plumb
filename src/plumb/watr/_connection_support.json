@@ -1,0 +1,3929 @@
+[
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#cnx",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#cnx is not the S223 equipment-point path",
+    "source": "b8bfeed15df3903dbc8bda694",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ConnectionPoint"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#cnx",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#cnx is not the S223 equipment-point path",
+    "source": "bbf77485bf294387675076ed4",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ConnectionPoint"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#connectedTo",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#connectedTo is not the S223 equipment-point path",
+    "source": "b5cece6b2860c412b44ec0d69",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#ChilledWaterCoil"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#connectedTo",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#connectedTo is not the S223 equipment-point path",
+    "source": "ba77514ce4abc1d6fe970156b",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#HotWaterCoil"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#contains",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#contains is not the S223 equipment-point path",
+    "source": "b2fcd357d0e82dbfb990487d7",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#FanCoilUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#contains",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#contains is not the S223 equipment-point path",
+    "source": "b36cdf3b3af41d82e2e5ae732",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#FanCoilUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#contains",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#contains is not the S223 equipment-point path",
+    "source": "b462306d1fdbb4fb9e1f74c3f",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#SingleDuctTerminal"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#contains",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#contains is not the S223 equipment-point path",
+    "source": "b4d682eae6429c58fb9302e16",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#FanPoweredTerminal"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#contains",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#contains is not the S223 equipment-point path",
+    "source": "bc988c1a9c83ae4fde583cc9e",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ElectricityMeter"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#contains",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#contains is not the S223 equipment-point path",
+    "source": "bd58fe7d73f2d13997d92c4d1",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ElectricityMeter"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#ConnectionPoint has no supported S223 point direction",
+    "source": "b0fa93c156844f3e072c4493a",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ElectricEnergyInverter"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#ConnectionPoint has no supported S223 point direction",
+    "source": "b2f96a173d453d310706d2cad",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ElectricEnergyConverter"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#ConnectionPoint has no supported S223 point direction",
+    "source": "be40337948c02fca9e83b45f2",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ElectricEnergyDCDCConverter"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#ConnectionPoint has no supported S223 point direction",
+    "source": "bf3a810aeeffdc8f3f3c76b0f",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ElectricEnergyInverter"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#ConnectionPoint has no supported S223 point direction",
+    "source": "bf800a383e4af796cf2c96d56",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ElectricEnergyTransformer"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#ConnectionPoint has no supported S223 point direction",
+    "source": "bfdc71eeb959db3bb682b9ba0",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Tank"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "point qualifier on http://data.ashrae.org/standard223#pairedConnectionPoint is validation-only",
+    "source": "b9a974197138038a500555886",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#HydronicHeatExchanger"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "point qualifier on http://data.ashrae.org/standard223#pairedConnectionPoint is validation-only",
+    "source": "b9fd4520ed24f2e7aa99025e2",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#HydronicHeatExchanger"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "point qualifier on http://data.ashrae.org/standard223#pairedConnectionPoint is validation-only",
+    "source": "ba3f364ebefd36f4ff9119c94",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#AirHeatExchanger"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "point qualifier on http://data.ashrae.org/standard223#pairedConnectionPoint is validation-only",
+    "source": "be7a3ef56b53c7ed7909d558b",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#AirHeatExchanger"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "qualified value class is not a single compiled class",
+    "source": "b60b9fd59617e55493469d60c",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Tank"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "qualified value class is not a single compiled class",
+    "source": "b77b0b098500f66c7b2fd6100",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ElectronicDisplay"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "qualified value class is not a single compiled class",
+    "source": "b7da5a7edff7e3e362d7a0fdf",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#HydronicHeatExchanger"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "qualified value class is not a single compiled class",
+    "source": "b99afba2e35ea1bfb7d4bcdf8",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Tank"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "qualified value class is not a single compiled class",
+    "source": "bd2c897f97e426731ddc49b1e",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ElectronicDisplay"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": null,
+    "reason": "qualified value class is not a single compiled class",
+    "source": "be902f75c49b7728ec84fd062",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Reactor"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bab10602b991aa4aed3350ae7",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#Clarifier"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bab10602b991aa4aed3350ae7",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#GravityThickener"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "ba3829e4ddb0b2ccd11a62088",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#Clarifier"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "ba3829e4ddb0b2ccd11a62088",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#GravityThickener"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasProperty",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+    "source": "b03b0ea72275bd9741473f8be",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#FanWithVFD"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasProperty",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+    "source": "b337ba6aafe429842fcdf60ad",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#Fan"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasProperty",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+    "source": "b38c37c49567170cce61a1a10",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#Zone"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasProperty",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+    "source": "b5c8fddaf61ceb877f9538fa3",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#TwoPositionDamper"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasProperty",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+    "source": "b8b261dfad6bcb815b80e46a7",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#Zone"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasProperty",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+    "source": "bef194dd500b86981ca4d6360",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#ElectricHeatingCoil"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasProperty",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+    "source": "bf027e279805820498ff53c93",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#Zone"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasProperty",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+    "source": "bfaa393262b860b91ac300c6b",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#Zone"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasRole",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasRole is not the S223 equipment-point path",
+    "source": "b187cb21fe4878716216edfe5",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#AerationBasin"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasRole",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasRole is not the S223 equipment-point path",
+    "source": "b349e91806fd61931cc6acbe4",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#RadiantHeater"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasRole",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasRole is not the S223 equipment-point path",
+    "source": "b8b8732ae58d4bc9d2040ce93",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#MixingBasin"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasRole",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasRole is not the S223 equipment-point path",
+    "source": "bb500d270a8baab2ea4f7b8e4",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#CoolingCoil"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasRole",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasRole is not the S223 equipment-point path",
+    "source": "bb7307799e7b98c610df4bc09",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#HeatingCoil"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasRole",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasRole is not the S223 equipment-point path",
+    "source": "bbe8c8495d8e096eb54579052",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#FanCoilUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasRole",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasRole is not the S223 equipment-point path",
+    "source": "bd4cb0bd6fb706466b9d1e0c0",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ChilledBeam"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasRole",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasRole is not the S223 equipment-point path",
+    "source": "bdef4d3726d1809638b529aaf",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#Radiator"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://data.ashrae.org/standard223#hasRole",
+    "projection": null,
+    "reason": "http://data.ashrae.org/standard223#hasRole is not the S223 equipment-point path",
+    "source": "bf4f411300cc5df66425f3d7d",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#ElectricResistanceElement"
+  },
+  {
+    "asserted_directly": false,
+    "path": "http://qudt.org/schema/qudt/allowedPattern",
+    "projection": null,
+    "reason": "http://qudt.org/schema/qudt/allowedPattern is not the S223 equipment-point path",
+    "source": "bb892ffa52ed82cb64958d810",
+    "support": "validation-only",
+    "target": "http://qudt.org/schema/qudt/DateTimeStringEncodingType"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b02827c6baf997f0a6cf1a8c3",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#ElectroDialyticCrystallizer"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b0f452cd3d63c63a29a4f23b5",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#MicrofiltrationUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b11e29ce5f1715e17b81fe478",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#BeltFilterPress"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b14793de0ec3533d4517908b3",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#AerobicDigester"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b1cf15796f92477a81c068018",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Evaporator"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b1ddea0f1eaa47642e0fb7644",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#ChlorinationUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b23435ac65bf030138ad9cb15",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#MediaFiltrationUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b24cd6f55e9bd1c92e423a221",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Filter"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b28af5d1c325b201617d1aa61",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#CentrifugalDewateringUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b2ae1ab220e93cd505e5f7816",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#CentrifugalThickener"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b301f69bdfb1f1633080ce1d7",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#OxidationDitch"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b326574630d7dfe0f07b1c841",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#BiologicalAeratedFilter"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b347806826ea4c08677ba8f75",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#RotaryDrumThickener"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b3745ac2144c0e300f7f0344d",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#CoagulationBasin"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b375348ce6dab41e9f7d94385",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#ElectroDialyticCrystallizer"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b434a8d3503047d664ee262f1",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#AirStripper"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b4c8256d8843608977ed47ad0",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#IonExchangeMembrane"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b537c8560b11a8979a1d5825d",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#AnaerobicDigester"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b57b0bf5f6c7afb664ff664da",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Electrolyzer"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b5ba9c896c77ce5f8dd413deb",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#SeparationTank"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b63c05a26c5f5868e0b099d38",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#ReverseOsmosisMembrane"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b66d2ae70dda56c9eadabe5e2",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#StaticMixer"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b69f8ffd5aba72725867a6147",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#GritChamber"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b6aefe1bdb83f89b9e916a5e4",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#RapidSandFilter"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b71939989d0889df0cdd08f80",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#UltrafiltrationUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b72b68356db4bd90d50672530",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Cogenerator"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b7629a9f9c8ba81de9d1f1ef5",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Grinder"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b79428ef8b6eff5880423d396",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#SequencingBatchReactor"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b803c2bf7007d343a34d64209",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#DissolvedAirFlotationThickener"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b8211a7bcbdf8b1fd4dacd004",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Digester"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b88b96d90cf16784abc274ca1",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#MembraneAeratedBiofilmReaactor"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b8c76465dcfa659e4b86f7d6a",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#SedimentationTank"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b8cf0cb9537abc29e75d0532e",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#SequencingBatchReactor"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b974ec461b412dbf9a226d607",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Crystallizer"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b9a591a1f1fd349b932a4f626",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#GranularActivatedCarbonAdsorber"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "b9b7394fb144421b7deb925ff",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#ElectrocoagulationUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "ba2a07468fdf299ddc85ddf9f",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#MixingBasin"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bbd5192758dbd397b3b85b09e",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#OzonationUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bc068fe17d0229636761b4969",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#TricklingFilter"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bc8893f93a918c951646a5f2b",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#UVH2O2Reactor"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bc9e0b1e5e003849492653cf7",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Boiler"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bcd3bbe25f579932703af5b0c",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#AerationBasin"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bcf34ea658f16ea4e82f5ef23",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#UltravioletLightUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bd178c1aebaa7484d39f75364",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#MovingBedBioreactor"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bd9e7878c23a1d3f84598db8d",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#GravityThickener"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bde83076fde00d621e1bf4cba",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Condenser"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "be74d42b241dd9dda07bff7c8",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#MembraneBioreactor"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "be7c29fc48caf777f0de27efa",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#ElectrodialysisUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bec2eb180637e0bcbc9e440b1",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Screen"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bed5926e8ccf34422d6fb222f",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#MembraneBioreactor"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bee75da32e3260e3c2ac61d8c",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#RotatingBiologicalContactor"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bf111a8fd17c3ae49a819f851",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#FlocculationBasin"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bfc5095d7107e8d4b01eb3ca4",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#SolventExtractionSystem"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasProcess",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasProcess is not the S223 equipment-point path",
+    "source": "bfe6972a595851cfd04f492b1",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#BeltThickener"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasTreatmentObjective is not the S223 equipment-point path",
+    "source": "b25b1081f4f91f038807e5dfa",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Screen"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasTreatmentObjective is not the S223 equipment-point path",
+    "source": "b31512bbec8ba6b9cb483a3be",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#GritChamber"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasTreatmentObjective is not the S223 equipment-point path",
+    "source": "b45f2fcddf3e7103f95f9737c",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Clarifier"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasTreatmentObjective is not the S223 equipment-point path",
+    "source": "b5f8ce1c830e96a29533ec436",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#OxidationDitch"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasTreatmentObjective is not the S223 equipment-point path",
+    "source": "b718d3b53caef08783b01125c",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Thickener"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasTreatmentObjective is not the S223 equipment-point path",
+    "source": "b9ac3c711d7d0a97e5db92307",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#SequencingBatchReactor"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasTreatmentObjective is not the S223 equipment-point path",
+    "source": "b9bae0d93f0168003696f178f",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#DewateringUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasTreatmentObjective is not the S223 equipment-point path",
+    "source": "ba1e5ce4081913b35624d65fe",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#DisinfectionUnit"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasTreatmentObjective is not the S223 equipment-point path",
+    "source": "bcfca7f510aa035ee0996482b",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#Digester"
+  },
+  {
+    "asserted_directly": false,
+    "path": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+    "projection": null,
+    "reason": "https://watermetadata.org/ontology/watr#hasTreatmentObjective is not the S223 equipment-point path",
+    "source": "bd4c1299f108d9221998df8d3",
+    "support": "validation-only",
+    "target": "https://watermetadata.org/ontology/watr#UVH2O2Reactor"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "BidirectionalConnectionPoint",
+      "direction": "bi",
+      "max_count": 0,
+      "medium": null,
+      "medium_options": [],
+      "min_count": 0
+    },
+    "reason": null,
+    "source": "b4e3d17012bebd89e1091ae36",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#HydronicHeatExchanger"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "BidirectionalConnectionPoint",
+      "direction": "bi",
+      "max_count": 0,
+      "medium": null,
+      "medium_options": [],
+      "min_count": 0
+    },
+    "reason": null,
+    "source": "beac0b9502a1d9513e65237ed",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#AirHeatExchanger"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "BidirectionalConnectionPoint",
+      "direction": "bi",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b0665a57699edf4023ae19a57",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Radiator"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "BidirectionalConnectionPoint",
+      "direction": "bi",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bd19829bb6f74569b9f10a6b4",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ChilledBeam"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "BidirectionalConnectionPoint",
+      "direction": "bi",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 2
+    },
+    "reason": null,
+    "source": "b5fe22c35f1beb1f7a8f757ee",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Door"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "BidirectionalConnectionPoint",
+      "direction": "bi",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Medium-ThermalContact",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b14000d85120057190617ec8c",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#GroundToAirHeatPump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "BidirectionalConnectionPoint",
+      "direction": "bi",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#PowerAndSignal-PoE",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b0ae865c40e2d8d11348585d7",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#PowerOverEthernetSwitch"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "BidirectionalConnectionPoint",
+      "direction": "bi",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#PowerAndSignal-PoE",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b7bd6f00229bb5b4a6345671b",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#PowerOverEthernetPort"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "BidirectionalConnectionPoint",
+      "direction": "bi",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [
+        "http://data.ashrae.org/standard223#Signal-FiberEthernet",
+        "http://data.ashrae.org/standard223#Signal-WiredEthernet"
+      ],
+      "min_count": 2
+    },
+    "reason": null,
+    "source": "b11179a79b33a040553af68a0",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#EthernetPort"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "BidirectionalConnectionPoint",
+      "direction": "bi",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [
+        "http://data.ashrae.org/standard223#Signal-FiberEthernet",
+        "http://data.ashrae.org/standard223#Signal-WiredEthernet"
+      ],
+      "min_count": 2
+    },
+    "reason": null,
+    "source": "b89bd64ca3b6155e2f5944b8d",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#EthernetSwitch"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": 1,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bc1028ad464cdc236e80f8c68",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ElectricityOutlet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": 1,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b571ee6d191bbb55786092c8b",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#WaterOutlet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": 1,
+      "medium": "http://data.ashrae.org/standard223#RF-Signal",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b715f383d6d47581c8e27f7e0",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#RFOutlet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": 1,
+      "medium": "http://data.ashrae.org/standard223#Signal-FiberEthernet",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b1309dd08f8ea5fc16f67d490",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#FiberEthernetOutlet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": 1,
+      "medium": "http://data.ashrae.org/standard223#Signal-USB",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bdc94ccb9c6cd0daf5337f5dd",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#USBOutlet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": 1,
+      "medium": "http://data.ashrae.org/standard223#Signal-WiredEthernet",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bcdf7019f89356a871945024e",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#WiredEthernetOutlet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b020a7d983310222833e389b0",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#IceMaker"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b11958b416e51f42c1d4c785d",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#EthernetSwitch"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b16559a96bb034b6baf6f5994",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Escalator"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b365624502f5b7a5588166868",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Luminaire"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b3cf09bb5c7c83680e80dec06",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ComputerPrinter"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b4c95cbbf065331c4a5945c9a",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ElectricityBreaker"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b5d17f5f806c70fa05980d1f2",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Dishwasher"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b696045917088302aa8142855",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ClothesWasher"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b71efb2f7fbbdc301218a42e6",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#PowerOverEthernetSwitch"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b81f6031f2c656741343ac940",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#MicrowaveOven"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b9027ed1eaed797f3fb900e8c",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ElectricWaterDispenser"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b908379279e71e5cf88269e25",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ElectricOven"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b91ddd89589a919927b0d1b62",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#VariableFrequencyDrive"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b9769bd82e703d970db92d522",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Elevator"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "ba5885270935262b5cd0be122",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#PersonalComputer"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "ba799c3eabcc21cf2b0d44ba8",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Refrigerator"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bacbcdad5bb2473e0c09e468b",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ElectricCooktop"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bad70bb21da1d26925119f8c9",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ElectricClothesDryer"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bb2bb86c2dd70829bdcefba38",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#CopyMachine"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bbbe06d58ec81c34cc38cf9ec",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Motor"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bbfa4577d9a8aa1f0155ccc58",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ServerComputer"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bcc9c0396e70103c8a3271c02",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Computer"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bccb34699881d153947d16cee",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Freezer"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "be6f6b110ed2e35b379e4eae7",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#CoffeeMaker"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bfc809d0bae9e563a92f7b777",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ElectricResistanceElement"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#EM-Light",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b0db8df1a6a4a8262ad6397ff",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#SolarThermalCollector"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#EM-Light",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b82f966db51d2fe242d10573b",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#PhotovoltaicModule"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Electricity-DC",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b2906ba16efb0a0d46386d981",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#PowerOverEthernetPort"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Electricity-DC",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b3835af877c1dbfedf26e197d",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#EthernetPort"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b0aa8735b67303a7316bd7544",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#FanCoilUnit"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b137842fe408aa7532a648358",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#TerminalUnit"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b391b5c0a5f0189d9793f82f1",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#GroundToAirHeatPump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b4d95b2465a77bdf17c76437f",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Damper"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bb3750e08ef935ef09f3c6932",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#WaterToAirHeatPump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bc260d42fa8f5e761300a8622",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#AirHandlingUnit"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bcc2881d54b398adaafc646c4",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Fan"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "be50ac7e9d47fe81f1445945c",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#FumeHood"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bed09263301b026e5f9d2f822",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Furnace"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bfeafe8df1538bc4fab3d5aea",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#SteamInjector"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 2
+    },
+    "reason": null,
+    "source": "b9aa4330129e9bda779c14088",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#AirToAirHeatPump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 2
+    },
+    "reason": null,
+    "source": "bcae0d0cc22f1fa3c035b9d3a",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#DualDuctTerminal"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b0617ea7244bd8f1ee67a4ec3",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Boiler"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b11903420b878efc8e05313aa",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ChilledBeam"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b13ba1e2e62d2ab84622ccb52",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Sink"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b371c0fc0f10608e7b68fc29e",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Bathtub"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b451888e2b3c724cfff6f2792",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#CoolingTower"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b4f986ee0774c72267ce8e51d",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#FlushToilet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b5b9b028fbb33c910a5007f0c",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Faucet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b6d3d56924c7f42eaae3856e4",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#IceMaker"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b7c038aed8857edc4d6a3711c",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ElectricWaterDispenser"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b96d428f0bc480caf684cc50a",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ClothesWasher"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bb7a1b5965d9b589d01309477",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Chiller"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bbb4fa8f85dd4425b92682417",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Drain"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bc2e618f11a36b7c11e85da77",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Dishwasher"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bd629e2211c71b43bc0dd8f34",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Shower"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bf9e9f4d181387462cf6ff245",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#WaterToAirHeatPump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 2
+    },
+    "reason": null,
+    "source": "b67cd4d912509c2deded5f2bc",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#WaterToWaterHeatPump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bb5355e00ccd2041d6f15037b",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#PlugFlowReactor"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bd820d59519fd1ec08c3d489d",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#Reactor"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Water-Steam",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bce4863fe29d018f3e52a012b",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#SteamInjector"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [
+        "http://data.ashrae.org/standard223#Constituent-Refrigerant",
+        "http://data.ashrae.org/standard223#Fluid-Oil",
+        "http://data.ashrae.org/standard223#Fluid-Water"
+      ],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b1b4047d2fa6a2180edb4dd73",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Pump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [
+        "http://data.ashrae.org/standard223#Constituent-Refrigerant",
+        "http://data.ashrae.org/standard223#Mix-Fluid"
+      ],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b58bb134434405e0b94f5d68a",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#Pump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [
+        "http://data.ashrae.org/standard223#EM-Light",
+        "http://data.ashrae.org/standard223#Fluid-Air"
+      ],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b71a54796dff37cbf07803ea2",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Window"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [
+        "http://data.ashrae.org/standard223#EM-RF",
+        "http://data.ashrae.org/standard223#Electricity-Signal"
+      ],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b7e6bd6322efd8cd2b63dc9ff",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ComputerPrinter"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b2c4f64b797166add869a6c94",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Filter"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b3538f12e0ff7c70e9022bad8",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Compressor"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "InletConnectionPoint",
+      "direction": "in",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bcdb54a8432f114fe0adb2de9",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#TwoWayValve"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b23937942bf6257e964a2b330",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#VariableFrequencyDrive"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b259b0eef0fc8e26c3d3607af",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ElectricityBreaker"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b382b95a52dbbaa655cdd083a",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#PhotovoltaicModule"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b52613606415f8e6328cad1d0",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Generator"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bc5d8afd818a4f4b866d896ed",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Turbine"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bdce0ddc923c5c06e14c72303",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ElectricityOutlet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#EM-Light",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "be524f7f46c033616c1fc9e18",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Luminaire"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b1b464956b850d6778c5959bd",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#TerminalUnit"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b2767a69934790ab0b725d457",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#SteamInjector"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b41ba6f3e8947fd90d00ab695",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#FanCoilUnit"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b5e0548ce89519eb77bc1d0c3",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#AirHandlingUnit"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b62fbea77840810da23804f82",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Damper"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bca9889915eaf03a69c1dee69",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Fan"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bcd78de33eb45f2a7be40afe4",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#WaterToAirHeatPump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bf0edcd5a3acea9ec5e1cb12d",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#GroundToAirHeatPump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bf436f9141a829ca110d077e4",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#FumeHood"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bf8a1df71da0a1ed41693685e",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Furnace"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+      "medium_options": [],
+      "min_count": 2
+    },
+    "reason": null,
+    "source": "bd27aafd7218526d16b0f657c",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#AirToAirHeatPump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b0496803d7dbb6bc47b834ef7",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Bathtub"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b35f26e6d48e09c31f1935158",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Boiler"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b36cd91d1a4df84118e4113f7",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Drain"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b3cd6b1a6cd7c7a50850e7f5b",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#WaterOutlet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b45894f6f145a1e68ff4acdb1",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ChilledBeam"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b7e01aab1e8b0d8b798523da9",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ClothesWasher"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b82b1e2a58fc5d30d0aca691c",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#SolarThermalCollector"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b9c9784a43caa1ff23121b921",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Sink"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "ba27b0b634d1b7b9e7c15dc2c",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#WaterToAirHeatPump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "ba9158484d780a13e33135f16",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Shower"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bba1d495adf729ce1fc9965c5",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Faucet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bccab436b990d198c56ebe104",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Chiller"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bd29ab37bd2d6579a35728a1b",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#CoolingTower"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bde31d178e897b2a33a213b36",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Dishwasher"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bf7555e2cc5e2f582d07028b5",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#FlushToilet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+      "medium_options": [],
+      "min_count": 2
+    },
+    "reason": null,
+    "source": "b5a1db34d8d79842f1ecd41e8",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#WaterToWaterHeatPump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Light-Infrared",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b9809e5d7229f59f77182a6c2",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#RadiantHeater"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bf0985be85034044bdabd5366",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#Reactor"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bf8f1fca1feb17b8c3b35fd15",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#PlugFlowReactor"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+      "medium_options": [],
+      "min_count": 2
+    },
+    "reason": null,
+    "source": "bcd14019d90d462575d775b2d",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#SeparationTank"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#RF-Signal",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b7818270d2fb243f587ba4dc2",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#RFOutlet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Signal-FiberEthernet",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "badab9a2eb029b2e0b2e7d209",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#FiberEthernetOutlet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Signal-USB",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b500989a85696f5737a1e9854",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#USBOutlet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "http://data.ashrae.org/standard223#Signal-WiredEthernet",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bcceab4ff71b7f88d38d78fdb",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#WiredEthernetOutlet"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "bc0edafa1c5e42e24e89956b8",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#SequencingBatchReactor"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [
+        "http://data.ashrae.org/standard223#Constituent-Refrigerant",
+        "http://data.ashrae.org/standard223#Fluid-Oil",
+        "http://data.ashrae.org/standard223#Fluid-Water"
+      ],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b0eef140182047dbdf81e3cd1",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Pump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [
+        "http://data.ashrae.org/standard223#Constituent-Refrigerant",
+        "http://data.ashrae.org/standard223#Mix-Fluid"
+      ],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "ba801c32249d5340b9a3700c8",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#Pump"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [
+        "http://data.ashrae.org/standard223#EM-Light",
+        "http://data.ashrae.org/standard223#Fluid-Air"
+      ],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b2e1b8ae7e084985d35926566",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Window"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b6492125b6336392963b5ffdb",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Filter"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "b7616e54950e36e43763d5809",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Compressor"
+  },
+  {
+    "asserted_directly": true,
+    "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+    "projection": {
+      "cp_class": "OutletConnectionPoint",
+      "direction": "out",
+      "max_count": null,
+      "medium": null,
+      "medium_options": [],
+      "min_count": 1
+    },
+    "reason": null,
+    "source": "baf3abd6feff77ae6a7345b04",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#TwoWayValve"
+  },
+  {
+    "projection": {
+      "children": [],
+      "operator": "opaque",
+      "reason": "untranslated SHACL constraints",
+      "slot": null,
+      "source": "http://qudt.org/schema/qudt/DimensionalityShape"
+    },
+    "source": "http://qudt.org/schema/qudt/DimensionalityShape",
+    "support": "validation-only",
+    "target": "http://qudt.org/schema/qudt/Array"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [],
+          "operator": "opaque",
+          "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+          "slot": null,
+          "source": "b53828034df4fc69173bcac48"
+        },
+        {
+          "children": [],
+          "operator": "opaque",
+          "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+          "slot": null,
+          "source": "bf86fad2522252165b2615266"
+        }
+      ],
+      "operator": "or",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "http://data.ashrae.org/standard223/1.0/extensions/g36#ChilledWaterValveOrShape1",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#ChilledWaterValve"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [],
+          "operator": "opaque",
+          "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+          "slot": null,
+          "source": "bc0ec4b11604ba1134fd903e1"
+        },
+        {
+          "children": [],
+          "operator": "opaque",
+          "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+          "slot": null,
+          "source": "be0768575091e803c57464ebc"
+        }
+      ],
+      "operator": "or",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "http://data.ashrae.org/standard223/1.0/extensions/g36#HotWaterValveOrShape1",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#HotWaterValve"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [],
+          "operator": "opaque",
+          "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+          "slot": null,
+          "source": "bc6e8092541cc860455231b62"
+        },
+        {
+          "children": [],
+          "operator": "opaque",
+          "reason": "http://data.ashrae.org/standard223#hasProperty is not the S223 equipment-point path",
+          "slot": null,
+          "source": "b2f2d8373a82dd32b1e2f73e2"
+        }
+      ],
+      "operator": "or",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "http://data.ashrae.org/standard223/1.0/extensions/g36#DamperOrShape1",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223/1.0/extensions/g36#Damper"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [],
+          "operator": "opaque",
+          "reason": "untranslated property constraint",
+          "slot": null,
+          "source": "bb1fe48ff3cea851c3171cbf9"
+        },
+        {
+          "children": [],
+          "operator": "opaque",
+          "reason": "untranslated property constraint",
+          "slot": null,
+          "source": "b5b09be69bd969d253f52cd4e"
+        }
+      ],
+      "operator": "or",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "http://data.ashrae.org/standard223#FunctionPropertyShape",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#Function"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [],
+          "operator": "slot",
+          "reason": null,
+          "slot": {
+            "cp_class": "BidirectionalConnectionPoint",
+            "direction": "bi",
+            "max_count": 1,
+            "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+            "medium_options": [],
+            "min_count": 1
+          },
+          "source": null
+        },
+        {
+          "children": [
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "InletConnectionPoint",
+                "direction": "in",
+                "max_count": 1,
+                "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "OutletConnectionPoint",
+                "direction": "out",
+                "max_count": 1,
+                "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            }
+          ],
+          "operator": "and",
+          "reason": null,
+          "slot": null,
+          "source": null
+        }
+      ],
+      "operator": "xone",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "http://data.ashrae.org/standard223#ElectricResistanceElement",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#ElectricResistanceElement"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [],
+          "operator": "slot",
+          "reason": null,
+          "slot": {
+            "cp_class": "InletConnectionPoint",
+            "direction": "in",
+            "max_count": null,
+            "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+            "medium_options": [],
+            "min_count": 1
+          },
+          "source": null
+        },
+        {
+          "children": [
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "OutletConnectionPoint",
+                "direction": "out",
+                "max_count": null,
+                "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "InletConnectionPoint",
+                "direction": "in",
+                "max_count": null,
+                "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            }
+          ],
+          "operator": "and",
+          "reason": null,
+          "slot": null,
+          "source": null
+        }
+      ],
+      "operator": "xone",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "http://data.ashrae.org/standard223#RadiatorInletShape",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Radiator"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [],
+          "operator": "slot",
+          "reason": null,
+          "slot": {
+            "cp_class": "InletConnectionPoint",
+            "direction": "in",
+            "max_count": null,
+            "medium": null,
+            "medium_options": [
+              "http://data.ashrae.org/standard223#Constituent-Electricity",
+              "http://data.ashrae.org/standard223#Fluid-NaturalGas"
+            ],
+            "min_count": 1
+          },
+          "source": null
+        },
+        {
+          "children": [
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "OutletConnectionPoint",
+                "direction": "out",
+                "max_count": null,
+                "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "InletConnectionPoint",
+                "direction": "in",
+                "max_count": null,
+                "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            }
+          ],
+          "operator": "and",
+          "reason": null,
+          "slot": null,
+          "source": null
+        }
+      ],
+      "operator": "xone",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "http://data.ashrae.org/standard223#RadiantHeater",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#RadiantHeater"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [],
+          "operator": "slot",
+          "reason": null,
+          "slot": {
+            "cp_class": "OutletConnectionPoint",
+            "direction": "out",
+            "max_count": null,
+            "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+            "medium_options": [],
+            "min_count": 1
+          },
+          "source": null
+        },
+        {
+          "children": [],
+          "operator": "slot",
+          "reason": null,
+          "slot": {
+            "cp_class": "BidirectionalConnectionPoint",
+            "direction": "bi",
+            "max_count": null,
+            "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
+            "medium_options": [],
+            "min_count": 1
+          },
+          "source": null
+        }
+      ],
+      "operator": "or",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "http://data.ashrae.org/standard223#BatteryCPShape",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Battery"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [],
+          "operator": "slot",
+          "reason": null,
+          "slot": {
+            "cp_class": "OutletConnectionPoint",
+            "direction": "out",
+            "max_count": null,
+            "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
+            "medium_options": [],
+            "min_count": 1
+          },
+          "source": null
+        },
+        {
+          "children": [],
+          "operator": "slot",
+          "reason": null,
+          "slot": {
+            "cp_class": "OutletConnectionPoint",
+            "direction": "out",
+            "max_count": null,
+            "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+            "medium_options": [],
+            "min_count": 1
+          },
+          "source": null
+        }
+      ],
+      "operator": "and",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "https://watermetadata.org/ontology/watr#LiquidSludgeOutletShape",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#Clarifier"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [],
+          "operator": "slot",
+          "reason": null,
+          "slot": {
+            "cp_class": "OutletConnectionPoint",
+            "direction": "out",
+            "max_count": null,
+            "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
+            "medium_options": [],
+            "min_count": 1
+          },
+          "source": null
+        },
+        {
+          "children": [],
+          "operator": "slot",
+          "reason": null,
+          "slot": {
+            "cp_class": "OutletConnectionPoint",
+            "direction": "out",
+            "max_count": null,
+            "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+            "medium_options": [],
+            "min_count": 1
+          },
+          "source": null
+        }
+      ],
+      "operator": "and",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "https://watermetadata.org/ontology/watr#LiquidSludgeOutletShape",
+    "support": "solver",
+    "target": "https://watermetadata.org/ontology/watr#GravityThickener"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "operator": "opaque",
+              "reason": "http://data.ashrae.org/standard223#connectsAt is not the S223 equipment-point path",
+              "slot": null,
+              "source": "b5f961609c8d7f64d4472e71d"
+            },
+            {
+              "children": [],
+              "operator": "opaque",
+              "reason": "http://data.ashrae.org/standard223#connectsAt is not the S223 equipment-point path",
+              "slot": null,
+              "source": "bac9dc329f7351d84010314c3"
+            }
+          ],
+          "operator": "and",
+          "reason": null,
+          "slot": null,
+          "source": null
+        },
+        {
+          "children": [],
+          "operator": "opaque",
+          "reason": "http://data.ashrae.org/standard223#connectsAt is not the S223 equipment-point path",
+          "slot": null,
+          "source": "beac0cfa144f49e16874963eb"
+        }
+      ],
+      "operator": "or",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "http://data.ashrae.org/standard223#ConnectionCnxShape",
+    "support": "validation-only",
+    "target": "http://data.ashrae.org/standard223#Connection"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "InletConnectionPoint",
+                "direction": "in",
+                "max_count": null,
+                "medium": null,
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "OutletConnectionPoint",
+                "direction": "out",
+                "max_count": null,
+                "medium": null,
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            }
+          ],
+          "operator": "and",
+          "reason": null,
+          "slot": null,
+          "source": null
+        },
+        {
+          "children": [],
+          "operator": "slot",
+          "reason": null,
+          "slot": {
+            "cp_class": "BidirectionalConnectionPoint",
+            "direction": "bi",
+            "max_count": null,
+            "medium": null,
+            "medium_options": [],
+            "min_count": 1
+          },
+          "source": null
+        }
+      ],
+      "operator": "or",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "http://data.ashrae.org/standard223#JunctionCPShape",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Junction"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "OutletConnectionPoint",
+                "direction": "out",
+                "max_count": 1,
+                "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "InletConnectionPoint",
+                "direction": "in",
+                "max_count": 1,
+                "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "InletConnectionPoint",
+                "direction": "in",
+                "max_count": 2,
+                "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+                "medium_options": [],
+                "min_count": 2
+              },
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "OutletConnectionPoint",
+                "direction": "out",
+                "max_count": 2,
+                "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+                "medium_options": [],
+                "min_count": 2
+              },
+              "source": null
+            }
+          ],
+          "operator": "and",
+          "reason": null,
+          "slot": null,
+          "source": null
+        },
+        {
+          "children": [
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "BidirectionalConnectionPoint",
+                "direction": "bi",
+                "max_count": 2,
+                "medium": null,
+                "medium_options": [
+                  "http://data.ashrae.org/standard223#Medium-ThermalContact",
+                  "http://data.ashrae.org/standard223#Mix-Fluid"
+                ],
+                "min_count": 1
+              },
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "InletConnectionPoint",
+                "direction": "in",
+                "max_count": 1,
+                "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "OutletConnectionPoint",
+                "direction": "out",
+                "max_count": 1,
+                "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            }
+          ],
+          "operator": "and",
+          "reason": null,
+          "slot": null,
+          "source": null
+        },
+        {
+          "children": [],
+          "operator": "slot",
+          "reason": null,
+          "slot": {
+            "cp_class": "BidirectionalConnectionPoint",
+            "direction": "bi",
+            "max_count": 3,
+            "medium": null,
+            "medium_options": [
+              "http://data.ashrae.org/standard223#Medium-ThermalContact",
+              "http://data.ashrae.org/standard223#Mix-Fluid"
+            ],
+            "min_count": 3
+          },
+          "source": null
+        }
+      ],
+      "operator": "xone",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "http://data.ashrae.org/standard223#Coil",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Coil"
+  },
+  {
+    "projection": {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "OutletConnectionPoint",
+                "direction": "out",
+                "max_count": null,
+                "medium": null,
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "InletConnectionPoint",
+                "direction": "in",
+                "max_count": null,
+                "medium": null,
+                "medium_options": [],
+                "min_count": 1
+              },
+              "source": null
+            }
+          ],
+          "operator": "and",
+          "reason": null,
+          "slot": null,
+          "source": null
+        },
+        {
+          "children": [],
+          "operator": "slot",
+          "reason": null,
+          "slot": {
+            "cp_class": "BidirectionalConnectionPoint",
+            "direction": "bi",
+            "max_count": null,
+            "medium": null,
+            "medium_options": [],
+            "min_count": 2
+          },
+          "source": null
+        }
+      ],
+      "operator": "or",
+      "reason": null,
+      "slot": null,
+      "source": null
+    },
+    "source": "http://data.ashrae.org/standard223#ValveCPShape",
+    "support": "solver",
+    "target": "http://data.ashrae.org/standard223#Valve"
+  }
+]

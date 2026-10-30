@@ -67,7 +67,7 @@ class S223Connector:
                 already = sum(
                     1
                     for cp in existing
-                    if isinstance(cp, slot_cls)
+                    if cp.meta.is_a(slot_cls)
                     and getattr(cp, "medium") is not None
                     and getattr(cp, "medium").is_a(medium)
                 )

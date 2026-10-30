@@ -55,11 +55,19 @@ def test_rdf_ancestry_survives_python_mro_repair(ontology):
         ex:Owner a owl:Class .
         ex:member a owl:ObjectProperty ; rdfs:domain ex:Owner ; rdfs:range ex:Y .
         ex:mark a owl:ObjectProperty ; rdfs:domain ex:Y ; rdfs:range ex:Y .
+        <http://data.ashrae.org/standard223#InletConnectionPoint> a owl:Class .
+        ex:Y a sh:NodeShape ; sh:property [
+            sh:path <http://data.ashrae.org/standard223#hasConnectionPoint> ;
+            sh:qualifiedValueShape [
+                sh:class <http://data.ashrae.org/standard223#InletConnectionPoint>
+            ] ; sh:qualifiedMinCount 1
+        ] .
     """)
     assert api.Z.meta.parents == (api.X, api.Y)
     assert not issubclass(api.Z, api.Y)  # C3 repair removes this Python base.
     assert api.Z.meta.is_a(api.Y)
     assert api.Z in api.Y.meta.descendants
+    assert api.Z.meta.port_contract.slots[0].min_count == 1
     with Model("urn:instance:"):
         owner = api.Owner()
         member = api.Z()
@@ -242,6 +250,24 @@ def test_property_names_do_not_merge_unrelated_predicates(ontology):
         owner, child = api.B(), api.B()
         for spec in specs:
             getattr(owner, spec.name).add(child)
+
+
+def test_equivalent_predicates_combine_their_range_constraints(ontology):
+    api = ontology(
+        ANIMALS
+        + """
+        ex:pet a owl:ObjectProperty ; rdfs:domain ex:Owner ;
+            rdfs:range ex:Animal ; owl:equivalentProperty ex:dogPet .
+        ex:dogPet a owl:ObjectProperty ; rdfs:domain ex:Owner ; rdfs:range ex:Dog .
+    """
+    )
+    spec = next(p for p in api.Owner.meta.properties if p.predicate.endswith("#dogPet"))
+    assert spec.ranges == ("Dog",)
+    with Model("urn:instance:"):
+        owner = api.Owner()
+        getattr(owner, spec.name).add(api.Dog())
+        with pytest.raises(RangeError):
+            getattr(owner, spec.name).add(api.Animal())
 
 
 def test_supported_range_checks_agree_with_shacl(ontology):

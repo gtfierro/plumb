@@ -34,6 +34,10 @@ def main() -> None:
             raise SystemExit(f"plumb.{name} is missing _shapes.ttl")
     if not (resources.files("plumb") / "py.typed").is_file():
         raise SystemExit("plumb is missing py.typed")
+    for name in ("s223", "watr"):
+        for filename in ("_build.json", "_generated.json", "_connection_support.json"):
+            if not (resources.files(f"plumb.{name}") / filename).is_file():
+                raise SystemExit(f"plumb.{name} is missing {filename}")
 
     with Model("urn:example/dist-check#") as model:
         clarifier = watr.Clarifier("clarifier")

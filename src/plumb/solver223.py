@@ -715,7 +715,7 @@ def _make_points(
     existing_names = {point.name for point in points}
     for cls, count in sorted(classes.items(), key=lambda item: item[0].__name__):
         existing_count = sum(
-            point.existing is not None and isinstance(point.existing, cls)
+            point.existing is not None and point.existing.meta.is_a(cls)
             for point in points
         )
         count = max(count - existing_count, 0)
@@ -753,7 +753,7 @@ def _slot_expr(
     matching = [
         z3.And(point.active, _medium_allowed(point.medium, slot, media, enum_ids))
         for point in points
-        if issubclass(point.cls, slot_cls)
+        if point.cls.meta.is_a(slot_cls)
         and (
             slot.label is None
             or point.authored is not None
@@ -790,7 +790,7 @@ def _constraint_expr(
         return z3.Or(children)
     if constraint.operator == "xone":
         return z3.PbEq([(child, 1) for child in children], 1)
-    return z3.BoolVal(True)
+    raise ValueError("validation-only connection constraints cannot be solved")
 
 
 def _medium_allowed(
@@ -805,7 +805,7 @@ def _medium_allowed(
     allowed = [
         enum_ids[value.iri]
         for value in media
-        if any(_is_descendant_iri(value, root) for root in roots)
+        if any(value.is_a(root) for root in roots)
     ]
     return z3.Or([variable == value for value in allowed])
 
@@ -879,7 +879,7 @@ def _point_roots(point: _Point) -> set[str]:
     return {
         root
         for slot in _all_slots(type(point.owner)) + _constraint_slots(type(point.owner))
-        if issubclass(point.cls, registry.resolve(slot.cp_class))
+        if point.cls.meta.is_a(registry.resolve(slot.cp_class))
         for root in _slot_roots(slot)
     }
 
@@ -907,7 +907,7 @@ def _possible_medium_ids(
     return {
         enum_ids[value.iri]
         for value in media
-        if any(_is_descendant_iri(value, root) for root in roots)
+        if any(value.is_a(root) for root in roots)
     }
 
 
@@ -920,7 +920,7 @@ def _medium_in_roots(
     allowed = [
         enum_ids[value.iri]
         for value in media
-        if any(_is_descendant_iri(value, root) for root in roots)
+        if any(value.is_a(root) for root in roots)
     ]
     return z3.Or([variable == value for value in allowed])
 
@@ -1262,7 +1262,7 @@ def _ontology_determines_medium(intent: _IntentResult) -> bool:
     allowed = {
         value.iri
         for value in registry.enums_by_iri.values()
-        if any(_is_descendant_iri(value, root) for root in roots)
+        if any(value.is_a(root) for root in roots)
     }
     return allowed == {intent.medium.iri}
 
@@ -1272,7 +1272,7 @@ def _result_roots(point: _PointResult) -> set[str]:
     return {
         root
         for slot in _all_slots(type(point.owner)) + _constraint_slots(type(point.owner))
-        if issubclass(point.cls, registry.resolve(slot.cp_class))
+        if point.cls.meta.is_a(registry.resolve(slot.cp_class))
         for root in _slot_roots(slot)
     }
 
@@ -1394,7 +1394,8 @@ def _constraint_slots(cls: type[Entity]) -> list[CPSlot]:
             visit(child)
 
     for constraint in _all_constraints(cls):
-        visit(constraint)
+        if not _contains_opaque(constraint):
+            visit(constraint)
     return slots
 
 
@@ -1410,22 +1411,20 @@ def _slot_roots(slot: CPSlot) -> tuple[str, ...]:
     return (slot.medium,) if slot.medium is not None else ()
 
 
-def _is_descendant_iri(value: EnumValue, root_iri: str) -> bool:
-    node: EnumValue | None = value
-    while node is not None:
-        if node.iri == root_iri:
-            return True
-        node = node.parent
-    return False
-
-
 def _direction_of(cls: type[Entity]) -> str:
-    names = {base.__name__ for base in cls.__mro__}
-    if "BidirectionalConnectionPoint" in names:
-        return "bi"
-    if "InletConnectionPoint" in names:
-        return "in"
-    return "out"
+    namespace = "http://data.ashrae.org/standard223#"
+    directions = {
+        direction
+        for name, direction in (
+            ("BidirectionalConnectionPoint", "bi"),
+            ("InletConnectionPoint", "in"),
+            ("OutletConnectionPoint", "out"),
+        )
+        if cls.meta.is_a(namespace + name)
+    }
+    if len(directions) != 1:
+        raise ModelingError(f"{cls.meta.iri}: missing or ambiguous point direction")
+    return directions.pop()
 
 
 def _safe(value: str) -> str:

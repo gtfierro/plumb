@@ -1,6 +1,7 @@
 """The compiler: fixture ontology -> generated module -> working classes."""
 
 import importlib.util
+import json
 import sys
 from pathlib import Path
 
@@ -24,7 +25,7 @@ MINI_OVERLAY = Overlay(
 )
 
 BOOLEAN_CP_TTL = """
-@prefix mini: <urn:boolean#> .
+@prefix mini: <http://data.ashrae.org/standard223#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
@@ -344,7 +345,7 @@ def test_punned_enum_is_emitted_only_as_reference_instance():
     graph = rdflib.Graph().parse(
         data=BOOLEAN_CP_TTL
         + """
-            @prefix mini: <urn:boolean#> .
+            @prefix mini: <http://data.ashrae.org/standard223#> .
             @prefix owl: <http://www.w3.org/2002/07/owl#> .
             mini:Fluid-Air a owl:NamedIndividual, mini:EnumerationKind .
         """,
@@ -353,7 +354,7 @@ def test_punned_enum_is_emitted_only_as_reference_instance():
     modules = compile_modules(
         graph,
         name="Boolean",
-        overlay=Overlay(enum_root="urn:boolean#EnumerationKind"),
+        overlay=Overlay(enum_root="http://data.ashrae.org/standard223#EnumerationKind"),
     )
 
     assert "class Fluid_Air" not in modules["__init__.py"]
@@ -455,7 +456,7 @@ def test_boolean_shacl_connection_constraints_are_preserved():
     ir = extract(
         graph,
         name="Boolean",
-        enum_root="urn:boolean#EnumerationKind",
+        enum_root="http://data.ashrae.org/standard223#EnumerationKind",
     )
     coil = next(cls for cls in ir.classes if cls.name == "Coil")
 
@@ -468,7 +469,7 @@ def test_boolean_shacl_connection_constraints_are_preserved():
     inlet, outlets = xone.children[0].children
     assert inlet.slot is not None
     assert inlet.slot.direction == "in"
-    assert inlet.slot.medium == "urn:boolean#Fluid-Air"
+    assert inlet.slot.medium == "http://data.ashrae.org/standard223#Fluid-Air"
     assert inlet.slot.max_count == 1
     assert outlets.operator == "or"
     assert [child.operator for child in outlets.children] == [
@@ -477,8 +478,8 @@ def test_boolean_shacl_connection_constraints_are_preserved():
         "opaque",
     ]
     assert [child.slot.medium for child in outlets.children if child.slot] == [
-        "urn:boolean#Fluid-Air",
-        "urn:boolean#Fluid-Water",
+        "http://data.ashrae.org/standard223#Fluid-Air",
+        "http://data.ashrae.org/standard223#Fluid-Water",
     ]
 
     bidirectional = xone.children[1].slot
@@ -493,7 +494,7 @@ def test_boolean_connection_constraints_are_emitted():
     source = compile_source(
         graph,
         name="Boolean",
-        overlay=Overlay(enum_root="urn:boolean#EnumerationKind"),
+        overlay=Overlay(enum_root="http://data.ashrae.org/standard223#EnumerationKind"),
     )
 
     assert "cp_constraints=(" in source
@@ -510,15 +511,15 @@ def test_nested_medium_or_becomes_slot_domain():
     ir = extract(
         graph,
         name="Boolean",
-        enum_root="urn:boolean#EnumerationKind",
+        enum_root="http://data.ashrae.org/standard223#EnumerationKind",
     )
     pump = next(cls for cls in ir.classes if cls.name == "Pump")
 
     assert len(pump.cp_slots) == 1
     assert pump.cp_slots[0].medium is None
     assert pump.cp_slots[0].medium_options == (
-        "urn:boolean#Fluid-Air",
-        "urn:boolean#Fluid-Water",
+        "http://data.ashrae.org/standard223#Fluid-Air",
+        "http://data.ashrae.org/standard223#Fluid-Water",
     )
 
 
@@ -527,12 +528,111 @@ def test_direct_qualified_shape_medium_is_extracted():
     ir = extract(
         graph,
         name="Boolean",
-        enum_root="urn:boolean#EnumerationKind",
+        enum_root="http://data.ashrae.org/standard223#EnumerationKind",
     )
     tank = next(cls for cls in ir.classes if cls.name == "Tank")
 
     assert len(tank.cp_slots) == 1
-    assert tank.cp_slots[0].medium == "urn:boolean#Fluid-Water"
+    assert tank.cp_slots[0].medium == "http://data.ashrae.org/standard223#Fluid-Water"
+
+
+def test_connection_slots_use_iri_paths_and_subclass_ancestry():
+    graph = rdflib.Graph().parse(
+        data=BOOLEAN_CP_TTL
+        + """
+        @prefix custom: <urn:custom#> .
+        custom:CustomInlet a owl:Class ; rdfs:subClassOf mini:InletConnectionPoint .
+        custom:InletConnectionPoint a owl:Class .
+        custom:Pump a owl:Class, sh:NodeShape ;
+            sh:property [ sh:path mini:hasConnectionPoint ;
+                sh:qualifiedValueShape [ sh:class custom:CustomInlet ] ;
+                sh:qualifiedMinCount 2 ] .
+        custom:WrongPath a owl:Class, sh:NodeShape ;
+            sh:property [ sh:path custom:hasConnectionPoint ;
+                sh:qualifiedValueShape [ sh:class mini:InletConnectionPoint ] ;
+                sh:qualifiedMinCount 2 ] .
+        custom:WrongClass a owl:Class, sh:NodeShape ;
+            sh:property [ sh:path mini:hasConnectionPoint ;
+                sh:qualifiedValueShape [ sh:class custom:InletConnectionPoint ] ;
+                sh:qualifiedMinCount 2 ] .
+    """,
+        format="turtle",
+    )
+    ir = extract(
+        graph,
+        name="Ports",
+        primary_namespace="urn:custom#",
+        enum_root="http://data.ashrae.org/standard223#EnumerationKind",
+    )
+    classes = {cls.iri: cls for cls in ir.classes}
+    (slot,) = classes["urn:custom#Pump"].cp_slots
+    assert (slot.cp_class, slot.direction, slot.min_count) == ("CustomInlet", "in", 2)
+    assert classes["urn:custom#WrongPath"].cp_slots == []
+    assert classes["urn:custom#WrongClass"].cp_slots == []
+    # The real S223 class was renamed by the collision, and still means inlet.
+    tank = classes["http://data.ashrae.org/standard223#Tank"]
+    assert tank.cp_slots[0].cp_class == "InletConnectionPoint_2"
+    assert tank.cp_slots[0].direction == "in"
+
+
+def test_medium_constraints_intersect_across_nested_shapes():
+    graph = rdflib.Graph().parse(
+        data=BOOLEAN_CP_TTL
+        + """
+        mini:Fluid a owl:Class ; rdfs:subClassOf mini:EnumerationKind .
+        mini:Fluid-Water rdfs:subClassOf mini:Fluid .
+        mini:NestedTank a owl:Class, sh:NodeShape ;
+            sh:property [ sh:path mini:hasConnectionPoint ;
+                sh:qualifiedValueShape [ sh:class mini:InletConnectionPoint ;
+                    sh:and (
+                        [ sh:property [ sh:path mini:hasMedium ; sh:class mini:Fluid ] ]
+                        [ sh:property [ sh:path mini:hasMedium ; sh:class mini:Fluid-Water ] ]
+                    ) ] ; sh:qualifiedMinCount 1 ] .
+    """,
+        format="turtle",
+    )
+    ir = extract(
+        graph,
+        name="Ports",
+        enum_root="http://data.ashrae.org/standard223#EnumerationKind",
+    )
+    tank = next(cls for cls in ir.classes if cls.name == "NestedTank")
+    assert tank.cp_slots[0].medium == "http://data.ashrae.org/standard223#Fluid-Water"
+
+
+def test_unrelated_medium_predicate_does_not_select_a_domain():
+    graph = rdflib.Graph().parse(
+        data=BOOLEAN_CP_TTL
+        + """
+        mini:OtherTank a owl:Class, sh:NodeShape ;
+            sh:property [ sh:path mini:hasConnectionPoint ;
+                sh:qualifiedValueShape [ sh:class mini:InletConnectionPoint ;
+                    sh:property [ sh:path <urn:custom#hasMedium> ; sh:class mini:Fluid-Water ]
+                ] ; sh:qualifiedMinCount 1 ] .
+    """,
+        format="turtle",
+    )
+    ir = extract(
+        graph,
+        name="Ports",
+        enum_root="http://data.ashrae.org/standard223#EnumerationKind",
+    )
+    tank = next(cls for cls in ir.classes if cls.name == "OtherTank")
+    assert tank.cp_slots == []  # the unrelated qualifier stays validation-only
+    modules = compile_modules(
+        graph,
+        name="Ports",
+        overlay=Overlay(enum_root="http://data.ashrae.org/standard223#EnumerationKind"),
+    )
+    report = json.loads(modules["_connection_support.json"])
+    record = next(
+        item
+        for item in report
+        if item["target"] == "http://data.ashrae.org/standard223#OtherTank"
+    )
+    assert record["support"] == "validation-only"
+    assert "urn:custom#hasMedium" in record["reason"]
+    assert record["source"]
 
 
 def test_qualified_max_count_alone_sets_no_minimum():
@@ -548,7 +648,11 @@ mini:HeatExchanger a owl:Class, sh:NodeShape ;
 """,
         format="turtle",
     )
-    ir = extract(graph, name="Boolean", enum_root="urn:boolean#EnumerationKind")
+    ir = extract(
+        graph,
+        name="Boolean",
+        enum_root="http://data.ashrae.org/standard223#EnumerationKind",
+    )
     exchanger = next(cls for cls in ir.classes if cls.name == "HeatExchanger")
 
     # SHACL reads a missing qualifiedMinCount as no minimum, so this forbids

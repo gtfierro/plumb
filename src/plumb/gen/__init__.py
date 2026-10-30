@@ -9,6 +9,7 @@ optional UX overlays (``overlays``).
 from __future__ import annotations
 
 from pathlib import Path
+import json
 
 import rdflib
 
@@ -74,6 +75,18 @@ def compile_modules(
         deferred_properties=resolved.deferred_properties if resolved else (),
     )
     modules = {"__init__.py": emit_module(ir, resolved)}
+    if ir.connection_support:
+        modules["_connection_support.json"] = (
+            json.dumps(
+                sorted(
+                    ir.connection_support,
+                    key=lambda item: json.dumps(item, sort_keys=True),
+                ),
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n"
+        )
     # Keep validation reproducible: generated packages carry the exact graph
     # that their Python API and solver metadata were compiled from.
     modules["_shapes.ttl"] = str(graph.serialize(format="turtle"))

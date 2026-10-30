@@ -58,13 +58,14 @@ class EnumValue:
             self.parents += (parent,)
             parent._children[_segment(self.iri)] = self
 
-    def is_a(self, other: EnumValue) -> bool:
+    def is_a(self, other: EnumValue | str) -> bool:
         """True if this value is ``other`` or a descendant of it."""
+        iri = other if isinstance(other, str) else other.iri
         frontier: list[EnumValue] = [self]
         seen: set[str] = set()
         while frontier:
             node = frontier.pop()
-            if node.iri == other.iri:
+            if node.iri == iri:
                 return True
             if node.iri in seen:
                 continue
