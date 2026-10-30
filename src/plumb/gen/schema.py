@@ -123,6 +123,8 @@ class ClassIR:
     label: str | None = None
     definition: str | None = None
     parents: tuple[str, ...] = ()  # python names; empty -> Entity
+    parent_iris: tuple[str, ...] = ()  # RDF edges, independent of Python bases
+    ancestor_iris: tuple[str, ...] = ()
     own_props: list[PropIR] = field(default_factory=list)
     cp_slots: list[CPSlotIR] = field(default_factory=list)
     cp_constraints: list[CPConstraintIR] = field(default_factory=list)
@@ -200,6 +202,20 @@ def extract(
                     names[str(parent)]
                     for parent in graph.objects(URIRef(iri), RDFS.subClassOf)
                     if str(parent) in classes or str(parent) in class_iris
+                )
+            ),
+            parent_iris=tuple(
+                sorted(
+                    str(parent)
+                    for parent in graph.objects(URIRef(iri), RDFS.subClassOf)
+                    if isinstance(parent, URIRef)
+                )
+            ),
+            ancestor_iris=tuple(
+                sorted(
+                    str(parent)
+                    for parent in graph.transitive_objects(URIRef(iri), RDFS.subClassOf)
+                    if isinstance(parent, URIRef) and str(parent) != iri
                 )
             ),
             abstract=_is_abstract(graph, iri),

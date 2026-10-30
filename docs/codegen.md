@@ -50,8 +50,11 @@ requirements from ranking evidence.
 RDF permits parent combinations Python's C3 linearization rejects. At
 generation time each parent tuple is repaired: redundant ancestors dropped,
 parents ordered most-derived-first, and — only if C3 still fails — trailing
-parents pruned. Pruned links remain visible through `meta.iri`/RDF; they just
-don't contribute to the Python MRO.
+parents pruned. Direct RDF edges and transitive ancestry are emitted separately
+from Python bases. `Class.meta.parents`, hierarchy discovery, and
+`Class.meta.is_a(parent)` use that semantic metadata. Runtime range checks keep
+accepting legitimate ontology subtypes even when Python cannot inherit every
+parent.
 
 ## UX overlays
 

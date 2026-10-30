@@ -1,7 +1,9 @@
 # Compiler and runtime hardening plan
 
-Status: proposed implementation plan, 2026-10-30. This document describes
-future work; it does not change the current compiler contract.
+Status: implementation in progress, 2026-10-30. Phase 1 has an offline build
+and CI gate; semantic hardening is underway. The user has explicitly authorized
+breaking changes: prefer the coherent final interfaces over compatibility
+wrappers or preservation of the previous generated API.
 
 ## Objective
 
@@ -11,10 +13,9 @@ regeneration. Changes outside that subset should produce actionable
 diagnostics identifying the source and the required adaptation.
 
 Keep ordinary generated Python classes, the shared runtime, bundled SHACL,
-and immutable resolved models. Preserve public imports and authoring syntax
-where their behavior is correct. Tightened checks that reject previously
-accepted invalid models are intentional compatibility changes and must be
-documented.
+and immutable resolved models. Simplify public imports and authoring syntax
+where that improves the design. Document intentional interface changes and
+tightened checks that reject previously accepted invalid models.
 
 ## Design criterion: deep modules with simple interfaces
 

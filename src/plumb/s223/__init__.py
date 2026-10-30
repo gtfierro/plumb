@@ -77,6 +77,8 @@ class Concept(_EntityBase):
         registry=_REGISTRY,
         label='Concept',
         definition='All classes and relations defined in the 223 standard are subclasses of `Concept`.',
+        parent_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
+        ancestor_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
         properties=(_P_Concept_medium, _P_Concept_has_property,),
     )
 
@@ -122,6 +124,8 @@ class Class(Concept):
         registry=_REGISTRY,
         label='Class',
         definition='This is a modeling construct. All classes defined in the 223 standard are instances of `Class`.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Class'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Class', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class AbstractClass(Class):
@@ -136,6 +140,8 @@ class AbstractClass(Class):
         registry=_REGISTRY,
         label='Abstract class',
         definition='This is a modeling construct. Instances of abstract classes cannot be created. All abstract classes in this standard have a more specific subclass.',
+        parent_iris=('http://data.ashrae.org/standard223#Class',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Class', 'http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Class', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_Property_of_substance = _PropertySpec(
@@ -250,6 +256,8 @@ class Property(Concept):
         registry=_REGISTRY,
         label='Property',
         definition='An attribute, quality, or characteristic of a feature of interest.\n\nThe `Property` class is the parent of all variations of a `Property`, which are:\n\n- `ActuatableProperty`, a subclass of `Property` that can be modified by a user or machine outside of the model (typically by a command);\n- `ObservableProperty`, a subclass of `Property` that are observed (typically measures);\n- `EnumerableProperty`, a subclass of `Property` defined by `EnumerationKind`; and\n- `QuantifiableProperty`, a subclass of `Property` defined by numerical values.\n\nAnd their subclass combinations:\n\n- `QuantifiableActuatableProperty`,\n- `QuantifiableObservableProperty`,\n- `EnumeratedObservableProperty`, and\n- `EnumeratedActuatableProperty`.\n\nA `QuantifiableProperty` (or subclass thereof) shall always be associated with a `Unit` and a `QuantityKind`, either explicitly from the `Property`,\nor through the associated Value. If the `Unit` is defined, the SHACL reasoner (if invoked) will figure out and assert a `QuantityKind` if it is\nunambiguous.\n\nEnumerable properties shall be associated with an `EnumerationKind`. Different types of properties are shown in Figure 11-1.\n\n![Different types of Properties](figures/Figure_11-1_Flavors_of_Properties.svg)\n\nA `Property` instance that is not an instance of one of the subclasses is unconstrained with respect to its value.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Property_of_substance, _P_Property_of_constituent, _P_Property_has_internal_reference, _P_Property_has_aspect, _P_Property_is_internal_reference_of, _P_Property_of_medium, _P_Property_has_value, _P_Property_has_external_reference,),
     )
 
@@ -342,6 +350,8 @@ class ActuatableProperty(Property):
         registry=_REGISTRY,
         label='Actuatable property',
         definition='The term "actuatable" implies that writing to the `ActuatableProperty` value will directly trigger a physical actuation by either an `Actuator` or `Equipment`.\nIn contrast, the term "observable" (see {s223:ObservableProperty}) implies that reading the `ObservableProperty` value will return the result of a physical observation.',
+        parent_iris=('http://data.ashrae.org/standard223#Property',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_Connectable_cnx = _PropertySpec(
@@ -422,6 +432,8 @@ class Connectable(Concept):
         registry=_REGISTRY,
         label='Connectable',
         definition='`Connectable` is an abstract class representing `Equipment` (see {s223:Equipment}), a `DomainSpace` (see {s223:DomainSpace}), or a `Junction` (see {s223:Junction}) that can be `connected` to other `Connectable`s via `ConnectionPoint`s and `Connection`s.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         abstract=True,
         properties=(_P_Connectable_cnx, _P_Connectable_connected_through, _P_Connectable_connected, _P_Connectable_connected_from, _P_Connectable_connected_to, _P_Connectable_has_optional_connection_point, _P_Connectable_has_connection_point,),
     )
@@ -547,6 +559,8 @@ class Equipment(Connectable):
         registry=_REGISTRY,
         label='Equipment',
         definition='`Equipment` is the modeling construct used to represent a thing designed to accomplish a specific task, or a complex thing\nthat contains component pieces of `Equipment` that are connected to each other and work together to accomplish a task. `Equipment` can have\n`Connection`s and `ConnectionPoint`s through which one or more kinds of medium (see {s223:Substance-Medium}) might flow. Examples of `Equipment` defined in this ontology include `Pump`, `Fan`, `AirHeatExchanger`, `Luminaire`, and `Sensor`. `Equipment` can be connected to other `Connectable`s such as other `Equipment` or `DomainSpace`s.\n\nThe graphical depiction of Equipment used in this document is a round-cornered rectangle as shown in Figure 5-1.\n\n![Graphical Depiction of Equipment.](figures/Figure_5-1_Graphical_Depiciton_of_Equipment.svg)',
+        parent_iris=('http://data.ashrae.org/standard223#Connectable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Equipment_contains_, _P_Equipment_actuated_by_property, _P_Equipment_has_physical_location, _P_Equipment_executes, _P_Equipment_has_role,),
     )
 
@@ -648,6 +662,8 @@ class Actuator(Equipment):
         registry=_REGISTRY,
         label='Actuator',
         definition='A piece of `Equipment` that receives control signals and electrically, pneumatically, or hydraulically makes changes in the\nphysical world, such as the position of a valve or damper.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Actuator_actuated_by_property, _P_Actuator_actuates,),
     )
 
@@ -723,6 +739,8 @@ class AirHandlingUnit(Equipment):
         registry=_REGISTRY,
         label='Air handling unit',
         definition='A piece of `Equipment` consisting of a fan or fans and other equipment necessary to perform one or more of the following functions:\ncirculating, filtration, heating, cooling, heat recovery, humidifying, dehumidifying, and mixing of air.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -741,6 +759,8 @@ class AirHeatExchanger(Equipment):
         registry=_REGISTRY,
         label='Air heat exchanger',
         definition='A piece of `Equipment` that transfers heat from one air stream to another while keeping the two media separate.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
@@ -760,6 +780,8 @@ class HeatPump(Equipment):
         registry=_REGISTRY,
         label='Heat pump',
         definition='A piece of `Equipment` that heats or cools spaces by transferring thermal energy from one thermal environment to another using a reversible refrigeration cycle.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class AirToAirHeatPump(HeatPump):
@@ -774,6 +796,8 @@ class AirToAirHeatPump(HeatPump):
         registry=_REGISTRY,
         label='Air-to-air heat pump',
         definition='A `HeatPump` that transfers thermal energy between two bodies of air.',
+        parent_iris=('http://data.ashrae.org/standard223#HeatPump',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatPump', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
@@ -792,6 +816,8 @@ class ExternalReference(Concept):
         registry=_REGISTRY,
         label='External reference',
         definition='`ExternalReference` is an abstract class that represents application programming interface or protocol parameter values necessary to associate a `Property` with information external to the model, such as BACnet objects or telemetry values.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         abstract=True,
     )
 
@@ -877,6 +903,8 @@ class BACnetExternalReference(ExternalReference):
         registry=_REGISTRY,
         label='BACnet external reference',
         definition='An `ExternalReference` that contains BACnet protocol parameter values necessary to associate a `Property` with a value.',
+        parent_iris=('http://data.ashrae.org/standard223#ExternalReference',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ExternalReference', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_BACnetExternalReference_object_identifier, _P_BACnetExternalReference_device_identifier, _P_BACnetExternalReference_property_identifier, _P_BACnetExternalReference_property_array_index, _P_BACnetExternalReference_priority_for_writing, _P_BACnetExternalReference_object_name, _P_BACnetExternalReference_device_name,),
     )
 
@@ -958,6 +986,8 @@ class Bathtub(Equipment):
         registry=_REGISTRY,
         label='Bathtub',
         definition='A piece of `Equipment` for bathing that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -976,6 +1006,8 @@ class Battery(Equipment):
         registry=_REGISTRY,
         label='Battery',
         definition='A piece of `Equipment` that stores a defined amount of chemical energy that can be converted to electrical energy via a chemical process. This process, typically referred to as discharging, produces a specific electrical voltage and current.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None)),
@@ -1078,6 +1110,8 @@ class ConnectionPoint(Concept):
         registry=_REGISTRY,
         label='Connection point',
         definition='A `ConnectionPoint` is an abstract modeling construct used to represent the fact that one `Connectable` can be connected to another `Connectable` using a `Connection`. It is the abstract representation of the flange, wire terminal, or other physical feature where a connection is made. `Equipment`, `DomainSpace`s and `Junction`s can have one or more `ConnectionPoint`s (see {s223:Connectable}).\n\nA `ConnectionPoint` is constrained to relate to a specific medium such as air, water, or electricity which determines what can be connected to it. For example, constraining a `ConnectionPoint` to be for air means it cannot be used for an electrical connection.\n\nA `ConnectionPoint` belongs to exactly one `Connectable` (see {s223:Connectable}).\n\n`ConnectionPoint`s are represented graphically in this standard by a triangle with the point indicating a direction of flow, or a diamond in the case of a bidirectional flow as shown in Figure 6-1.\n\n![Graphical Representation of a ConnectionPoint](figures/Figure_5-2_Graphical_Depiciton_of_Connection_Points.svg)',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         abstract=True,
         properties=(_P_ConnectionPoint_has_electrical_phase, _P_ConnectionPoint_paired_with, _P_ConnectionPoint_maps_to, _P_ConnectionPoint_connection, _P_ConnectionPoint_owner, _P_ConnectionPoint_medium, _P_ConnectionPoint_has_role,),
     )
@@ -1172,6 +1206,8 @@ class BidirectionalConnectionPoint(ConnectionPoint):
         registry=_REGISTRY,
         label='Bidirectional connection point',
         definition='A `BidirectionalConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow either into or out of the associated `Connectable`.',
+        parent_iris=('http://data.ashrae.org/standard223#ConnectionPoint',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ConnectionPoint', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_BidirectionalConnectionPoint_paired_with, _P_BidirectionalConnectionPoint_maps_to,),
     )
 
@@ -1229,6 +1265,8 @@ class Boiler(Equipment):
         registry=_REGISTRY,
         label='Boiler',
         definition='A piece of `Equipment` that uses fuel or electricity to heat water or other fluids and supply steam or hot water for heating, humidification, or other applications.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -1247,6 +1285,8 @@ class ChilledBeam(Equipment):
         registry=_REGISTRY,
         label='Chilled beam',
         definition='A piece of `Equipment` with a colder surface temperature where air passes through, and air movement is induced in the room to achieve cooling. Cooling medium is generally water.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -1280,6 +1320,8 @@ class Coil(Equipment):
         registry=_REGISTRY,
         label='Coil',
         definition='A piece of `Equipment` consisting of a pipe or tube that is formed into a helical or serpentine shape, may or may not be finned, and is used in cooling or heating equipment.\n\nA `Coil` shall conform to exactly one of the following patterns:\n\n- **Pattern 1:**\n  - The `Coil` has exactly two inlet connection points using the medium `Mix-Fluid`, with exactly one being `Fluid-Air`.\n  - The `Coil` has exactly two outlet connection points using the medium `Mix-Fluid`, with exactly one being `Fluid-Air`.\n\n- **Pattern 2:**\n  - The Coil has exactly one inlet connection point using the medium `Mix-Fluid`.\n  - The Coil has exactly one outlet connection point using the medium `Mix-Fluid`.\n  - The Coil has one or two bidirectional connection points using the medium `Mix-Fluid` or `Medium-ThermalContact`.\n\n- **Pattern 3:**\n  - The Coil has exactly three bidirectional connection points using the medium `Mix-Fluid` or `Medium-ThermalContact`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_constraints=(
             _CPConstraint(operator='xone', children=(
                 _CPConstraint(operator='and', children=(
@@ -1310,6 +1352,8 @@ class CoolingCoil(Coil):
         registry=_REGISTRY,
         label='Cooling coil',
         definition='A `Coil` that is specifically used to cool air.',
+        parent_iris=('http://data.ashrae.org/standard223#Coil',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Coil', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ChilledWaterCoil(CoolingCoil):
@@ -1324,6 +1368,8 @@ class ChilledWaterCoil(CoolingCoil):
         registry=_REGISTRY,
         label='ChilledWaterCoil',
         definition='A cooling coil with a connected chilled water valve.',
+        parent_iris=('http://data.ashrae.org/standard223#CoolingCoil',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Coil', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#CoolingCoil', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Valve(Equipment):
@@ -1338,6 +1384,8 @@ class Valve(Equipment):
         registry=_REGISTRY,
         label='Valve',
         definition='A piece of `Equipment` that can be adjusted to allow, regulate, or stop the flow of fluid in a pipe or a duct.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='and', children=(
@@ -1361,6 +1409,8 @@ class ChilledWaterValve(Valve):
         registry=_REGISTRY,
         label='Chilled Water Valve',
         definition='A valve that controls the flow of chilled water through a chilled water coil.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='opaque'),
@@ -1381,6 +1431,8 @@ class Chiller(Equipment):
         registry=_REGISTRY,
         label='Chiller',
         definition='A piece of `Equipment` that removes heat from a liquid coolant via a vapor-compression, adsorption refrigeration, or absorption refrigeration cycles.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -1399,6 +1451,8 @@ class ClothesWasher(Equipment):
         registry=_REGISTRY,
         label='Clothes washer',
         definition='A piece of `Equipment` that automatically cleans a load of textiles (e.g., clothing, bedding).',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -1499,6 +1553,8 @@ class Connection(Concept):
         registry=_REGISTRY,
         label='Connection',
         definition='A `Connection` is the modeling construct used to represent the thing (e.g., pipe, duct, conductor, or free space) that is used to convey\nsome Medium (e.g., water, air, electricity, light, Wi-Fi) between two connectable things. All connections have two or more connection points bound\nto either `Equipment` (see {s223:Equipment}), `DomainSpace` (see {s223:DomainSpace}), or `Junction` (see {s223:Junction}). See Figure 6-2. If the direction\nof flow is constrained, that constraint is indicated by using one or more `InletConnectionPoint`s (see {s223:InletConnectionPoint}) to represent the\ninflow points and `OutletConnectionPoint`s (see {s223:OutletConnectionPoint}) to represent the outflow points.\n\nA `Connection` may contain branches or intersections. These may be modeled using `Junction`s if it is necessary to identify a specific intersection\n(see {s223:Junction}).\n\nThe constraint to maintain compatible mediums among a `Connection` and all of its associated `ConnectionPoint`s gives rise to multiple\nvalidation test cases, where the specified medium might be a pure medium, or a mixture with constituents. See {s223:Substance-Medium} for\nmore details.\n\n![Graphical Depiction of Connection.](figures/Figure_5-3_Connection.svg)',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Connection_connects_from, _P_Connection_has_role, _P_Connection_cnx, _P_Connection_connects_to, _P_Connection_medium, _P_Connection_connects_at, _P_Connection_has_thermodynamic_phase,),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
@@ -1591,6 +1647,8 @@ class Waveguide(Connection):
         registry=_REGISTRY,
         label='Waveguide',
         definition='A type of `Connection` the represents structures, such as fiber optic or coaxial cables, used to convey electromagnetic energy (i.e., `Constituent-EM`) in a specific direction. Without the physical constraint of a waveguide, waves would expand into three-dimensional space and their intensities would decrease according to the inverse square law.',
+        parent_iris=('http://data.ashrae.org/standard223#Connection',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Waveguide_medium,),
     )
 
@@ -1656,6 +1714,8 @@ class CoaxialCable(Waveguide):
         registry=_REGISTRY,
         label='Coaxial cable',
         definition='A type of `Waveguide` that consists of a central conductor, surrounded by an insulator, a metallic shield, and an outer jacket, all sharing the same geometric axis - which allows it to efficiently transmit high-frequency signals over long distances with minimal interference - and is used for `Wideband-DOCSIS` and `Wideband-CATV` communication.',
+        parent_iris=('http://data.ashrae.org/standard223#Waveguide',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_CoaxialCable_medium,),
     )
 
@@ -1710,6 +1770,8 @@ class CoffeeMaker(Equipment):
         registry=_REGISTRY,
         label='Coffee maker',
         definition='A piece of `Equipment` that automatically brews coffee.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -1727,6 +1789,8 @@ class Compressor(Equipment):
         registry=_REGISTRY,
         label='Compressor',
         definition='A piece of `Equipment` that mechanically increases the pressure of a gas.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None),
@@ -1747,6 +1811,8 @@ class Computer(Equipment):
         registry=_REGISTRY,
         label='Computer',
         definition='A piece of `Equipment` that can be programmed to automatically carry out sequences of arithmetic or logical operations (computation).\nModern digital electronic computers can perform generic sets of operations known as programs. These programs enable computers to perform a\nwide range of tasks.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -1764,6 +1830,8 @@ class ComputerPrinter(Equipment):
         registry=_REGISTRY,
         label='Computer printer',
         definition='A piece of `Equipment` that processes an input electrical or RF signal, typically from a `Computer`, and outputs a durable representation of information, typically text and/or graphics, typically on paper.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-RF', 'http://data.ashrae.org/standard223#Electricity-Signal'), min_count=1, max_count=None),
@@ -1853,6 +1921,8 @@ class Sensor(Equipment):
         registry=_REGISTRY,
         label='Sensor',
         definition='\nA piece of `Equipment` that `observes` an `ObservableProperty` (see {s223:ObservableProperty})\nwhich may be quantifiable (see {s223:QuantifiableObservableProperty}), such as a\ntemperature, flow, or concentration, or enumerable (see {s223:EnumeratedObservableProperty}),\nsuch as an occupancy state.\n\nIf a `Sensor` observes a `QuantifiableObservableProperty` relative to an assumed\nor common reference point, it can be modeled with only an observation location.\nFor example:\n\n```turtle\n@prefix : <http://example.com/> .\n\n:example1 a s223:TemperatureSensor ;\n    s223:hasObservationLocation :location1 ;\n    qudt:hasQuantityKind quantitykind:Temperature .\n```\n\nIf a `Sensor` observes a `QuantifiableObservableProperty` relative to a unique\nor specified reference point, it can be modeled with an observation location and\na reference location.  The difference between two values can be indicated by setting `qudt:isDeltaQuantity` to `true`. For example:\n\n```turtle\n@prefix : <http://example.com/> .\n\n:example2 a s223:TemperatureSensor ;\n    s223:hasObservationLocation :location1 ;\n    s223:hasReferenceLocation :location2 ;\n    qudt:hasQuantityKind quantitykind:Temperature ;\n    qudt:isDeltaQuantity true .\n```\n',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Sensor_has_reference_location, _P_Sensor_has_observation_location, _P_Sensor_has_measurement_resolution, _P_Sensor_observes,),
     )
 
@@ -1953,6 +2023,8 @@ class ConcentrationSensor(Sensor):
         registry=_REGISTRY,
         label='Concentration sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a concentration of a miscible constituent in a medium,\nin contrast to a `ParticulateSensor` that `observes` a `QuantifiableObservableProperty` that represents an amount of a particulate in a medium\n(see {s223:ParticulateSensor}). The 223 standard does not constrain the `Unit` or `QuantityKind` reported by a `ConcentrationSensor`, but possible\n`QuantityKind`s include `Concentration` (moles per volume), `Density` (mass per volume), `MoleFraction`, and `VolumeFraction`.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ConcentrationSensor_observes,),
     )
 
@@ -2051,6 +2123,8 @@ class Conductor(Connection):
         registry=_REGISTRY,
         label='Conductor',
         definition='A `Connection` that represents one or more wires used to convey `Constituent-Electricity`. Each instance of `Conductor` applies to no more than one electrical circuit.',
+        parent_iris=('http://data.ashrae.org/standard223#Connection',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Conductor_has_electrical_phase, _P_Conductor_medium,),
     )
 
@@ -2119,6 +2193,8 @@ class Controller(Equipment):
         registry=_REGISTRY,
         label='Controller',
         definition='A piece of `Equipment` that regulates the normal operation of other `Equipment` by executing one or more `Function`s.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Controller_executes,),
     )
 
@@ -2185,6 +2261,8 @@ class CoolingTower(Equipment):
         registry=_REGISTRY,
         label='Cooling tower',
         definition='A piece of `Equipment` that uses atmospheric air to cool warm water, generally by direct contact via evaporation.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -2203,6 +2281,8 @@ class CopyMachine(Equipment):
         registry=_REGISTRY,
         label='Copy machine',
         definition='A piece of `Equipment` that processes an input of one or more durable representation(s) of information, typically text and/or graphics and typically on paper, and outputs one or more reproductions of the information for each input, typically on paper.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -2231,6 +2311,8 @@ class LightSensor(Sensor):
         registry=_REGISTRY,
         label='Light sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents an attribute of light, as specified by the `QuantityKind` of the `Property` being observed, as described in Clauses 5.6.5.1 through 5.6.5.3.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_LightSensor_observes,),
     )
 
@@ -2320,6 +2402,8 @@ class CorrelatedColorTemperatureSensor(LightSensor):
         registry=_REGISTRY,
         label='Correlated color temperature sensor',
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a correlated color temperature (CCT) of a\nlight source, defined as the absolute temperature of a blackbody whose chromaticity most nearly resembles that of the light source.',
+        parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#LightSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_CorrelatedColorTemperatureSensor_observes,),
     )
 
@@ -2397,6 +2481,8 @@ class Damper(Equipment):
         registry=_REGISTRY,
         label='Damper',
         definition='A piece of `Equipment` inserted into an air distribution system permitting modification of the air resistance of the system and consequently changing the airflow rate or shutting off the airflow.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -2415,6 +2501,8 @@ class Damper_2(Damper):
         registry=_REGISTRY,
         label='Damper',
         definition='A damper with an analog or two binary position command properties.',
+        parent_iris=('http://data.ashrae.org/standard223#Damper',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Damper', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='opaque'),
@@ -2435,6 +2523,8 @@ class Dishwasher(Equipment):
         registry=_REGISTRY,
         label='Dishwasher',
         definition='A piece of `Equipment` that automatically cleans dishware, cookware, and cutlery.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -2465,6 +2555,8 @@ class DomainSpace(Connectable):
         registry=_REGISTRY,
         label='Domain space',
         definition='A portion of a `PhysicalSpace` that is affected by a building service associated with a domain. `DomainSpace`s may represent an entire `PhysicalSpace` or any portion of a `PhysicalSpace` (see {s223:PhysicalSpace}). Multiple `DomainSpace`s of the same domain may overlap, and `DomainSpace`s of different domains may also overlap, but `DomainSpace`s can not overlap multiple `PhysicalSpace`s. `DomainSpace`s may be grouped into `Zone`s using the relation `hasDomainSpace` (see {s223:hasDomainSpace}).',
+        parent_iris=('http://data.ashrae.org/standard223#Connectable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_DomainSpace_has_domain,),
     )
 
@@ -2523,6 +2615,8 @@ class Door(Equipment):
         registry=_REGISTRY,
         label='Door',
         definition='A piece of `Equipment` consisting of hinged, sliding, or revolving barrier at the entrance to a building or room.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
         ),
@@ -2540,6 +2634,8 @@ class Drain(Valve):
         registry=_REGISTRY,
         label='Drain',
         definition='A `Valve` that allows, regulates, or stops the flow of water from a `Sink`, `Shower`, `Bathtub`, or other plumbing service equipment into a plumbing drainage system that typically carries the mixture to a sewer system or septic tank.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -2558,6 +2654,8 @@ class TerminalUnit(Equipment):
         registry=_REGISTRY,
         label='Terminal unit',
         definition='A piece of `Equipment` that modulates the volume of air delivered to a space.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -2576,6 +2674,8 @@ class DualDuctTerminal(TerminalUnit):
         registry=_REGISTRY,
         label='Dual duct terminal',
         definition='A `TerminalUnit` that mixes two independent sources of primary air.',
+        parent_iris=('http://data.ashrae.org/standard223#TerminalUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#TerminalUnit', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
         ),
@@ -2593,6 +2693,8 @@ class Duct(Connection):
         registry=_REGISTRY,
         label='Duct',
         definition='A `Connection` that is used to transport air such as supply, return, and exhaust in HVAC (Heating, Ventilation, and Air Conditioning) systems.',
+        parent_iris=('http://data.ashrae.org/standard223#Connection',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_DuvSensor_observes = _PropertySpec(
@@ -2619,6 +2721,8 @@ class DuvSensor(LightSensor):
         registry=_REGISTRY,
         label='Duv sensor',
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a Duv of a light source, defined as the\ndistance between the chromaticity of the light source and a blackbody radiator of equal correlated color temperature (CCT).',
+        parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#LightSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_DuvSensor_observes,),
     )
 
@@ -2707,6 +2811,8 @@ class EM(Connection):
         registry=_REGISTRY,
         label='EM connection',
         definition='A type of `Connection` that represents air, a vacuum, outer space, or a similar environment used to convey electromagnetic energy (i.e., `Constituent-EM`), without the use of a solid materials such as fiber optic cables or other such `Waveguide`s.',
+        parent_iris=('http://data.ashrae.org/standard223#Connection',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_EM_medium,),
     )
 
@@ -2761,6 +2867,8 @@ class ElectricClothesDryer(Equipment):
         registry=_REGISTRY,
         label='Electric clothes dryer',
         definition='A piece of `Equipment` that automatically removes moisture from a load of textiles (e.g., clothing, bedding), typically after they are washed in a `ClothesWasher`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -2778,6 +2886,8 @@ class ElectricCooktop(Equipment):
         registry=_REGISTRY,
         label='Electric cooktop',
         definition='A piece of `Equipment` with a flat surface containing one or more heat sources designed for cooking with pots and pans.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -2806,6 +2916,8 @@ class ElectricCurrentSensor(Sensor):
         registry=_REGISTRY,
         label='Electric current sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of electric current.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ElectricCurrentSensor_observes,),
     )
 
@@ -2883,6 +2995,8 @@ class ElectricEnergyConverter(Equipment):
         registry=_REGISTRY,
         label='Electric energy converter',
         definition='A piece of `Equipment` that converts one form of electric power to another form of electric power.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricEnergyDCDCConverter(ElectricEnergyConverter):
@@ -2897,6 +3011,8 @@ class ElectricEnergyDCDCConverter(ElectricEnergyConverter):
         registry=_REGISTRY,
         label='DC-DC converter',
         definition='An `ElectricEnergyConverter` that transforms direct current (DC) electric power from one voltage to another voltage.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectricEnergyConverter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricEnergyConverter', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricEnergyInverter(ElectricEnergyConverter):
@@ -2911,6 +3027,8 @@ class ElectricEnergyInverter(ElectricEnergyConverter):
         registry=_REGISTRY,
         label='Electric energy inverter',
         definition='An `ElectricEnergyConverter` that tranforms direct current (DC) electric power to alternating current (AC) electric power, or vice versa.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectricEnergyConverter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricEnergyConverter', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricEnergyTransformer(ElectricEnergyConverter):
@@ -2925,6 +3043,8 @@ class ElectricEnergyTransformer(ElectricEnergyConverter):
         registry=_REGISTRY,
         label='Electric energy transformer',
         definition='An `ElectricEnergyConverter` that transforms alternating current (AC) electric power from one voltage to another voltage.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectricEnergyConverter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricEnergyConverter', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricResistanceElement(Equipment):
@@ -2943,6 +3063,8 @@ class ElectricResistanceElement(Equipment):
         registry=_REGISTRY,
         label='Electric resistance element',
         definition='A piece of `Equipment` that provides electrical resistance heating, for example an electric heating coil within a Fan Coil Unit.\nIt shall have one electricity `InletConnectionPoint`, and fit one of the following two patterns:\n\n- Pattern 1: An `ElectricResistanceElement` shall have exactly one Bidirectional `ConnectionPoint` using the medium `Mix-Fluid`.\n- Pattern 2: An `ElectricResistanceElement` shall have one inlet and one outlet using the medium `Mix-Fluid`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -2969,6 +3091,8 @@ class ElectricHeatingCoil(ElectricResistanceElement):
         registry=_REGISTRY,
         label='Electric Heating Coil',
         definition='An electrical heating element with an analog heating command.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectricResistanceElement',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricResistanceElement', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricOven(Equipment):
@@ -2983,6 +3107,8 @@ class ElectricOven(Equipment):
         registry=_REGISTRY,
         label='Electric oven',
         definition='A piece of `Equipment` with an enclosed chamber designed for baking, roasting, and other cooking methods that rely on circulating heat.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -3000,6 +3126,8 @@ class ElectricWaterDispenser(Equipment):
         registry=_REGISTRY,
         label='Electric water dispenser',
         definition='A piece of `Equipment` that dispenses water and optionally heats and/or cools the water prior to dispensing.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
@@ -3018,6 +3146,8 @@ class ElectricityBreaker(Equipment):
         registry=_REGISTRY,
         label='Electricity breaker',
         definition='A piece of `Equipment` that automatically opens an electric circuit automatically at a predetermined overcurrent, so as to prevent damage to the circuit, the equipment connected to the circuit, and the building containing the circuit.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
@@ -3038,6 +3168,8 @@ class ElectricityMeter(Equipment):
         registry=_REGISTRY,
         label='Electricity meter',
         definition='A piece of `Equipment` that contains at least one `VoltageSensor` and one `ElectricCurrentSensor`, and reports one or more\nproperties of electricity. Example reported properties include the following `QuantityKind`s: `Voltage`, `ElectricCurrent`, `ActiveEnergy`,\n`ActivePower`, `ReactivePower`, `ApparentPower`, `PowerFactor`, and `Frequency` with unit Hertz. An `ElectricityMeter` may optionally contain a `Function` that represents the mathematical calculations of the reported properties of electricity.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricityOutlet(Equipment):
@@ -3052,6 +3184,8 @@ class ElectricityOutlet(Equipment):
         registry=_REGISTRY,
         label='Electricity outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to electrical power, typically via a plug and cord. Not to be confused with an `OutletConnectionPoint` with the medium `Constituent-Electricity`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=1),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
@@ -3070,6 +3204,8 @@ class ElectronicDisplay(Equipment):
         registry=_REGISTRY,
         label='Electronic display',
         definition='A piece of `Equipment` that receives an input electrical signal and outputs information, typically text and/or graphics, in a visual form.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Elevator(Equipment):
@@ -3084,6 +3220,8 @@ class Elevator(Equipment):
         registry=_REGISTRY,
         label='Elevator',
         definition='A piece of `Equipment` that vertically transports people or freight between floors or levels of a building via a vertical shaft commonly referred to as a hoistway. The people or freight are typically situated on a platform, or in a container commonly referred to as a car, cab, cabin, cage, or carriage.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -3112,6 +3250,8 @@ class EnumerableProperty(Property):
         registry=_REGISTRY,
         label='Enumerable property',
         definition='An `EnumerableProperty` is a `Property` with an enumerated (fixed) set of possible values.',
+        parent_iris=('http://data.ashrae.org/standard223#Property',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_EnumerableProperty_has_enumeration_kind,),
     )
 
@@ -3172,6 +3312,8 @@ class EnumeratedActuatableProperty(ActuatableProperty, EnumerableProperty):
         registry=_REGISTRY,
         label='Enumerated actuatable property',
         definition='An `EnumeratedActuatableProperty` is a `Property` with an enumerated (fixed) set of possible values that can be changed (actuated).',
+        parent_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#EnumerableProperty'),
+        ancestor_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#EnumerableProperty', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ObservableProperty(Property):
@@ -3187,6 +3329,8 @@ class ObservableProperty(Property):
         registry=_REGISTRY,
         label='Observable property',
         definition='The term "observable" implies that reading the `ObservableProperty` value will return the result of a physical observation, usually by a `Sensor`.\nIn contrast, the term "actuatable" (see {s223:ActuatableProperty}) implies that writing to the `ActuatableProperty` value will directly trigger a physical actuation.',
+        parent_iris=('http://data.ashrae.org/standard223#Property',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EnumeratedObservableProperty(EnumerableProperty, ObservableProperty):
@@ -3201,6 +3345,8 @@ class EnumeratedObservableProperty(EnumerableProperty, ObservableProperty):
         registry=_REGISTRY,
         label='Enumerated observable property',
         definition='An `EnumeratedObservableProperty` is a `Property` with an enumerated (fixed) set of possible values that cannot be changed (can only be observed).',
+        parent_iris=('http://data.ashrae.org/standard223#EnumerableProperty', 'http://data.ashrae.org/standard223#ObservableProperty'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#EnumerableProperty', 'http://data.ashrae.org/standard223#ObservableProperty', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Escalator(Equipment):
@@ -3215,6 +3361,8 @@ class Escalator(Equipment):
         registry=_REGISTRY,
         label='Escalator',
         definition='A piece of `Equipment` that vertically transports people between floors or levels of a building via a moving staircase.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -3259,6 +3407,8 @@ class EthernetCable(Conductor):
         registry=_REGISTRY,
         label='Ethernet cable',
         definition='A type of `Conductor` that consists of 1, 2 or 4 pairs of twisted wire and is used for `Signal-WiredEthernet` communication. Subclasses of `EthernetCable` represent common types used in buildings.\n\n: EthernetCable Subclasses\n\n| Subclass |\n|:-----------|\n| `EthernetCable-Cat1` |\n| `EthernetCable-Cat2` |\n| `EthernetCable-Cat3` |\n| `EthernetCable-Cat4` |\n| `EthernetCable-Cat5` |\n| `EthernetCable-Cat5e` |\n| `EthernetCable-Cat6` |\n| `EthernetCable-Cat6a` |\n| `EthernetCable-Cat7` |\n| `EthernetCable-Cat7a` |\n| `EthernetCable-Cat8` |',
+        parent_iris=('http://data.ashrae.org/standard223#Conductor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_EthernetCable_medium,),
     )
 
@@ -3315,6 +3465,8 @@ class EthernetCable_Cat1(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat1',
         definition='EthernetCable-Cat1',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat2(EthernetCable):
@@ -3329,6 +3481,8 @@ class EthernetCable_Cat2(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat2',
         definition='EthernetCable-Cat2',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat3(EthernetCable):
@@ -3343,6 +3497,8 @@ class EthernetCable_Cat3(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat3',
         definition='EthernetCable-Cat3',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat4(EthernetCable):
@@ -3357,6 +3513,8 @@ class EthernetCable_Cat4(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat4',
         definition='EthernetCable-Cat4',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat5(EthernetCable):
@@ -3371,6 +3529,8 @@ class EthernetCable_Cat5(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat5',
         definition='EthernetCable-Cat5',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat5e(EthernetCable):
@@ -3385,6 +3545,8 @@ class EthernetCable_Cat5e(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat5e',
         definition='EthernetCable-Cat5e',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat6(EthernetCable):
@@ -3399,6 +3561,8 @@ class EthernetCable_Cat6(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat6',
         definition='EthernetCable-Cat6',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat6a(EthernetCable):
@@ -3413,6 +3577,8 @@ class EthernetCable_Cat6a(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat6a',
         definition='EthernetCable-Cat6a',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat7(EthernetCable):
@@ -3427,6 +3593,8 @@ class EthernetCable_Cat7(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat7',
         definition='EthernetCable-Cat7',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat7a(EthernetCable):
@@ -3441,6 +3609,8 @@ class EthernetCable_Cat7a(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat7a',
         definition='EthernetCable-Cat7a',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat8(EthernetCable):
@@ -3455,6 +3625,8 @@ class EthernetCable_Cat8(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat8',
         definition='EthernetCable-Cat8',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetPort(Equipment):
@@ -3470,6 +3642,8 @@ class EthernetPort(Equipment):
         registry=_REGISTRY,
         label='Ethernet port',
         definition='A piece of `Equipment` that connects a single instance of electrical equipment, such as `Computer`s and Wi-Fi access points,\nto an Ethernet network so it can communicate with other equipment and, optionally, with the Internet.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=('http://data.ashrae.org/standard223#Signal-FiberEthernet', 'http://data.ashrae.org/standard223#Signal-WiredEthernet'), min_count=2, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Electricity-DC', medium_options=(), min_count=1, max_count=None),
@@ -3489,6 +3663,8 @@ class EthernetSwitch(Equipment):
         registry=_REGISTRY,
         label='Ethernet switch',
         definition='A piece of `Equipment` that connects one or more instances of electrical equipment, such as `Computer`s and Wi-Fi access points,\nto an Ethernet network so they can communicate with each other and, optionally, to the Internet.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=('http://data.ashrae.org/standard223#Signal-FiberEthernet', 'http://data.ashrae.org/standard223#Signal-WiredEthernet'), min_count=2, max_count=None),
@@ -3507,6 +3683,8 @@ class Fan(Equipment):
         registry=_REGISTRY,
         label='Fan',
         definition='A piece of `Equipment` that causes a gas (e.g., air) to flow.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -3525,6 +3703,8 @@ class FanCoilUnit(Equipment):
         registry=_REGISTRY,
         label='Fan coil unit',
         definition='A piece of `Equipment` consisting of a `Coil` and a `Fan` that regulates the temperature of one or more spaces.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -3543,6 +3723,8 @@ class FanPoweredTerminal(TerminalUnit):
         registry=_REGISTRY,
         label='Fan-powered terminal',
         definition='A `TerminalUnit` that contains a fan, and optionally has supplemental heating or cooling. Airflow may pass through or be parallel to the fan.',
+        parent_iris=('http://data.ashrae.org/standard223#TerminalUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#TerminalUnit', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Fan_2(Fan):
@@ -3557,6 +3739,8 @@ class Fan_2(Fan):
         registry=_REGISTRY,
         label='Fan',
         definition='A fan with a start/stop command.',
+        parent_iris=('http://data.ashrae.org/standard223#Fan',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Fan', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FanWithVFD(Fan_2):
@@ -3571,6 +3755,8 @@ class FanWithVFD(Fan_2):
         registry=_REGISTRY,
         label='FanWithVFD',
         definition='A fan controlled by a VFD.',
+        parent_iris=('http://data.ashrae.org/standard223/1.0/extensions/g36#Fan',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Fan', 'http://data.ashrae.org/standard223/1.0/extensions/g36#Fan', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Faucet(Valve):
@@ -3585,6 +3771,8 @@ class Faucet(Valve):
         registry=_REGISTRY,
         label='Faucet',
         definition='A `Valve` that allows, regulates, or stops the flow of hot or cold water from a plumbing supply system into a `Sink`, `Shower`, `Bathtub`, or other plumbing service equipment.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -3603,6 +3791,8 @@ class FiberEthernetOutlet(Equipment):
         registry=_REGISTRY,
         label='Fiber Ethernet outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a fiber Ethernet communication network, typically via a fiber Ethernet cable.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-FiberEthernet', medium_options=(), min_count=1, max_count=1),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-FiberEthernet', medium_options=(), min_count=1, max_count=None),
@@ -3644,6 +3834,8 @@ class FiberOpticCable(Waveguide):
         registry=_REGISTRY,
         label='Fiber optic cable',
         definition='A type of `Waveguide` that consists of thin, flexible strands of glass or plastic fibers that transmit data as pulses of light and is used for `Signal-FiberEthernet` or `Wideband-CATV` communication. Subclasses of `FiberOpticCable` represent common types used in buildings.\n\n: FiberOpticCable Subclasses\n\n| Subclass |\n|:-----------|\n| `FiberOpticCable-OM1` |\n| `FiberOpticCable-OM2` |\n| `FiberOpticCable-OM3` |\n| `FiberOpticCable-OM4` |\n| `FiberOpticCable-OM5` |\n| `FiberOpticCable-OS1` |\n| `FiberOpticCable-OS2` |',
+        parent_iris=('http://data.ashrae.org/standard223#Waveguide',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_FiberOpticCable_medium,),
     )
 
@@ -3698,6 +3890,8 @@ class FiberOpticCable_OM1(FiberOpticCable):
         registry=_REGISTRY,
         label='Fiber Optic Cable OM1',
         definition='FiberOpticCable-OM1',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FiberOpticCable_OM2(FiberOpticCable):
@@ -3712,6 +3906,8 @@ class FiberOpticCable_OM2(FiberOpticCable):
         registry=_REGISTRY,
         label='Fiber Optic Cable OM2',
         definition='FiberOpticCable-OM2',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FiberOpticCable_OM3(FiberOpticCable):
@@ -3726,6 +3922,8 @@ class FiberOpticCable_OM3(FiberOpticCable):
         registry=_REGISTRY,
         label='Fiber Optic Cable OM3',
         definition='FiberOpticCable-OM3',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FiberOpticCable_OM4(FiberOpticCable):
@@ -3740,6 +3938,8 @@ class FiberOpticCable_OM4(FiberOpticCable):
         registry=_REGISTRY,
         label='Fibe Optic Cable OM4',
         definition='FiberOpticCable-OM4',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FiberOpticCable_OM5(FiberOpticCable):
@@ -3754,6 +3954,8 @@ class FiberOpticCable_OM5(FiberOpticCable):
         registry=_REGISTRY,
         label='Fiber Optic Cable OM5',
         definition='FiberOpticCable-OM5',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FiberOpticCable_OS1(FiberOpticCable):
@@ -3768,6 +3970,8 @@ class FiberOpticCable_OS1(FiberOpticCable):
         registry=_REGISTRY,
         label='Fiber Optic Cable OS1',
         definition='FiberOpticCable-OS1',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FiberOpticCable_OS2(FiberOpticCable):
@@ -3782,6 +3986,8 @@ class FiberOpticCable_OS2(FiberOpticCable):
         registry=_REGISTRY,
         label='Fiber Optic Cable OS2',
         definition='FiberOpticCable-OS2',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Filter(Equipment):
@@ -3797,6 +4003,8 @@ class Filter(Equipment):
         registry=_REGISTRY,
         label='Filter',
         definition='A piece of `Equipment` that removes contaminants from gases or liquids. See {s223:Substance-Medium} for\nmore details on validating compatible mediums upstream and downstream of a `Filter`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None),
@@ -3826,6 +4034,8 @@ class FlowSensor(Sensor):
         registry=_REGISTRY,
         label='Flow sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of flow of fluid, typically with a `QuantityKind` of `VolumeFlowRate`.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_FlowSensor_observes,),
     )
 
@@ -3905,6 +4115,8 @@ class FlushToilet(Equipment):
         registry=_REGISTRY,
         label='Flush toilet',
         definition='A piece of `Equipment` that collects human waste (i.e., urine and/or feces, and sometimes toilet paper) in a chamber containing water,\nand contains an integral manual or automatic actuator that triggers the release of an additional volume of water that flushes everything from the chamber into\na drainage system that typically carries the mixture to a sewer system or septic tank.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -3923,6 +4135,8 @@ class Freezer(Equipment):
         registry=_REGISTRY,
         label='Freezer',
         definition='A piece of `Equipment` that maintains an internal temperature below the freezing point of water.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -3940,6 +4154,8 @@ class FumeHood(Equipment):
         registry=_REGISTRY,
         label='Fume hood',
         definition='A piece of `Equipment` that is typically mounted over a work area (e.g., a space, table, or shelf) and conducts unwanted gases away from the area.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -3976,6 +4192,8 @@ class Function(Concept):
         registry=_REGISTRY,
         label='Function',
         definition='A `Function` is used to model transfer and/or transformation of information (i.e., `Property`). It has relations to input Properties and output Properties. The actual algorithms that perform the transformations are described in CDL and are out of scope of the 223 standard.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Function_has_output, _P_Function_has_input,),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
@@ -4031,6 +4249,8 @@ class Furnace(Equipment):
         registry=_REGISTRY,
         label='Furnace',
         definition='A piece of `Equipment` that converts fuel or electrical energy into heat.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -4060,6 +4280,8 @@ class PressureSensor(Sensor):
         registry=_REGISTRY,
         label='Pressure sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of pressure.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_PressureSensor_observes,),
     )
 
@@ -4150,6 +4372,8 @@ class GaugePressureSensor(PressureSensor):
         registry=_REGISTRY,
         label='Gauge pressure sensor',
         definition='A `PressureSensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of pressure relative to atmospheric pressure.\nSuch sensors are commonly used to monitor compressed gas cylinders, for example, where a gauge reading of zero signifies that the measured pressure\nis equal to the atmospheric pressure, not a vacuum.',
+        parent_iris=('http://data.ashrae.org/standard223#PressureSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#PressureSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_GaugePressureSensor_observes,),
     )
 
@@ -4227,6 +4451,8 @@ class Generator(Equipment):
         registry=_REGISTRY,
         label='Generator',
         definition='A piece of `Equipment` that converts non-electric energy into electric energy.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -4244,6 +4470,8 @@ class GroundToAirHeatPump(HeatPump):
         registry=_REGISTRY,
         label='Ground-to-air heat pump',
         definition='A `HeatPump` that transfers thermal energy between air and the ground.',
+        parent_iris=('http://data.ashrae.org/standard223#HeatPump',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatPump', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Medium-ThermalContact', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -4263,6 +4491,8 @@ class HeatingCoil(Coil):
         registry=_REGISTRY,
         label='Heating coil',
         definition='A `Coil` that is specifically used to heat air.',
+        parent_iris=('http://data.ashrae.org/standard223#Coil',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Coil', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class HotWaterCoil(HeatingCoil):
@@ -4277,6 +4507,8 @@ class HotWaterCoil(HeatingCoil):
         registry=_REGISTRY,
         label='HotWater/ReheatCoil',
         definition='A hot water coil connected to a control valve.',
+        parent_iris=('http://data.ashrae.org/standard223#HeatingCoil',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Coil', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatingCoil', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class HotWaterValve(Valve):
@@ -4291,6 +4523,8 @@ class HotWaterValve(Valve):
         registry=_REGISTRY,
         label='Hot Water Valve',
         definition='A valve that controls the flow of hot water through a hot water coil.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='opaque'),
@@ -4311,6 +4545,8 @@ class Humidifier(Equipment):
         registry=_REGISTRY,
         label='Humidifier',
         definition='A piece of `Equipment` that adds moisture to a gas (e.g., air).',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Humidistat(Equipment):
@@ -4325,6 +4561,8 @@ class Humidistat(Equipment):
         registry=_REGISTRY,
         label='Humidistat',
         definition='A piece of `Equipment` that measures the relative humidity of the air and then uses this information to automatically adjust the amount of moisture in air.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_HumiditySensor_observes = _PropertySpec(
@@ -4350,6 +4588,8 @@ class HumiditySensor(Sensor):
         registry=_REGISTRY,
         label='Humidity sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of relative or absolute humidity.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_HumiditySensor_observes,),
     )
 
@@ -4427,6 +4667,8 @@ class HydronicHeatExchanger(Equipment):
         registry=_REGISTRY,
         label='Hydronic heat exchanger',
         definition='A piece of `Equipment` that transfers heat from one liquid stream to another while keeping the two media separate.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=0, max_count=0),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=None),
@@ -4446,6 +4688,8 @@ class IceMaker(Equipment):
         registry=_REGISTRY,
         label='Ice maker',
         definition='A piece of `Equipment` that makes ice.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -4476,6 +4720,8 @@ class IlluminanceSensor(LightSensor):
         registry=_REGISTRY,
         label='Illuminance sensor',
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents an illuminance, defined as the areal density of the\nluminous flux incident at a point on a surface.',
+        parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#LightSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_IlluminanceSensor_observes,),
     )
 
@@ -4574,6 +4820,8 @@ class InletConnectionPoint(ConnectionPoint):
         registry=_REGISTRY,
         label='Inlet connection point',
         definition='An `InletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow into the associated `Connectable`.',
+        parent_iris=('http://data.ashrae.org/standard223#ConnectionPoint',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ConnectionPoint', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_InletConnectionPoint_maps_to, _P_InletConnectionPoint_paired_with,),
     )
 
@@ -4660,6 +4908,8 @@ class Junction(Connectable):
         registry=_REGISTRY,
         label='Junction',
         definition='A `Junction` is a modeling construct used when a branching point within a `Connection` (see {s223:Connection}) is of significance,\nsuch as specifying the observation location of a `Sensor`, or when a modeler wants to expose a branch point within a containing piece of `Equipment`.\nWhen a `Junction` is used, what might have been modeled as a single, branched `Connection`\nis separated into three or more separate connections, all tied together with the `Junction` and its associated connection points.\n\n`Junction` is a subclass of `Connectable`, which gives it the ability to have connection points, but unlike `Equipment` (and like `Connection`)\nit is not allowed to change the `Substance-Medium` that passes through it. This is why `Junction` is a sibling class to `Equipment` and not a subclass.\nThis constraint to maintain compatible mediums among a `Junction` and all of its associated `ConnectionPoint`s gives rise to multiple\nvalidation test cases, where the specified medium might be a pure medium, or a mixture with constituents (see {s223:Substance-Medium}).',
+        parent_iris=('http://data.ashrae.org/standard223#Connectable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Junction_medium, _P_Junction_has_connection_point,),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
@@ -4728,6 +4978,8 @@ class Luminaire(Equipment):
         registry=_REGISTRY,
         label='Luminaire',
         definition='A piece of `Equipment` consisting of a light source(s) and ballast(s) or driver(s) (when applicable), together with the parts designed to distribute the light, to position and protect the light source(s), and to connect the light source(s) to the power supply. Also known as a light fixture.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#EM-Light', medium_options=(), min_count=1, max_count=None),
@@ -4746,6 +4998,8 @@ class MicrowaveOven(ElectricOven):
         registry=_REGISTRY,
         label='Microwave oven',
         definition='An `ElectricOven` that cooks food by exposing it to electromagnetic radiation in the microwave frequency range.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectricOven',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricOven', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -4763,6 +5017,8 @@ class Monitor(ElectronicDisplay):
         registry=_REGISTRY,
         label='Monitor',
         definition='An `ElectronicDisplay` designed primarily for the output of visual information supplied by a `Computer`.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectronicDisplay',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectronicDisplay', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Motor(Equipment):
@@ -4777,6 +5033,8 @@ class Motor(Equipment):
         registry=_REGISTRY,
         label='Motor',
         definition='A piece of `Equipment` that converts electrical energy into mechanical energy.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -4794,6 +5052,8 @@ class OccupancySensor(Sensor):
         registry=_REGISTRY,
         label='Occupancy sensor',
         definition='A `Sensor` that `observes` an `ObservableProperty` that represents an attribute of occupancy in a space.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_OccupantCountSensor_observes = _PropertySpec(
@@ -4820,6 +5080,8 @@ class OccupantCountSensor(OccupancySensor):
         registry=_REGISTRY,
         label='Occupant count sensor',
         definition='An `OccupancySensor` that `observes` a `QuantifiableObservableProperty` that represents a population, usually of humans, within\n  a sensing region.',
+        parent_iris=('http://data.ashrae.org/standard223#OccupancySensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#OccupancySensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_OccupantCountSensor_observes,),
     )
 
@@ -4908,6 +5170,8 @@ class OccupantMotionSensor(OccupancySensor):
         registry=_REGISTRY,
         label='Occupant motion sensor',
         definition='An `OccupancySensor` that `observes` an `EnumeratedObservableProperty` that represents motion within a sensing region.',
+        parent_iris=('http://data.ashrae.org/standard223#OccupancySensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#OccupancySensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_OccupantMotionSensor_observes,),
     )
 
@@ -4996,6 +5260,8 @@ class OccupantPresenceSensor(OccupancySensor):
         registry=_REGISTRY,
         label='Occupant presence sensor',
         definition='An `OccupancySensor` that `observes` an `EnumeratedObservableProperty` that represents presence within a sensing region.',
+        parent_iris=('http://data.ashrae.org/standard223#OccupancySensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#OccupancySensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_OccupantPresenceSensor_observes,),
     )
 
@@ -5091,6 +5357,8 @@ class PhysicalSpace(Concept):
         registry=_REGISTRY,
         label='Physical space',
         definition='An architectural concept representing a room, a part of a room, a collection of rooms, or any other physical region in a building. PhysicalSpaces may be grouped to define larger `PhysicalSpace`s using the relation `contains` (see {s223:contains}).',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_PhysicalSpace_encloses, _P_PhysicalSpace_contains_,),
     )
 
@@ -5140,6 +5408,8 @@ class OutdoorPhysicalSpace(PhysicalSpace):
         registry=_REGISTRY,
         label='Outdoor physical space',
         definition='A `PhysicalSpace` that is outside of the building where, for example, outdoor ambient properties might be measured, within a suitably defined `DomainSpace`.',
+        parent_iris=('http://data.ashrae.org/standard223#PhysicalSpace',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#PhysicalSpace', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_OutletConnectionPoint_paired_with = _PropertySpec(
@@ -5175,6 +5445,8 @@ class OutletConnectionPoint(ConnectionPoint):
         registry=_REGISTRY,
         label='Outlet connection point',
         definition='An `OutletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow out of the associated `Connectable`.',
+        parent_iris=('http://data.ashrae.org/standard223#ConnectionPoint',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ConnectionPoint', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_OutletConnectionPoint_paired_with, _P_OutletConnectionPoint_maps_to,),
     )
 
@@ -5261,6 +5533,8 @@ class ParticulateSensor(Sensor):
         registry=_REGISTRY,
         label='Particulate sensor',
         definition="A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents an amount of a particulate in a medium, in contrast\nto a `ConcentrationSensor` that `observes` a `QuantifiableObservableProperty` that represents a concentration of a miscible constituent in a medium\n(see {s223:ConcentrationSensor}).\n\nThe 223 standard does not constrain the `Unit` or `QuantityKind` reported by a `ParticulateSensor`, but possible\n`QuantityKind`s include `Density` (mass per volume), `ParticleNumberDensity` (count per volume), and `DimensionlessRatio` (with units such as `PPM` or\n`PPB`). Some particulate sensors may claim to report a raw count of particles, for which a `QuantityKind` of `Count` could be used, but the required\ncontext for such a measurement should be provided in the sensor's documentation to specify if it in fact measures a count per volume (e.g., `ParticleNumberDensity`),\ntime (e.g., `CountRate` or `ParticleCurrent`), or some\nother combination. Explicitly declaring the `QuantityKind` of a sensor's output is preferable to relying on implicit assumptions.",
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ParticulateSensor_of_substance, _P_ParticulateSensor_observes,),
     )
 
@@ -5343,6 +5617,8 @@ class PersonalComputer(Computer):
         registry=_REGISTRY,
         label='Personal computer',
         definition='A `Computer` designed primarily for use by a single person.',
+        parent_iris=('http://data.ashrae.org/standard223#Computer',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Computer', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -5360,6 +5636,8 @@ class PhotovoltaicModule(Equipment):
         registry=_REGISTRY,
         label='Photovoltaic module',
         definition='A piece of `Equipment` that converts sunlight into electricity.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#EM-Light', medium_options=(), min_count=1, max_count=None),
@@ -5378,6 +5656,8 @@ class Pipe(Connection):
         registry=_REGISTRY,
         label='Pipe',
         definition='A `Connection` that is used primarily to transport liquids and gases such as water, sewage, natural gas, and compressed air.',
+        parent_iris=('http://data.ashrae.org/standard223#Connection',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class PowerOverEthernetPort(Equipment):
@@ -5392,6 +5672,8 @@ class PowerOverEthernetPort(Equipment):
         registry=_REGISTRY,
         label='Power over ethernet port',
         definition='A piece of `Equipment` that connects and is capable of powering one instance of electrical equipment, such as computers and Wi-Fi access points, as well as connect it to an Ethernet network so it can communicate with other equipment and, optionally, with the Internet.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Electricity-DC', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#PowerAndSignal-PoE', medium_options=(), min_count=1, max_count=None),
@@ -5410,6 +5692,8 @@ class PowerOverEthernetSwitch(Equipment):
         registry=_REGISTRY,
         label='Power over Ethernet (PoE) switch',
         definition='A piece of `Equipment` that connects and is capable of powering one or more instances of electrical equipment, such as computers and Wi-Fi access points, as well as connect the equipment to an Ethernet network so they can communicate with each other and, optionally, to the Internet.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#PowerAndSignal-PoE', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
@@ -5428,6 +5712,8 @@ class Pump(Equipment):
         registry=_REGISTRY,
         label='Pump',
         definition='A piece of `Equipment` that imparts energy to a fluid, drawing a fluid into itself through an inlet port, and forcing the fluid out through an outlet port.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Fluid-Oil', 'http://data.ashrae.org/standard223#Fluid-Water'), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Fluid-Oil', 'http://data.ashrae.org/standard223#Fluid-Water'), min_count=1, max_count=None),
@@ -5520,6 +5806,8 @@ class QuantifiableProperty(Property):
         registry=_REGISTRY,
         label='Quantifiable property',
         definition='This class is for quantifiable values that describe an object (`System`, `Equipment`, etc.) that are typically static (`hasValue`). That is, they are neither measured nor specified in the course of operations.',
+        parent_iris=('http://data.ashrae.org/standard223#Property',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_QuantifiableProperty_has_unit, _P_QuantifiableProperty_has_deadband, _P_QuantifiableProperty_has_threshold, _P_QuantifiableProperty_value, _P_QuantifiableProperty_has_quantity_kind, _P_QuantifiableProperty_has_setpoint, _P_QuantifiableProperty_has_alarm_status, _P_QuantifiableProperty_quantity_value, _P_QuantifiableProperty_is_delta_quantity,),
     )
 
@@ -5620,6 +5908,8 @@ class QuantifiableActuatableProperty(ActuatableProperty, QuantifiableProperty):
         registry=_REGISTRY,
         label='Quantifiable actuatable property',
         definition='This class is for instances of `QuantifiableProperty` for which numerical values are specified to be modifiable by a user or a machine outside of the model, like a setpoint.',
+        parent_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#QuantifiableProperty'),
+        ancestor_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://data.ashrae.org/standard223#QuantifiableProperty', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class QuantifiableObservableProperty(ObservableProperty, QuantifiableProperty):
@@ -5634,6 +5924,8 @@ class QuantifiableObservableProperty(ObservableProperty, QuantifiableProperty):
         registry=_REGISTRY,
         label='Quantifiable observable property',
         definition='This class is for instances of `QuantifiableProperty` for which numerical values are observed, like a temperature reading or a voltage measure.',
+        parent_iris=('http://data.ashrae.org/standard223#ObservableProperty', 'http://data.ashrae.org/standard223#QuantifiableProperty'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ObservableProperty', 'http://data.ashrae.org/standard223#Property', 'http://data.ashrae.org/standard223#QuantifiableProperty', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class RFOutlet(Equipment):
@@ -5648,6 +5940,8 @@ class RFOutlet(Equipment):
         registry=_REGISTRY,
         label='Radio frequency outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a radio frequency (RF) communication network, via, for example, a coaxial cable.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#RF-Signal', medium_options=(), min_count=1, max_count=1),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#RF-Signal', medium_options=(), min_count=1, max_count=None),
@@ -5680,6 +5974,8 @@ class RadiantHeater(Equipment):
         registry=_REGISTRY,
         label='Radiant heater',
         definition='\nA piece of `Equipment` with heating or cooling surface that delivers 50% or more of its heat transfer by radiation.\nA `RadiantHeater` shall:\n\n- Have the role `Role-Heating`.\n\n- Have at least one outlet connection point using the medium `Light-Infrared`.\n\n- Conform to exactly one of the following patterns:\n  - **Pattern 1:**\n    - Exactly one inlet connection point using the medium `Constituent-Electricity` or `Fluid-NaturalGas`.\n  - **Pattern 2:**\n    - Exactly one inlet connection point using the medium `Fluid-Water`.\n    - Exactly one outlet connection point using the medium `Fluid-Water`.\n',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Light-Infrared', medium_options=(), min_count=1, max_count=None),
         ),
@@ -5707,6 +6003,8 @@ class Radiator(Equipment):
         registry=_REGISTRY,
         label='Radiator',
         definition='A piece of `Equipment` that provides primarily convective heating to a room using electricity, steam, or water\n(e.g., electric baseboard heaters, heated floors, or traditional radiators).',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
         ),
@@ -5733,6 +6031,8 @@ class Refrigerator(Equipment):
         registry=_REGISTRY,
         label='Refrigerator',
         definition='A piece of `Equipment` that maintains an internal temperature below the surrounding ambient temperature but above the freezing point of water.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -5750,6 +6050,8 @@ class Relation(Concept):
         registry=_REGISTRY,
         label='Relation',
         definition='A `Relation` associates the subject and the object in an RDF triple, the *predicate* portion of a *(subject, predicate, object)* triple.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_RelationWithInverse_inverse_of = _PropertySpec(
@@ -5776,6 +6078,8 @@ class RelationWithInverse(Relation):
         registry=_REGISTRY,
         label='Relation with inverse',
         definition='An `RelationWithInverse` is modeling construct used to define symmetric behavior\nfor certain relations in the standard such as `connectedTo` and `connectedFrom`.',
+        parent_iris=('http://data.ashrae.org/standard223#Relation',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Relation', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_RelationWithInverse_inverse_of,),
     )
 
@@ -5820,6 +6124,8 @@ class ServerComputer(Computer):
         registry=_REGISTRY,
         label='Server computer',
         definition='A `Computer` that is primarily for use by multiple people, or for the execution of tasks not directly coupled to human interaction.',
+        parent_iris=('http://data.ashrae.org/standard223#Computer',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Computer', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -5837,6 +6143,8 @@ class Shower(Equipment):
         registry=_REGISTRY,
         label='Shower',
         definition='A piece of `Equipment` for showering that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -5855,6 +6163,8 @@ class SingleDuctTerminal(TerminalUnit):
         registry=_REGISTRY,
         label='Single duct terminal',
         definition='A `TerminalUnit` unit that has one ducted air inlet and a damper for regulating the flow of air.',
+        parent_iris=('http://data.ashrae.org/standard223#TerminalUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#TerminalUnit', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Sink(Equipment):
@@ -5869,6 +6179,8 @@ class Sink(Equipment):
         registry=_REGISTRY,
         label='Sink',
         definition='A piece of `Equipment` for manually washing hands, dishes, or other items that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -5887,6 +6199,8 @@ class SolarThermalCollector(Equipment):
         registry=_REGISTRY,
         label='Solar thermal collector',
         definition='A piece of `Equipment` that converts sunlight into thermal energy.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#EM-Light', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -5905,6 +6219,8 @@ class SteamInjector(Equipment):
         registry=_REGISTRY,
         label='Steam injector',
         definition='A piece of `Equipment` for increasing the humidity of an air stream by injecting steam into the air stream.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Water-Steam', medium_options=(), min_count=1, max_count=None),
@@ -5925,6 +6241,8 @@ class SymmetricRelation(Relation):
         registry=_REGISTRY,
         label='Symmetric relation',
         definition='A modeling construct used to define symmetric behavior\nfor certain relations in the standard such as `cnx`, `connected`, and `pairedConnectionPoint`.',
+        parent_iris=('http://data.ashrae.org/standard223#Relation',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Relation', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_System_has_member = _PropertySpec(
@@ -5975,6 +6293,8 @@ class System(Concept):
         registry=_REGISTRY,
         label='System',
         definition='A logical grouping of one or more pieces of `Equipment`, `Junction`s, or other `System`s for some functional purpose.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_System_has_member, _P_System_has_boundary_connection_point, _P_System_has_optional_connection_point, _P_System_has_role,),
     )
 
@@ -6034,6 +6354,8 @@ class Television(ElectronicDisplay):
         registry=_REGISTRY,
         label='Television',
         definition='An `ElectronicDisplay` that is designed primarily for the output of visual information supplied by a media broadcaster, and that typically has an integral tuner that is capable of selecting a single channel for display from the available input channel range.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectronicDisplay',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectronicDisplay', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_TemperatureSensor_observes = _PropertySpec(
@@ -6059,6 +6381,8 @@ class TemperatureSensor(Sensor):
         registry=_REGISTRY,
         label='Temperature sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of temperature.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_TemperatureSensor_observes,),
     )
 
@@ -6146,6 +6470,8 @@ class ThermalEnergyStorageUnit(Equipment):
         registry=_REGISTRY,
         label='Thermal energy storage unit',
         definition='A piece of `Equipment` that stores thermal energy.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ThermalEnergyStorageUnit_has_connection_point,),
     )
 
@@ -6212,6 +6538,8 @@ class Thermostat(Equipment):
         registry=_REGISTRY,
         label='Thermostat',
         definition='A piece of `Equipment` that maintains temperature at a fixed or adjustable setpoint.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_ThreeWayValve_has_connection_point = _PropertySpec(
@@ -6236,6 +6564,8 @@ class ThreeWayValve(Valve):
         registry=_REGISTRY,
         label='Three-way valve',
         definition='A `Valve` that can divert a fluid in one of three directions.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ThreeWayValve_has_connection_point,),
     )
 
@@ -6302,6 +6632,8 @@ class Turbine(Equipment):
         registry=_REGISTRY,
         label='Turbine',
         definition='A piece of `Equipment` that converts mechanical energy into electric energy.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -6319,6 +6651,8 @@ class TwoPositionDamper(Damper):
         registry=_REGISTRY,
         label='Two Position Damper',
         definition='A damper that can take two positions: fully open and fully closed.',
+        parent_iris=('http://data.ashrae.org/standard223#Damper',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Damper', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class TwoWayValve(Valve):
@@ -6333,6 +6667,8 @@ class TwoWayValve(Valve):
         registry=_REGISTRY,
         label='Two-way valve',
         definition='A `Valve` that can divert a fluid in one of two directions.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None),
@@ -6362,6 +6698,8 @@ class USBCable(Conductor):
         registry=_REGISTRY,
         label='USB cable',
         definition='A type of `Conductor` that consists of 1 to 5 pairs of twisted wire and is used for `Signal-USB` communication.',
+        parent_iris=('http://data.ashrae.org/standard223#Conductor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_USBCable_medium,),
     )
 
@@ -6418,6 +6756,8 @@ class USBOutlet(Equipment):
         registry=_REGISTRY,
         label='USB outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a USB communication network, typically via a USB cable.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-USB', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-USB', medium_options=(), min_count=1, max_count=1),
@@ -6446,6 +6786,8 @@ class VariableFrequencyDrive(Equipment):
         registry=_REGISTRY,
         label='Variable frequency drive',
         definition='A piece of `Equipment` that varies its output frequency to vary the rotating speed and torque of a motor, given a fixed input frequency. Used with fans or pumps to vary the flow in the system as a function of a maintained pressure.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_VariableFrequencyDrive_connected_to,),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
@@ -6527,6 +6869,8 @@ class VoltageSensor(Sensor):
         registry=_REGISTRY,
         label='Voltage sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of voltage.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_VoltageSensor_observes,),
     )
 
@@ -6604,6 +6948,8 @@ class WaterOutlet(Equipment):
         registry=_REGISTRY,
         label='Water outlet',
         definition='A piece of `Equipment` that contains one or more pipe fittings for connecting plumbing equipment (e.g., `Faucet`) to a plumbing system.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1),
@@ -6622,6 +6968,8 @@ class WaterToAirHeatPump(HeatPump):
         registry=_REGISTRY,
         label='Water-to-air heat pump',
         definition='A `HeatPump` that transfers thermal energy between air and a body of water.',
+        parent_iris=('http://data.ashrae.org/standard223#HeatPump',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatPump', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -6642,6 +6990,8 @@ class WaterToWaterHeatPump(HeatPump):
         registry=_REGISTRY,
         label='Water-to-water heat pump',
         definition='A `HeatPump` that transfers thermal energy between two flows of water.',
+        parent_iris=('http://data.ashrae.org/standard223#HeatPump',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatPump', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=2, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=2, max_count=None),
@@ -6660,6 +7010,8 @@ class Window(Equipment):
         registry=_REGISTRY,
         label='Window',
         definition='A piece of `Equipment` that provides a pathway for `EM-Light` or `Fluid-Air` (or both) to flow from a room to another room or the building exterior through a vertical or nearly vertical area of the room envelope.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-Light', 'http://data.ashrae.org/standard223#Fluid-Air'), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-Light', 'http://data.ashrae.org/standard223#Fluid-Air'), min_count=1, max_count=None),
@@ -6678,6 +7030,8 @@ class WindowShade(Equipment):
         registry=_REGISTRY,
         label='Window shade',
         definition='A piece of `Equipment` that can be adjusted to allow, regulate, or stop the flow of light through a `Window`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class WiredEthernetOutlet(Equipment):
@@ -6692,6 +7046,8 @@ class WiredEthernetOutlet(Equipment):
         registry=_REGISTRY,
         label='Wired Ethernet outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a wired Ethernet communication network, typically via a wired Ethernet cable.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-WiredEthernet', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-WiredEthernet', medium_options=(), min_count=1, max_count=1),
@@ -6739,6 +7095,8 @@ class Zone(Concept):
         registry=_REGISTRY,
         label='Zone',
         definition='A logical grouping of one or more `DomainSpace`s or other `Zone`s for some building service or control-related purpose. `Zone`s can have properties that are inputs or outputs to a `Function` (see {s223:Function}), which can be executed by `Controller`s (see {s223:Controller}) or other `Equipment`.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Zone_has_domain_space, _P_Zone_has_domain, _P_Zone_has_zone,),
     )
 
@@ -6814,6 +7172,8 @@ class ZoneGroup(Zone):
         registry=_REGISTRY,
         label='Zone Group',
         definition='A ZoneGroup is a grouping of zones that may be scheduled together. Zone groupings must be assigned based on rules in Clause 3.1.3 of Guideline 36.',
+        parent_iris=('http://data.ashrae.org/standard223#Zone',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Zone', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ZoneGroup_contains_, _P_ZoneGroup_has_domain,),
     )
 
@@ -6878,6 +7238,8 @@ class Zone_2(Zone):
         registry=_REGISTRY,
         label='Zone',
         definition='A thermal zone with the points required for Guideline 36 control sequences. It is a collection of s223:DomainSpace instances.',
+        parent_iris=('http://data.ashrae.org/standard223#Zone',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Zone', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Zone_2_has_domain,),
     )
 

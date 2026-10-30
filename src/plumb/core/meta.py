@@ -296,9 +296,9 @@ class Registry:
         """Registered subclasses of ``base``, directly or at any depth."""
         if recursive:
             return tuple(
-                cls for cls in self.classes if cls is not base and issubclass(cls, base)
+                cls for cls in self.classes if cls is not base and cls.meta.is_a(base)
             )
-        return tuple(cls for cls in self.classes if base in cls.__bases__)
+        return tuple(cls for cls in self.classes if base in cls.meta.parents)
 
     def tree(self, base: type[Entity], *, max_depth: int | None = None) -> str:
         """Render the registered subclass tree rooted at ``base``.
@@ -310,7 +310,7 @@ class Registry:
             raise ValueError("max_depth must be non-negative")
         children: dict[type, list[type[Entity]]] = {}
         for cls in self.classes:
-            for parent in cls.__bases__:
+            for parent in cls.meta.parents:
                 children.setdefault(parent, []).append(cls)
 
         lines = [base.__name__]
@@ -322,8 +322,12 @@ class Registry:
             for index, child in enumerate(siblings):
                 last = index == len(siblings) - 1
                 lines.append(f"{prefix}{'└── ' if last else '├── '}{child.__name__}")
-                visit(child, prefix + ("    " if last else "│   "), depth + 1)
+                if child not in active:
+                    active.add(child)
+                    visit(child, prefix + ("    " if last else "│   "), depth + 1)
+                    active.remove(child)
 
+        active = {base}
         visit(base, "", 0)
         return "\n".join(lines)
 
@@ -358,6 +362,11 @@ class ClassInfo:
     registry: Registry
     label: str | None = None
     definition: str | None = None
+    parent_iris: tuple[str, ...] | None = None
+    """Direct RDF parents. ``None`` uses Python bases for handwritten classes."""
+
+    ancestor_iris: tuple[str, ...] = ()
+    """Transitive RDF ancestry retained even when Python bases need MRO repair."""
     properties: tuple[PropertySpec, ...] = ()
     """Specs *introduced or narrowed* by this class (not inherited ones)."""
 

@@ -77,6 +77,8 @@ class Concept(_EntityBase):
         registry=_REGISTRY,
         label='Concept',
         definition='All classes and relations defined in the 223 standard are subclasses of `Concept`.',
+        parent_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
+        ancestor_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
         properties=(_P_Concept_medium, _P_Concept_has_property,),
     )
 
@@ -122,6 +124,8 @@ class Class_2(Concept):
         registry=_REGISTRY,
         label='Class',
         definition='This is a modeling construct. All classes defined in the 223 standard are instances of `Class`.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Class'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Class', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class AbstractClass(Class_2):
@@ -136,6 +140,8 @@ class AbstractClass(Class_2):
         registry=_REGISTRY,
         label='Abstract class',
         definition='This is a modeling construct. Instances of abstract classes cannot be created. All abstract classes in this standard have a more specific subclass.',
+        parent_iris=('http://data.ashrae.org/standard223#Class',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Class', 'http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Class', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_Concept_2_abbreviation = _PropertySpec(
@@ -247,6 +253,8 @@ class Concept_2(_EntityBase):
         registry=_REGISTRY,
         label='QUDT Concept',
         definition=None,
+        parent_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
+        ancestor_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
         properties=(_P_Concept_2_abbreviation, _P_Concept_2_code, _P_Concept_2_deprecated, _P_Concept_2_deprecated_in_version, _P_Concept_2_description, _P_Concept_2_exact_match, _P_Concept_2_guidance, _P_Concept_2_has_rule, _P_Concept_2_id, _P_Concept_2_is_replaced_by, _P_Concept_2_plain_text_description, _P_Concept_2_type_,),
     )
 
@@ -503,6 +511,8 @@ class Datatype(Concept_2):
         registry=_REGISTRY,
         label='Datatype',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Datatype_ansi_sql_name, _P_Datatype_basis, _P_Datatype_bounded, _P_Datatype_c_name, _P_Datatype_cardinality, _P_Datatype_id, _P_Datatype_java_name, _P_Datatype_js_name, _P_Datatype_matlab_name, _P_Datatype_microsoft_sql_server_name, _P_Datatype_my_sql_name, _P_Datatype_odbc_name, _P_Datatype_ole_db_name, _P_Datatype_oracle_sql_name, _P_Datatype_ordered_type, _P_Datatype_protocol_buffers_name, _P_Datatype_python_name, _P_Datatype_vb_name,),
     )
 
@@ -659,6 +669,8 @@ class StructuredDatatype(Datatype):
         registry=_REGISTRY,
         label='Structured Data Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Datatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_StructuredDatatype_element_datatype,),
     )
 
@@ -757,6 +769,8 @@ class AbstractDatatype(StructuredDatatype):
         registry=_REGISTRY,
         label='Abstract Datatype',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StructuredDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_AbstractQuantityKind_alt_symbol = _PropertySpec(
@@ -820,6 +834,8 @@ class AbstractQuantityKind(Concept_2):
         registry=_REGISTRY,
         label='Quantity Kind (abstract)',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_AbstractQuantityKind_alt_symbol, _P_AbstractQuantityKind_broader, _P_AbstractQuantityKind_latex_symbol, _P_AbstractQuantityKind_organized_under, _P_AbstractQuantityKind_specialization_of, _P_AbstractQuantityKind_symbol,),
     )
 
@@ -1009,6 +1025,8 @@ class Property(Concept):
         registry=_REGISTRY,
         label='Property',
         definition='An attribute, quality, or characteristic of a feature of interest.\n\nThe `Property` class is the parent of all variations of a `Property`, which are:\n\n- `ActuatableProperty`, a subclass of `Property` that can be modified by a user or machine outside of the model (typically by a command);\n- `ObservableProperty`, a subclass of `Property` that are observed (typically measures);\n- `EnumerableProperty`, a subclass of `Property` defined by `EnumerationKind`; and\n- `QuantifiableProperty`, a subclass of `Property` defined by numerical values.\n\nAnd their subclass combinations:\n\n- `QuantifiableActuatableProperty`,\n- `QuantifiableObservableProperty`,\n- `EnumeratedObservableProperty`, and\n- `EnumeratedActuatableProperty`.\n\nA `QuantifiableProperty` (or subclass thereof) shall always be associated with a `Unit` and a `QuantityKind`, either explicitly from the `Property`,\nor through the associated Value. If the `Unit` is defined, the SHACL reasoner (if invoked) will figure out and assert a `QuantityKind` if it is\nunambiguous.\n\nEnumerable properties shall be associated with an `EnumerationKind`. Different types of properties are shown in Figure 11-1.\n\n![Different types of Properties](figures/Figure_11-1_Flavors_of_Properties.svg)\n\nA `Property` instance that is not an instance of one of the subclasses is unconstrained with respect to its value.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Property_has_internal_reference, _P_Property_has_aspect, _P_Property_is_internal_reference_of, _P_Property_of_medium, _P_Property_has_value, _P_Property_of_substance, _P_Property_has_external_reference, _P_Property_of_constituent,),
     )
 
@@ -1101,6 +1119,8 @@ class ActuatableProperty(Property):
         registry=_REGISTRY,
         label='Actuatable property',
         definition='The term "actuatable" implies that writing to the `ActuatableProperty` value will directly trigger a physical actuation by either an `Actuator` or `Equipment`.\nIn contrast, the term "observable" (see {s223:ObservableProperty}) implies that reading the `ObservableProperty` value will return the result of a physical observation.',
+        parent_iris=('http://data.ashrae.org/standard223#Property',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_Connectable_connected_through = _PropertySpec(
@@ -1181,6 +1201,8 @@ class Connectable(Concept):
         registry=_REGISTRY,
         label='Connectable',
         definition='`Connectable` is an abstract class representing `Equipment` (see {s223:Equipment}), a `DomainSpace` (see {s223:DomainSpace}), or a `Junction` (see {s223:Junction}) that can be `connected` to other `Connectable`s via `ConnectionPoint`s and `Connection`s.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         abstract=True,
         properties=(_P_Connectable_connected_through, _P_Connectable_connected, _P_Connectable_cnx, _P_Connectable_connected_from, _P_Connectable_connected_to, _P_Connectable_has_optional_connection_point, _P_Connectable_has_connection_point,),
     )
@@ -1324,6 +1346,8 @@ class Equipment(Connectable):
         registry=_REGISTRY,
         label='Equipment',
         definition='`Equipment` is the modeling construct used to represent a thing designed to accomplish a specific task, or a complex thing\nthat contains component pieces of `Equipment` that are connected to each other and work together to accomplish a task. `Equipment` can have\n`Connection`s and `ConnectionPoint`s through which one or more kinds of medium (see {s223:Substance-Medium}) might flow. Examples of `Equipment` defined in this ontology include `Pump`, `Fan`, `AirHeatExchanger`, `Luminaire`, and `Sensor`. `Equipment` can be connected to other `Connectable`s such as other `Equipment` or `DomainSpace`s.\n\nThe graphical depiction of Equipment used in this document is a round-cornered rectangle as shown in Figure 5-1.\n\n![Graphical Depiction of Equipment.](figures/Figure_5-1_Graphical_Depiciton_of_Equipment.svg)',
+        parent_iris=('http://data.ashrae.org/standard223#Connectable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Equipment_has_process, _P_Equipment_has_treatment_objective, _P_Equipment_actuated_by_property, _P_Equipment_has_physical_location, _P_Equipment_contains_, _P_Equipment_executes, _P_Equipment_has_role,),
     )
 
@@ -1435,6 +1459,8 @@ class Actuator(Equipment):
         registry=_REGISTRY,
         label='Actuator',
         definition='A piece of `Equipment` that receives control signals and electrically, pneumatically, or hydraulically makes changes in the\nphysical world, such as the position of a valve or damper.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Actuator_actuated_by_property, _P_Actuator_actuates,),
     )
 
@@ -1513,6 +1539,8 @@ class Tank(Equipment):
         registry=_REGISTRY,
         label='Tank',
         definition='A vessel with at least one fluid connection point. A storage tank may use a single bidirectional port; flow-through subclasses require the appropriate inlet and outlet points.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_UnitProcess_has_process = _PropertySpec(
@@ -1537,6 +1565,8 @@ class UnitProcess(Equipment):
         registry=_REGISTRY,
         label='Unit Process',
         definition='A unit process is a specific type of water treatment process that can be applied to water.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_UnitProcess_has_process,),
     )
 
@@ -1607,6 +1637,8 @@ class Reactor(Tank, UnitProcess):
         registry=_REGISTRY,
         label='Reactor',
         definition='A vessel in which a reaction or biological/chemical treatment process takes place',
+        parent_iris=('https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
@@ -1625,6 +1657,8 @@ class AerationBasin(Reactor):
         registry=_REGISTRY,
         label='Aeration Basin',
         definition='A basin in a biological treatment train where air or oxygen is transferred into the mixed liquor to sustain the aerobic biomass. Named for the aeration equipment installed, not for the regime it is run in: a swing zone with diffusers that is operated unaerated is still an aeration basin, carrying Role-Anoxic.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Aeration'),),
     )
 
@@ -1692,6 +1726,8 @@ class Digester(Reactor):
         registry=_REGISTRY,
         label='Digester',
         definition='A container to promote decomposition of organic waste',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Digestion'), ('has_treatment_objective', 'TreatmentObjective_Stabilization')),
     )
 
@@ -1759,6 +1795,8 @@ class AerobicDigester(Digester):
         registry=_REGISTRY,
         label='Aerobic Digester',
         definition='A container to promote decomposition of organic waste in aerobic conditions',
+        parent_iris=('https://watermetadata.org/ontology/watr#Digester',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Digester', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_AerobicDigestion'),),
     )
 
@@ -1782,6 +1820,8 @@ class CoordinateSystem(Concept_2):
         registry=_REGISTRY,
         label='Coordinate system',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2004/02/skos/core#Concept'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2004/02/skos/core#Concept'),
         properties=(_P_CoordinateSystem_coordinate_center,),
     )
 
@@ -1846,6 +1886,8 @@ class AerospaceCoordinateSystem(CoordinateSystem):
         registry=_REGISTRY,
         label='Aerospace Coordinate system',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CoordinateSystem',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/CoordinateSystem', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 class AirHandlingUnit(Equipment):
@@ -1861,6 +1903,8 @@ class AirHandlingUnit(Equipment):
         registry=_REGISTRY,
         label='Air handling unit',
         definition='A piece of `Equipment` consisting of a fan or fans and other equipment necessary to perform one or more of the following functions:\ncirculating, filtration, heating, cooling, heat recovery, humidifying, dehumidifying, and mixing of air.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -1879,6 +1923,8 @@ class AirHeatExchanger(Equipment):
         registry=_REGISTRY,
         label='Air heat exchanger',
         definition='A piece of `Equipment` that transfers heat from one air stream to another while keeping the two media separate.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
@@ -1898,6 +1944,8 @@ class Valve_2(Equipment):
         registry=_REGISTRY,
         label='Valve',
         definition='A piece of `Equipment` that can be adjusted to allow, regulate, or stop the flow of fluid in a pipe or a duct.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='and', children=(
@@ -1921,6 +1969,8 @@ class AirReleaseValve(Valve_2):
         registry=_REGISTRY,
         label='Air Release Valve',
         definition='Valve for vent trapped air pockets',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class SeparationTank(Tank, UnitProcess):
@@ -1935,6 +1985,8 @@ class SeparationTank(Tank, UnitProcess):
         registry=_REGISTRY,
         label='Separation Tank',
         definition='A tank that has at least two outlets (e.g. overflow and underflow)',
+        parent_iris=('https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=None),
         ),
@@ -2005,6 +2057,8 @@ class AirStripper(SeparationTank):
         registry=_REGISTRY,
         label='Air Stripper',
         definition='A vessel, typically a packed tower, in which air is contacted with water to transfer dissolved gases and volatile organic compounds out of the water and into an off-gas stream',
+        parent_iris=('https://watermetadata.org/ontology/watr#SeparationTank',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#SeparationTank', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Stripping'),),
     )
 
@@ -2020,6 +2074,8 @@ class HeatPump(Equipment):
         registry=_REGISTRY,
         label='Heat pump',
         definition='A piece of `Equipment` that heats or cools spaces by transferring thermal energy from one thermal environment to another using a reversible refrigeration cycle.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class AirToAirHeatPump(HeatPump):
@@ -2034,6 +2090,8 @@ class AirToAirHeatPump(HeatPump):
         registry=_REGISTRY,
         label='Air-to-air heat pump',
         definition='A `HeatPump` that transfers thermal energy between two bodies of air.',
+        parent_iris=('http://data.ashrae.org/standard223#HeatPump',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatPump', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
@@ -2052,6 +2110,8 @@ class AlgebraicDatatype(StructuredDatatype):
         registry=_REGISTRY,
         label='Algebraic Datatype',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StructuredDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EnumeratedValue_2(_EntityBase):
@@ -2066,6 +2126,8 @@ class EnumeratedValue_2(_EntityBase):
         registry=_REGISTRY,
         label='DTYPE Enumerated Value',
         definition=None,
+        parent_iris=('http://www.w3.org/2002/07/owl#Thing',),
+        ancestor_iris=('http://www.w3.org/2002/07/owl#Thing',),
     )
 
 class Aspect(_EntityBase):
@@ -2080,6 +2142,8 @@ class Aspect(_EntityBase):
         registry=_REGISTRY,
         label='QUDT Aspect',
         definition=None,
+        parent_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
+        ancestor_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
     )
 
 _P_Verifiable_informative_reference = _PropertySpec(
@@ -2133,6 +2197,8 @@ class Verifiable(Aspect):
         registry=_REGISTRY,
         label='Verifiable',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Aspect',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Verifiable_informative_reference, _P_Verifiable_dbpedia_match, _P_Verifiable_iso_normative_reference, _P_Verifiable_normative_reference, _P_Verifiable_wikidata_match,),
     )
 
@@ -2225,6 +2291,8 @@ class EnumeratedValue(EnumeratedValue_2, Verifiable):
         registry=_REGISTRY,
         label='Enumerated Value',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_EnumeratedValue_abbreviation, _P_EnumeratedValue_alt_symbol, _P_EnumeratedValue_description, _P_EnumeratedValue_symbol,),
     )
 
@@ -2290,6 +2358,8 @@ class AlignmentType(EnumeratedValue):
         registry=_REGISTRY,
         label='Alignment type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class AnaerobicDigester(Digester):
@@ -2304,6 +2374,8 @@ class AnaerobicDigester(Digester):
         registry=_REGISTRY,
         label='Anaerobic Digester',
         definition='A container to promote decomposition of organic waste in anaerobic conditions',
+        parent_iris=('https://watermetadata.org/ontology/watr#Digester',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Digester', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_AnaerobicDigestion'),),
     )
 
@@ -2613,6 +2685,8 @@ class Unit(Concept_2, Verifiable):
         registry=_REGISTRY,
         label='Unit',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Unit_unit_for, _P_Unit_alt_symbol, _P_Unit_applicable_system, _P_Unit_categorized_by_quantity_kind, _P_Unit_conversion_multiplier, _P_Unit_conversion_multiplier_sn, _P_Unit_conversion_offset, _P_Unit_conversion_offset_sn, _P_Unit_defined_unit_of_system, _P_Unit_derived_coherent_unit_of_system, _P_Unit_derived_unit_of_system, _P_Unit_eclass_code, _P_Unit_expression, _P_Unit_factor_unit_scalar, _P_Unit_has_dimension_vector, _P_Unit_has_factor_unit, _P_Unit_has_quantity_kind, _P_Unit_has_reciprocal_unit, _P_Unit_iec61360_code, _P_Unit_latex_definition, _P_Unit_latex_symbol, _P_Unit_math_m_ldefinition, _P_Unit_om_unit, _P_Unit_prefix, _P_Unit_qkdv_denominator, _P_Unit_qkdv_numerator, _P_Unit_scaling_of, _P_Unit_si_exact_match, _P_Unit_si_units_expression, _P_Unit_symbol, _P_Unit_ucum_code, _P_Unit_udunits_code, _P_Unit_unece_common_code, _P_Unit_unit_for_quantity_kind, _P_Unit_is_unit_of_system,),
     )
 
@@ -2857,6 +2931,8 @@ class DimensionlessUnit(Unit):
         registry=_REGISTRY,
         label='Dimensionless Unit',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Unit',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Unit', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class AngleUnit(DimensionlessUnit):
@@ -2871,6 +2947,8 @@ class AngleUnit(DimensionlessUnit):
         registry=_REGISTRY,
         label='Angle unit',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DimensionlessUnit',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DimensionlessUnit', 'http://qudt.org/schema/qudt/Unit', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Electrode(Equipment):
@@ -2885,6 +2963,8 @@ class Electrode(Equipment):
         registry=_REGISTRY,
         label='Electrode',
         definition='A component where electrochemical reactions occur in electrified processes.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Anode(Electrode):
@@ -2899,6 +2979,8 @@ class Anode(Electrode):
         registry=_REGISTRY,
         label='Anode',
         definition='An electrode where oxidation occurs, often a sacrificial component in electrocoagulation.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Electrode',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Electrode'),
     )
 
 _P_Array_is_heterogeneous = _PropertySpec(
@@ -2955,6 +3037,8 @@ class Array(StructuredDatatype):
         registry=_REGISTRY,
         label='Array',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StructuredDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Array_is_heterogeneous, _P_Array_value, _P_Array_datatype, _P_Array_dimensionality, _P_Array_dimensions,),
         cp_constraints=(
             _CPConstraint(operator='opaque'),
@@ -3086,6 +3170,8 @@ class DataItem(Concept_2):
         registry=_REGISTRY,
         label='Data Item',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_DataItem_value,),
     )
 
@@ -3180,6 +3266,8 @@ class List(DataItem):
         registry=_REGISTRY,
         label='List',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DataItem',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_List_datatype, _P_List_quantity_, _P_List_has_unit,),
     )
 
@@ -3256,6 +3344,8 @@ class Array2DvalueList(List):
         registry=_REGISTRY,
         label='2D Array Value List',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/List',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/List', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ArrayDataOrder(EnumeratedValue):
@@ -3270,6 +3360,8 @@ class ArrayDataOrder(EnumeratedValue):
         registry=_REGISTRY,
         label='Array data order',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 _P_CompositeDatatype_alignment = _PropertySpec(
@@ -3301,6 +3393,8 @@ class CompositeDatatype(StructuredDatatype):
         registry=_REGISTRY,
         label='Composite Data Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StructuredDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_CompositeDatatype_alignment, _P_CompositeDatatype_padding,),
     )
 
@@ -3406,6 +3500,8 @@ class ArrayType(CompositeDatatype):
         registry=_REGISTRY,
         label='Array Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class AspectClass(_EntityBase):
@@ -3420,6 +3516,8 @@ class AspectClass(_EntityBase):
         registry=_REGISTRY,
         label='Aspect Class',
         definition=None,
+        parent_iris=('http://www.w3.org/2000/01/rdf-schema#Class',),
+        ancestor_iris=('http://www.w3.org/2000/01/rdf-schema#Class',),
     )
 
 class Dimension(_EntityBase):
@@ -3434,6 +3532,8 @@ class Dimension(_EntityBase):
         registry=_REGISTRY,
         label='Domain',
         definition=None,
+        parent_iris=('http://www.w3.org/2002/07/owl#Thing',),
+        ancestor_iris=('http://www.w3.org/2002/07/owl#Thing',),
     )
 
 class Aspect_2(Dimension):
@@ -3448,6 +3548,8 @@ class Aspect_2(Dimension):
         registry=_REGISTRY,
         label='Aspect Dimension',
         definition=None,
+        parent_iris=('http://www.linkedmodel.org/schema/vaem#Dimension',),
+        ancestor_iris=('http://www.linkedmodel.org/schema/vaem#Dimension', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class AssociativeArray(Array):
@@ -3462,6 +3564,8 @@ class AssociativeArray(Array):
         registry=_REGISTRY,
         label='Associative Array',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Array',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_ModalCue_duration = _PropertySpec(
@@ -3484,6 +3588,8 @@ class ModalCue(EnumeratedValue):
         registry=_REGISTRY,
         label='Modal Cue',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_ModalCue_duration,),
     )
 
@@ -3552,6 +3658,8 @@ class AuralCue(ModalCue):
         registry=_REGISTRY,
         label='Aural Cue',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ModalCue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/ModalCue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_AuralCue_sound,),
     )
 
@@ -3612,6 +3720,8 @@ class AxialOrientationType(EnumeratedValue):
         registry=_REGISTRY,
         label='Axial Orientation Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class ExternalReference(Concept):
@@ -3626,6 +3736,8 @@ class ExternalReference(Concept):
         registry=_REGISTRY,
         label='External reference',
         definition='`ExternalReference` is an abstract class that represents application programming interface or protocol parameter values necessary to associate a `Property` with information external to the model, such as BACnet objects or telemetry values.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         abstract=True,
     )
 
@@ -3711,6 +3823,8 @@ class BACnetExternalReference(ExternalReference):
         registry=_REGISTRY,
         label='BACnet external reference',
         definition='An `ExternalReference` that contains BACnet protocol parameter values necessary to associate a `Property` with a value.',
+        parent_iris=('http://data.ashrae.org/standard223#ExternalReference',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ExternalReference', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_BACnetExternalReference_object_identifier, _P_BACnetExternalReference_device_identifier, _P_BACnetExternalReference_property_identifier, _P_BACnetExternalReference_property_array_index, _P_BACnetExternalReference_priority_for_writing, _P_BACnetExternalReference_object_name, _P_BACnetExternalReference_device_name,),
     )
 
@@ -3792,6 +3906,8 @@ class Graph(DataItem):
         registry=_REGISTRY,
         label='Graph Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DataItem',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Tree(Graph):
@@ -3806,6 +3922,8 @@ class Tree(Graph):
         registry=_REGISTRY,
         label='Tree Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Graph',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/Graph', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_BalancedTree_max_depth = _PropertySpec(
@@ -3829,6 +3947,8 @@ class BalancedTree(Tree):
         registry=_REGISTRY,
         label='Balanced Tree Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Tree',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/Graph', 'http://qudt.org/schema/qudt/Tree', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_BalancedTree_max_depth,),
     )
 
@@ -3895,6 +4015,8 @@ class BallValve(Valve_2):
         registry=_REGISTRY,
         label='Ball Valve',
         definition='A valve which operates using a spherical ball with a hole (also known as a bore) through the middle.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_BaseDimensionMagnitude_has_base_quantity_kind = _PropertySpec(
@@ -3929,6 +4051,8 @@ class BaseDimensionMagnitude(Concept_2):
         registry=_REGISTRY,
         label='Base Dimension Magnitude',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_BaseDimensionMagnitude_has_base_quantity_kind, _P_BaseDimensionMagnitude_vector_magnitude,),
     )
 
@@ -3998,6 +4122,8 @@ class Bathtub(Equipment):
         registry=_REGISTRY,
         label='Bathtub',
         definition='A piece of `Equipment` for bathing that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -4016,6 +4142,8 @@ class Battery_2(Equipment):
         registry=_REGISTRY,
         label='Battery',
         definition='A piece of `Equipment` that stores a defined amount of chemical energy that can be converted to electrical energy via a chemical process. This process, typically referred to as discharging, produces a specific electrical voltage and current.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None)),
@@ -4036,6 +4164,8 @@ class Battery(Battery_2):
         registry=_REGISTRY,
         label='Battery',
         definition='A device that stores energy for later use',
+        parent_iris=('http://data.ashrae.org/standard223#Battery',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Battery', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class DewateringUnit(UnitProcess):
@@ -4050,6 +4180,8 @@ class DewateringUnit(UnitProcess):
         registry=_REGISTRY,
         label='Dewatering Unit',
         definition='A unit used to remove water from solid material',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_treatment_objective', 'TreatmentObjective_Dewatering'),),
     )
 
@@ -4065,6 +4197,8 @@ class BeltFilterPress(DewateringUnit):
         registry=_REGISTRY,
         label='Belt Filter Press',
         definition='A dewatering unit that uses a belt system to separate solids from liquids',
+        parent_iris=('https://watermetadata.org/ontology/watr#DewateringUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#DewateringUnit', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Filtration'),),
     )
 
@@ -4132,6 +4266,8 @@ class Thickener(UnitProcess):
         registry=_REGISTRY,
         label='Thickener',
         definition='A device used to increase the solids concentration of a slurry',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_treatment_objective', 'TreatmentObjective_Thickening'),),
     )
 
@@ -4147,6 +4283,8 @@ class BeltThickener(Thickener):
         registry=_REGISTRY,
         label='Belt Thickener',
         definition='A thickener that uses a belt system to separate solids from liquids',
+        parent_iris=('https://watermetadata.org/ontology/watr#Thickener',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Thickener', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Filtration'),),
     )
 
@@ -4296,6 +4434,8 @@ class ConnectionPoint(Concept):
         registry=_REGISTRY,
         label='Connection point',
         definition='A `ConnectionPoint` is an abstract modeling construct used to represent the fact that one `Connectable` can be connected to another `Connectable` using a `Connection`. It is the abstract representation of the flange, wire terminal, or other physical feature where a connection is made. `Equipment`, `DomainSpace`s and `Junction`s can have one or more `ConnectionPoint`s (see {s223:Connectable}).\n\nA `ConnectionPoint` is constrained to relate to a specific medium such as air, water, or electricity which determines what can be connected to it. For example, constraining a `ConnectionPoint` to be for air means it cannot be used for an electrical connection.\n\nA `ConnectionPoint` belongs to exactly one `Connectable` (see {s223:Connectable}).\n\n`ConnectionPoint`s are represented graphically in this standard by a triangle with the point indicating a direction of flow, or a diamond in the case of a bidirectional flow as shown in Figure 6-1.\n\n![Graphical Representation of a ConnectionPoint](figures/Figure_5-2_Graphical_Depiciton_of_Connection_Points.svg)',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         abstract=True,
         properties=(_P_ConnectionPoint_has_electrical_phase, _P_ConnectionPoint_paired_with, _P_ConnectionPoint_maps_to, _P_ConnectionPoint_connection, _P_ConnectionPoint_owner, _P_ConnectionPoint_medium, _P_ConnectionPoint_has_role,),
     )
@@ -4390,6 +4530,8 @@ class BidirectionalConnectionPoint(ConnectionPoint):
         registry=_REGISTRY,
         label='Bidirectional connection point',
         definition='A `BidirectionalConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow either into or out of the associated `Connectable`.',
+        parent_iris=('http://data.ashrae.org/standard223#ConnectionPoint',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ConnectionPoint', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_BidirectionalConnectionPoint_paired_with, _P_BidirectionalConnectionPoint_maps_to,),
     )
 
@@ -4542,6 +4684,8 @@ class ScalarDatatype(Datatype):
         registry=_REGISTRY,
         label='Scalar Datatype',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Datatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ScalarDatatype_bit_order, _P_ScalarDatatype_bits, _P_ScalarDatatype_byte_order, _P_ScalarDatatype_bytes, _P_ScalarDatatype_encoding, _P_ScalarDatatype_length, _P_ScalarDatatype_max_exclusive, _P_ScalarDatatype_max_inclusive, _P_ScalarDatatype_min_exclusive, _P_ScalarDatatype_min_inclusive, _P_ScalarDatatype_rdfs_datatype,),
     )
 
@@ -4708,6 +4852,8 @@ class NumericType(ScalarDatatype):
         registry=_REGISTRY,
         label='Numeric Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ScalarDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_NumericType_accuracy, _P_NumericType_signedness,),
     )
 
@@ -4833,6 +4979,8 @@ class OrdinalType(ScalarDatatype):
         registry=_REGISTRY,
         label='Ordinal Data Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ScalarDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class IntegerDatatype(NumericType, OrdinalType):
@@ -4847,6 +4995,8 @@ class IntegerDatatype(NumericType, OrdinalType):
         registry=_REGISTRY,
         label='Integer Datatype',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class BigIntegerType(IntegerDatatype):
@@ -4861,6 +5011,8 @@ class BigIntegerType(IntegerDatatype):
         registry=_REGISTRY,
         label='Big Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/IntegerDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_Prefix_alt_symbol = _PropertySpec(
@@ -4932,6 +5084,8 @@ class Prefix(Concept_2, Verifiable):
         registry=_REGISTRY,
         label='Prefix',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Prefix_alt_symbol, _P_Prefix_latex_symbol, _P_Prefix_prefix_multiplier, _P_Prefix_prefix_multiplier_sn, _P_Prefix_si_exact_match, _P_Prefix_symbol, _P_Prefix_ucum_code,),
     )
 
@@ -5036,6 +5190,8 @@ class BinaryPrefix(Prefix):
         registry=_REGISTRY,
         label='Binary Prefix',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Prefix',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Prefix', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class BinaryTree(Tree):
@@ -5050,6 +5206,8 @@ class BinaryTree(Tree):
         registry=_REGISTRY,
         label='Binary Tree Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Tree',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/Graph', 'http://qudt.org/schema/qudt/Tree', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Filter_2(Equipment):
@@ -5065,6 +5223,8 @@ class Filter_2(Equipment):
         registry=_REGISTRY,
         label='Filter',
         definition='A piece of `Equipment` that removes contaminants from gases or liquids. See {s223:Substance-Medium} for\nmore details on validating compatible mediums upstream and downstream of a `Filter`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None),
@@ -5083,6 +5243,8 @@ class Filter(Filter_2, UnitProcess):
         registry=_REGISTRY,
         label='Filter',
         definition='An equipment used to remove impurities from liquids or gases',
+        parent_iris=('http://data.ashrae.org/standard223#Filter', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Filtration'),),
     )
 
@@ -5150,6 +5312,8 @@ class BiologicalAeratedFilter(Filter, Reactor):
         registry=_REGISTRY,
         label='Biological Aerated Filter (BAF)',
         definition='A filter that uses biological processes to remove contaminants.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#Reactor'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_BiologicallyActiveFiltration'),),
     )
 
@@ -5183,6 +5347,8 @@ class Encoding(_EntityBase):
         registry=_REGISTRY,
         label='Encoding',
         definition=None,
+        parent_iris=('http://www.w3.org/2004/02/skos/core#Concept',),
+        ancestor_iris=('http://www.w3.org/2004/02/skos/core#Concept',),
         properties=(_P_Encoding_bits, _P_Encoding_bytes,),
     )
 
@@ -5228,6 +5394,8 @@ class BitEncodingType(Encoding):
         registry=_REGISTRY,
         label='Bit Encoding',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Encoding',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Encoding', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 class Boiler_2(Equipment):
@@ -5242,6 +5410,8 @@ class Boiler_2(Equipment):
         registry=_REGISTRY,
         label='Boiler',
         definition='A piece of `Equipment` that uses fuel or electricity to heat water or other fluids and supply steam or hot water for heating, humidification, or other applications.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -5260,6 +5430,8 @@ class Boiler(Boiler_2, UnitProcess):
         registry=_REGISTRY,
         label='Boiler',
         definition='A device for heating water',
+        parent_iris=('http://data.ashrae.org/standard223#Boiler', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Boiler', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Combustion'),),
     )
 
@@ -5327,6 +5499,8 @@ class BooleanEncodingType(Encoding):
         registry=_REGISTRY,
         label='Boolean Encoding Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Encoding',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Encoding', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 _P_BooleanType_encoding = _PropertySpec(
@@ -5350,6 +5524,8 @@ class BooleanType(OrdinalType):
         registry=_REGISTRY,
         label='Boolean Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/OrdinalType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_BooleanType_encoding,),
     )
 
@@ -5468,6 +5644,8 @@ class BooleanTypeEnumeratedValue(EnumeratedValue):
         registry=_REGISTRY,
         label='boolean value',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class ButterflyValve(Valve_2):
@@ -5482,6 +5660,8 @@ class ButterflyValve(Valve_2):
         registry=_REGISTRY,
         label='Butterfly Valve',
         definition='A quarter-turn rotary valve used to isolate, start, stop, or regulate the flow of fluids',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ByteEncodingType(Encoding):
@@ -5496,6 +5676,8 @@ class ByteEncodingType(Encoding):
         registry=_REGISTRY,
         label='Byte Encoding',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Encoding',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Encoding', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 _P_CardinalityType_literal = _PropertySpec(
@@ -5520,6 +5702,8 @@ class CardinalityType(EnumeratedValue):
         registry=_REGISTRY,
         label='Cardinality Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_CardinalityType_literal,),
     )
 
@@ -5604,6 +5788,8 @@ class Tuple(CompositeDatatype):
         registry=_REGISTRY,
         label='Tuple',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Tuple_element_datatype, _P_Tuple_element_type_count, _P_Tuple_length,),
     )
 
@@ -5716,6 +5902,8 @@ class Coordinates(Tuple):
         registry=_REGISTRY,
         label='Coordinates',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Tuple',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class CartesianCoordinates(Coordinates):
@@ -5730,6 +5918,8 @@ class CartesianCoordinates(Coordinates):
         registry=_REGISTRY,
         label='Cartesian Coordinate Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Coordinates',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Coordinates', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class CartesianCoordinatesType(CompositeDatatype):
@@ -5744,6 +5934,8 @@ class CartesianCoordinatesType(CompositeDatatype):
         registry=_REGISTRY,
         label='Cartesian Coordinate Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class CartridgeFiltrationUnit(Filter):
@@ -5758,6 +5950,8 @@ class CartridgeFiltrationUnit(Filter):
         registry=_REGISTRY,
         label='Cartridge Filtration Unit',
         definition='A filter system using a cartridge to remove contaminants from fluids',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#UnitProcess'),
     )
 
 class Cathode(Electrode):
@@ -5772,6 +5966,8 @@ class Cathode(Electrode):
         registry=_REGISTRY,
         label='Cathode',
         definition='An electrode where reduction occurs.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Electrode',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Electrode'),
     )
 
 class CentrifugalDewateringUnit(DewateringUnit):
@@ -5786,6 +5982,8 @@ class CentrifugalDewateringUnit(DewateringUnit):
         registry=_REGISTRY,
         label='Centrifugal Dewatering Unit',
         definition='A dewatering unit that uses centrifugal force to separate solids from liquids',
+        parent_iris=('https://watermetadata.org/ontology/watr#DewateringUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#DewateringUnit', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Centrifugation'),),
     )
 
@@ -5853,6 +6051,8 @@ class CentrifugalThickener(Thickener):
         registry=_REGISTRY,
         label='Centrifugal Thickener',
         definition='A thickener that uses centrifugal force to separate solids from liquids',
+        parent_iris=('https://watermetadata.org/ontology/watr#Thickener',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Thickener', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Centrifugation'),),
     )
 
@@ -5920,6 +6120,8 @@ class CharEncodingType(Encoding):
         registry=_REGISTRY,
         label='Char Encoding Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Encoding',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Encoding', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 class CharacterType(OrdinalType):
@@ -5934,6 +6136,8 @@ class CharacterType(OrdinalType):
         registry=_REGISTRY,
         label='Character Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/OrdinalType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class CheckValve(Valve_2):
@@ -5948,6 +6152,8 @@ class CheckValve(Valve_2):
         registry=_REGISTRY,
         label='Check Valve',
         definition='A valve that normally allows fluid (liquid or gas) to flow through it in only one direction',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ChilledBeam(Equipment):
@@ -5962,6 +6168,8 @@ class ChilledBeam(Equipment):
         registry=_REGISTRY,
         label='Chilled beam',
         definition='A piece of `Equipment` with a colder surface temperature where air passes through, and air movement is induced in the room to achieve cooling. Cooling medium is generally water.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -5995,6 +6203,8 @@ class Coil(Equipment):
         registry=_REGISTRY,
         label='Coil',
         definition='A piece of `Equipment` consisting of a pipe or tube that is formed into a helical or serpentine shape, may or may not be finned, and is used in cooling or heating equipment.\n\nA `Coil` shall conform to exactly one of the following patterns:\n\n- **Pattern 1:**\n  - The `Coil` has exactly two inlet connection points using the medium `Mix-Fluid`, with exactly one being `Fluid-Air`.\n  - The `Coil` has exactly two outlet connection points using the medium `Mix-Fluid`, with exactly one being `Fluid-Air`.\n\n- **Pattern 2:**\n  - The Coil has exactly one inlet connection point using the medium `Mix-Fluid`.\n  - The Coil has exactly one outlet connection point using the medium `Mix-Fluid`.\n  - The Coil has one or two bidirectional connection points using the medium `Mix-Fluid` or `Medium-ThermalContact`.\n\n- **Pattern 3:**\n  - The Coil has exactly three bidirectional connection points using the medium `Mix-Fluid` or `Medium-ThermalContact`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_constraints=(
             _CPConstraint(operator='xone', children=(
                 _CPConstraint(operator='and', children=(
@@ -6025,6 +6235,8 @@ class CoolingCoil(Coil):
         registry=_REGISTRY,
         label='Cooling coil',
         definition='A `Coil` that is specifically used to cool air.',
+        parent_iris=('http://data.ashrae.org/standard223#Coil',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Coil', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ChilledWaterCoil(CoolingCoil):
@@ -6039,6 +6251,8 @@ class ChilledWaterCoil(CoolingCoil):
         registry=_REGISTRY,
         label='ChilledWaterCoil',
         definition='A cooling coil with a connected chilled water valve.',
+        parent_iris=('http://data.ashrae.org/standard223#CoolingCoil',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Coil', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#CoolingCoil', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ChilledWaterValve(Valve_2):
@@ -6053,6 +6267,8 @@ class ChilledWaterValve(Valve_2):
         registry=_REGISTRY,
         label='Chilled Water Valve',
         definition='A valve that controls the flow of chilled water through a chilled water coil.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='opaque'),
@@ -6073,6 +6289,8 @@ class Chiller(Equipment):
         registry=_REGISTRY,
         label='Chiller',
         definition='A piece of `Equipment` that removes heat from a liquid coolant via a vapor-compression, adsorption refrigeration, or absorption refrigeration cycles.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -6091,6 +6309,8 @@ class DisinfectionUnit(Reactor):
         registry=_REGISTRY,
         label='Disinfection Unit',
         definition='A unit used to eliminate or reduce harmful microorganisms',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_treatment_objective', 'TreatmentObjective_Disinfection'),),
     )
 
@@ -6106,6 +6326,8 @@ class ChlorinationUnit(DisinfectionUnit):
         registry=_REGISTRY,
         label='Chlorination Unit',
         definition='A unit that uses chlorine or chlorine compounds for disinfection.',
+        parent_iris=('https://watermetadata.org/ontology/watr#DisinfectionUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#DisinfectionUnit', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Chlorination'),),
     )
 
@@ -6191,6 +6413,8 @@ class Citation(Concept_2):
         registry=_REGISTRY,
         label='Citation',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Citation_description, _P_Citation_url,),
     )
 
@@ -6258,6 +6482,8 @@ class SedimentationTank(SeparationTank):
         registry=_REGISTRY,
         label='Sedimentation Tank',
         definition='A tank in which suspended solids separate from water by settling under gravity',
+        parent_iris=('https://watermetadata.org/ontology/watr#SeparationTank',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#SeparationTank', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Settling'),),
     )
 
@@ -6273,6 +6499,8 @@ class Clarifier(SedimentationTank):
         registry=_REGISTRY,
         label='Clarifier',
         definition='A sedimentation tank operated for its clarified overflow, which passes to the next stage of treatment',
+        parent_iris=('https://watermetadata.org/ontology/watr#SedimentationTank',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#SedimentationTank', 'https://watermetadata.org/ontology/watr#SeparationTank', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         cp_constraints=(
             _CPConstraint(operator='and', children=(
                 _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', medium_options=(), min_count=1, max_count=None)),
@@ -6312,6 +6540,8 @@ class Class(_EntityBase):
         registry=_REGISTRY,
         label='Class',
         definition='This is a modeling construct. All classes defined in the watr ontology are instances of `watr:Class`.',
+        parent_iris=('http://www.w3.org/2000/01/rdf-schema#Class',),
+        ancestor_iris=('http://www.w3.org/2000/01/rdf-schema#Class',),
         properties=(_P_Class_achieves_treatment_objective, _P_Class_includes_process,),
     )
 
@@ -6357,6 +6587,8 @@ class ClothesWasher(Equipment):
         registry=_REGISTRY,
         label='Clothes washer',
         definition='A piece of `Equipment` that automatically cleans a load of textiles (e.g., clothing, bedding).',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -6376,6 +6608,8 @@ class CoagulationBasin(Reactor):
         registry=_REGISTRY,
         label='Coagulation Basin',
         definition='A basin where coagulation occurs to destabilize particles in water',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Coagulation'),),
     )
 
@@ -6524,6 +6758,8 @@ class Connection(Concept):
         registry=_REGISTRY,
         label='Connection',
         definition='A `Connection` is the modeling construct used to represent the thing (e.g., pipe, duct, conductor, or free space) that is used to convey\nsome Medium (e.g., water, air, electricity, light, Wi-Fi) between two connectable things. All connections have two or more connection points bound\nto either `Equipment` (see {s223:Equipment}), `DomainSpace` (see {s223:DomainSpace}), or `Junction` (see {s223:Junction}). See Figure 6-2. If the direction\nof flow is constrained, that constraint is indicated by using one or more `InletConnectionPoint`s (see {s223:InletConnectionPoint}) to represent the\ninflow points and `OutletConnectionPoint`s (see {s223:OutletConnectionPoint}) to represent the outflow points.\n\nA `Connection` may contain branches or intersections. These may be modeled using `Junction`s if it is necessary to identify a specific intersection\n(see {s223:Junction}).\n\nThe constraint to maintain compatible mediums among a `Connection` and all of its associated `ConnectionPoint`s gives rise to multiple\nvalidation test cases, where the specified medium might be a pure medium, or a mixture with constituents. See {s223:Substance-Medium} for\nmore details.\n\n![Graphical Depiction of Connection.](figures/Figure_5-3_Connection.svg)',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Connection_connects_from, _P_Connection_has_role, _P_Connection_cnx, _P_Connection_connects_to, _P_Connection_medium, _P_Connection_connects_at, _P_Connection_has_thermodynamic_phase,),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
@@ -6616,6 +6852,8 @@ class Waveguide(Connection):
         registry=_REGISTRY,
         label='Waveguide',
         definition='A type of `Connection` the represents structures, such as fiber optic or coaxial cables, used to convey electromagnetic energy (i.e., `Constituent-EM`) in a specific direction. Without the physical constraint of a waveguide, waves would expand into three-dimensional space and their intensities would decrease according to the inverse square law.',
+        parent_iris=('http://data.ashrae.org/standard223#Connection',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Waveguide_medium,),
     )
 
@@ -6681,6 +6919,8 @@ class CoaxialCable(Waveguide):
         registry=_REGISTRY,
         label='Coaxial cable',
         definition='A type of `Waveguide` that consists of a central conductor, surrounded by an insulator, a metallic shield, and an outer jacket, all sharing the same geometric axis - which allows it to efficiently transmit high-frequency signals over long distances with minimal interference - and is used for `Wideband-DOCSIS` and `Wideband-CATV` communication.',
+        parent_iris=('http://data.ashrae.org/standard223#Waveguide',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_CoaxialCable_medium,),
     )
 
@@ -6735,6 +6975,8 @@ class Enumeration_2(_EntityBase):
         registry=_REGISTRY,
         label='DTYPE Enumeration',
         definition=None,
+        parent_iris=('http://www.w3.org/2002/07/owl#Thing',),
+        ancestor_iris=('http://www.w3.org/2002/07/owl#Thing',),
     )
 
 class CodeList(Enumeration_2):
@@ -6749,6 +6991,8 @@ class CodeList(Enumeration_2):
         registry=_REGISTRY,
         label='Codelist',
         definition=None,
+        parent_iris=('http://www.linkedmodel.org/schema/dtype#Enumeration',),
+        ancestor_iris=('http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class CoffeeMaker(Equipment):
@@ -6763,6 +7007,8 @@ class CoffeeMaker(Equipment):
         registry=_REGISTRY,
         label='Coffee maker',
         definition='A piece of `Equipment` that automatically brews coffee.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -6780,6 +7026,8 @@ class Cogenerator(UnitProcess):
         registry=_REGISTRY,
         label='Cogenerator',
         definition='An equipment that produces both electricity and heat from the same energy source',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Cogeneration'),),
     )
 
@@ -6847,6 +7095,8 @@ class Collection(StructuredDatatype):
         registry=_REGISTRY,
         label='Collection Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StructuredDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class VisualCue(ModalCue):
@@ -6861,6 +7111,8 @@ class VisualCue(ModalCue):
         registry=_REGISTRY,
         label='Visual Cue',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ModalCue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/ModalCue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 _P_ColorCue_rgb_code = _PropertySpec(
@@ -6885,6 +7137,8 @@ class ColorCue(VisualCue):
         registry=_REGISTRY,
         label='Color Cue',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/VisualCue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/ModalCue', 'http://qudt.org/schema/qudt/Verifiable', 'http://qudt.org/schema/qudt/VisualCue', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_ColorCue_rgb_code,),
     )
 
@@ -6961,6 +7215,8 @@ class Comment(Verifiable):
         registry=_REGISTRY,
         label='Comment',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Verifiable',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Comment_description, _P_Comment_rationale,),
     )
 
@@ -7016,6 +7272,8 @@ class CompositeCodeList(CodeList):
         registry=_REGISTRY,
         label='Composite Code List',
         definition=None,
+        parent_iris=('http://www.linkedmodel.org/schema/dtype#CodeList',),
+        ancestor_iris=('http://www.linkedmodel.org/schema/dtype#CodeList', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 _P_CompositeDataStructure_field = _PropertySpec(
@@ -7038,6 +7296,8 @@ class CompositeDataStructure(CompositeDatatype):
         registry=_REGISTRY,
         label='Composite Data Structure',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_CompositeDataStructure_field,),
     )
 
@@ -7185,6 +7445,8 @@ class Table(StructuredDatatype):
         registry=_REGISTRY,
         label='Table Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StructuredDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Table_dimensions, _P_Table_by_row, _P_Table_columns, _P_Table_dimensionality, _P_Table_rows,),
     )
 
@@ -7305,6 +7567,8 @@ class CompositeTable(Table):
         registry=_REGISTRY,
         label='Composite Table Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Table',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Table', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Function_2(Concept_2):
@@ -7319,6 +7583,8 @@ class Function_2(Concept_2):
         registry=_REGISTRY,
         label='Function',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class CompositionFunction(Function_2):
@@ -7333,6 +7599,8 @@ class CompositionFunction(Function_2):
         registry=_REGISTRY,
         label='Composition function',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Function',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Function', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_CompositionTree_function = _PropertySpec(
@@ -7357,6 +7625,8 @@ class CompositionTree(Tree):
         registry=_REGISTRY,
         label='Composition Tree',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Tree',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/Graph', 'http://qudt.org/schema/qudt/Tree', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_CompositionTree_function,),
     )
 
@@ -7423,6 +7693,8 @@ class Compressor_2(Equipment):
         registry=_REGISTRY,
         label='Compressor',
         definition='A piece of `Equipment` that mechanically increases the pressure of a gas.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None),
@@ -7441,6 +7713,8 @@ class Compressor(Compressor_2):
         registry=_REGISTRY,
         label='Compressor',
         definition='An equipment that increases the pressure of a gas',
+        parent_iris=('http://data.ashrae.org/standard223#Compressor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Compressor', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Computer(Equipment):
@@ -7457,6 +7731,8 @@ class Computer(Equipment):
         registry=_REGISTRY,
         label='Computer',
         definition='A piece of `Equipment` that can be programmed to automatically carry out sequences of arithmetic or logical operations (computation).\nModern digital electronic computers can perform generic sets of operations known as programs. These programs enable computers to perform a\nwide range of tasks.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -7474,6 +7750,8 @@ class ComputerPrinter(Equipment):
         registry=_REGISTRY,
         label='Computer printer',
         definition='A piece of `Equipment` that processes an input electrical or RF signal, typically from a `Computer`, and outputs a durable representation of information, typically text and/or graphics, typically on paper.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-RF', 'http://data.ashrae.org/standard223#Electricity-Signal'), min_count=1, max_count=None),
@@ -7572,6 +7850,8 @@ class Sensor(Equipment):
         registry=_REGISTRY,
         label='Sensor',
         definition='\nA piece of `Equipment` that `observes` an `ObservableProperty` (see {s223:ObservableProperty})\nwhich may be quantifiable (see {s223:QuantifiableObservableProperty}), such as a\ntemperature, flow, or concentration, or enumerable (see {s223:EnumeratedObservableProperty}),\nsuch as an occupancy state.\n\nIf a `Sensor` observes a `QuantifiableObservableProperty` relative to an assumed\nor common reference point, it can be modeled with only an observation location.\nFor example:\n\n```turtle\n@prefix : <http://example.com/> .\n\n:example1 a s223:TemperatureSensor ;\n    s223:hasObservationLocation :location1 ;\n    qudt:hasQuantityKind quantitykind:Temperature .\n```\n\nIf a `Sensor` observes a `QuantifiableObservableProperty` relative to a unique\nor specified reference point, it can be modeled with an observation location and\na reference location.  The difference between two values can be indicated by setting `qudt:isDeltaQuantity` to `true`. For example:\n\n```turtle\n@prefix : <http://example.com/> .\n\n:example2 a s223:TemperatureSensor ;\n    s223:hasObservationLocation :location1 ;\n    s223:hasReferenceLocation :location2 ;\n    qudt:hasQuantityKind quantitykind:Temperature ;\n    qudt:isDeltaQuantity true .\n```\n',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Sensor_has_reference_location, _P_Sensor_has_observation_location, _P_Sensor_has_measurement_resolution, _P_Sensor_observes, _P_Sensor_has_measurement_range,),
     )
 
@@ -7681,6 +7961,8 @@ class ConcentrationSensor_2(Sensor):
         registry=_REGISTRY,
         label='Concentration sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a concentration of a miscible constituent in a medium,\nin contrast to a `ParticulateSensor` that `observes` a `QuantifiableObservableProperty` that represents an amount of a particulate in a medium\n(see {s223:ParticulateSensor}). The 223 standard does not constrain the `Unit` or `QuantityKind` reported by a `ConcentrationSensor`, but possible\n`QuantityKind`s include `Concentration` (moles per volume), `Density` (mass per volume), `MoleFraction`, and `VolumeFraction`.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ConcentrationSensor_2_observes,),
     )
 
@@ -7764,6 +8046,8 @@ class ConcentrationSensor(ConcentrationSensor_2):
         registry=_REGISTRY,
         label='Concentration Sensor',
         definition='A sensor used to measure the concentration of specific substances (e.g., Total Dissolved Solids)',
+        parent_iris=('http://data.ashrae.org/standard223#ConcentrationSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#ConcentrationSensor', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class HeatExchanger(Equipment):
@@ -7778,6 +8062,8 @@ class HeatExchanger(Equipment):
         registry=_REGISTRY,
         label='Heat Exchanger',
         definition='Equipment that transfers heat between media, such as an evaporator or a condenser. Unlike s223:HydronicHeatExchanger, it places no constraint on the number, pairing or phase of its connection points, so it covers single-feed evaporators and air-cooled condensers.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Condenser(HeatExchanger, UnitProcess):
@@ -7792,6 +8078,8 @@ class Condenser(HeatExchanger, UnitProcess):
         registry=_REGISTRY,
         label='Condenser',
         definition='A device used to condense a gaseous substance back into a liquid',
+        parent_iris=('https://watermetadata.org/ontology/watr#HeatExchanger', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#HeatExchanger', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Condensation'),),
     )
 
@@ -7859,6 +8147,8 @@ class Conditioner(Equipment):
         registry=_REGISTRY,
         label='Conditioner',
         definition='An equipment used to prepare raw biogas from a digester by removing impurities',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ConductivitySensor(Sensor):
@@ -7873,6 +8163,8 @@ class ConductivitySensor(Sensor):
         registry=_REGISTRY,
         label='Conductivity Sensor',
         definition='A sensor used to measure the electrical conductivity of a solution',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_Conductor_has_electrical_phase = _PropertySpec(
@@ -7908,6 +8200,8 @@ class Conductor(Connection):
         registry=_REGISTRY,
         label='Conductor',
         definition='A `Connection` that represents one or more wires used to convey `Constituent-Electricity`. Each instance of `Conductor` applies to no more than one electrical circuit.',
+        parent_iris=('http://data.ashrae.org/standard223#Connection',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Conductor_has_electrical_phase, _P_Conductor_medium,),
     )
 
@@ -8038,6 +8332,8 @@ class Quantifiable(Aspect):
         registry=_REGISTRY,
         label='Quantifiable',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Aspect',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Quantifiable_data_encoding, _P_Quantifiable_datatype, _P_Quantifiable_has_unit, _P_Quantifiable_relative_standard_uncertainty, _P_Quantifiable_standard_uncertainty, _P_Quantifiable_standard_uncertainty_sn, _P_Quantifiable_value, _P_Quantifiable_value_sn,),
     )
 
@@ -8113,6 +8409,8 @@ class QuantityValue(Concept_2, Quantifiable, Verifiable):
         registry=_REGISTRY,
         label='Quantity value',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Quantifiable', 'http://qudt.org/schema/qudt/Verifiable'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Quantifiable', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
     def __init__(
@@ -8206,6 +8504,8 @@ class ConstantValue(QuantityValue):
         registry=_REGISTRY,
         label='Constant value',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/QuantityValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Quantifiable', 'http://qudt.org/schema/qudt/QuantityValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ConstantValue_exact_constant,),
     )
 
@@ -8306,6 +8606,8 @@ class ContextualUnit(Unit):
         registry=_REGISTRY,
         label='Contextual Unit',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Unit',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Unit', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ContextualUnit_broader,),
     )
 
@@ -8450,6 +8752,8 @@ class ContinuouslyStirredTankReactor(Reactor):
         registry=_REGISTRY,
         label='ContinuouslyStirredTankReactor',
         definition='A reactor in which contents are well mixed and reactants are added continuously',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
     )
 
 _P_Controller_2_executes = _PropertySpec(
@@ -8473,6 +8777,8 @@ class Controller_2(Equipment):
         registry=_REGISTRY,
         label='Controller',
         definition='A piece of `Equipment` that regulates the normal operation of other `Equipment` by executing one or more `Function`s.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Controller_2_executes,),
     )
 
@@ -8543,6 +8849,8 @@ class Controller(Controller_2):
         registry=_REGISTRY,
         label='Controller',
         definition='A piece of equipment for regulation of a system or component in normal operation, which executes one or more `Function`s.',
+        parent_iris=('http://data.ashrae.org/standard223#Controller',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Controller', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class CoolingTower(Equipment):
@@ -8557,6 +8865,8 @@ class CoolingTower(Equipment):
         registry=_REGISTRY,
         label='Cooling tower',
         definition='A piece of `Equipment` that uses atmospheric air to cool warm water, generally by direct contact via evaporation.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -8609,6 +8919,8 @@ class Scale(Concept_2, Verifiable):
         registry=_REGISTRY,
         label='Scale',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Scale_data_structure, _P_Scale_permissible_maths, _P_Scale_permissible_transformation, _P_Scale_scale_type,),
     )
 
@@ -8698,6 +9010,8 @@ class NominalScale(Scale):
         registry=_REGISTRY,
         label='Nominal scale',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Scale',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Scale', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class CoordinateCenterKind(EnumeratedValue, NominalScale):
@@ -8712,6 +9026,8 @@ class CoordinateCenterKind(EnumeratedValue, NominalScale):
         registry=_REGISTRY,
         label='Coordinate Center Kind',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/NominalScale'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/NominalScale', 'http://qudt.org/schema/qudt/Scale', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
     def __init__(
@@ -8810,6 +9126,8 @@ class TupleMember(CompositeDatatype):
         registry=_REGISTRY,
         label='Tuple Member Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_TupleMember_element_datatype, _P_TupleMember_order_in_structure,),
     )
 
@@ -8917,6 +9235,8 @@ class CoordinateMember(TupleMember):
         registry=_REGISTRY,
         label='Coordinate Member',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TupleMember',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/TupleMember', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_N_Tuple_element_datatype = _PropertySpec(
@@ -8940,6 +9260,8 @@ class N_Tuple(Tuple):
         registry=_REGISTRY,
         label='N-Tuple Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Tuple',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_N_Tuple_element_datatype,),
     )
 
@@ -9063,6 +9385,8 @@ class TwoTuple(N_Tuple):
         registry=_REGISTRY,
         label='Two-Tuple',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/N-Tuple',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_TwoTuple_element_datatype, _P_TwoTuple_element_type_count,),
     )
 
@@ -9172,6 +9496,8 @@ class Coordinates_2D(CartesianCoordinates, TwoTuple):
         registry=_REGISTRY,
         label='2D Coordinate Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CartesianCoordinates', 'http://qudt.org/schema/qudt/TwoTuple'),
+        ancestor_iris=('http://qudt.org/schema/qudt/CartesianCoordinates', 'http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Coordinates', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://qudt.org/schema/qudt/TwoTuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Coordinates_2D_DoublePrecision(Coordinates_2D):
@@ -9186,6 +9512,8 @@ class Coordinates_2D_DoublePrecision(Coordinates_2D):
         registry=_REGISTRY,
         label='Coordinates-2D-Double precision',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Coordinates-2D',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CartesianCoordinates', 'http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Coordinates', 'http://qudt.org/schema/qudt/Coordinates-2D', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://qudt.org/schema/qudt/TwoTuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Coordinates_2D_SinglePrecision(Coordinates_2D):
@@ -9200,6 +9528,8 @@ class Coordinates_2D_SinglePrecision(Coordinates_2D):
         registry=_REGISTRY,
         label='Cartesian Coordinates 2D Single Precision',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Coordinates-2D',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CartesianCoordinates', 'http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Coordinates', 'http://qudt.org/schema/qudt/Coordinates-2D', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://qudt.org/schema/qudt/TwoTuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_ThreeTuple_element_datatype = _PropertySpec(
@@ -9231,6 +9561,8 @@ class ThreeTuple(N_Tuple):
         registry=_REGISTRY,
         label='Three-Tuple',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/N-Tuple',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ThreeTuple_element_datatype, _P_ThreeTuple_element_type_count,),
     )
 
@@ -9340,6 +9672,8 @@ class Coordinates_3D(CartesianCoordinates, ThreeTuple):
         registry=_REGISTRY,
         label='3D Coordinate Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CartesianCoordinates', 'http://qudt.org/schema/qudt/ThreeTuple'),
+        ancestor_iris=('http://qudt.org/schema/qudt/CartesianCoordinates', 'http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Coordinates', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/ThreeTuple', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Coordinates_3D_DoublePrecision(Coordinates_3D):
@@ -9354,6 +9688,8 @@ class Coordinates_3D_DoublePrecision(Coordinates_3D):
         registry=_REGISTRY,
         label='3D Coordinates (Double Precision)',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Coordinates-3D',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CartesianCoordinates', 'http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Coordinates', 'http://qudt.org/schema/qudt/Coordinates-3D', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/ThreeTuple', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Coordinates_3D_SinglePrecision(Coordinates_3D):
@@ -9368,6 +9704,8 @@ class Coordinates_3D_SinglePrecision(Coordinates_3D):
         registry=_REGISTRY,
         label='3D Coordinates (Single Precision)',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Coordinates-3D',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CartesianCoordinates', 'http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Coordinates', 'http://qudt.org/schema/qudt/Coordinates-3D', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/ThreeTuple', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Coordinates_3D_Type(CartesianCoordinatesType, ThreeTuple):
@@ -9382,6 +9720,8 @@ class Coordinates_3D_Type(CartesianCoordinatesType, ThreeTuple):
         registry=_REGISTRY,
         label='3D Coordinate Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CartesianCoordinatesType', 'http://qudt.org/schema/qudt/ThreeTuple'),
+        ancestor_iris=('http://qudt.org/schema/qudt/CartesianCoordinatesType', 'http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/ThreeTuple', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class CopyMachine(Equipment):
@@ -9396,6 +9736,8 @@ class CopyMachine(Equipment):
         registry=_REGISTRY,
         label='Copy machine',
         definition='A piece of `Equipment` that processes an input of one or more durable representation(s) of information, typically text and/or graphics and typically on paper, and outputs one or more reproductions of the information for each input, typically on paper.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -9424,6 +9766,8 @@ class LightSensor(Sensor):
         registry=_REGISTRY,
         label='Light sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents an attribute of light, as specified by the `QuantityKind` of the `Property` being observed, as described in Clauses 5.6.5.1 through 5.6.5.3.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_LightSensor_observes,),
     )
 
@@ -9519,6 +9863,8 @@ class CorrelatedColorTemperatureSensor(LightSensor):
         registry=_REGISTRY,
         label='Correlated color temperature sensor',
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a correlated color temperature (CCT) of a\nlight source, defined as the absolute temperature of a blackbody whose chromaticity most nearly resembles that of the light source.',
+        parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#LightSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_CorrelatedColorTemperatureSensor_observes,),
     )
 
@@ -9602,6 +9948,8 @@ class CountingUnit(DimensionlessUnit):
         registry=_REGISTRY,
         label='Counting Unit',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DimensionlessUnit',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DimensionlessUnit', 'http://qudt.org/schema/qudt/Unit', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Crystallizer(UnitProcess):
@@ -9616,6 +9964,8 @@ class Crystallizer(UnitProcess):
         registry=_REGISTRY,
         label='Crystallizer',
         definition='An equipment used to produce solid crystals from a solution',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Crystallization'),),
     )
 
@@ -9707,6 +10057,8 @@ class CurrencyUnit(DimensionlessUnit):
         registry=_REGISTRY,
         label='Currency Unit',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DimensionlessUnit',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DimensionlessUnit', 'http://qudt.org/schema/qudt/Unit', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_CurrencyUnit_currency_code, _P_CurrencyUnit_currency_exponent, _P_CurrencyUnit_currency_number,),
     )
 
@@ -9861,6 +10213,8 @@ class DMERecoverySystem(Equipment):
         registry=_REGISTRY,
         label='Dimethyl Ether (DME) Recovery System',
         definition='A system designed to recover a high percentage of Dimethyl Ether solvent in solvent-driven processes.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Damper(Equipment):
@@ -9875,6 +10229,8 @@ class Damper(Equipment):
         registry=_REGISTRY,
         label='Damper',
         definition='A piece of `Equipment` inserted into an air distribution system permitting modification of the air resistance of the system and consequently changing the airflow rate or shutting off the airflow.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -9893,6 +10249,8 @@ class Damper_2(Damper):
         registry=_REGISTRY,
         label='Damper',
         definition='A damper with an analog or two binary position command properties.',
+        parent_iris=('http://data.ashrae.org/standard223#Damper',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Damper', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='opaque'),
@@ -9940,6 +10298,8 @@ class DataEncoding(Aspect):
         registry=_REGISTRY,
         label='Data Encoding',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Aspect',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_DataEncoding_bit_order, _P_DataEncoding_byte_order, _P_DataEncoding_encoding,),
     )
 
@@ -10019,6 +10379,8 @@ class DataSetElement(DataItem, Tuple):
         registry=_REGISTRY,
         label='QUDT DataSet Element',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/Tuple'),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_DataSetElement_element_label, _P_DataSetElement_optional, _P_DataSetElement_has_quantity_kind,),
     )
 
@@ -10172,6 +10534,8 @@ class StringType(ScalarDatatype):
         registry=_REGISTRY,
         label='String Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ScalarDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_StringType_dimensionality, _P_StringType_is_byte_string, _P_StringType_max_length, _P_StringType_member_datatype,),
     )
 
@@ -10316,6 +10680,8 @@ class DateTimeStringType(StringType):
         registry=_REGISTRY,
         label='Temporal Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StringType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StringType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_DateTimeStringType_encoding,),
     )
 
@@ -10442,6 +10808,8 @@ class DateStringType(DateTimeStringType):
         registry=_REGISTRY,
         label='Date String Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DateTimeStringType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/DateTimeStringType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StringType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class StringEncodingType(Encoding):
@@ -10456,6 +10824,8 @@ class StringEncodingType(Encoding):
         registry=_REGISTRY,
         label='String Encoding Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Encoding',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Encoding', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 _P_DateTimeStringEncodingType_allowed_pattern = _PropertySpec(
@@ -10479,6 +10849,8 @@ class DateTimeStringEncodingType(StringEncodingType):
         registry=_REGISTRY,
         label='Date Time String Encoding Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StringEncodingType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Encoding', 'http://qudt.org/schema/qudt/StringEncodingType', 'http://www.w3.org/2004/02/skos/core#Concept'),
         properties=(_P_DateTimeStringEncodingType_allowed_pattern,),
     )
 
@@ -10523,6 +10895,8 @@ class DecimalPrefix(Prefix):
         registry=_REGISTRY,
         label='Decimal Prefix',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Prefix',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Prefix', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class DerivedCodeList(CodeList):
@@ -10537,6 +10911,8 @@ class DerivedCodeList(CodeList):
         registry=_REGISTRY,
         label='Derived Code List',
         definition=None,
+        parent_iris=('http://www.linkedmodel.org/schema/dtype#CodeList',),
+        ancestor_iris=('http://www.linkedmodel.org/schema/dtype#CodeList', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class DerivedUnit(Unit):
@@ -10551,6 +10927,8 @@ class DerivedUnit(Unit):
         registry=_REGISTRY,
         label='Derived Unit',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Unit',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Unit', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Map(Collection):
@@ -10565,6 +10943,8 @@ class Map(Collection):
         registry=_REGISTRY,
         label='Map Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Collection',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Collection', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Dictionary(Map):
@@ -10579,6 +10959,8 @@ class Dictionary(Map):
         registry=_REGISTRY,
         label='Dictionary Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Map',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Collection', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Map', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_DigitalCurrencyUnit_currency_exponent = _PropertySpec(
@@ -10631,6 +11013,8 @@ class DigitalCurrencyUnit(CurrencyUnit):
         registry=_REGISTRY,
         label='Digital Currency Unit',
         definition='A currency-like unit for cryptographic or tokenized assets. Instances should reference an ISO 24165 Digital Token Identifier (DTI) when available.',
+        parent_iris=('http://qudt.org/schema/qudt/CurrencyUnit',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/CurrencyUnit', 'http://qudt.org/schema/qudt/DimensionlessUnit', 'http://qudt.org/schema/qudt/Unit', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_DigitalCurrencyUnit_currency_exponent, _P_DigitalCurrencyUnit_blockchain_network, _P_DigitalCurrencyUnit_has_dti_code, _P_DigitalCurrencyUnit_currency_code,),
     )
 
@@ -10792,6 +11176,8 @@ class DimensionalDatatype(StructuredDatatype):
         registry=_REGISTRY,
         label='Dimensional Data Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StructuredDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Discipline(Concept_2):
@@ -10806,6 +11192,8 @@ class Discipline(Concept_2):
         registry=_REGISTRY,
         label='Discipline',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Discipline_2(Dimension):
@@ -10820,6 +11208,8 @@ class Discipline_2(Dimension):
         registry=_REGISTRY,
         label='Discipline Dimension',
         definition=None,
+        parent_iris=('http://www.linkedmodel.org/schema/vaem#Dimension',),
+        ancestor_iris=('http://www.linkedmodel.org/schema/vaem#Dimension', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 _P_DiscreteState_inverted = _PropertySpec(
@@ -10843,6 +11233,8 @@ class DiscreteState(EnumeratedValue):
         registry=_REGISTRY,
         label='Discrete State',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_DiscreteState_inverted,),
     )
 
@@ -10901,6 +11293,8 @@ class Dishwasher(Equipment):
         registry=_REGISTRY,
         label='Dishwasher',
         definition='A piece of `Equipment` that automatically cleans dishware, cookware, and cutlery.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -10920,6 +11314,8 @@ class DissolvedAirFlotationThickener(Thickener):
         registry=_REGISTRY,
         label='Dissolved Air Flotation Thickener',
         definition='A thickener that uses dissolved air to separate solids from liquids',
+        parent_iris=('https://watermetadata.org/ontology/watr#Thickener',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Thickener', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Flotation'),),
     )
 
@@ -10987,6 +11383,8 @@ class Domain(Dimension):
         registry=_REGISTRY,
         label='Domain Dimension',
         definition=None,
+        parent_iris=('http://www.linkedmodel.org/schema/vaem#Dimension',),
+        ancestor_iris=('http://www.linkedmodel.org/schema/vaem#Dimension', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 _P_DomainSpace_has_domain = _PropertySpec(
@@ -11012,6 +11410,8 @@ class DomainSpace(Connectable):
         registry=_REGISTRY,
         label='Domain space',
         definition='A portion of a `PhysicalSpace` that is affected by a building service associated with a domain. `DomainSpace`s may represent an entire `PhysicalSpace` or any portion of a `PhysicalSpace` (see {s223:PhysicalSpace}). Multiple `DomainSpace`s of the same domain may overlap, and `DomainSpace`s of different domains may also overlap, but `DomainSpace`s can not overlap multiple `PhysicalSpace`s. `DomainSpace`s may be grouped into `Zone`s using the relation `hasDomainSpace` (see {s223:hasDomainSpace}).',
+        parent_iris=('http://data.ashrae.org/standard223#Connectable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_DomainSpace_has_domain,),
     )
 
@@ -11070,6 +11470,8 @@ class Door(Equipment):
         registry=_REGISTRY,
         label='Door',
         definition='A piece of `Equipment` consisting of hinged, sliding, or revolving barrier at the entrance to a building or room.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
         ),
@@ -11087,6 +11489,8 @@ class DoublePrecisionType(NumericType):
         registry=_REGISTRY,
         label='Double Precision Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/NumericType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Drain(Valve_2):
@@ -11101,6 +11505,8 @@ class Drain(Valve_2):
         registry=_REGISTRY,
         label='Drain',
         definition='A `Valve` that allows, regulates, or stops the flow of water from a `Sink`, `Shower`, `Bathtub`, or other plumbing service equipment into a plumbing drainage system that typically carries the mixture to a sewer system or septic tank.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -11119,6 +11525,8 @@ class TerminalUnit(Equipment):
         registry=_REGISTRY,
         label='Terminal unit',
         definition='A piece of `Equipment` that modulates the volume of air delivered to a space.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -11137,6 +11545,8 @@ class DualDuctTerminal(TerminalUnit):
         registry=_REGISTRY,
         label='Dual duct terminal',
         definition='A `TerminalUnit` that mixes two independent sources of primary air.',
+        parent_iris=('http://data.ashrae.org/standard223#TerminalUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#TerminalUnit', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
         ),
@@ -11154,6 +11564,8 @@ class Duct(Connection):
         registry=_REGISTRY,
         label='Duct',
         definition='A `Connection` that is used to transport air such as supply, return, and exhaust in HVAC (Heating, Ventilation, and Air Conditioning) systems.',
+        parent_iris=('http://data.ashrae.org/standard223#Connection',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_DuvSensor_observes = _PropertySpec(
@@ -11180,6 +11592,8 @@ class DuvSensor(LightSensor):
         registry=_REGISTRY,
         label='Duv sensor',
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a Duv of a light source, defined as the\ndistance between the chromaticity of the light source and a blackbody radiator of equal correlated color temperature (CCT).',
+        parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#LightSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_DuvSensor_observes,),
     )
 
@@ -11274,6 +11688,8 @@ class EM(Connection):
         registry=_REGISTRY,
         label='EM connection',
         definition='A type of `Connection` that represents air, a vacuum, outer space, or a similar environment used to convey electromagnetic energy (i.e., `Constituent-EM`), without the use of a solid materials such as fiber optic cables or other such `Waveguide`s.',
+        parent_iris=('http://data.ashrae.org/standard223#Connection',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_EM_medium,),
     )
 
@@ -11328,6 +11744,8 @@ class TrajectoryCoordinateSystem(AerospaceCoordinateSystem):
         registry=_REGISTRY,
         label='Trajectory Coordinate System',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/AerospaceCoordinateSystem',),
+        ancestor_iris=('http://qudt.org/schema/qudt/AerospaceCoordinateSystem', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/CoordinateSystem', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 class EarthCoordinateSystem(TrajectoryCoordinateSystem):
@@ -11342,6 +11760,8 @@ class EarthCoordinateSystem(TrajectoryCoordinateSystem):
         registry=_REGISTRY,
         label='Earth Coordinate System Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TrajectoryCoordinateSystem',),
+        ancestor_iris=('http://qudt.org/schema/qudt/AerospaceCoordinateSystem', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/CoordinateSystem', 'http://qudt.org/schema/qudt/TrajectoryCoordinateSystem', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 class EfficiencySensor(Sensor):
@@ -11356,6 +11776,8 @@ class EfficiencySensor(Sensor):
         registry=_REGISTRY,
         label='Efficiency Sensor',
         definition='A sensor used to measure the efficiency of a system or equipment',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricClothesDryer(Equipment):
@@ -11370,6 +11792,8 @@ class ElectricClothesDryer(Equipment):
         registry=_REGISTRY,
         label='Electric clothes dryer',
         definition='A piece of `Equipment` that automatically removes moisture from a load of textiles (e.g., clothing, bedding), typically after they are washed in a `ClothesWasher`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -11387,6 +11811,8 @@ class ElectricCooktop(Equipment):
         registry=_REGISTRY,
         label='Electric cooktop',
         definition='A piece of `Equipment` with a flat surface containing one or more heat sources designed for cooking with pots and pans.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -11415,6 +11841,8 @@ class ElectricCurrentSensor(Sensor):
         registry=_REGISTRY,
         label='Electric current sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of electric current.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ElectricCurrentSensor_observes,),
     )
 
@@ -11498,6 +11926,8 @@ class ElectricEnergyConverter(Equipment):
         registry=_REGISTRY,
         label='Electric energy converter',
         definition='A piece of `Equipment` that converts one form of electric power to another form of electric power.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricEnergyDCDCConverter(ElectricEnergyConverter):
@@ -11512,6 +11942,8 @@ class ElectricEnergyDCDCConverter(ElectricEnergyConverter):
         registry=_REGISTRY,
         label='DC-DC converter',
         definition='An `ElectricEnergyConverter` that transforms direct current (DC) electric power from one voltage to another voltage.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectricEnergyConverter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricEnergyConverter', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricEnergyInverter(ElectricEnergyConverter):
@@ -11526,6 +11958,8 @@ class ElectricEnergyInverter(ElectricEnergyConverter):
         registry=_REGISTRY,
         label='Electric energy inverter',
         definition='An `ElectricEnergyConverter` that tranforms direct current (DC) electric power to alternating current (AC) electric power, or vice versa.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectricEnergyConverter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricEnergyConverter', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricEnergyTransformer(ElectricEnergyConverter):
@@ -11540,6 +11974,8 @@ class ElectricEnergyTransformer(ElectricEnergyConverter):
         registry=_REGISTRY,
         label='Electric energy transformer',
         definition='An `ElectricEnergyConverter` that transforms alternating current (AC) electric power from one voltage to another voltage.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectricEnergyConverter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricEnergyConverter', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricResistanceElement(Equipment):
@@ -11558,6 +11994,8 @@ class ElectricResistanceElement(Equipment):
         registry=_REGISTRY,
         label='Electric resistance element',
         definition='A piece of `Equipment` that provides electrical resistance heating, for example an electric heating coil within a Fan Coil Unit.\nIt shall have one electricity `InletConnectionPoint`, and fit one of the following two patterns:\n\n- Pattern 1: An `ElectricResistanceElement` shall have exactly one Bidirectional `ConnectionPoint` using the medium `Mix-Fluid`.\n- Pattern 2: An `ElectricResistanceElement` shall have one inlet and one outlet using the medium `Mix-Fluid`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -11584,6 +12022,8 @@ class ElectricHeatingCoil(ElectricResistanceElement):
         registry=_REGISTRY,
         label='Electric Heating Coil',
         definition='An electrical heating element with an analog heating command.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectricResistanceElement',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricResistanceElement', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricOven(Equipment):
@@ -11598,6 +12038,8 @@ class ElectricOven(Equipment):
         registry=_REGISTRY,
         label='Electric oven',
         definition='A piece of `Equipment` with an enclosed chamber designed for baking, roasting, and other cooking methods that rely on circulating heat.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -11615,6 +12057,8 @@ class ElectricWaterDispenser(Equipment):
         registry=_REGISTRY,
         label='Electric water dispenser',
         definition='A piece of `Equipment` that dispenses water and optionally heats and/or cools the water prior to dispensing.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
@@ -11633,6 +12077,8 @@ class ElectricallyConductingMembrane(Filter):
         registry=_REGISTRY,
         label='Electrically Conducting Membrane',
         definition='A membrane capable of conducting electricity, used for in-situ cleaning or electro-oxidation processes.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#UnitProcess'),
     )
 
 class ElectricityBreaker(Equipment):
@@ -11647,6 +12093,8 @@ class ElectricityBreaker(Equipment):
         registry=_REGISTRY,
         label='Electricity breaker',
         definition='A piece of `Equipment` that automatically opens an electric circuit automatically at a predetermined overcurrent, so as to prevent damage to the circuit, the equipment connected to the circuit, and the building containing the circuit.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
@@ -11667,6 +12115,8 @@ class ElectricityMeter(Equipment):
         registry=_REGISTRY,
         label='Electricity meter',
         definition='A piece of `Equipment` that contains at least one `VoltageSensor` and one `ElectricCurrentSensor`, and reports one or more\nproperties of electricity. Example reported properties include the following `QuantityKind`s: `Voltage`, `ElectricCurrent`, `ActiveEnergy`,\n`ActivePower`, `ReactivePower`, `ApparentPower`, `PowerFactor`, and `Frequency` with unit Hertz. An `ElectricityMeter` may optionally contain a `Function` that represents the mathematical calculations of the reported properties of electricity.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectricityOutlet(Equipment):
@@ -11681,6 +12131,8 @@ class ElectricityOutlet(Equipment):
         registry=_REGISTRY,
         label='Electricity outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to electrical power, typically via a plug and cord. Not to be confused with an `OutletConnectionPoint` with the medium `Constituent-Electricity`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=1),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
@@ -11699,6 +12151,8 @@ class ElectroDialyticCrystallizer(UnitProcess):
         registry=_REGISTRY,
         label='Electro-Dialytic Crystallizer (EDC)',
         definition='A modular system designed for brine concentration and crystallization, integrating electrodialysis and crystallization.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Crystallization'), ('has_process', 'Process_Electrodialysis')),
     )
 
@@ -11766,6 +12220,8 @@ class ElectrocoagulationUnit(Reactor):
         registry=_REGISTRY,
         label='Electrocoagulation Unit',
         definition='A unit that uses electrocoagulation for contaminant removal.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#Reactor'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Electrocoagulation'),),
     )
 
@@ -11833,6 +12289,8 @@ class ElectrodialysisUnit(UnitProcess):
         registry=_REGISTRY,
         label='Electrodialysis',
         definition='A unit that uses electricity to drive ion movement through a membrane',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Electrodialysis'),),
     )
 
@@ -11900,6 +12358,8 @@ class Electrolyzer(UnitProcess):
         registry=_REGISTRY,
         label='Electrolyzer',
         definition='An equipment that uses electricity to split liquids into constituent elements',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Electrolysis'),),
     )
 
@@ -11967,6 +12427,8 @@ class ElectromagneticFieldDevice(Equipment):
         registry=_REGISTRY,
         label='Electromagnetic Field (EMF) Device',
         definition='A device that generates an electromagnetic field, used as a pretreatment method for membrane scaling and fouling control.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ElectronicDisplay(Equipment):
@@ -11981,6 +12443,8 @@ class ElectronicDisplay(Equipment):
         registry=_REGISTRY,
         label='Electronic display',
         definition='A piece of `Equipment` that receives an input electrical signal and outputs information, typically text and/or graphics, in a visual form.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Elevator(Equipment):
@@ -11995,6 +12459,8 @@ class Elevator(Equipment):
         registry=_REGISTRY,
         label='Elevator',
         definition='A piece of `Equipment` that vertically transports people or freight between floors or levels of a building via a vertical shaft commonly referred to as a hoistway. The people or freight are typically situated on a platform, or in a container commonly referred to as a car, cab, cabin, cage, or carriage.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -12012,6 +12478,8 @@ class EndianType(EnumeratedValue):
         registry=_REGISTRY,
         label='Endian Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 _P_EngineeringValueTupleMember_element_datatype = _PropertySpec(
@@ -12035,6 +12503,8 @@ class EngineeringValueTupleMember(TupleMember):
         registry=_REGISTRY,
         label='Engineering Value Tuple Member',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TupleMember',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/TupleMember', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_EngineeringValueTupleMember_element_datatype,),
     )
 
@@ -12150,6 +12620,8 @@ class EnumerableProperty(Property):
         registry=_REGISTRY,
         label='Enumerable property',
         definition='An `EnumerableProperty` is a `Property` with an enumerated (fixed) set of possible values.',
+        parent_iris=('http://data.ashrae.org/standard223#Property',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_EnumerableProperty_has_enumeration_kind,),
     )
 
@@ -12210,6 +12682,8 @@ class EnumeratedActuatableProperty(ActuatableProperty, EnumerableProperty):
         registry=_REGISTRY,
         label='Enumerated actuatable property',
         definition='An `EnumeratedActuatableProperty` is a `Property` with an enumerated (fixed) set of possible values that can be changed (actuated).',
+        parent_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#EnumerableProperty'),
+        ancestor_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#EnumerableProperty', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ObservableProperty(Property):
@@ -12225,6 +12699,8 @@ class ObservableProperty(Property):
         registry=_REGISTRY,
         label='Observable property',
         definition='The term "observable" implies that reading the `ObservableProperty` value will return the result of a physical observation, usually by a `Sensor`.\nIn contrast, the term "actuatable" (see {s223:ActuatableProperty}) implies that writing to the `ActuatableProperty` value will directly trigger a physical actuation.',
+        parent_iris=('http://data.ashrae.org/standard223#Property',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EnumeratedObservableProperty(EnumerableProperty, ObservableProperty):
@@ -12239,6 +12715,8 @@ class EnumeratedObservableProperty(EnumerableProperty, ObservableProperty):
         registry=_REGISTRY,
         label='Enumerated observable property',
         definition='An `EnumeratedObservableProperty` is a `Property` with an enumerated (fixed) set of possible values that cannot be changed (can only be observed).',
+        parent_iris=('http://data.ashrae.org/standard223#EnumerableProperty', 'http://data.ashrae.org/standard223#ObservableProperty'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#EnumerableProperty', 'http://data.ashrae.org/standard223#ObservableProperty', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_EnumeratedQuantity_enumerated_value = _PropertySpec(
@@ -12271,6 +12749,8 @@ class EnumeratedQuantity(Concept_2):
         registry=_REGISTRY,
         label='Enumerated Quantity',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_EnumeratedQuantity_enumerated_value, _P_EnumeratedQuantity_enumeration,),
     )
 
@@ -12400,6 +12880,8 @@ class Enumeration(Enumeration_2, StructuredDatatype):
         registry=_REGISTRY,
         label='Enumeration',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.linkedmodel.org/schema/dtype#Enumeration'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_Enumeration_abbreviation, _P_Enumeration_bits, _P_Enumeration_default, _P_Enumeration_default_value, _P_Enumeration_element, _P_Enumeration_encoding, _P_Enumeration_value,),
     )
 
@@ -12528,6 +13010,8 @@ class EnumerationScale(Enumeration_2, Scale):
         registry=_REGISTRY,
         label='Enumeration scale',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Scale', 'http://www.linkedmodel.org/schema/dtype#Enumeration'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Scale', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 _P_EquipmentRegion_has_connection_point = _PropertySpec(
@@ -12562,6 +13046,8 @@ class EquipmentRegion(Equipment):
         registry=_REGISTRY,
         label='Equipment Region',
         definition='An identifiable functional portion of a piece of equipment, distinguished by its treatment activity. It need not be physically partitioned or independently installed. Each region has exactly one direct equipment parent, at least one process, and at least one connection point. Nested regions must ultimately belong to equipment that is not itself a region. Roles are optional.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_EquipmentRegion_has_connection_point, _P_EquipmentRegion_has_process,),
     )
 
@@ -12635,6 +13121,8 @@ class Escalator(Equipment):
         registry=_REGISTRY,
         label='Escalator',
         definition='A piece of `Equipment` that vertically transports people between floors or levels of a building via a moving staircase.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -12679,6 +13167,8 @@ class EthernetCable(Conductor):
         registry=_REGISTRY,
         label='Ethernet cable',
         definition='A type of `Conductor` that consists of 1, 2 or 4 pairs of twisted wire and is used for `Signal-WiredEthernet` communication. Subclasses of `EthernetCable` represent common types used in buildings.\n\n: EthernetCable Subclasses\n\n| Subclass |\n|:-----------|\n| `EthernetCable-Cat1` |\n| `EthernetCable-Cat2` |\n| `EthernetCable-Cat3` |\n| `EthernetCable-Cat4` |\n| `EthernetCable-Cat5` |\n| `EthernetCable-Cat5e` |\n| `EthernetCable-Cat6` |\n| `EthernetCable-Cat6a` |\n| `EthernetCable-Cat7` |\n| `EthernetCable-Cat7a` |\n| `EthernetCable-Cat8` |',
+        parent_iris=('http://data.ashrae.org/standard223#Conductor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_EthernetCable_medium,),
     )
 
@@ -12735,6 +13225,8 @@ class EthernetCable_Cat1(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat1',
         definition='EthernetCable-Cat1',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat2(EthernetCable):
@@ -12749,6 +13241,8 @@ class EthernetCable_Cat2(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat2',
         definition='EthernetCable-Cat2',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat3(EthernetCable):
@@ -12763,6 +13257,8 @@ class EthernetCable_Cat3(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat3',
         definition='EthernetCable-Cat3',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat4(EthernetCable):
@@ -12777,6 +13273,8 @@ class EthernetCable_Cat4(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat4',
         definition='EthernetCable-Cat4',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat5(EthernetCable):
@@ -12791,6 +13289,8 @@ class EthernetCable_Cat5(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat5',
         definition='EthernetCable-Cat5',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat5e(EthernetCable):
@@ -12805,6 +13305,8 @@ class EthernetCable_Cat5e(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat5e',
         definition='EthernetCable-Cat5e',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat6(EthernetCable):
@@ -12819,6 +13321,8 @@ class EthernetCable_Cat6(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat6',
         definition='EthernetCable-Cat6',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat6a(EthernetCable):
@@ -12833,6 +13337,8 @@ class EthernetCable_Cat6a(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat6a',
         definition='EthernetCable-Cat6a',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat7(EthernetCable):
@@ -12847,6 +13353,8 @@ class EthernetCable_Cat7(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat7',
         definition='EthernetCable-Cat7',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat7a(EthernetCable):
@@ -12861,6 +13369,8 @@ class EthernetCable_Cat7a(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat7a',
         definition='EthernetCable-Cat7a',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetCable_Cat8(EthernetCable):
@@ -12875,6 +13385,8 @@ class EthernetCable_Cat8(EthernetCable):
         registry=_REGISTRY,
         label='Ethernet Cable Cat8',
         definition='EthernetCable-Cat8',
+        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class EthernetPort(Equipment):
@@ -12890,6 +13402,8 @@ class EthernetPort(Equipment):
         registry=_REGISTRY,
         label='Ethernet port',
         definition='A piece of `Equipment` that connects a single instance of electrical equipment, such as `Computer`s and Wi-Fi access points,\nto an Ethernet network so it can communicate with other equipment and, optionally, with the Internet.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=('http://data.ashrae.org/standard223#Signal-FiberEthernet', 'http://data.ashrae.org/standard223#Signal-WiredEthernet'), min_count=2, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Electricity-DC', medium_options=(), min_count=1, max_count=None),
@@ -12909,6 +13423,8 @@ class EthernetSwitch(Equipment):
         registry=_REGISTRY,
         label='Ethernet switch',
         definition='A piece of `Equipment` that connects one or more instances of electrical equipment, such as `Computer`s and Wi-Fi access points,\nto an Ethernet network so they can communicate with each other and, optionally, to the Internet.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=('http://data.ashrae.org/standard223#Signal-FiberEthernet', 'http://data.ashrae.org/standard223#Signal-WiredEthernet'), min_count=2, max_count=None),
@@ -12927,6 +13443,8 @@ class Evaporator(HeatExchanger, UnitProcess):
         registry=_REGISTRY,
         label='Evaporator',
         definition='A device used to turn the liquid form of a substance into its gaseous form',
+        parent_iris=('https://watermetadata.org/ontology/watr#HeatExchanger', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#HeatExchanger', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Evaporation'),),
     )
 
@@ -13014,6 +13532,8 @@ class FactorUnit(Concept_2):
         registry=_REGISTRY,
         label='Factor Unit',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_FactorUnit_exponent, _P_FactorUnit_has_unit,),
     )
 
@@ -13083,6 +13603,8 @@ class Fan(Equipment):
         registry=_REGISTRY,
         label='Fan',
         definition='A piece of `Equipment` that causes a gas (e.g., air) to flow.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -13101,6 +13623,8 @@ class FanCoilUnit(Equipment):
         registry=_REGISTRY,
         label='Fan coil unit',
         definition='A piece of `Equipment` consisting of a `Coil` and a `Fan` that regulates the temperature of one or more spaces.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -13119,6 +13643,8 @@ class FanPoweredTerminal(TerminalUnit):
         registry=_REGISTRY,
         label='Fan-powered terminal',
         definition='A `TerminalUnit` that contains a fan, and optionally has supplemental heating or cooling. Airflow may pass through or be parallel to the fan.',
+        parent_iris=('http://data.ashrae.org/standard223#TerminalUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#TerminalUnit', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Fan_2(Fan):
@@ -13133,6 +13659,8 @@ class Fan_2(Fan):
         registry=_REGISTRY,
         label='Fan',
         definition='A fan with a start/stop command.',
+        parent_iris=('http://data.ashrae.org/standard223#Fan',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Fan', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FanWithVFD(Fan_2):
@@ -13147,6 +13675,8 @@ class FanWithVFD(Fan_2):
         registry=_REGISTRY,
         label='FanWithVFD',
         definition='A fan controlled by a VFD.',
+        parent_iris=('http://data.ashrae.org/standard223/1.0/extensions/g36#Fan',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Fan', 'http://data.ashrae.org/standard223/1.0/extensions/g36#Fan', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Faucet(Valve_2):
@@ -13161,6 +13691,8 @@ class Faucet(Valve_2):
         registry=_REGISTRY,
         label='Faucet',
         definition='A `Valve` that allows, regulates, or stops the flow of hot or cold water from a plumbing supply system into a `Sink`, `Shower`, `Bathtub`, or other plumbing service equipment.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -13179,6 +13711,8 @@ class FiberEthernetOutlet(Equipment):
         registry=_REGISTRY,
         label='Fiber Ethernet outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a fiber Ethernet communication network, typically via a fiber Ethernet cable.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-FiberEthernet', medium_options=(), min_count=1, max_count=1),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-FiberEthernet', medium_options=(), min_count=1, max_count=None),
@@ -13220,6 +13754,8 @@ class FiberOpticCable(Waveguide):
         registry=_REGISTRY,
         label='Fiber optic cable',
         definition='A type of `Waveguide` that consists of thin, flexible strands of glass or plastic fibers that transmit data as pulses of light and is used for `Signal-FiberEthernet` or `Wideband-CATV` communication. Subclasses of `FiberOpticCable` represent common types used in buildings.\n\n: FiberOpticCable Subclasses\n\n| Subclass |\n|:-----------|\n| `FiberOpticCable-OM1` |\n| `FiberOpticCable-OM2` |\n| `FiberOpticCable-OM3` |\n| `FiberOpticCable-OM4` |\n| `FiberOpticCable-OM5` |\n| `FiberOpticCable-OS1` |\n| `FiberOpticCable-OS2` |',
+        parent_iris=('http://data.ashrae.org/standard223#Waveguide',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_FiberOpticCable_medium,),
     )
 
@@ -13274,6 +13810,8 @@ class FiberOpticCable_OM1(FiberOpticCable):
         registry=_REGISTRY,
         label='Fiber Optic Cable OM1',
         definition='FiberOpticCable-OM1',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FiberOpticCable_OM2(FiberOpticCable):
@@ -13288,6 +13826,8 @@ class FiberOpticCable_OM2(FiberOpticCable):
         registry=_REGISTRY,
         label='Fiber Optic Cable OM2',
         definition='FiberOpticCable-OM2',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FiberOpticCable_OM3(FiberOpticCable):
@@ -13302,6 +13842,8 @@ class FiberOpticCable_OM3(FiberOpticCable):
         registry=_REGISTRY,
         label='Fiber Optic Cable OM3',
         definition='FiberOpticCable-OM3',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FiberOpticCable_OM4(FiberOpticCable):
@@ -13316,6 +13858,8 @@ class FiberOpticCable_OM4(FiberOpticCable):
         registry=_REGISTRY,
         label='Fibe Optic Cable OM4',
         definition='FiberOpticCable-OM4',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FiberOpticCable_OM5(FiberOpticCable):
@@ -13330,6 +13874,8 @@ class FiberOpticCable_OM5(FiberOpticCable):
         registry=_REGISTRY,
         label='Fiber Optic Cable OM5',
         definition='FiberOpticCable-OM5',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FiberOpticCable_OS1(FiberOpticCable):
@@ -13344,6 +13890,8 @@ class FiberOpticCable_OS1(FiberOpticCable):
         registry=_REGISTRY,
         label='Fiber Optic Cable OS1',
         definition='FiberOpticCable-OS1',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FiberOpticCable_OS2(FiberOpticCable):
@@ -13358,6 +13906,8 @@ class FiberOpticCable_OS2(FiberOpticCable):
         registry=_REGISTRY,
         label='Fiber Optic Cable OS2',
         definition='FiberOpticCable-OS2',
+        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_FieldType_element_name = _PropertySpec(
@@ -13410,6 +13960,8 @@ class FieldType(CompositeDatatype):
         registry=_REGISTRY,
         label='Field Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_FieldType_element_name, _P_FieldType_element_datatype, _P_FieldType_field_label, _P_FieldType_field_type,),
     )
 
@@ -13591,6 +14143,8 @@ class Figure(Concept_2):
         registry=_REGISTRY,
         label='Figure',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Figure_figure_caption, _P_Figure_figure_label, _P_Figure_height, _P_Figure_image, _P_Figure_image_location, _P_Figure_landscape, _P_Figure_width,),
     )
 
@@ -13685,6 +14239,8 @@ class FileFormat(EnumeratedValue):
         registry=_REGISTRY,
         label='File format',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 _P_TimeSeriesArray_increment_datatype = _PropertySpec(
@@ -13718,6 +14274,8 @@ class TimeSeriesArray(Array):
         registry=_REGISTRY,
         label='Time Series Array',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Array',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_TimeSeriesArray_increment_datatype, _P_TimeSeriesArray_vector,),
     )
 
@@ -13833,6 +14391,8 @@ class FixedIntervalTimeSeriesArray(TimeSeriesArray):
         registry=_REGISTRY,
         label='Fixed Interval Time Series Array Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TimeSeriesArray',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/TimeSeriesArray', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class TimeSeriesArrayType(ArrayType):
@@ -13847,6 +14407,8 @@ class TimeSeriesArrayType(ArrayType):
         registry=_REGISTRY,
         label='Time Series Array Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ArrayType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/ArrayType', 'http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FixedIntervalTimeSeriesArrayType(TimeSeriesArrayType):
@@ -13861,6 +14423,8 @@ class FixedIntervalTimeSeriesArrayType(TimeSeriesArrayType):
         registry=_REGISTRY,
         label='Fixed Interval Time Series Array Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TimeSeriesArrayType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/ArrayType', 'http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/TimeSeriesArrayType', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Flare(Equipment):
@@ -13875,6 +14439,8 @@ class Flare(Equipment):
         registry=_REGISTRY,
         label='Flare',
         definition='A device used to burn off unwanted gas',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FloatingPointEncodingType(Encoding):
@@ -13889,6 +14455,8 @@ class FloatingPointEncodingType(Encoding):
         registry=_REGISTRY,
         label='Floating Point Encoding',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Encoding',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Encoding', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 class FlocculationBasin(Reactor):
@@ -13903,6 +14471,8 @@ class FlocculationBasin(Reactor):
         registry=_REGISTRY,
         label='Flocculation Basin',
         definition='A tank where flocculation occurs to aggregate particles in water',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Flocculation'),),
     )
 
@@ -13981,6 +14551,8 @@ class FlowSensor_2(Sensor):
         registry=_REGISTRY,
         label='Flow sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of flow of fluid, typically with a `QuantityKind` of `VolumeFlowRate`.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_FlowSensor_2_observes,),
     )
 
@@ -14064,6 +14636,8 @@ class FlowSensor(FlowSensor_2):
         registry=_REGISTRY,
         label='Flow Sensor',
         definition='A sensor used to measure the flow rate of liquids or gases',
+        parent_iris=('http://data.ashrae.org/standard223#FlowSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#FlowSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FlushToilet(Equipment):
@@ -14080,6 +14654,8 @@ class FlushToilet(Equipment):
         registry=_REGISTRY,
         label='Flush toilet',
         definition='A piece of `Equipment` that collects human waste (i.e., urine and/or feces, and sometimes toilet paper) in a chamber containing water,\nand contains an integral manual or automatic actuator that triggers the release of an additional volume of water that flushes everything from the chamber into\na drainage system that typically carries the mixture to a sewer system or septic tank.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -14098,6 +14674,8 @@ class FrameType(EnumeratedValue):
         registry=_REGISTRY,
         label='Frame Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class Freezer(Equipment):
@@ -14112,6 +14690,8 @@ class Freezer(Equipment):
         registry=_REGISTRY,
         label='Freezer',
         definition='A piece of `Equipment` that maintains an internal temperature below the freezing point of water.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -14129,6 +14709,8 @@ class FrequencySensor(Sensor):
         registry=_REGISTRY,
         label='Frequency Sensor',
         definition='A sensor used to measure the frequency of a signal or mechanical vibration',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class FumeHood(Equipment):
@@ -14143,6 +14725,8 @@ class FumeHood(Equipment):
         registry=_REGISTRY,
         label='Fume hood',
         definition='A piece of `Equipment` that is typically mounted over a work area (e.g., a space, table, or shelf) and conducts unwanted gases away from the area.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -14179,6 +14763,8 @@ class Function(Concept):
         registry=_REGISTRY,
         label='Function',
         definition='A `Function` is used to model transfer and/or transformation of information (i.e., `Property`). It has relations to input Properties and output Properties. The actual algorithms that perform the transformations are described in CDL and are out of scope of the 223 standard.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Function_has_output, _P_Function_has_input,),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
@@ -14261,6 +14847,8 @@ class FunctionDatatype(StructuredDatatype):
         registry=_REGISTRY,
         label='Function Data Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StructuredDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_FunctionDatatype_arg_type, _P_FunctionDatatype_function_arity, _P_FunctionDatatype_return_type,),
     )
 
@@ -14371,6 +14959,8 @@ class Furnace(Equipment):
         registry=_REGISTRY,
         label='Furnace',
         definition='A piece of `Equipment` that converts fuel or electrical energy into heat.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -14389,6 +14979,8 @@ class Gate(Valve_2):
         registry=_REGISTRY,
         label='Gate',
         definition='Tool to control water flow and isolate sections',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_PressureSensor_2_observes = _PropertySpec(
@@ -14414,6 +15006,8 @@ class PressureSensor_2(Sensor):
         registry=_REGISTRY,
         label='Pressure sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of pressure.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_PressureSensor_2_observes,),
     )
 
@@ -14510,6 +15104,8 @@ class GaugePressureSensor(PressureSensor_2):
         registry=_REGISTRY,
         label='Gauge pressure sensor',
         definition='A `PressureSensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of pressure relative to atmospheric pressure.\nSuch sensors are commonly used to monitor compressed gas cylinders, for example, where a gauge reading of zero signifies that the measured pressure\nis equal to the atmospheric pressure, not a vacuum.',
+        parent_iris=('http://data.ashrae.org/standard223#PressureSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#PressureSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_GaugePressureSensor_observes,),
     )
 
@@ -14593,6 +15189,8 @@ class Generator(Equipment):
         registry=_REGISTRY,
         label='Generator',
         definition='A piece of `Equipment` that converts non-electric energy into electric energy.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -14610,6 +15208,8 @@ class GlobeValve(Valve_2):
         registry=_REGISTRY,
         label='Globe Valve',
         definition='A linear-motion valve primarily used for stopping, starting, and regulating (throttling) fluid flow',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class GranularActivatedCarbonAdsorber(UnitProcess):
@@ -14624,6 +15224,8 @@ class GranularActivatedCarbonAdsorber(UnitProcess):
         registry=_REGISTRY,
         label='Granular Activated Carbon (GAC) Adsorber',
         definition='A unit that uses granulated activated carbon to adsorb impurities from water.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_GACFiltration'),),
     )
 
@@ -14691,6 +15293,8 @@ class GraphMetaData(_EntityBase):
         registry=_REGISTRY,
         label='Graph Metadata',
         definition=None,
+        parent_iris=('http://www.w3.org/2002/07/owl#Thing',),
+        ancestor_iris=('http://www.w3.org/2002/07/owl#Thing',),
     )
 
 class GraphRole(_EntityBase):
@@ -14705,6 +15309,8 @@ class GraphRole(_EntityBase):
         registry=_REGISTRY,
         label='Graph role',
         definition=None,
+        parent_iris=('http://www.w3.org/2002/07/owl#Thing',),
+        ancestor_iris=('http://www.w3.org/2002/07/owl#Thing',),
     )
 
 class GravityBeltThickener(BeltThickener):
@@ -14719,6 +15325,8 @@ class GravityBeltThickener(BeltThickener):
         registry=_REGISTRY,
         label='Gravity Belt Thickener',
         definition='A belt thickener in which gravity drains water through a porous moving belt. It uses filtration rather than the sedimentation mechanism of a conventional gravity thickener.',
+        parent_iris=('https://watermetadata.org/ontology/watr#BeltThickener',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#BeltThickener', 'https://watermetadata.org/ontology/watr#Thickener', 'https://watermetadata.org/ontology/watr#UnitProcess'),
     )
 
 class GravityThickener(Thickener):
@@ -14733,6 +15341,8 @@ class GravityThickener(Thickener):
         registry=_REGISTRY,
         label='Gravity Thickener',
         definition='A thickener that uses gravity to separate solids from liquids',
+        parent_iris=('https://watermetadata.org/ontology/watr#Thickener',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Thickener', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         cp_constraints=(
             _CPConstraint(operator='and', children=(
                 _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', medium_options=(), min_count=1, max_count=None)),
@@ -14806,6 +15416,8 @@ class Grinder(UnitProcess):
         registry=_REGISTRY,
         label='Grinder',
         definition='Machine that shreds solid waste into tiny particles',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Comminution'),),
     )
 
@@ -14873,6 +15485,8 @@ class GritChamber(UnitProcess):
         registry=_REGISTRY,
         label='Grit Chamber',
         definition='A chamber used to remove grit from wastewater',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Settling'), ('has_treatment_objective', 'TreatmentObjective_SuspendedSolidsRemoval')),
     )
 
@@ -14940,6 +15554,8 @@ class GroundCoordinateSystem(AerospaceCoordinateSystem):
         registry=_REGISTRY,
         label='Ground coordinate system',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/AerospaceCoordinateSystem',),
+        ancestor_iris=('http://qudt.org/schema/qudt/AerospaceCoordinateSystem', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/CoordinateSystem', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 class GroundToAirHeatPump(HeatPump):
@@ -14954,6 +15570,8 @@ class GroundToAirHeatPump(HeatPump):
         registry=_REGISTRY,
         label='Ground-to-air heat pump',
         definition='A `HeatPump` that transfers thermal energy between air and the ground.',
+        parent_iris=('http://data.ashrae.org/standard223#HeatPump',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatPump', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Medium-ThermalContact', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -14981,6 +15599,8 @@ class OrderedCollection(Collection):
         registry=_REGISTRY,
         label='Ordered Collection Kind',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Collection',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Collection', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_OrderedCollection_ordering_relation,),
     )
 
@@ -15081,6 +15701,8 @@ class OrderedTree(OrderedCollection, Tree):
         registry=_REGISTRY,
         label='Ordered Tree Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/OrderedCollection', 'http://qudt.org/schema/qudt/Tree'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Collection', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Graph', 'http://qudt.org/schema/qudt/OrderedCollection', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tree', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
     def __init__(
@@ -15179,6 +15801,8 @@ class Heap(OrderedTree):
         registry=_REGISTRY,
         label='Heap',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/OrderedTree',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Collection', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Graph', 'http://qudt.org/schema/qudt/OrderedCollection', 'http://qudt.org/schema/qudt/OrderedTree', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tree', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class HeatingCoil(Coil):
@@ -15193,6 +15817,8 @@ class HeatingCoil(Coil):
         registry=_REGISTRY,
         label='Heating coil',
         definition='A `Coil` that is specifically used to heat air.',
+        parent_iris=('http://data.ashrae.org/standard223#Coil',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Coil', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_HeterogenousArray_datatype = _PropertySpec(
@@ -15217,6 +15843,8 @@ class HeterogenousArray(Array):
         registry=_REGISTRY,
         label='Heterogenous Array',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Array',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_HeterogenousArray_datatype,),
     )
 
@@ -15325,6 +15953,8 @@ class TextStringType(StringType):
         registry=_REGISTRY,
         label='Text String Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StringType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StringType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_HexBinaryType_length = _PropertySpec(
@@ -15375,6 +16005,8 @@ class HexBinaryType(TextStringType):
         registry=_REGISTRY,
         label='Hexidecimal Binary Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TextStringType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StringType', 'http://qudt.org/schema/qudt/TextStringType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_HexBinaryType_length, _P_HexBinaryType_max_length, _P_HexBinaryType_min_length, _P_HexBinaryType_pattern,),
     )
 
@@ -15514,6 +16146,8 @@ class HomogeneousArray(Array):
         registry=_REGISTRY,
         label='Homogeneous Array',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Array',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class HotWaterCoil(HeatingCoil):
@@ -15528,6 +16162,8 @@ class HotWaterCoil(HeatingCoil):
         registry=_REGISTRY,
         label='HotWater/ReheatCoil',
         definition='A hot water coil connected to a control valve.',
+        parent_iris=('http://data.ashrae.org/standard223#HeatingCoil',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Coil', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatingCoil', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class HotWaterValve(Valve_2):
@@ -15542,6 +16178,8 @@ class HotWaterValve(Valve_2):
         registry=_REGISTRY,
         label='Hot Water Valve',
         definition='A valve that controls the flow of hot water through a hot water coil.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='opaque'),
@@ -15562,6 +16200,8 @@ class Humidifier(Equipment):
         registry=_REGISTRY,
         label='Humidifier',
         definition='A piece of `Equipment` that adds moisture to a gas (e.g., air).',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Humidistat(Equipment):
@@ -15576,6 +16216,8 @@ class Humidistat(Equipment):
         registry=_REGISTRY,
         label='Humidistat',
         definition='A piece of `Equipment` that measures the relative humidity of the air and then uses this information to automatically adjust the amount of moisture in air.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_HumiditySensor_observes = _PropertySpec(
@@ -15601,6 +16243,8 @@ class HumiditySensor(Sensor):
         registry=_REGISTRY,
         label='Humidity sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of relative or absolute humidity.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_HumiditySensor_observes,),
     )
 
@@ -15684,6 +16328,8 @@ class HydronicHeatExchanger(Equipment):
         registry=_REGISTRY,
         label='Hydronic heat exchanger',
         definition='A piece of `Equipment` that transfers heat from one liquid stream to another while keeping the two media separate.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=0, max_count=0),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=None),
@@ -15703,6 +16349,8 @@ class IceMaker(Equipment):
         registry=_REGISTRY,
         label='Ice maker',
         definition='A piece of `Equipment` that makes ice.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -15730,6 +16378,8 @@ class IconicCue(ModalCue):
         registry=_REGISTRY,
         label='Iconic enumeration literal',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ModalCue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/ModalCue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_IconicCue_image,),
     )
 
@@ -15802,6 +16452,8 @@ class IlluminanceSensor(LightSensor):
         registry=_REGISTRY,
         label='Illuminance sensor',
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents an illuminance, defined as the areal density of the\nluminous flux incident at a point on a surface.',
+        parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#LightSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_IlluminanceSensor_observes,),
     )
 
@@ -15885,6 +16537,8 @@ class SepticTank(SedimentationTank):
         registry=_REGISTRY,
         label='Septic Tank',
         definition='A septic tank for on-site wastewater treatment',
+        parent_iris=('https://watermetadata.org/ontology/watr#SedimentationTank',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#SedimentationTank', 'https://watermetadata.org/ontology/watr#SeparationTank', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
     )
 
 class ImhoffTank(SepticTank):
@@ -15899,6 +16553,8 @@ class ImhoffTank(SepticTank):
         registry=_REGISTRY,
         label='Imhoff Tank',
         definition='A sedimentation tank specifically designed for septic treatment',
+        parent_iris=('https://watermetadata.org/ontology/watr#SepticTank',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#SedimentationTank', 'https://watermetadata.org/ontology/watr#SeparationTank', 'https://watermetadata.org/ontology/watr#SepticTank', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
     )
 
 class ReferenceFrame(Concept_2):
@@ -15913,6 +16569,8 @@ class ReferenceFrame(Concept_2):
         registry=_REGISTRY,
         label='Reference Frame',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class InertialReferenceFrame(ReferenceFrame):
@@ -15927,6 +16585,8 @@ class InertialReferenceFrame(ReferenceFrame):
         registry=_REGISTRY,
         label='Inertial reference frame',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ReferenceFrame',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/ReferenceFrame', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class InertialCoordinateFrame(InertialReferenceFrame):
@@ -15941,6 +16601,8 @@ class InertialCoordinateFrame(InertialReferenceFrame):
         registry=_REGISTRY,
         label='Inertial Coordinate Frame',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/InertialReferenceFrame',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/InertialReferenceFrame', 'http://qudt.org/schema/qudt/ReferenceFrame', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_InletConnectionPoint_maps_to = _PropertySpec(
@@ -15976,6 +16638,8 @@ class InletConnectionPoint(ConnectionPoint):
         registry=_REGISTRY,
         label='Inlet connection point',
         definition='An `InletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow into the associated `Connectable`.',
+        parent_iris=('http://data.ashrae.org/standard223#ConnectionPoint',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ConnectionPoint', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_InletConnectionPoint_maps_to, _P_InletConnectionPoint_paired_with,),
     )
 
@@ -16033,6 +16697,8 @@ class IntegerEncodingType(Encoding):
         registry=_REGISTRY,
         label='Integer Encoding',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Encoding',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Encoding', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 _P_IntegerListShape_first = _PropertySpec(
@@ -16060,6 +16726,8 @@ class IntegerListShape(List):
         registry=_REGISTRY,
         label=None,
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/List',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/List', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_IntegerListShape_first, _P_IntegerListShape_rest,),
     )
 
@@ -16137,6 +16805,8 @@ class InterpolatedTable(Table):
         registry=_REGISTRY,
         label='Interpolated Table Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Table',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Table', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class IntervalScale(Scale):
@@ -16151,6 +16821,8 @@ class IntervalScale(Scale):
         registry=_REGISTRY,
         label='Interval scale',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Scale',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Scale', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class IonExchangeMembrane(UnitProcess):
@@ -16165,6 +16837,8 @@ class IonExchangeMembrane(UnitProcess):
         registry=_REGISTRY,
         label='Ion Exchange Membrane',
         definition='A membrane that selectively allows ions to pass through while blocking other substances',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_IonExchange'),),
     )
 
@@ -16261,6 +16935,8 @@ class Junction(Connectable):
         registry=_REGISTRY,
         label='Junction',
         definition='A `Junction` is a modeling construct used when a branching point within a `Connection` (see {s223:Connection}) is of significance,\nsuch as specifying the observation location of a `Sensor`, or when a modeler wants to expose a branch point within a containing piece of `Equipment`.\nWhen a `Junction` is used, what might have been modeled as a single, branched `Connection`\nis separated into three or more separate connections, all tied together with the `Junction` and its associated connection points.\n\n`Junction` is a subclass of `Connectable`, which gives it the ability to have connection points, but unlike `Equipment` (and like `Connection`)\nit is not allowed to change the `Substance-Medium` that passes through it. This is why `Junction` is a sibling class to `Equipment` and not a subclass.\nThis constraint to maintain compatible mediums among a `Junction` and all of its associated `ConnectionPoint`s gives rise to multiple\nvalidation test cases, where the specified medium might be a pure medium, or a mixture with constituents (see {s223:Substance-Medium}).',
+        parent_iris=('http://data.ashrae.org/standard223#Connectable',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Junction_medium, _P_Junction_has_connection_point,),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
@@ -16339,6 +17015,8 @@ class KinestheticCue(ModalCue):
         registry=_REGISTRY,
         label='Kinesthetic Cue',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ModalCue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/ModalCue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_KinestheticCue_code,),
     )
 
@@ -16399,6 +17077,8 @@ class LargeObject(CompositeDatatype):
         registry=_REGISTRY,
         label='Large object',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class LargeObjectType(CompositeDatatype):
@@ -16413,6 +17093,8 @@ class LargeObjectType(CompositeDatatype):
         registry=_REGISTRY,
         label='Large object',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class LatexString(_EntityBase):
@@ -16427,6 +17109,8 @@ class LatexString(_EntityBase):
         registry=_REGISTRY,
         label='Latex String',
         definition=None,
+        parent_iris=('http://www.w3.org/2001/XMLSchema#string',),
+        ancestor_iris=('http://www.w3.org/2001/XMLSchema#string',),
     )
 
 class LevelSensor(Sensor):
@@ -16441,6 +17125,8 @@ class LevelSensor(Sensor):
         registry=_REGISTRY,
         label='Level Sensor',
         definition='A sensor used to detect the level of liquids or solids in a tank',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class LimitType(EnumeratedValue):
@@ -16455,6 +17141,8 @@ class LimitType(EnumeratedValue):
         registry=_REGISTRY,
         label='Limit type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class LocalCoordinateSystem(TrajectoryCoordinateSystem):
@@ -16469,6 +17157,8 @@ class LocalCoordinateSystem(TrajectoryCoordinateSystem):
         registry=_REGISTRY,
         label='Local Coordinate System',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TrajectoryCoordinateSystem',),
+        ancestor_iris=('http://qudt.org/schema/qudt/AerospaceCoordinateSystem', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/CoordinateSystem', 'http://qudt.org/schema/qudt/TrajectoryCoordinateSystem', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 class LogarithmicUnit(DimensionlessUnit):
@@ -16483,6 +17173,8 @@ class LogarithmicUnit(DimensionlessUnit):
         registry=_REGISTRY,
         label='Logarithmic Unit',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DimensionlessUnit',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DimensionlessUnit', 'http://qudt.org/schema/qudt/Unit', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class LongIntegerType(IntegerDatatype):
@@ -16497,6 +17189,8 @@ class LongIntegerType(IntegerDatatype):
         registry=_REGISTRY,
         label='Long Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/IntegerDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Luminaire(Equipment):
@@ -16511,6 +17205,8 @@ class Luminaire(Equipment):
         registry=_REGISTRY,
         label='Luminaire',
         definition='A piece of `Equipment` consisting of a light source(s) and ballast(s) or driver(s) (when applicable), together with the parts designed to distribute the light, to position and protect the light source(s), and to connect the light source(s) to the power supply. Also known as a light fixture.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#EM-Light', medium_options=(), min_count=1, max_count=None),
@@ -16529,6 +17225,8 @@ class LunarCoordinateSystem(TrajectoryCoordinateSystem):
         registry=_REGISTRY,
         label='Lunar Coordinate System',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TrajectoryCoordinateSystem',),
+        ancestor_iris=('http://qudt.org/schema/qudt/AerospaceCoordinateSystem', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/CoordinateSystem', 'http://qudt.org/schema/qudt/TrajectoryCoordinateSystem', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 class MajorMinorType(EnumeratedValue):
@@ -16543,6 +17241,8 @@ class MajorMinorType(EnumeratedValue):
         registry=_REGISTRY,
         label='Major minor type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class ManualMeasurementPort(Sensor):
@@ -16557,6 +17257,8 @@ class ManualMeasurementPort(Sensor):
         registry=_REGISTRY,
         label='Manual Measurement Port',
         definition='A location where manual measurements are taken',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class MarsCoordinateSystem(TrajectoryCoordinateSystem):
@@ -16571,6 +17273,8 @@ class MarsCoordinateSystem(TrajectoryCoordinateSystem):
         registry=_REGISTRY,
         label='Mars Coordinate System Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TrajectoryCoordinateSystem',),
+        ancestor_iris=('http://qudt.org/schema/qudt/AerospaceCoordinateSystem', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/CoordinateSystem', 'http://qudt.org/schema/qudt/TrajectoryCoordinateSystem', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 _P_MassPropertiesArray_has_quantity_kinds_list = _PropertySpec(
@@ -16592,6 +17296,8 @@ class MassPropertiesArray(HeterogenousArray):
         registry=_REGISTRY,
         label='Mass Properties Array',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/HeterogenousArray',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/HeterogenousArray', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_MassPropertiesArray_has_quantity_kinds_list,),
     )
 
@@ -16702,6 +17408,8 @@ class MathsFunctionType(Concept_2):
         registry=_REGISTRY,
         label='Maths Function Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Matrix(Array):
@@ -16716,6 +17424,8 @@ class Matrix(Array):
         registry=_REGISTRY,
         label='Matrix',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Array',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_MatrixElementOrder_by_row = _PropertySpec(
@@ -16739,6 +17449,8 @@ class MatrixElementOrder(StructuredDatatype):
         registry=_REGISTRY,
         label='Matrix Element Order',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StructuredDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_MatrixElementOrder_by_row,),
     )
 
@@ -16839,6 +17551,8 @@ class MediaFiltrationUnit(Filter):
         registry=_REGISTRY,
         label='MediaFiltration Unit',
         definition='A filter system that uses a bed of material to filter out contaminants',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_MediaFiltration'),),
     )
 
@@ -16854,6 +17568,8 @@ class MembraneAeratedBiofilmReaactor(Reactor):
         registry=_REGISTRY,
         label='Membrane Aerated Biofilm Reactor',
         definition='A reactor that grows biofilm on membranes supplied with air',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Aeration'),),
     )
 
@@ -16921,6 +17637,8 @@ class MembraneBioreactor(Filter, Reactor, SeparationTank):
         registry=_REGISTRY,
         label='Membrane Bioreactor',
         definition='A filter system that combines a membrane process like microfiltration with a biological reactor',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#SeparationTank'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#SeparationTank', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Biofiltration'),),
     )
 
@@ -16936,6 +17654,8 @@ class MemoryOrderType(EnumeratedValue):
         registry=_REGISTRY,
         label='Memory order type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class MicrofiltrationUnit(Filter):
@@ -16950,6 +17670,8 @@ class MicrofiltrationUnit(Filter):
         registry=_REGISTRY,
         label='Microfiltration Unit',
         definition='A filter system which removes contaminants from a liquid by passing it through a microporous membrane',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Microfiltration'),),
     )
 
@@ -16965,6 +17687,8 @@ class MicrowaveOven(ElectricOven):
         registry=_REGISTRY,
         label='Microwave oven',
         definition='An `ElectricOven` that cooks food by exposing it to electromagnetic radiation in the microwave frequency range.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectricOven',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricOven', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -16982,6 +17706,8 @@ class MixingBasin(Reactor):
         registry=_REGISTRY,
         label='Mixing Basin',
         definition='A tank where mixed liquor is stirred without aeration',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Mixing'),),
     )
 
@@ -17057,6 +17783,8 @@ class ModalEnumeration(Enumeration):
         registry=_REGISTRY,
         label='Modal Enumeration',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Enumeration',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Enumeration', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_ModalEnumeration_default_value,),
     )
 
@@ -17167,6 +17895,8 @@ class MolybdenumSulfideBasedMembrane(Filter):
         registry=_REGISTRY,
         label='Molybdenum Sulfide (MoS2)-based Membrane',
         definition='A specific material demonstrating effectiveness in removing heavy metals and oxyanions with high selectivity.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#UnitProcess'),
     )
 
 class Monitor(ElectronicDisplay):
@@ -17181,6 +17911,8 @@ class Monitor(ElectronicDisplay):
         registry=_REGISTRY,
         label='Monitor',
         definition='An `ElectronicDisplay` designed primarily for the output of visual information supplied by a `Computer`.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectronicDisplay',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectronicDisplay', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Motor(Equipment):
@@ -17195,6 +17927,8 @@ class Motor(Equipment):
         registry=_REGISTRY,
         label='Motor',
         definition='A piece of `Equipment` that converts electrical energy into mechanical energy.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -17212,6 +17946,8 @@ class MovingBedBioreactor(Filter, Reactor):
         registry=_REGISTRY,
         label='Moving Bed Bioreactor (MBBR)',
         definition='MBBR process using suspended growth media a tank',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#Reactor'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Biofiltration'),),
     )
 
@@ -17227,6 +17963,8 @@ class MultiDimensionalArray(Array):
         registry=_REGISTRY,
         label='Multi-Dimensional Array Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Array',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_MultiDimensionalDataFormat_descriptor = _PropertySpec(
@@ -17249,6 +17987,8 @@ class MultiDimensionalDataFormat(CompositeDatatype):
         registry=_REGISTRY,
         label='Multi dimensional data format',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_MultiDimensionalDataFormat_descriptor,),
     )
 
@@ -17393,6 +18133,8 @@ class MultiModalEnumeration(Enumeration):
         registry=_REGISTRY,
         label='Multi modal enumeration',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Enumeration',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Enumeration', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_MultiModalEnumeration_aural_cue_enumeration, _P_MultiModalEnumeration_iconic_cue_enumeration, _P_MultiModalEnumeration_kinesthetic_cue_enumeration, _P_MultiModalEnumeration_modal_cue_enumeration, _P_MultiModalEnumeration_visual_cue_enumeration,),
     )
 
@@ -17565,6 +18307,8 @@ class MultiModalType(EnumeratedValue):
         registry=_REGISTRY,
         label='Multi Modal Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_MultiModalType_aural_cue, _P_MultiModalType_iconic_cue, _P_MultiModalType_kinesthetic_cue, _P_MultiModalType_modal_cue, _P_MultiModalType_visual_cue,),
     )
 
@@ -17643,6 +18387,8 @@ class MultiSet(Collection):
         registry=_REGISTRY,
         label='Bag',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Collection',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Collection', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class MultifunctionalMembrane(Filter):
@@ -17657,6 +18403,8 @@ class MultifunctionalMembrane(Filter):
         registry=_REGISTRY,
         label='Multifunctional Membrane',
         definition='A membrane integrating multiple processes (e.g., reduction, adsorption, filtration) for selective removal and recovery of contaminants.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#UnitProcess'),
     )
 
 class NIST_SP811_Comment(Comment):
@@ -17671,6 +18419,8 @@ class NIST_SP811_Comment(Comment):
         registry=_REGISTRY,
         label='NIST SP~811 Comment',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Comment',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Comment', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_N_TupleType_element_datatype = _PropertySpec(
@@ -17694,6 +18444,8 @@ class N_TupleType(Tuple):
         registry=_REGISTRY,
         label='N-Tuple Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Tuple',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_N_TupleType_element_datatype,),
     )
 
@@ -17800,6 +18552,8 @@ class NanofiltrationUnit(Filter):
         registry=_REGISTRY,
         label='Nanofiltration Unit',
         definition='A membrane filter with a pore size between ultrafiltration and reverse osmosis, which rejects divalent ions and larger organic molecules while passing most monovalent salts',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#UnitProcess'),
     )
 
 class NonRotatingInertialFrame(InertialReferenceFrame):
@@ -17814,6 +18568,8 @@ class NonRotatingInertialFrame(InertialReferenceFrame):
         registry=_REGISTRY,
         label='Non Rotating Coordinate Frame',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/InertialReferenceFrame',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/InertialReferenceFrame', 'http://qudt.org/schema/qudt/ReferenceFrame', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_NumericListShape_rest = _PropertySpec(
@@ -17840,6 +18596,8 @@ class NumericListShape(_EntityBase):
         registry=_REGISTRY,
         label=None,
         definition=None,
+        parent_iris=('http://www.w3.org/1999/02/22-rdf-syntax-ns#List',),
+        ancestor_iris=('http://www.w3.org/1999/02/22-rdf-syntax-ns#List',),
         properties=(_P_NumericListShape_rest, _P_NumericListShape_first,),
     )
 
@@ -17885,6 +18643,8 @@ class OccupancySensor(Sensor):
         registry=_REGISTRY,
         label='Occupancy sensor',
         definition='A `Sensor` that `observes` an `ObservableProperty` that represents an attribute of occupancy in a space.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_OccupantCountSensor_observes = _PropertySpec(
@@ -17911,6 +18671,8 @@ class OccupantCountSensor(OccupancySensor):
         registry=_REGISTRY,
         label='Occupant count sensor',
         definition='An `OccupancySensor` that `observes` a `QuantifiableObservableProperty` that represents a population, usually of humans, within\n  a sensing region.',
+        parent_iris=('http://data.ashrae.org/standard223#OccupancySensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#OccupancySensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_OccupantCountSensor_observes,),
     )
 
@@ -18005,6 +18767,8 @@ class OccupantMotionSensor(OccupancySensor):
         registry=_REGISTRY,
         label='Occupant motion sensor',
         definition='An `OccupancySensor` that `observes` an `EnumeratedObservableProperty` that represents motion within a sensing region.',
+        parent_iris=('http://data.ashrae.org/standard223#OccupancySensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#OccupancySensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_OccupantMotionSensor_observes,),
     )
 
@@ -18099,6 +18863,8 @@ class OccupantPresenceSensor(OccupancySensor):
         registry=_REGISTRY,
         label='Occupant presence sensor',
         definition='An `OccupancySensor` that `observes` an `EnumeratedObservableProperty` that represents presence within a sensing region.',
+        parent_iris=('http://data.ashrae.org/standard223#OccupancySensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#OccupancySensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_OccupantPresenceSensor_observes,),
     )
 
@@ -18191,6 +18957,8 @@ class UnsignedType(NumericType):
         registry=_REGISTRY,
         label='Unsigned Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/NumericType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_UnsignedType_signedness,),
     )
 
@@ -18313,6 +19081,8 @@ class UnsignedIntegerType(IntegerDatatype, UnsignedType):
         registry=_REGISTRY,
         label='Unsigned Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/UnsignedType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/UnsignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class OctetType(UnsignedIntegerType):
@@ -18327,6 +19097,8 @@ class OctetType(UnsignedIntegerType):
         registry=_REGISTRY,
         label='Octet Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/UnsignedIntegerType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/UnsignedIntegerType', 'http://qudt.org/schema/qudt/UnsignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class OffOnStateTypeEnumeration(Enumeration):
@@ -18341,6 +19113,8 @@ class OffOnStateTypeEnumeration(Enumeration):
         registry=_REGISTRY,
         label=None,
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Enumeration',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Enumeration', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class OnOffStateType(DiscreteState):
@@ -18355,6 +19129,8 @@ class OnOffStateType(DiscreteState):
         registry=_REGISTRY,
         label='On off state type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DiscreteState',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/DiscreteState', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class OnOffStateTypeEnumeration(Enumeration):
@@ -18369,6 +19145,8 @@ class OnOffStateTypeEnumeration(Enumeration):
         registry=_REGISTRY,
         label=None,
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Enumeration',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Enumeration', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 _P_OrderedType_literal = _PropertySpec(
@@ -18393,6 +19171,8 @@ class OrderedType(EnumeratedValue):
         registry=_REGISTRY,
         label='Ordered type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_OrderedType_literal,),
     )
 
@@ -18461,6 +19241,8 @@ class OrdinalScale(Scale):
         registry=_REGISTRY,
         label='Ordinal scale',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Scale',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Scale', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_OrdinalScale_order,),
     )
 
@@ -18551,6 +19333,8 @@ class Organization(Concept_2):
         registry=_REGISTRY,
         label='Organization',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Organization_url,),
     )
 
@@ -18633,6 +19417,8 @@ class PhysicalSpace(Concept):
         registry=_REGISTRY,
         label='Physical space',
         definition='An architectural concept representing a room, a part of a room, a collection of rooms, or any other physical region in a building. PhysicalSpaces may be grouped to define larger `PhysicalSpace`s using the relation `contains` (see {s223:contains}).',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_PhysicalSpace_encloses, _P_PhysicalSpace_contains_,),
     )
 
@@ -18682,6 +19468,8 @@ class OutdoorPhysicalSpace(PhysicalSpace):
         registry=_REGISTRY,
         label='Outdoor physical space',
         definition='A `PhysicalSpace` that is outside of the building where, for example, outdoor ambient properties might be measured, within a suitably defined `DomainSpace`.',
+        parent_iris=('http://data.ashrae.org/standard223#PhysicalSpace',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#PhysicalSpace', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_OutletConnectionPoint_paired_with = _PropertySpec(
@@ -18717,6 +19505,8 @@ class OutletConnectionPoint(ConnectionPoint):
         registry=_REGISTRY,
         label='Outlet connection point',
         definition='An `OutletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow out of the associated `Connectable`.',
+        parent_iris=('http://data.ashrae.org/standard223#ConnectionPoint',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ConnectionPoint', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_OutletConnectionPoint_paired_with, _P_OutletConnectionPoint_maps_to,),
     )
 
@@ -18774,6 +19564,8 @@ class OxidationDitch(Reactor):
         registry=_REGISTRY,
         label='Oxidation Ditch',
         definition='Modified activated sludge process that uses a ring-shaped channel to biologically remove pollutants',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_ActivatedSludge'), ('has_treatment_objective', 'TreatmentObjective_OrganicsRemoval')),
     )
 
@@ -18841,6 +19633,8 @@ class OxygenDemandSensor(Sensor):
         registry=_REGISTRY,
         label='OxygenDemand Sensor',
         definition='A sensor used to measure Chemical Oxygen Demand (COD) and Biological Oxygen Demand (BOD)',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class OxygenMeter(ConcentrationSensor_2):
@@ -18855,6 +19649,8 @@ class OxygenMeter(ConcentrationSensor_2):
         registry=_REGISTRY,
         label='Oxygen Meter',
         definition='A sensor used to measure the concentration of oxygen',
+        parent_iris=('http://data.ashrae.org/standard223#ConcentrationSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#ConcentrationSensor', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class OzonationUnit(UnitProcess):
@@ -18869,6 +19665,8 @@ class OzonationUnit(UnitProcess):
         registry=_REGISTRY,
         label='Ozonation Unit',
         definition='A unit that uses ozone for water treatment.',
+        parent_iris=('https://watermetadata.org/ontology/watr#UnitProcess',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Ozonation'),),
     )
 
@@ -18936,6 +19734,8 @@ class PaddingType(EnumeratedValue):
         registry=_REGISTRY,
         label='Padding type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class ParameterModifiabilityType(EnumeratedValue):
@@ -18950,6 +19750,8 @@ class ParameterModifiabilityType(EnumeratedValue):
         registry=_REGISTRY,
         label='Parameter modifiability type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class PartialArray(Array):
@@ -18964,6 +19766,8 @@ class PartialArray(Array):
         registry=_REGISTRY,
         label='Partial Array',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Array',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_ParticulateSensor_of_substance = _PropertySpec(
@@ -19007,6 +19811,8 @@ class ParticulateSensor(Sensor):
         registry=_REGISTRY,
         label='Particulate sensor',
         definition="A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents an amount of a particulate in a medium, in contrast\nto a `ConcentrationSensor` that `observes` a `QuantifiableObservableProperty` that represents a concentration of a miscible constituent in a medium\n(see {s223:ConcentrationSensor}).\n\nThe 223 standard does not constrain the `Unit` or `QuantityKind` reported by a `ParticulateSensor`, but possible\n`QuantityKind`s include `Density` (mass per volume), `ParticleNumberDensity` (count per volume), and `DimensionlessRatio` (with units such as `PPM` or\n`PPB`). Some particulate sensors may claim to report a raw count of particles, for which a `QuantityKind` of `Count` could be used, but the required\ncontext for such a measurement should be provided in the sensor's documentation to specify if it in fact measures a count per volume (e.g., `ParticleNumberDensity`),\ntime (e.g., `CountRate` or `ParticleCurrent`), or some\nother combination. Explicitly declaring the `QuantityKind` of a sensor's output is preferable to relying on implicit assumptions.",
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ParticulateSensor_of_substance, _P_ParticulateSensor_observes,),
     )
 
@@ -19095,6 +19901,8 @@ class Party(_EntityBase):
         registry=_REGISTRY,
         label='Party',
         definition=None,
+        parent_iris=('http://www.w3.org/2002/07/owl#Thing',),
+        ancestor_iris=('http://www.w3.org/2002/07/owl#Thing',),
     )
 
 class PersonalComputer(Computer):
@@ -19109,6 +19917,8 @@ class PersonalComputer(Computer):
         registry=_REGISTRY,
         label='Personal computer',
         definition='A `Computer` designed primarily for use by a single person.',
+        parent_iris=('http://data.ashrae.org/standard223#Computer',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Computer', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -19126,6 +19936,8 @@ class PhotovoltaicModule(Equipment):
         registry=_REGISTRY,
         label='Photovoltaic module',
         definition='A piece of `Equipment` that converts sunlight into electricity.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#EM-Light', medium_options=(), min_count=1, max_count=None),
@@ -19144,6 +19956,8 @@ class PhysicalAddress(CompositeDatatype):
         registry=_REGISTRY,
         label='Physical Address Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_Quantity_has_quantity_kind = _PropertySpec(
@@ -19184,6 +19998,8 @@ class Quantity(Concept_2, Quantifiable, Verifiable):
         registry=_REGISTRY,
         label='Quantity',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Quantifiable', 'http://qudt.org/schema/qudt/Verifiable'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Quantifiable', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Quantity_has_quantity_kind, _P_Quantity_is_delta_quantity, _P_Quantity_quantity_value,),
     )
 
@@ -19413,6 +20229,8 @@ class PhysicalConstant(Quantity):
         registry=_REGISTRY,
         label='Physical Constant',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Quantity',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Quantifiable', 'http://qudt.org/schema/qudt/Quantity', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_PhysicalConstant_alt_symbol, _P_PhysicalConstant_applicable_system, _P_PhysicalConstant_applicable_unit, _P_PhysicalConstant_dbpedia_match, _P_PhysicalConstant_eclass_code, _P_PhysicalConstant_exact_constant, _P_PhysicalConstant_has_dimension_vector, _P_PhysicalConstant_iec61360_code, _P_PhysicalConstant_iso_normative_reference, _P_PhysicalConstant_latex_definition, _P_PhysicalConstant_latex_symbol, _P_PhysicalConstant_math_m_ldefinition, _P_PhysicalConstant_normative_reference, _P_PhysicalConstant_si_exact_match, _P_PhysicalConstant_symbol, _P_PhysicalConstant_ucum_code,),
     )
 
@@ -19578,6 +20396,8 @@ class Pipe(Connection):
         registry=_REGISTRY,
         label='Pipe',
         definition='A `Connection` that is used primarily to transport liquids and gases such as water, sewage, natural gas, and compressed air.',
+        parent_iris=('http://data.ashrae.org/standard223#Connection',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class PlaneAngleUnit(AngleUnit):
@@ -19592,6 +20412,8 @@ class PlaneAngleUnit(AngleUnit):
         registry=_REGISTRY,
         label='Plane Angle Unit',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/AngleUnit',),
+        ancestor_iris=('http://qudt.org/schema/qudt/AngleUnit', 'http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DimensionlessUnit', 'http://qudt.org/schema/qudt/Unit', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class PlugFlowReactor(Reactor):
@@ -19606,6 +20428,8 @@ class PlugFlowReactor(Reactor):
         registry=_REGISTRY,
         label='PlugFlowReactor',
         definition='A type of reactor where the fluid flows in one direction through the tube',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
@@ -19624,6 +20448,8 @@ class PlugValve(Valve_2):
         registry=_REGISTRY,
         label='Plug Valve',
         definition='A valve with cylindrical or conically tapered plugs which can be rotated inside the valve body to control flow through the valve',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class PolarCoordinates(Coordinates):
@@ -19638,6 +20464,8 @@ class PolarCoordinates(Coordinates):
         registry=_REGISTRY,
         label='Polar Coordinate System',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Coordinates',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Coordinates', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class PolarCoordinatesType(CoordinateSystem):
@@ -19652,6 +20480,8 @@ class PolarCoordinatesType(CoordinateSystem):
         registry=_REGISTRY,
         label='Polar Coordinate System Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CoordinateSystem',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/CoordinateSystem', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 class Polarity(EnumeratedValue):
@@ -19666,6 +20496,8 @@ class Polarity(EnumeratedValue):
         registry=_REGISTRY,
         label='Polarity',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class Pond(Equipment):
@@ -19680,6 +20512,8 @@ class Pond(Equipment):
         registry=_REGISTRY,
         label='Pond',
         definition='A body of still water smaller than a lake, used for treatment or storage.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class PositiveBigIntegerType(IntegerDatatype, UnsignedType):
@@ -19694,6 +20528,8 @@ class PositiveBigIntegerType(IntegerDatatype, UnsignedType):
         registry=_REGISTRY,
         label='Positive Big Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/UnsignedType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/UnsignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class PositiveIntegerType(IntegerDatatype, UnsignedType):
@@ -19708,6 +20544,8 @@ class PositiveIntegerType(IntegerDatatype, UnsignedType):
         registry=_REGISTRY,
         label='Positive Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/UnsignedType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/UnsignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class PowerOverEthernetPort(Equipment):
@@ -19722,6 +20560,8 @@ class PowerOverEthernetPort(Equipment):
         registry=_REGISTRY,
         label='Power over ethernet port',
         definition='A piece of `Equipment` that connects and is capable of powering one instance of electrical equipment, such as computers and Wi-Fi access points, as well as connect it to an Ethernet network so it can communicate with other equipment and, optionally, with the Internet.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Electricity-DC', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#PowerAndSignal-PoE', medium_options=(), min_count=1, max_count=None),
@@ -19740,6 +20580,8 @@ class PowerOverEthernetSwitch(Equipment):
         registry=_REGISTRY,
         label='Power over Ethernet (PoE) switch',
         definition='A piece of `Equipment` that connects and is capable of powering one or more instances of electrical equipment, such as computers and Wi-Fi access points, as well as connect the equipment to an Ethernet network so they can communicate with each other and, optionally, to the Internet.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#PowerAndSignal-PoE', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
@@ -19758,6 +20600,8 @@ class PressureExchanger(Equipment):
         registry=_REGISTRY,
         label='PressureExchanger',
         definition='A device used to transfer pressure energy from one fluid to another',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class PressureSensor(PressureSensor_2):
@@ -19772,6 +20616,8 @@ class PressureSensor(PressureSensor_2):
         registry=_REGISTRY,
         label='Pressure Sensor',
         definition='A sensor used to measure pressure',
+        parent_iris=('http://data.ashrae.org/standard223#PressureSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#PressureSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Process(_EntityBase):
@@ -19786,6 +20632,8 @@ class Process(_EntityBase):
         registry=_REGISTRY,
         label='Water Treatment Process',
         definition='A physical, chemical, or biological activity performed by a piece of equipment or by a system.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Process_BiologicalProcess(Process):
@@ -19800,6 +20648,8 @@ class Process_BiologicalProcess(Process):
         registry=_REGISTRY,
         label='Biological Process',
         definition='A unit process that utilizes biological activity for water treatment.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process',),
     )
 
 class Process_ActivatedSludge(Process_BiologicalProcess):
@@ -19814,6 +20664,8 @@ class Process_ActivatedSludge(Process_BiologicalProcess):
         registry=_REGISTRY,
         label='Activated Sludge',
         definition='Suspended-growth biological treatment in which biomass is aerated and subsequently separated from the treated water.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-BiologicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess'),
     )
 
 class Process_A2O(Process_ActivatedSludge):
@@ -19828,6 +20680,8 @@ class Process_A2O(Process_ActivatedSludge):
         registry=_REGISTRY,
         label='Anaerobic-Anoxic-Oxic (A2O)',
         definition='Anaerobic-anoxic-aerobic process for simultaneous biological nitrogen and phosphorus removal.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ActivatedSludge',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ActivatedSludge', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess'),
     )
 
 class Process_AO(Process_ActivatedSludge):
@@ -19842,6 +20696,8 @@ class Process_AO(Process_ActivatedSludge):
         registry=_REGISTRY,
         label='Anoxic-Aerobic',
         definition='Two-stage process with anoxic zone followed by aerobic zone for biological nitrogen removal.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ActivatedSludge',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ActivatedSludge', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess'),
     )
 
 class Process_PhysicalProcess(Process):
@@ -19856,6 +20712,8 @@ class Process_PhysicalProcess(Process):
         registry=_REGISTRY,
         label='Physical Process',
         definition='A unit process that relies on physical forces to separate or treat water.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process',),
     )
 
 class Process_Adsorption(Process_PhysicalProcess):
@@ -19870,6 +20728,8 @@ class Process_Adsorption(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Adsorption',
         definition='A process by which substances bind to a surface.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_ChemicalProcess(Process):
@@ -19884,6 +20744,8 @@ class Process_ChemicalProcess(Process):
         registry=_REGISTRY,
         label='Chemical Process',
         definition='A unit process that uses chemical reaction, chemical addition, or both to achieve a desired effect.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process',),
     )
 
 class Process_Oxidation(Process_ChemicalProcess):
@@ -19898,6 +20760,8 @@ class Process_Oxidation(Process_ChemicalProcess):
         registry=_REGISTRY,
         label='Oxidation',
         definition='A unit process that adds oxidizing agents to water to remove contaminants or improve water quality.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ChemicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess'),
     )
 
 class Process_AdvancedOxidation(Process_Oxidation):
@@ -19912,6 +20776,8 @@ class Process_AdvancedOxidation(Process_Oxidation):
         registry=_REGISTRY,
         label='Advanced Oxidation Process (AOP)',
         definition='Processes combining UV light with oxidants (e.g., UV-AOP) to destroy contaminants.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Oxidation',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Oxidation'),
     )
 
 class Process_GasTransfer(Process_PhysicalProcess):
@@ -19926,6 +20792,8 @@ class Process_GasTransfer(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Gas Transfer',
         definition='A unit process that transfers gases, such as oxygen or carbon dioxide, into or out of water.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Aeration(Process_GasTransfer):
@@ -19940,6 +20808,8 @@ class Process_Aeration(Process_GasTransfer):
         registry=_REGISTRY,
         label='Aeration',
         definition='A unit process that aerates (i.e., transfers oxygen into water).',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-GasTransfer',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-GasTransfer', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Digestion(Process_BiologicalProcess):
@@ -19954,6 +20824,8 @@ class Process_Digestion(Process_BiologicalProcess):
         registry=_REGISTRY,
         label='Digestion',
         definition='A biological process that breaks down organic matter over a long duration in a tank.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-BiologicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess'),
     )
 
 class Process_AerobicDigestion(Process_Digestion):
@@ -19968,6 +20840,8 @@ class Process_AerobicDigestion(Process_Digestion):
         registry=_REGISTRY,
         label='Aerobic Digestion',
         definition='A biological process that breaks down organic matter in the presence of oxygen.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Digestion',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess', 'https://watermetadata.org/ontology/watr#Process-Digestion'),
     )
 
 class Process_Cleaning(Process_PhysicalProcess):
@@ -19982,6 +20856,8 @@ class Process_Cleaning(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Cleaning',
         definition='A maintenance-oriented process that removes accumulated solids, foulants, or residual materials from water treatment equipment.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_AirScouring(Process_Cleaning):
@@ -19996,6 +20872,8 @@ class Process_AirScouring(Process_Cleaning):
         registry=_REGISTRY,
         label='Air Scouring',
         definition='A cleaning process that uses injected air to dislodge accumulated foulants or solids from filter media or membrane surfaces.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Cleaning',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Cleaning', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_AnaerobicDigestion(Process_Digestion):
@@ -20010,6 +20888,8 @@ class Process_AnaerobicDigestion(Process_Digestion):
         registry=_REGISTRY,
         label='Anaerobic Digestion',
         definition='A biological process that breaks down organic matter in the absence of oxygen.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Digestion',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess', 'https://watermetadata.org/ontology/watr#Process-Digestion'),
     )
 
 class Process_Backwashing(Process_Cleaning):
@@ -20024,6 +20904,8 @@ class Process_Backwashing(Process_Cleaning):
         registry=_REGISTRY,
         label='Backwashing',
         definition='A cleaning process in which water, and sometimes air, is driven backward through a filter or membrane system to remove accumulated solids.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Cleaning',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Cleaning', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Separation(Process_PhysicalProcess):
@@ -20038,6 +20920,8 @@ class Process_Separation(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Separation',
         definition='The most generic process for separation of any two constituents.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Filtration(Process_Separation):
@@ -20052,6 +20936,8 @@ class Process_Filtration(Process_Separation):
         registry=_REGISTRY,
         label='Filtration',
         definition='Separation of constituents by passing liquid water through a filter or membrane. Includes media filtration and membrane filtration such as microfiltration, ultrafiltration and reverse osmosis; membrane use alone does not imply filtration.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Separation',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_Biofiltration(Process_BiologicalProcess, Process_Filtration):
@@ -20066,6 +20952,8 @@ class Process_Biofiltration(Process_BiologicalProcess, Process_Filtration):
         registry=_REGISTRY,
         label='Biofiltration',
         definition='A filtration method that uses biological processes to remove contaminants.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-BiologicalProcess', 'https://watermetadata.org/ontology/watr#Process-Filtration'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_BiologicallyActiveFiltration(Process_Biofiltration):
@@ -20080,6 +20968,8 @@ class Process_BiologicallyActiveFiltration(Process_Biofiltration):
         registry=_REGISTRY,
         label='Biologically Active Filtration (BAF)',
         definition='A biologically activated filtration column.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Biofiltration',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Biofiltration', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_BiosolidsDisposal(_EntityBase):
@@ -20094,6 +20984,8 @@ class Process_BiosolidsDisposal(_EntityBase):
         registry=_REGISTRY,
         label='BiosolidsDisposal (deprecated)',
         definition='Deprecated designation; use TreatmentObjective-BiosolidsDisposal. The replacement distinguishes treatment mechanism from objective.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Process_SolidLiquidSeparation(Process_Separation):
@@ -20108,6 +21000,8 @@ class Process_SolidLiquidSeparation(Process_Separation):
         registry=_REGISTRY,
         label='Solid-Liquid Separation',
         definition='Separation of suspended solids from the liquid carrying them, by settling, flotation, filtration or centrifugal force. Distinguished from separations that act on dissolved or gaseous constituents.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Separation',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_Centrifugation(Process_SolidLiquidSeparation):
@@ -20122,6 +21016,8 @@ class Process_Centrifugation(Process_SolidLiquidSeparation):
         registry=_REGISTRY,
         label='Centrifugation',
         definition='A process that uses centrifugal force to separate substances of different densities.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
     )
 
 class Process_Dosing(Process_ChemicalProcess):
@@ -20136,6 +21032,8 @@ class Process_Dosing(Process_ChemicalProcess):
         registry=_REGISTRY,
         label='Dosing',
         definition='Metered addition of a reagent to water, such as chlorine, coagulant, polymer, acid, base, or sulfite.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ChemicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess'),
     )
 
 class Process_ChemicalAddition(Process_Dosing):
@@ -20150,6 +21048,8 @@ class Process_ChemicalAddition(Process_Dosing):
         registry=_REGISTRY,
         label='ChemicalAddition (deprecated)',
         definition='Deprecated process designation; use Process-Dosing.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Dosing',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Dosing'),
     )
 
 class Process_ChemicalPrecipitation(Process_ChemicalProcess):
@@ -20164,6 +21064,8 @@ class Process_ChemicalPrecipitation(Process_ChemicalProcess):
         registry=_REGISTRY,
         label='Chemical Precipitation',
         definition='Addition of a reagent that converts a dissolved constituent into an insoluble solid, so that it can be separated from the water. This process implies general constituent removal. Which constituent it targets depends on the reagent, so the modeler states the specific removal objective on the equipment.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ChemicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess'),
     )
 
 class Process_Chlorination(Process_Dosing):
@@ -20178,6 +21080,8 @@ class Process_Chlorination(Process_Dosing):
         registry=_REGISTRY,
         label='Chlorination',
         definition='Dosing chlorine or a chlorine compound into water with contact time designed for disinfection. The intended objective is disinfection; actual performance depends on dose, contact time and water quality.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Dosing',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Dosing'),
     )
 
 class Process_ChlorineDosing(_EntityBase):
@@ -20192,6 +21096,8 @@ class Process_ChlorineDosing(_EntityBase):
         registry=_REGISTRY,
         label='ChlorineDosing (deprecated)',
         definition='Deprecated designation; use Process-Chlorination. The replacement distinguishes treatment mechanism from objective.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Process_MembraneProcess(Process_Separation):
@@ -20206,6 +21112,8 @@ class Process_MembraneProcess(Process_Separation):
         registry=_REGISTRY,
         label='Membrane Process',
         definition='A separation process that uses a membrane. Includes membrane filtration, membrane distillation and electrodialysis; transport may be driven by pressure, a vapour-pressure difference or an electric potential.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Separation',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_ReverseOsmosis(Process_Filtration, Process_MembraneProcess):
@@ -20220,6 +21128,8 @@ class Process_ReverseOsmosis(Process_Filtration, Process_MembraneProcess):
         registry=_REGISTRY,
         label='Reverse Osmosis (RO)',
         definition='Separation across a semi-permeable membrane under an applied pressure greater than the osmotic pressure of the feed, so that water passes and dissolved salts are retained.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_ClosedCircuitReverseOsmosis(Process_ReverseOsmosis):
@@ -20234,6 +21144,8 @@ class Process_ClosedCircuitReverseOsmosis(Process_ReverseOsmosis):
         registry=_REGISTRY,
         label='Closed Circuit Reverse Osmosis (CCRO)',
         definition='Reverse osmosis operated as a batch, with the concentrate recirculated to the feed side of the same module until a target recovery is reached and then displaced, rather than run as a once-through stage.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ReverseOsmosis',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-ReverseOsmosis', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_Coagulation(Process_Dosing):
@@ -20248,6 +21160,8 @@ class Process_Coagulation(Process_Dosing):
         registry=_REGISTRY,
         label='Coagulation',
         definition='A unit process that adds chemicals to water to cause small particles to clump together.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Dosing',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Dosing'),
     )
 
 class Process_Combustion(Process_ChemicalProcess, Process_PhysicalProcess):
@@ -20262,6 +21176,8 @@ class Process_Combustion(Process_ChemicalProcess, Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Combustion',
         definition='A process that combusts biosolids or biogas.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Cogeneration(Process_Combustion):
@@ -20276,6 +21192,8 @@ class Process_Cogeneration(Process_Combustion):
         registry=_REGISTRY,
         label='Cogeneration',
         definition='A process that combusts biosolids or biogas to produce electricity and heat simultaneously.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Combustion',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Combustion', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Comminution(Process_PhysicalProcess):
@@ -20290,6 +21208,8 @@ class Process_Comminution(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Comminution',
         definition='Process of reducing solid materials into smaller particles through mechanical forces such as crushing, grinding, impact, shear, or compression.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Composting(Process_BiologicalProcess):
@@ -20304,6 +21224,8 @@ class Process_Composting(Process_BiologicalProcess):
         registry=_REGISTRY,
         label='Composting',
         definition='Biological degradation of organic materials under controlled aerobic conditions.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-BiologicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess'),
     )
 
 class Process_Condensation(Process_PhysicalProcess):
@@ -20318,6 +21240,8 @@ class Process_Condensation(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Condensation',
         definition='A process of turning a vapor into a liquid.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Solidification(Process_PhysicalProcess):
@@ -20332,6 +21256,8 @@ class Process_Solidification(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Solidification',
         definition='A process of turning a liquid into a solid (e.g., freezing).',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Crystallization(Process_Solidification):
@@ -20346,6 +21272,8 @@ class Process_Crystallization(Process_Solidification):
         registry=_REGISTRY,
         label='Crystallization',
         definition='A process of forming solid crystals from a solution.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Solidification',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Solidification'),
     )
 
 class Process_Dechlorination(_EntityBase):
@@ -20360,6 +21288,8 @@ class Process_Dechlorination(_EntityBase):
         registry=_REGISTRY,
         label='Dechlorination (deprecated)',
         definition='Deprecated designation; use TreatmentObjective-ChlorineResidualRemoval. The replacement distinguishes treatment mechanism from objective.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Process_Denitrification(Process_BiologicalProcess):
@@ -20374,6 +21304,8 @@ class Process_Denitrification(Process_BiologicalProcess):
         registry=_REGISTRY,
         label='Denitrification',
         definition='Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-BiologicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess'),
     )
 
 class Process_Dewatering(_EntityBase):
@@ -20388,6 +21320,8 @@ class Process_Dewatering(_EntityBase):
         registry=_REGISTRY,
         label='Dewatering (deprecated)',
         definition='Deprecated designation; use TreatmentObjective-Dewatering. The replacement distinguishes treatment mechanism from objective.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Process_Disinfection(_EntityBase):
@@ -20402,6 +21336,8 @@ class Process_Disinfection(_EntityBase):
         registry=_REGISTRY,
         label='Disinfection (deprecated)',
         definition='Deprecated designation; use TreatmentObjective-Disinfection. The replacement distinguishes treatment mechanism from objective.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Process_Drying(_EntityBase):
@@ -20416,6 +21352,8 @@ class Process_Drying(_EntityBase):
         registry=_REGISTRY,
         label='Drying (deprecated)',
         definition='Deprecated designation; use TreatmentObjective-Drying. The replacement distinguishes treatment mechanism from objective.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Process_Electrodialysis(Process_ChemicalProcess, Process_MembraneProcess):
@@ -20430,6 +21368,8 @@ class Process_Electrodialysis(Process_ChemicalProcess, Process_MembraneProcess):
         registry=_REGISTRY,
         label='Electrodialysis',
         definition='A process that uses ion-exchange membranes and an electric potential to separate ions from water.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_ElectroDialyticCrystallization(Process_Crystallization, Process_Electrodialysis):
@@ -20444,6 +21384,8 @@ class Process_ElectroDialyticCrystallization(Process_Crystallization, Process_El
         registry=_REGISTRY,
         label='Electro-Dialytic Crystallization (EDC)',
         definition='A novel integrated process combining electrodialysis and crystallization for energy-efficient Zero-Liquid Discharge (ZLD) by maintaining a saturated brine stream.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Crystallization', 'https://watermetadata.org/ontology/watr#Process-Electrodialysis'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Crystallization', 'https://watermetadata.org/ontology/watr#Process-Electrodialysis', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation', 'https://watermetadata.org/ontology/watr#Process-Solidification'),
     )
 
 class Process_Electrocoagulation(Process_Coagulation, Process_PhysicalProcess):
@@ -20458,6 +21400,8 @@ class Process_Electrocoagulation(Process_Coagulation, Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Electrocoagulation (EC)',
         definition='An electrified pretreatment technology using sacrificial anodes to release coagulant precursors for contaminant removal.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Coagulation', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Coagulation', 'https://watermetadata.org/ontology/watr#Process-Dosing', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Electrolysis(Process_ChemicalProcess):
@@ -20472,6 +21416,8 @@ class Process_Electrolysis(Process_ChemicalProcess):
         registry=_REGISTRY,
         label='Electrolysis',
         definition='A process that uses a direct electric current to drive an otherwise non-spontaneous chemical reaction.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ChemicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess'),
     )
 
 class Process_Electrooxidation(Process_Oxidation, Process_PhysicalProcess):
@@ -20486,6 +21432,8 @@ class Process_Electrooxidation(Process_Oxidation, Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Electrooxidation (EO)',
         definition='Oxidation of contaminants at the surface of an anode, and by oxidants generated there, under an applied electric current rather than by a dosed reagent.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Oxidation', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Oxidation', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Elutriation(Process_Separation):
@@ -20500,6 +21448,8 @@ class Process_Elutriation(Process_Separation):
         registry=_REGISTRY,
         label='Elutriation',
         definition='A process that uses a stream of fluid flowing upward to separate a mixture of particles based on their size, shape, and density.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Separation',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_EnhancedBiologicalPhosphorusRemoval(Process_BiologicalProcess):
@@ -20514,6 +21464,8 @@ class Process_EnhancedBiologicalPhosphorusRemoval(Process_BiologicalProcess):
         registry=_REGISTRY,
         label='Enhanced Biological Phosphorus Removal (EBPR)',
         definition='Uptake of phosphorus into biomass beyond ordinary metabolic requirements, achieved by cycling the biomass through anaerobic and aerobic conditions.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-BiologicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess'),
     )
 
 class Process_Evaporation(Process_PhysicalProcess):
@@ -20528,6 +21480,8 @@ class Process_Evaporation(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Evaporation',
         definition='A process of turning a liquid into a vapor.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_FeedReversalReverseOsmosis(Process_ReverseOsmosis):
@@ -20542,6 +21496,8 @@ class Process_FeedReversalReverseOsmosis(Process_ReverseOsmosis):
         registry=_REGISTRY,
         label='Feed Reversal Reverse Osmosis (FRRO)',
         definition='Reverse osmosis in which the direction of feed flow through the train is periodically reversed, so that the elements which saw the most concentrated water see the feed next and scale that has begun to form is redissolved.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ReverseOsmosis',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-ReverseOsmosis', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_FiveStageBardenpho(Process_ActivatedSludge):
@@ -20556,6 +21512,8 @@ class Process_FiveStageBardenpho(Process_ActivatedSludge):
         registry=_REGISTRY,
         label='Five-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)',
         definition='A five-stage biological nutrient removal process specifically designed for nitrogen and phosphorus.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ActivatedSludge',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ActivatedSludge', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess'),
     )
 
 class Process_Mixing(Process_PhysicalProcess):
@@ -20570,6 +21528,8 @@ class Process_Mixing(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Mixing',
         definition='A unit process that mixes water with chemicals or other substances to achieve a desired effect.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Flocculation(Process_ChemicalProcess, Process_Mixing):
@@ -20584,6 +21544,8 @@ class Process_Flocculation(Process_ChemicalProcess, Process_Mixing):
         registry=_REGISTRY,
         label='Flocculation',
         definition='A unit process that gently mixes water to allow coagulated particles to form larger clumps.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Mixing'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Mixing', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Flotation(Process_SolidLiquidSeparation):
@@ -20598,6 +21560,8 @@ class Process_Flotation(Process_SolidLiquidSeparation):
         registry=_REGISTRY,
         label='Flotation',
         definition='A unit process that uses buoyancy to separate solids from water, often using air bubbles.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
     )
 
 class Process_FluidizedBedIncineration(Process_Combustion):
@@ -20612,6 +21576,8 @@ class Process_FluidizedBedIncineration(Process_Combustion):
         registry=_REGISTRY,
         label='Fluidized Bed Incineration',
         definition='A process that combusts a constantly moving bed of biosolids.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Combustion',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Combustion', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_FourStageBardenpho(Process_ActivatedSludge):
@@ -20626,6 +21592,8 @@ class Process_FourStageBardenpho(Process_ActivatedSludge):
         registry=_REGISTRY,
         label='Four-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)',
         definition='A four-stage biological nutrient removal process with two anoxic and two aerobic zones.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ActivatedSludge',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ActivatedSludge', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess'),
     )
 
 class Process_MediaFiltration(Process_Filtration, Process_SolidLiquidSeparation):
@@ -20640,6 +21608,8 @@ class Process_MediaFiltration(Process_Filtration, Process_SolidLiquidSeparation)
         registry=_REGISTRY,
         label='Media Filtration',
         definition='A filtration process that uses a bed of media (as opposed to a membrane-based process).',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
     )
 
 class Process_GACFiltration(Process_Adsorption, Process_MediaFiltration):
@@ -20654,6 +21624,8 @@ class Process_GACFiltration(Process_Adsorption, Process_MediaFiltration):
         registry=_REGISTRY,
         label='GAC Filtration',
         definition="Filtration through a bed of granular activated carbon, which retains particles as any granular medium does and adsorbs dissolved constituents onto the carbon's surface.",
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Adsorption', 'https://watermetadata.org/ontology/watr#Process-MediaFiltration'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Adsorption', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-MediaFiltration', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
     )
 
 class Process_GranularActivatedCarbon(Process_GACFiltration):
@@ -20668,6 +21640,8 @@ class Process_GranularActivatedCarbon(Process_GACFiltration):
         registry=_REGISTRY,
         label='GranularActivatedCarbon (deprecated)',
         definition='Deprecated process designation; use Process-GACFiltration.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-GACFiltration',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Adsorption', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-GACFiltration', 'https://watermetadata.org/ontology/watr#Process-MediaFiltration', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
     )
 
 class Process_HighDensitySludge(Process_ChemicalProcess, Process_PhysicalProcess):
@@ -20682,6 +21656,8 @@ class Process_HighDensitySludge(Process_ChemicalProcess, Process_PhysicalProcess
         registry=_REGISTRY,
         label='High-Density Sludge (HDS) Process',
         definition='Lime neutralization of an acidic stream, typically acid mine drainage, in which previously formed sludge is recycled into the reaction so that metal hydroxides precipitate onto existing particles and settle as a denser sludge.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Hydrolysis(Process_ChemicalProcess):
@@ -20696,6 +21672,8 @@ class Process_Hydrolysis(Process_ChemicalProcess):
         registry=_REGISTRY,
         label='Hydrolysis',
         definition='A process reaction in which a water molecule is consumed to split a larger molecule into smaller fragments.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ChemicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess'),
     )
 
 class Process_IonExchange(Process_ChemicalProcess, Process_PhysicalProcess):
@@ -20710,6 +21688,8 @@ class Process_IonExchange(Process_ChemicalProcess, Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Ion Exchange',
         definition='A process in which ions are exchanged between a solution and an ion-exchange resin or membrane.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_LandApplication(Process_PhysicalProcess):
@@ -20724,6 +21704,8 @@ class Process_LandApplication(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Land Application',
         definition='Spreading treated biosolids on agricultural or reclamation land, where they serve as a soil amendment.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Landfill(_EntityBase):
@@ -20738,6 +21720,8 @@ class Process_Landfill(_EntityBase):
         registry=_REGISTRY,
         label='Landfill (deprecated)',
         definition='Deprecated designation; use Process-Landfilling. The replacement distinguishes treatment mechanism from objective.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Process_Landfilling(Process_PhysicalProcess):
@@ -20752,6 +21736,8 @@ class Process_Landfilling(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Landfilling',
         definition='Placing treated biosolids in a landfill, whether in a dedicated cell or with municipal solid waste.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_MLE(Process_AO):
@@ -20766,6 +21752,8 @@ class Process_MLE(Process_AO):
         registry=_REGISTRY,
         label='Modified Ludzack-Ettinger (MLE)',
         definition='Modification of AO with an internal recycle returning nitrate to the anoxic zone.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-AO',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-AO', 'https://watermetadata.org/ontology/watr#Process-ActivatedSludge', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess'),
     )
 
 class Process_MembraneDistillation(Process_MembraneProcess):
@@ -20780,6 +21768,8 @@ class Process_MembraneDistillation(Process_MembraneProcess):
         registry=_REGISTRY,
         label='Membrane Distillation (MD)',
         definition='Separation driven by a vapour pressure difference across a hydrophobic membrane: water evaporates on the warm feed side, crosses the membrane as vapour, and condenses on the cool permeate side, while the liquid feed is held back.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-MembraneProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_Microfiltration(Process_Filtration, Process_MembraneProcess, Process_SolidLiquidSeparation):
@@ -20794,6 +21784,8 @@ class Process_Microfiltration(Process_Filtration, Process_MembraneProcess, Proce
         registry=_REGISTRY,
         label='Microfiltration',
         definition='Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids. The pore-size range characterizes the method; a model states its intended treatment objective separately.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
     )
 
 class Process_MultipleHearthIncineration(Process_Combustion):
@@ -20808,6 +21800,8 @@ class Process_MultipleHearthIncineration(Process_Combustion):
         registry=_REGISTRY,
         label='Multiple Hearth Incineration (MHI)',
         definition='A process that combusts biosolids as they move through a series of stacked hearths with controlled air flow.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Combustion',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Combustion', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Neutralization(_EntityBase):
@@ -20822,6 +21816,8 @@ class Process_Neutralization(_EntityBase):
         registry=_REGISTRY,
         label='Neutralization (deprecated)',
         definition='Deprecated designation; use TreatmentObjective-Neutralization. The replacement distinguishes treatment mechanism from objective.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Process_Nitrification(Process_BiologicalProcess):
@@ -20836,6 +21832,8 @@ class Process_Nitrification(Process_BiologicalProcess):
         registry=_REGISTRY,
         label='Nitrification',
         definition='Process by which ammonia is oxidized to nitrite and subsequently nitrate.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-BiologicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess'),
     )
 
 class Process_OsmoticallyAssistedReverseOsmosis(Process_ReverseOsmosis):
@@ -20850,6 +21848,8 @@ class Process_OsmoticallyAssistedReverseOsmosis(Process_ReverseOsmosis):
         registry=_REGISTRY,
         label='Osmotically Assisted Reverse Osmosis (OARO)',
         definition='Reverse osmosis in which a saline sweep stream on the permeate side lowers the osmotic pressure difference across the membrane, so that a hypersaline feed can be concentrated further than the applied pressure would otherwise allow.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ReverseOsmosis',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-ReverseOsmosis', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_Ozonation(Process_Oxidation):
@@ -20864,6 +21864,8 @@ class Process_Ozonation(Process_Oxidation):
         registry=_REGISTRY,
         label='Ozonation',
         definition='A water treatment process that uses ozone as an oxidant. The process alone does not establish whether the intended treatment objective is disinfection, oxidation of a contaminant, or taste-and-odour control.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Oxidation',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Oxidation'),
     )
 
 class Process_Purging(Process_Cleaning):
@@ -20878,6 +21880,8 @@ class Process_Purging(Process_Cleaning):
         registry=_REGISTRY,
         label='Purging',
         definition='A process that flushes retained liquid, solids, or gas from equipment or piping to restore operating conditions or prepare for another cycle.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Cleaning',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Cleaning', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_RapidSandFiltration(Process_MediaFiltration):
@@ -20892,6 +21896,8 @@ class Process_RapidSandFiltration(Process_MediaFiltration):
         registry=_REGISTRY,
         label='Rapid Sand Filtration',
         definition='A filtration process that uses a bed of sand to remove impurities at high flow rates.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-MediaFiltration',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-MediaFiltration', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
     )
 
 class Process_Recirculation(Process_PhysicalProcess):
@@ -20906,6 +21912,8 @@ class Process_Recirculation(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Recirculation',
         definition='A process that returns a portion of a treated or intermediate flow back upstream to maintain hydraulic, solids, or biological performance.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_Reduction(Process_ChemicalProcess):
@@ -20920,6 +21928,8 @@ class Process_Reduction(Process_ChemicalProcess):
         registry=_REGISTRY,
         label='Chemical Reduction',
         definition='Mechanism by which contaminants are transformed through the gain of electrons.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ChemicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess'),
     )
 
 class Process_Screening(Process_Separation):
@@ -20934,6 +21944,8 @@ class Process_Screening(Process_Separation):
         registry=_REGISTRY,
         label='Screening',
         definition='A unit process that removes large solids from water, such as leaves, branches, and other debris.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Separation',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_Settling(Process_SolidLiquidSeparation):
@@ -20948,6 +21960,8 @@ class Process_Settling(Process_SolidLiquidSeparation):
         registry=_REGISTRY,
         label='Settling',
         definition='A unit process that allows solids to settle out of water by gravity.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
     )
 
 class Process_Sedimentation(Process_Settling):
@@ -20962,6 +21976,8 @@ class Process_Sedimentation(Process_Settling):
         registry=_REGISTRY,
         label='Sedimentation (deprecated)',
         definition='Deprecated process designation; use Process-Settling.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Settling',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation', 'https://watermetadata.org/ontology/watr#Process-Settling', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
     )
 
 class Process_SlowSandFiltration(Process_MediaFiltration):
@@ -20976,6 +21992,8 @@ class Process_SlowSandFiltration(Process_MediaFiltration):
         registry=_REGISTRY,
         label='Slow Sand Filtration',
         definition='A filtration process that uses a bed of sand to remove impurities at low flow rates.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-MediaFiltration',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-MediaFiltration', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
     )
 
 class Process_Softening(_EntityBase):
@@ -20990,6 +22008,8 @@ class Process_Softening(_EntityBase):
         registry=_REGISTRY,
         label='Softening (deprecated)',
         definition='Deprecated designation; use TreatmentObjective-Softening. The replacement distinguishes treatment mechanism from objective.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Process_SolventExtraction(Process_ChemicalProcess, Process_Separation):
@@ -21004,6 +22024,8 @@ class Process_SolventExtraction(Process_ChemicalProcess, Process_Separation):
         registry=_REGISTRY,
         label='Solvent-Based Extraction',
         definition='A non-membrane, non-thermal method using a solvent to selectively extract water from highly saline brines.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_Stripping(Process_Separation):
@@ -21018,6 +22040,8 @@ class Process_Stripping(Process_Separation):
         registry=_REGISTRY,
         label='Stripping',
         definition='Gas stripping for removal of dissolved gases such as ammonia and volatile organic compounds.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Separation',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_SulfiteDosing(Process_Dosing):
@@ -21032,6 +22056,8 @@ class Process_SulfiteDosing(Process_Dosing):
         registry=_REGISTRY,
         label='Sulfite Dosing',
         definition='Metered addition of sulfur dioxide, sodium sulfite, bisulfite or metabisulfite, which reduces free and combined chlorine to chloride.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Dosing',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Dosing'),
     )
 
 class Process_ThermalDisinfection(_EntityBase):
@@ -21046,6 +22072,8 @@ class Process_ThermalDisinfection(_EntityBase):
         registry=_REGISTRY,
         label='ThermalDisinfection (deprecated)',
         definition='Deprecated designation; use Process-ThermalTreatment. The replacement distinguishes treatment mechanism from objective.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Process_ThermalTreatment(Process_PhysicalProcess):
@@ -21060,6 +22088,8 @@ class Process_ThermalTreatment(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Thermal Treatment',
         definition='Heating of water or biosolids, as in pasteurization. The process alone does not establish whether the intended treatment objective is disinfection, drying, hydrolysis, or another thermal result.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_ThermalHydrolysis(Process_Hydrolysis, Process_ThermalTreatment):
@@ -21074,6 +22104,8 @@ class Process_ThermalHydrolysis(Process_Hydrolysis, Process_ThermalTreatment):
         registry=_REGISTRY,
         label='Thermal Hydrolysis',
         definition='A process that breaks down complex organic matter into soluble compounds using heat and pressure.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Hydrolysis', 'https://watermetadata.org/ontology/watr#Process-ThermalTreatment'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-ChemicalProcess', 'https://watermetadata.org/ontology/watr#Process-Hydrolysis', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-ThermalTreatment'),
     )
 
 class Process_Thickening(_EntityBase):
@@ -21088,6 +22120,8 @@ class Process_Thickening(_EntityBase):
         registry=_REGISTRY,
         label='Thickening (deprecated)',
         definition='Deprecated designation; use TreatmentObjective-Thickening. The replacement distinguishes treatment mechanism from objective.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Process_TricklingFiltration(Process_Biofiltration):
@@ -21102,6 +22136,8 @@ class Process_TricklingFiltration(Process_Biofiltration):
         registry=_REGISTRY,
         label='TricklingFiltration',
         definition='Trickling filter using any media (e.g., plastic, sand, gravel, etc.)',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Biofiltration',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Biofiltration', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation'),
     )
 
 class Process_UCT(Process_A2O):
@@ -21116,6 +22152,8 @@ class Process_UCT(Process_A2O):
         registry=_REGISTRY,
         label='University of Cape Town (UCT)',
         definition='Variant of A2O with modified recycle streams for phosphorus removal.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-A2O',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-A2O', 'https://watermetadata.org/ontology/watr#Process-ActivatedSludge', 'https://watermetadata.org/ontology/watr#Process-BiologicalProcess'),
     )
 
 class Process_UVIrradiation(Process_PhysicalProcess):
@@ -21130,6 +22168,8 @@ class Process_UVIrradiation(Process_PhysicalProcess):
         registry=_REGISTRY,
         label='Ultraviolet Irradiation',
         definition='Exposure of water to ultraviolet light. Named for what it does rather than what it is for: the same irradiation serves disinfection and, combined with an oxidant, advanced oxidation.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-PhysicalProcess',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess'),
     )
 
 class Process_UVDisinfection(Process_UVIrradiation):
@@ -21144,6 +22184,8 @@ class Process_UVDisinfection(Process_UVIrradiation):
         registry=_REGISTRY,
         label='UVDisinfection (deprecated)',
         definition='Deprecated process designation; use Process-UVIrradiation.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-UVIrradiation',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-UVIrradiation'),
     )
 
 class Process_Ultrafiltration(Process_Filtration, Process_MembraneProcess, Process_SolidLiquidSeparation):
@@ -21158,6 +22200,8 @@ class Process_Ultrafiltration(Process_Filtration, Process_MembraneProcess, Proce
         registry=_REGISTRY,
         label='Ultrafiltration',
         definition='Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains. The pore-size range characterizes the method; a model states its intended treatment objective separately.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#Process', 'https://watermetadata.org/ontology/watr#Process-Filtration', 'https://watermetadata.org/ontology/watr#Process-MembraneProcess', 'https://watermetadata.org/ontology/watr#Process-PhysicalProcess', 'https://watermetadata.org/ontology/watr#Process-Separation', 'https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation'),
     )
 
 class Process_pHAdjustment(_EntityBase):
@@ -21172,6 +22216,8 @@ class Process_pHAdjustment(_EntityBase):
         registry=_REGISTRY,
         label='pHAdjustment (deprecated)',
         definition='Deprecated designation; use TreatmentObjective-pHControl. The replacement distinguishes treatment mechanism from objective.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Pump(Equipment):
@@ -21186,6 +22232,8 @@ class Pump(Equipment):
         registry=_REGISTRY,
         label='Pump',
         definition='A device used to move fluids by mechanical action. Unlike s223:Pump, which asks for water, oil or refrigerant, it accepts any s223:Mix-Fluid, so it covers sludge and other slurries.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=1, max_count=None),
@@ -21204,6 +22252,8 @@ class Pump_2(Pump):
         registry=_REGISTRY,
         label='Pump',
         definition='A piece of `Equipment` that imparts energy to a fluid, drawing a fluid into itself through an inlet port, and forcing the fluid out through an outlet port.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#Pump'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Pump'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Fluid-Oil', 'http://data.ashrae.org/standard223#Fluid-Water'), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Fluid-Oil', 'http://data.ashrae.org/standard223#Fluid-Water'), min_count=1, max_count=None),
@@ -21433,6 +22483,8 @@ class QuantifiableProperty(Property):
         registry=_REGISTRY,
         label='Quantifiable property',
         definition='This class is for quantifiable values that describe an object (`System`, `Equipment`, etc.) that are typically static (`hasValue`). That is, they are neither measured nor specified in the course of operations.',
+        parent_iris=('http://data.ashrae.org/standard223#Property',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_QuantifiableProperty_has_unit, _P_QuantifiableProperty_has_deadband, _P_QuantifiableProperty_has_aggregation, _P_QuantifiableProperty_has_processed_data, _P_QuantifiableProperty_has_measurement_range, _P_QuantifiableProperty_has_drop_rate, _P_QuantifiableProperty_has_response_time, _P_QuantifiableProperty_has_threshold, _P_QuantifiableProperty_value, _P_QuantifiableProperty_has_calibration_curve, _P_QuantifiableProperty_has_quantity_kind, _P_QuantifiableProperty_has_bias, _P_QuantifiableProperty_has_setpoint, _P_QuantifiableProperty_has_alarm_status, _P_QuantifiableProperty_has_temporal_range, _P_QuantifiableProperty_has_variable_range, _P_QuantifiableProperty_has_precision, _P_QuantifiableProperty_has_numeric_range, _P_QuantifiableProperty_has_numeric_resolution, _P_QuantifiableProperty_quantity_value, _P_QuantifiableProperty_has_temporal_resolution, _P_QuantifiableProperty_is_delta_quantity, _P_QuantifiableProperty_has_accuracy,),
     )
 
@@ -21603,6 +22655,8 @@ class QuantifiableActuatableProperty(ActuatableProperty, QuantifiableProperty):
         registry=_REGISTRY,
         label='Quantifiable actuatable property',
         definition='This class is for instances of `QuantifiableProperty` for which numerical values are specified to be modifiable by a user or a machine outside of the model, like a setpoint.',
+        parent_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#QuantifiableProperty'),
+        ancestor_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://data.ashrae.org/standard223#QuantifiableProperty', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class QuantifiableObservableProperty(ObservableProperty, QuantifiableProperty):
@@ -21617,6 +22671,8 @@ class QuantifiableObservableProperty(ObservableProperty, QuantifiableProperty):
         registry=_REGISTRY,
         label='Quantifiable observable property',
         definition='This class is for instances of `QuantifiableProperty` for which numerical values are observed, like a temperature reading or a voltage measure.',
+        parent_iris=('http://data.ashrae.org/standard223#ObservableProperty', 'http://data.ashrae.org/standard223#QuantifiableProperty'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ObservableProperty', 'http://data.ashrae.org/standard223#Property', 'http://data.ashrae.org/standard223#QuantifiableProperty', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_QuantityKind_applicable_cgs_unit = _PropertySpec(
@@ -21813,6 +22869,8 @@ class QuantityKind(AbstractQuantityKind, Verifiable):
         registry=_REGISTRY,
         label='Quantity Kind',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/AbstractQuantityKind', 'http://qudt.org/schema/qudt/Verifiable'),
+        ancestor_iris=('http://qudt.org/schema/qudt/AbstractQuantityKind', 'http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_QuantityKind_applicable_cgs_unit, _P_QuantityKind_applicable_iso_unit, _P_QuantityKind_applicable_imperial_unit, _P_QuantityKind_applicable_si_unit, _P_QuantityKind_applicable_us_customary_unit, _P_QuantityKind_applicable_unit, _P_QuantityKind_base_cgs_unit_dimensions, _P_QuantityKind_base_iso_unit_dimensions, _P_QuantityKind_base_imperial_unit_dimensions, _P_QuantityKind_base_si_unit_dimensions, _P_QuantityKind_base_us_customary_unit_dimensions, _P_QuantityKind_belongs_to_system_of_quantities, _P_QuantityKind_dimension_vector_for_si, _P_QuantityKind_eclass_code, _P_QuantityKind_expression, _P_QuantityKind_has_dimension_vector, _P_QuantityKind_iec61360_code, _P_QuantityKind_latex_definition, _P_QuantityKind_math_m_ldefinition, _P_QuantityKind_qkdv_denominator, _P_QuantityKind_qkdv_numerator, _P_QuantityKind_si_exact_match,),
     )
 
@@ -22102,6 +23160,8 @@ class QuantityKindDimensionVector(Concept_2):
         registry=_REGISTRY,
         label='Quantity Kind Dimension Vector',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_QuantityKindDimensionVector_dimension_exponent_for_amount_of_substance, _P_QuantityKindDimensionVector_dimension_exponent_for_electric_current, _P_QuantityKindDimensionVector_dimension_exponent_for_length, _P_QuantityKindDimensionVector_dimension_exponent_for_luminous_intensity, _P_QuantityKindDimensionVector_dimension_exponent_for_mass, _P_QuantityKindDimensionVector_dimension_exponent_for_thermodynamic_temperature, _P_QuantityKindDimensionVector_dimension_exponent_for_time, _P_QuantityKindDimensionVector_dimensionless_exponent, _P_QuantityKindDimensionVector_has_reference_quantity_kind, _P_QuantityKindDimensionVector_latex_definition, _P_QuantityKindDimensionVector_latex_symbol,),
     )
 
@@ -22216,6 +23276,8 @@ class QuantityKindDimensionVector_CGS(QuantityKindDimensionVector):
         registry=_REGISTRY,
         label='CGS Dimension vector',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/QuantityKindDimensionVector',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class QuantityKindDimensionVector_CGS_EMU(QuantityKindDimensionVector_CGS):
@@ -22230,6 +23292,8 @@ class QuantityKindDimensionVector_CGS_EMU(QuantityKindDimensionVector_CGS):
         registry=_REGISTRY,
         label='CGS EMU Dimension vector',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class QuantityKindDimensionVector_CGS_ESU(QuantityKindDimensionVector_CGS):
@@ -22244,6 +23308,8 @@ class QuantityKindDimensionVector_CGS_ESU(QuantityKindDimensionVector_CGS):
         registry=_REGISTRY,
         label='CGS ESU Dimension vector',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class QuantityKindDimensionVector_CGS_GAUSS(QuantityKindDimensionVector_CGS):
@@ -22258,6 +23324,8 @@ class QuantityKindDimensionVector_CGS_GAUSS(QuantityKindDimensionVector_CGS):
         registry=_REGISTRY,
         label='CGS GAUSS Dimension vector',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class QuantityKindDimensionVector_CGS_LH(QuantityKindDimensionVector_CGS):
@@ -22272,6 +23340,8 @@ class QuantityKindDimensionVector_CGS_LH(QuantityKindDimensionVector_CGS):
         registry=_REGISTRY,
         label='CGS LH Dimension vector',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class QuantityKindDimensionVector_ISO(QuantityKindDimensionVector):
@@ -22286,6 +23356,8 @@ class QuantityKindDimensionVector_ISO(QuantityKindDimensionVector):
         registry=_REGISTRY,
         label='ISO Dimension vector',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/QuantityKindDimensionVector',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class QuantityKindDimensionVector_Imperial(QuantityKindDimensionVector):
@@ -22300,6 +23372,8 @@ class QuantityKindDimensionVector_Imperial(QuantityKindDimensionVector):
         registry=_REGISTRY,
         label='Imperial dimension vector',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/QuantityKindDimensionVector',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class QuantityKindDimensionVector_SI(QuantityKindDimensionVector):
@@ -22314,6 +23388,8 @@ class QuantityKindDimensionVector_SI(QuantityKindDimensionVector):
         registry=_REGISTRY,
         label='Quantity Kind Dimension vector (SI)',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/QuantityKindDimensionVector',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_QuantityKindList_rest = _PropertySpec(
@@ -22341,6 +23417,8 @@ class QuantityKindList(List):
         registry=_REGISTRY,
         label='Quantity kind List',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/List',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/List', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_QuantityKindList_rest, _P_QuantityKindList_first,),
     )
 
@@ -22426,6 +23504,8 @@ class QuantityType(EnumeratedValue):
         registry=_REGISTRY,
         label='Quantity type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_QuantityType_value,),
     )
 
@@ -22511,6 +23591,8 @@ class QuantityValueType(DimensionalDatatype):
         registry=_REGISTRY,
         label='Quantity value type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DimensionalDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/DimensionalDatatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_QuantityValueType_basis, _P_QuantityValueType_element_datatype, _P_QuantityValueType_element_unit,),
     )
 
@@ -22617,6 +23699,8 @@ class RFOutlet(Equipment):
         registry=_REGISTRY,
         label='Radio frequency outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a radio frequency (RF) communication network, via, for example, a coaxial cable.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#RF-Signal', medium_options=(), min_count=1, max_count=1),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#RF-Signal', medium_options=(), min_count=1, max_count=None),
@@ -22649,6 +23733,8 @@ class RadiantHeater(Equipment):
         registry=_REGISTRY,
         label='Radiant heater',
         definition='\nA piece of `Equipment` with heating or cooling surface that delivers 50% or more of its heat transfer by radiation.\nA `RadiantHeater` shall:\n\n- Have the role `Role-Heating`.\n\n- Have at least one outlet connection point using the medium `Light-Infrared`.\n\n- Conform to exactly one of the following patterns:\n  - **Pattern 1:**\n    - Exactly one inlet connection point using the medium `Constituent-Electricity` or `Fluid-NaturalGas`.\n  - **Pattern 2:**\n    - Exactly one inlet connection point using the medium `Fluid-Water`.\n    - Exactly one outlet connection point using the medium `Fluid-Water`.\n',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Light-Infrared', medium_options=(), min_count=1, max_count=None),
         ),
@@ -22676,6 +23762,8 @@ class Radiator(Equipment):
         registry=_REGISTRY,
         label='Radiator',
         definition='A piece of `Equipment` that provides primarily convective heating to a room using electricity, steam, or water\n(e.g., electric baseboard heaters, heated floors, or traditional radiators).',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
         ),
@@ -22702,6 +23790,8 @@ class RapidSandFilter(MediaFiltrationUnit):
         registry=_REGISTRY,
         label='Rapid Sand Filter',
         definition='A type of media filter that uses sand as the filter medium and operates at high filtration rates.',
+        parent_iris=('https://watermetadata.org/ontology/watr#MediaFiltrationUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#MediaFiltrationUnit', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_RapidSandFiltration'),),
     )
 
@@ -22717,6 +23807,8 @@ class RatioScale(Scale):
         registry=_REGISTRY,
         label='Ratio scale',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Scale',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Scale', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_RawValueTupleMember_element_datatype = _PropertySpec(
@@ -22740,6 +23832,8 @@ class RawValueTupleMember(TupleMember):
         registry=_REGISTRY,
         label='Raw value tuple member',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TupleMember',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/TupleMember', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_RawValueTupleMember_element_datatype,),
     )
 
@@ -22853,6 +23947,8 @@ class RawValueTupleMemberType(TupleMember):
         registry=_REGISTRY,
         label='Raw value tuple member type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TupleMember',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/TupleMember', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_RawValueTupleMemberType_element_datatype,),
     )
 
@@ -23000,6 +24096,8 @@ class RealDatatype(NumericType):
         registry=_REGISTRY,
         label='Real Datatype',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/NumericType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_RealDatatype_base, _P_RealDatatype_max_exponent, _P_RealDatatype_max_mantissa, _P_RealDatatype_min_mantissa, _P_RealDatatype_precision,),
     )
 
@@ -23144,6 +24242,8 @@ class RealDoublePrecisionType(DoublePrecisionType, RealDatatype):
         registry=_REGISTRY,
         label='Real Double Precision Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DoublePrecisionType', 'http://qudt.org/schema/qudt/RealDatatype'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/DoublePrecisionType', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/RealDatatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class RealNumberType(RealDatatype):
@@ -23158,6 +24258,8 @@ class RealNumberType(RealDatatype):
         registry=_REGISTRY,
         label='Real number type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/RealDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/RealDatatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class SinglePrecisionType(NumericType):
@@ -23172,6 +24274,8 @@ class SinglePrecisionType(NumericType):
         registry=_REGISTRY,
         label='Single Precision Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/NumericType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class RealSinglePrecisionType(RealDatatype, SinglePrecisionType):
@@ -23186,6 +24290,8 @@ class RealSinglePrecisionType(RealDatatype, SinglePrecisionType):
         registry=_REGISTRY,
         label='Real Single Precision Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/RealDatatype', 'http://qudt.org/schema/qudt/SinglePrecisionType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/RealDatatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/SinglePrecisionType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Record(CompositeDatatype):
@@ -23200,6 +24306,8 @@ class Record(CompositeDatatype):
         registry=_REGISTRY,
         label='Record Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ReferenceDatatype(StructuredDatatype):
@@ -23214,6 +24322,8 @@ class ReferenceDatatype(StructuredDatatype):
         registry=_REGISTRY,
         label='Reference Data Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StructuredDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Refrigerator(Equipment):
@@ -23228,6 +24338,8 @@ class Refrigerator(Equipment):
         registry=_REGISTRY,
         label='Refrigerator',
         definition='A piece of `Equipment` that maintains an internal temperature below the surrounding ambient temperature but above the freezing point of water.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -23245,6 +24357,8 @@ class Relation(Concept):
         registry=_REGISTRY,
         label='Relation',
         definition='A `Relation` associates the subject and the object in an RDF triple, the *predicate* portion of a *(subject, predicate, object)* triple.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_RelationWithInverse_inverse_of = _PropertySpec(
@@ -23271,6 +24385,8 @@ class RelationWithInverse(Relation):
         registry=_REGISTRY,
         label='Relation with inverse',
         definition='An `RelationWithInverse` is modeling construct used to define symmetric behavior\nfor certain relations in the standard such as `connectedTo` and `connectedFrom`.',
+        parent_iris=('http://data.ashrae.org/standard223#Relation',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Relation', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_RelationWithInverse_inverse_of,),
     )
 
@@ -23315,6 +24431,8 @@ class Reservoir(Equipment):
         registry=_REGISTRY,
         label='Reservoir',
         definition='A large natural or artificial body of water used for water supply',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ReverseOsmosisMembrane(Filter):
@@ -23329,6 +24447,8 @@ class ReverseOsmosisMembrane(Filter):
         registry=_REGISTRY,
         label='Reverse Osmosis Membrane',
         definition='A membrane used for reverse osmosis',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_ReverseOsmosis'),),
     )
 
@@ -23344,6 +24464,8 @@ class Role_NitrogenRemoval(_EntityBase):
         registry=_REGISTRY,
         label='NitrogenRemoval (deprecated role)',
         definition='Deprecated objective designation formerly modeled as a role; use TreatmentObjective-NitrogenRemoval.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Role_NutrientRemoval(_EntityBase):
@@ -23358,6 +24480,8 @@ class Role_NutrientRemoval(_EntityBase):
         registry=_REGISTRY,
         label='NutrientRemoval (deprecated role)',
         definition='Deprecated objective designation formerly modeled as a role; use TreatmentObjective-NutrientRemoval.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Role_PhosphorusRemoval(_EntityBase):
@@ -23372,6 +24496,8 @@ class Role_PhosphorusRemoval(_EntityBase):
         registry=_REGISTRY,
         label='PhosphorusRemoval (deprecated role)',
         definition='Deprecated objective designation formerly modeled as a role; use TreatmentObjective-PhosphorusRemoval.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Role_SolidsHandling(_EntityBase):
@@ -23386,6 +24512,8 @@ class Role_SolidsHandling(_EntityBase):
         registry=_REGISTRY,
         label='SolidsHandling (deprecated role)',
         definition='Deprecated objective designation formerly modeled as a role; use TreatmentObjective-VolumeReduction.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class Role_Stabilization(_EntityBase):
@@ -23400,6 +24528,8 @@ class Role_Stabilization(_EntityBase):
         registry=_REGISTRY,
         label='Stabilization (deprecated role)',
         definition='Deprecated objective designation formerly modeled as a role; use TreatmentObjective-Stabilization.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class RotaryDrumThickener(Thickener):
@@ -23414,6 +24544,8 @@ class RotaryDrumThickener(Thickener):
         registry=_REGISTRY,
         label='Rotary Drum Thickener',
         definition='A thickener that uses a rotating drum to separate solids from liquids',
+        parent_iris=('https://watermetadata.org/ontology/watr#Thickener',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Thickener', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Filtration'),),
     )
 
@@ -23481,6 +24613,8 @@ class RotatingBiologicalContactor(Filter, Reactor):
         registry=_REGISTRY,
         label='Rotating Biological Contactor (RBC)',
         definition='Fixed-film process using a slowly rotating discs partially submerged in a tank',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#Reactor'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Biofiltration'),),
     )
 
@@ -23496,6 +24630,8 @@ class RotatingReferenceFrame(ReferenceFrame):
         registry=_REGISTRY,
         label='Rotating reference frame',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ReferenceFrame',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/ReferenceFrame', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class RotationSensor(Sensor):
@@ -23510,6 +24646,8 @@ class RotationSensor(Sensor):
         registry=_REGISTRY,
         label='Rotation Sensor',
         definition='A sensor used to measure the rotational speed or position of an object',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_Rule_example = _PropertySpec(
@@ -23547,6 +24685,8 @@ class Rule(Concept_2, Verifiable):
         registry=_REGISTRY,
         label='Rule',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Rule_example, _P_Rule_rationale, _P_Rule_rule_type,),
     )
 
@@ -23631,6 +24771,8 @@ class RuleType(EnumeratedValue):
         registry=_REGISTRY,
         label='Rule Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 _P_ScalarDataItem_datatype = _PropertySpec(
@@ -23662,6 +24804,8 @@ class ScalarDataItem(Concept_2):
         registry=_REGISTRY,
         label='Scalar Data Item',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ScalarDataItem_datatype, _P_ScalarDataItem_value,),
     )
 
@@ -23743,6 +24887,8 @@ class ScalarListShape(List):
         registry=_REGISTRY,
         label=None,
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/List',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/List', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ScalarListShape_rest, _P_ScalarListShape_first,),
     )
 
@@ -23845,6 +24991,8 @@ class ScaleType(EnumeratedValue):
         registry=_REGISTRY,
         label='Scale type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_ScaleType_data_structure, _P_ScaleType_permissible_maths, _P_ScaleType_permissible_transformation,),
     )
 
@@ -23913,6 +25061,8 @@ class Screen(UnitProcess):
         registry=_REGISTRY,
         label='Screen',
         definition='An equipment used for separation',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Screening'), ('has_treatment_objective', 'TreatmentObjective_SuspendedSolidsRemoval')),
     )
 
@@ -23980,6 +25130,8 @@ class Sequence(Collection):
         registry=_REGISTRY,
         label='Sequence',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Collection',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Collection', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class SequencingBatchReactor(Reactor, SeparationTank):
@@ -23994,6 +25146,8 @@ class SequencingBatchReactor(Reactor, SeparationTank):
         registry=_REGISTRY,
         label='SequencingBatchReactor',
         definition='A type of activated sludge process for wastewater treatment',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#SeparationTank'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#SeparationTank', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', medium_options=(), min_count=1, max_count=None),
         ),
@@ -24012,6 +25166,8 @@ class ServerComputer(Computer):
         registry=_REGISTRY,
         label='Server computer',
         definition='A `Computer` that is primarily for use by multiple people, or for the execution of tasks not directly coupled to human interaction.',
+        parent_iris=('http://data.ashrae.org/standard223#Computer',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Computer', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -24029,6 +25185,8 @@ class Set(Collection):
         registry=_REGISTRY,
         label='Set Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Collection',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Collection', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ShortIntegerType(IntegerDatatype):
@@ -24043,6 +25201,8 @@ class ShortIntegerType(IntegerDatatype):
         registry=_REGISTRY,
         label='Short Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/IntegerDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Shower(Equipment):
@@ -24057,6 +25217,8 @@ class Shower(Equipment):
         registry=_REGISTRY,
         label='Shower',
         definition='A piece of `Equipment` for showering that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -24075,6 +25237,8 @@ class SignedType(NumericType):
         registry=_REGISTRY,
         label='Signed Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/NumericType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class SignedIntegerType(IntegerDatatype, SignedType):
@@ -24089,6 +25253,8 @@ class SignedIntegerType(IntegerDatatype, SignedType):
         registry=_REGISTRY,
         label='Signed Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/SignedType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/SignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_SignedBigIntegerType_literal = _PropertySpec(
@@ -24112,6 +25278,8 @@ class SignedBigIntegerType(BigIntegerType, SignedIntegerType):
         registry=_REGISTRY,
         label='Signed Big Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/BigIntegerType', 'http://qudt.org/schema/qudt/SignedIntegerType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/BigIntegerType', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/SignedIntegerType', 'http://qudt.org/schema/qudt/SignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_SignedBigIntegerType_literal,),
     )
 
@@ -24245,6 +25413,8 @@ class SignedLongIntegerType(LongIntegerType, SignedIntegerType):
         registry=_REGISTRY,
         label='Signed Long Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/LongIntegerType', 'http://qudt.org/schema/qudt/SignedIntegerType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/LongIntegerType', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/SignedIntegerType', 'http://qudt.org/schema/qudt/SignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_SignedLongIntegerType_abbreviation,),
     )
 
@@ -24367,6 +25537,8 @@ class SignedMediumIntegerType(SignedIntegerType):
         registry=_REGISTRY,
         label='Signed Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/SignedIntegerType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/SignedIntegerType', 'http://qudt.org/schema/qudt/SignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class SignedShortIntegerType(ShortIntegerType, SignedIntegerType):
@@ -24381,6 +25553,8 @@ class SignedShortIntegerType(ShortIntegerType, SignedIntegerType):
         registry=_REGISTRY,
         label='Signed Short Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ShortIntegerType', 'http://qudt.org/schema/qudt/SignedIntegerType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/ShortIntegerType', 'http://qudt.org/schema/qudt/SignedIntegerType', 'http://qudt.org/schema/qudt/SignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_VariableLengthIntegerType_max_bits = _PropertySpec(
@@ -24411,6 +25585,8 @@ class VariableLengthIntegerType(IntegerDatatype):
         registry=_REGISTRY,
         label='Variable Length Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/IntegerDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_VariableLengthIntegerType_max_bits, _P_VariableLengthIntegerType_min_bits,),
     )
 
@@ -24540,6 +25716,8 @@ class SignedVariableLengthIntegerType(SignedIntegerType, VariableLengthIntegerTy
         registry=_REGISTRY,
         label='Signed Variable Length Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/SignedIntegerType', 'http://qudt.org/schema/qudt/VariableLengthIntegerType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/SignedIntegerType', 'http://qudt.org/schema/qudt/SignedType', 'http://qudt.org/schema/qudt/VariableLengthIntegerType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class SignednessType(EnumeratedValue):
@@ -24554,6 +25732,8 @@ class SignednessType(EnumeratedValue):
         registry=_REGISTRY,
         label='Signedness type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class SimpleCodeList(CodeList):
@@ -24568,6 +25748,8 @@ class SimpleCodeList(CodeList):
         registry=_REGISTRY,
         label='Simple Code List',
         definition=None,
+        parent_iris=('http://www.linkedmodel.org/schema/dtype#CodeList',),
+        ancestor_iris=('http://www.linkedmodel.org/schema/dtype#CodeList', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class SingleDuctTerminal(TerminalUnit):
@@ -24582,6 +25764,8 @@ class SingleDuctTerminal(TerminalUnit):
         registry=_REGISTRY,
         label='Single duct terminal',
         definition='A `TerminalUnit` unit that has one ducted air inlet and a damper for regulating the flow of air.',
+        parent_iris=('http://data.ashrae.org/standard223#TerminalUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#TerminalUnit', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Sink(Equipment):
@@ -24596,6 +25780,8 @@ class Sink(Equipment):
         registry=_REGISTRY,
         label='Sink',
         definition='A piece of `Equipment` for manually washing hands, dishes, or other items that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -24614,6 +25800,8 @@ class SluiceGate(Gate):
         registry=_REGISTRY,
         label='Sluice Gate',
         definition='Large gate that slide vertically to control flow in channels, reservoirs, or treatment basins',
+        parent_iris=('https://watermetadata.org/ontology/watr#Gate',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Gate'),
     )
 
 class SolarThermalCollector(Equipment):
@@ -24628,6 +25816,8 @@ class SolarThermalCollector(Equipment):
         registry=_REGISTRY,
         label='Solar thermal collector',
         definition='A piece of `Equipment` that converts sunlight into thermal energy.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#EM-Light', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
@@ -24646,6 +25836,8 @@ class SolidAngleUnit(AngleUnit):
         registry=_REGISTRY,
         label='Solid Angle Unit',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/AngleUnit',),
+        ancestor_iris=('http://qudt.org/schema/qudt/AngleUnit', 'http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DimensionlessUnit', 'http://qudt.org/schema/qudt/Unit', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class SolventExtractionSystem(UnitProcess):
@@ -24660,6 +25852,8 @@ class SolventExtractionSystem(UnitProcess):
         registry=_REGISTRY,
         label='Solvent Extraction System',
         definition='A system that uses a solvent to selectively extract water from highly saline brines.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_SolventExtraction'),),
     )
 
@@ -24727,6 +25921,8 @@ class SpeedSensor(Sensor):
         registry=_REGISTRY,
         label='Speed Sensor',
         definition='A sensor used to measure the speed of an object or fluid',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class SplineCalibrator(Map):
@@ -24741,6 +25937,8 @@ class SplineCalibrator(Map):
         registry=_REGISTRY,
         label='Spline calibrator',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Map',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Collection', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Map', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class SplinePoint(Tuple):
@@ -24755,6 +25953,8 @@ class SplinePoint(Tuple):
         registry=_REGISTRY,
         label='Spline point',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Tuple',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class StandardizedFlowCell(Equipment):
@@ -24769,6 +25969,8 @@ class StandardizedFlowCell(Equipment):
         registry=_REGISTRY,
         label='Standardized Flow Cell',
         definition='An experimental apparatus developed for research experiments, for example in Electrocoagulation (EC), in continuous flow mode.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class StateOfChargeSensor(Sensor):
@@ -24783,6 +25985,8 @@ class StateOfChargeSensor(Sensor):
         registry=_REGISTRY,
         label='State of Charge Sensor',
         definition='A sensor used to measure the remaining charge in a battery or energy storage system',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class StateSpaceMatrix(Matrix):
@@ -24797,6 +26001,8 @@ class StateSpaceMatrix(Matrix):
         registry=_REGISTRY,
         label='State Space Matrix Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Matrix',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Matrix', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_Vector_quantity_ = _PropertySpec(
@@ -24827,6 +26033,8 @@ class Vector(Array):
         registry=_REGISTRY,
         label='Vector',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Array',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Vector_quantity_, _P_Vector_has_quantity_kinds_list,),
     )
 
@@ -24942,6 +26150,8 @@ class StateSpaceVector(Vector):
         registry=_REGISTRY,
         label='State Space Vector Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Vector',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Vector', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Statement(_EntityBase):
@@ -24956,6 +26166,8 @@ class Statement(_EntityBase):
         registry=_REGISTRY,
         label='Statement',
         definition=None,
+        parent_iris=('http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement',),
+        ancestor_iris=('http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement',),
     )
 
 class StaticMixer(Reactor):
@@ -24970,6 +26182,8 @@ class StaticMixer(Reactor):
         registry=_REGISTRY,
         label='StaticMixer',
         definition='A device for mixing liquids without moving components',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Mixing'),),
     )
 
@@ -25037,6 +26251,8 @@ class SteamInjector(Equipment):
         registry=_REGISTRY,
         label='Steam injector',
         definition='A piece of `Equipment` for increasing the humidity of an air stream by injecting steam into the air stream.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Water-Steam', medium_options=(), min_count=1, max_count=None),
@@ -25064,6 +26280,8 @@ class StringUTF16(TextStringType):
         registry=_REGISTRY,
         label='String UTF16',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StringType', 'http://qudt.org/schema/qudt/TextStringType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StringType', 'http://qudt.org/schema/qudt/TextStringType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_StringUTF16_member_datatype,),
     )
 
@@ -25198,6 +26416,8 @@ class StringUTF8(TextStringType):
         registry=_REGISTRY,
         label='String UTF8 Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/StringType', 'http://qudt.org/schema/qudt/TextStringType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StringType', 'http://qudt.org/schema/qudt/TextStringType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_StringUTF8_member_datatype,),
     )
 
@@ -25324,6 +26544,8 @@ class Symbol(Concept_2):
         registry=_REGISTRY,
         label='Symbol',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class SymmetricRelation(Relation):
@@ -25339,6 +26561,8 @@ class SymmetricRelation(Relation):
         registry=_REGISTRY,
         label='Symmetric relation',
         definition='A modeling construct used to define symmetric behavior\nfor certain relations in the standard such as `cnx`, `connected`, and `pairedConnectionPoint`.',
+        parent_iris=('http://data.ashrae.org/standard223#Relation',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Relation', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class SymmetricRelation_2(_EntityBase):
@@ -25353,6 +26577,8 @@ class SymmetricRelation_2(_EntityBase):
         registry=_REGISTRY,
         label='Symmetric relation',
         definition='A `SymmetricRelation` is modeling construct used to define symmetric behavior for appropriate relations.',
+        parent_iris=('http://www.w3.org/1999/02/22-rdf-syntax-ns#Property',),
+        ancestor_iris=('http://www.w3.org/1999/02/22-rdf-syntax-ns#Property',),
     )
 
 _P_System_has_process = _PropertySpec(
@@ -25421,6 +26647,8 @@ class System(Concept):
         registry=_REGISTRY,
         label='System',
         definition='A logical grouping of one or more pieces of `Equipment`, `Junction`s, or other `System`s for some functional purpose.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_System_has_process, _P_System_has_treatment_objective, _P_System_has_member, _P_System_has_boundary_connection_point, _P_System_has_optional_connection_point, _P_System_has_role,),
     )
 
@@ -25533,6 +26761,8 @@ class SystemOfQuantityKinds(Concept_2, Verifiable):
         registry=_REGISTRY,
         label='System of Quantity Kinds',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_SystemOfQuantityKinds_base_dimension_enumeration, _P_SystemOfQuantityKinds_has_base_quantity_kind, _P_SystemOfQuantityKinds_has_quantity_kind, _P_SystemOfQuantityKinds_has_unit_system, _P_SystemOfQuantityKinds_system_derived_quantity_kind,),
     )
 
@@ -25705,6 +26935,8 @@ class SystemOfUnits(Concept_2, Verifiable):
         registry=_REGISTRY,
         label='System of Units',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_SystemOfUnits_applicable_physical_constant, _P_SystemOfUnits_has_allowed_unit, _P_SystemOfUnits_has_base_unit, _P_SystemOfUnits_has_coherent_unit, _P_SystemOfUnits_has_defined_unit, _P_SystemOfUnits_has_derived_coherent_unit, _P_SystemOfUnits_has_derived_unit, _P_SystemOfUnits_has_unit, _P_SystemOfUnits_prefix,),
     )
 
@@ -25829,6 +27061,8 @@ class TaggedEnumeration(Enumeration):
         registry=_REGISTRY,
         label='Tagged Enumeration',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Enumeration',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Enumeration', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
         properties=(_P_TaggedEnumeration_code,),
     )
 
@@ -25939,6 +27173,8 @@ class Television(ElectronicDisplay):
         registry=_REGISTRY,
         label='Television',
         definition='An `ElectronicDisplay` that is designed primarily for the output of visual information supplied by a media broadcaster, and that typically has an integral tuner that is capable of selecting a single channel for display from the available input channel range.',
+        parent_iris=('http://data.ashrae.org/standard223#ElectronicDisplay',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectronicDisplay', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_TemperatureSensor_2_observes = _PropertySpec(
@@ -25964,6 +27200,8 @@ class TemperatureSensor_2(Sensor):
         registry=_REGISTRY,
         label='Temperature sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of temperature.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_TemperatureSensor_2_observes,),
     )
 
@@ -26047,6 +27285,8 @@ class TemperatureSensor(TemperatureSensor_2):
         registry=_REGISTRY,
         label='Temperature Sensor',
         definition='A sensor used to measure temperature',
+        parent_iris=('http://data.ashrae.org/standard223#TemperatureSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://data.ashrae.org/standard223#TemperatureSensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_ThermalEnergyStorageUnit_has_connection_point = _PropertySpec(
@@ -26071,6 +27311,8 @@ class ThermalEnergyStorageUnit(Equipment):
         registry=_REGISTRY,
         label='Thermal energy storage unit',
         definition='A piece of `Equipment` that stores thermal energy.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ThermalEnergyStorageUnit_has_connection_point,),
     )
 
@@ -26141,6 +27383,8 @@ class Thermostat(Equipment):
         registry=_REGISTRY,
         label='Thermostat',
         definition='A piece of `Equipment` that maintains temperature at a fixed or adjustable setpoint.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class ThreeBodyRotatingCoordinateSystem(AerospaceCoordinateSystem):
@@ -26155,6 +27399,8 @@ class ThreeBodyRotatingCoordinateSystem(AerospaceCoordinateSystem):
         registry=_REGISTRY,
         label='Three Body Rotating Coordinate System Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/AerospaceCoordinateSystem',),
+        ancestor_iris=('http://qudt.org/schema/qudt/AerospaceCoordinateSystem', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/CoordinateSystem', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 class ThreeWayValve(Valve_2):
@@ -26169,6 +27415,8 @@ class ThreeWayValve(Valve_2):
         registry=_REGISTRY,
         label='Three Way Valve',
         definition='A valve that features three ports (connections)',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_ThreeWayValve_2_has_connection_point = _PropertySpec(
@@ -26193,6 +27441,8 @@ class ThreeWayValve_2(Valve_2):
         registry=_REGISTRY,
         label='Three-way valve',
         definition='A `Valve` that can divert a fluid in one of three directions.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ThreeWayValve_2_has_connection_point,),
     )
 
@@ -26271,6 +27521,8 @@ class Time(ScalarDatatype):
         registry=_REGISTRY,
         label='Time',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ScalarDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Time_type_,),
     )
 
@@ -26389,6 +27641,8 @@ class TimeDataType(Enumeration, ScalarDatatype):
         registry=_REGISTRY,
         label='Time data type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Enumeration', 'http://qudt.org/schema/qudt/ScalarDatatype'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Enumeration', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
     def __init__(
@@ -26521,6 +27775,8 @@ class TimeInterval(Concept_2):
         registry=_REGISTRY,
         label='Time interval',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Concept',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_TimeInterval_type_,),
     )
 
@@ -26583,6 +27839,8 @@ class TimeStringType(DateTimeStringType, TextStringType):
         registry=_REGISTRY,
         label='Time Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DateTimeStringType', 'http://qudt.org/schema/qudt/TextStringType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/DateTimeStringType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StringType', 'http://qudt.org/schema/qudt/TextStringType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class TotalOrganicCompoundConcentrationSensor(ConcentrationSensor):
@@ -26597,6 +27855,8 @@ class TotalOrganicCompoundConcentrationSensor(ConcentrationSensor):
         registry=_REGISTRY,
         label='TOC Sensor',
         definition='A sensor used to measure the total organic compound concentration',
+        parent_iris=('https://watermetadata.org/ontology/watr#ConcentrationSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#ConcentrationSensor', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#ConcentrationSensor'),
     )
 
 class TransformType(EnumeratedValue):
@@ -26611,6 +27871,8 @@ class TransformType(EnumeratedValue):
         registry=_REGISTRY,
         label='Transform type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class TreatmentObjective(_EntityBase):
@@ -26625,6 +27887,8 @@ class TreatmentObjective(_EntityBase):
         registry=_REGISTRY,
         label='Treatment Objective',
         definition='An objective that a piece of equipment or a system is intended to achieve.',
+        parent_iris=(),
+        ancestor_iris=(),
     )
 
 class TreatmentObjective_ConstituentRemoval(TreatmentObjective):
@@ -26639,6 +27903,8 @@ class TreatmentObjective_ConstituentRemoval(TreatmentObjective):
         registry=_REGISTRY,
         label='Constituent Removal',
         definition='Net removal, conversion or control of a named constituent of the treated stream. The parent of the objectives that name what comes out of the water; the constituent each one is aimed at is stated with watr:targetsConstituent.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
     )
 
 class TreatmentObjective_AmmoniaControl(TreatmentObjective_ConstituentRemoval):
@@ -26653,6 +27919,8 @@ class TreatmentObjective_AmmoniaControl(TreatmentObjective_ConstituentRemoval):
         registry=_REGISTRY,
         label='Ammonia Control',
         definition='Reduction or conversion of ammonia in the treated stream, typically by nitrification. Distinct from nitrogen removal, which requires nitrogen to leave the water altogether; nitrification converts ammonia to nitrate and removes no nitrogen.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval'),
     )
 
 class TreatmentObjective_DissolvedSolidsRemoval(TreatmentObjective_ConstituentRemoval):
@@ -26667,6 +27935,8 @@ class TreatmentObjective_DissolvedSolidsRemoval(TreatmentObjective_ConstituentRe
         registry=_REGISTRY,
         label='Dissolved Solids Removal',
         definition='Reduction of the dissolved solids content of the treated stream. The parent of the objectives aimed at a particular dissolved constituent.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval'),
     )
 
 class TreatmentObjective_ArsenicRemoval(TreatmentObjective_DissolvedSolidsRemoval):
@@ -26681,6 +27951,8 @@ class TreatmentObjective_ArsenicRemoval(TreatmentObjective_DissolvedSolidsRemova
         registry=_REGISTRY,
         label='Arsenic Removal',
         definition='Reduction of arsenic species in the treated stream.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval'),
     )
 
 class TreatmentObjective_BiosolidsDisposal(TreatmentObjective):
@@ -26695,6 +27967,8 @@ class TreatmentObjective_BiosolidsDisposal(TreatmentObjective):
         registry=_REGISTRY,
         label='Biosolids Disposal',
         definition='Final disposition of biosolids, by land application, landfilling, incineration or another route.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
     )
 
 class TreatmentObjective_ChlorineResidualRemoval(TreatmentObjective_ConstituentRemoval):
@@ -26709,6 +27983,8 @@ class TreatmentObjective_ChlorineResidualRemoval(TreatmentObjective_ConstituentR
         registry=_REGISTRY,
         label='Chlorine Residual Removal',
         definition='Removal of the free and combined chlorine residual left by disinfection, before discharge or before a downstream process that the residual would damage.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval'),
     )
 
 class TreatmentObjective_SuspendedSolidsRemoval(TreatmentObjective_ConstituentRemoval):
@@ -26723,6 +27999,8 @@ class TreatmentObjective_SuspendedSolidsRemoval(TreatmentObjective_ConstituentRe
         registry=_REGISTRY,
         label='Suspended Solids Removal',
         definition='Removal of suspended solids, including settleable solids, from the treated stream.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval'),
     )
 
 class TreatmentObjective_Clarification(TreatmentObjective_SuspendedSolidsRemoval):
@@ -26737,6 +28015,8 @@ class TreatmentObjective_Clarification(TreatmentObjective_SuspendedSolidsRemoval
         registry=_REGISTRY,
         label='Clarification',
         definition='Production of a clarified liquid stream by removing suspended solids from it. The objective of every clarifier, whatever the stage it serves and whatever mechanism it separates by.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-SuspendedSolidsRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-SuspendedSolidsRemoval'),
     )
 
 class TreatmentObjective_Desalination(TreatmentObjective_DissolvedSolidsRemoval):
@@ -26751,6 +28031,8 @@ class TreatmentObjective_Desalination(TreatmentObjective_DissolvedSolidsRemoval)
         registry=_REGISTRY,
         label='Desalination',
         definition='Reduction of the dissolved salt content of the treated stream, whether by a membrane, an electrical or a thermal process.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval'),
     )
 
 class TreatmentObjective_VolumeReduction(TreatmentObjective):
@@ -26765,6 +28047,8 @@ class TreatmentObjective_VolumeReduction(TreatmentObjective):
         registry=_REGISTRY,
         label='Volume Reduction',
         definition='Reduction of the volume of a sludge or slurry by removing water from it. The parent of thickening, dewatering and drying, which differ in the state of the product.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
     )
 
 class TreatmentObjective_Dewatering(TreatmentObjective_VolumeReduction):
@@ -26779,6 +28063,8 @@ class TreatmentObjective_Dewatering(TreatmentObjective_VolumeReduction):
         registry=_REGISTRY,
         label='Dewatering',
         definition='Removing water from a sludge or slurry to the point that the product is a handleable cake rather than a pumpable liquid.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-VolumeReduction',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-VolumeReduction'),
     )
 
 class TreatmentObjective_Disinfection(TreatmentObjective):
@@ -26793,6 +28079,8 @@ class TreatmentObjective_Disinfection(TreatmentObjective):
         registry=_REGISTRY,
         label='Disinfection',
         definition='Inactivation or removal of pathogenic organisms from the treated stream. Reached by chlorination, ozonation, ultraviolet irradiation or thermal treatment, none of which is the outcome itself.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
     )
 
 class TreatmentObjective_Drying(TreatmentObjective_Dewatering):
@@ -26807,6 +28095,8 @@ class TreatmentObjective_Drying(TreatmentObjective_Dewatering):
         registry=_REGISTRY,
         label='Drying',
         definition='Removing water from biosolids beyond the cake stage, to a dry product.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-Dewatering',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-Dewatering', 'https://watermetadata.org/ontology/watr#TreatmentObjective-VolumeReduction'),
     )
 
 class TreatmentObjective_EquipmentCleaning(TreatmentObjective):
@@ -26821,6 +28111,8 @@ class TreatmentObjective_EquipmentCleaning(TreatmentObjective):
         registry=_REGISTRY,
         label='Equipment Cleaning',
         definition='Removal of accumulated foulants or residual materials from equipment to maintain or restore operation. Distinct from removing a constituent from the treated product stream.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
     )
 
 class TreatmentObjective_MetalsRemoval(TreatmentObjective_DissolvedSolidsRemoval):
@@ -26835,6 +28127,8 @@ class TreatmentObjective_MetalsRemoval(TreatmentObjective_DissolvedSolidsRemoval
         registry=_REGISTRY,
         label='Metals Removal',
         definition='Removal of dissolved metals from the treated stream, typically by raising pH or dosing sulfide so that they precipitate as hydroxides or sulfides and are then separated out.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval'),
     )
 
 class TreatmentObjective_LeadRemoval(TreatmentObjective_MetalsRemoval):
@@ -26849,6 +28143,8 @@ class TreatmentObjective_LeadRemoval(TreatmentObjective_MetalsRemoval):
         registry=_REGISTRY,
         label='Lead Removal',
         definition='Reduction of lead in the treated stream.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-MetalsRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-MetalsRemoval'),
     )
 
 class TreatmentObjective_pHControl(TreatmentObjective):
@@ -26863,6 +28159,8 @@ class TreatmentObjective_pHControl(TreatmentObjective):
         registry=_REGISTRY,
         label='pH Control',
         definition='Bringing the pH of the treated stream to a target value, or holding it there.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
     )
 
 class TreatmentObjective_Neutralization(TreatmentObjective_pHControl):
@@ -26877,6 +28175,8 @@ class TreatmentObjective_Neutralization(TreatmentObjective_pHControl):
         registry=_REGISTRY,
         label='Neutralization',
         definition='pH adjustment to neutral, typically with a base, as in high-density sludge treatment.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-pHControl',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-pHControl'),
     )
 
 class TreatmentObjective_NutrientRemoval(TreatmentObjective_ConstituentRemoval):
@@ -26891,6 +28191,8 @@ class TreatmentObjective_NutrientRemoval(TreatmentObjective_ConstituentRemoval):
         registry=_REGISTRY,
         label='Nutrient Removal',
         definition='Net removal of nitrogen or phosphorus from the treated stream, as opposed to its conversion from one form to another.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval'),
     )
 
 class TreatmentObjective_NitrogenRemoval(TreatmentObjective_NutrientRemoval):
@@ -26905,6 +28207,8 @@ class TreatmentObjective_NitrogenRemoval(TreatmentObjective_NutrientRemoval):
         registry=_REGISTRY,
         label='Nitrogen Removal',
         definition='Net removal of nitrogen from the treated stream, typically by converting nitrate to nitrogen gas so that it leaves as a gas.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-NutrientRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-NutrientRemoval'),
     )
 
 class TreatmentObjective_OrganicsRemoval(TreatmentObjective_ConstituentRemoval):
@@ -26919,6 +28223,8 @@ class TreatmentObjective_OrganicsRemoval(TreatmentObjective_ConstituentRemoval):
         registry=_REGISTRY,
         label='Organics Removal',
         definition='Net removal of biodegradable or dissolved organic material, measured as BOD, COD or TOC.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval'),
     )
 
 class TreatmentObjective_PhosphorusRemoval(TreatmentObjective_NutrientRemoval):
@@ -26933,6 +28239,8 @@ class TreatmentObjective_PhosphorusRemoval(TreatmentObjective_NutrientRemoval):
         registry=_REGISTRY,
         label='Phosphorus Removal',
         definition='Net removal of phosphorus from the treated stream, by taking it into biomass or precipitating it into a solid that is then wasted.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-NutrientRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-NutrientRemoval'),
     )
 
 class TreatmentObjective_ResourceRecovery(TreatmentObjective):
@@ -26947,6 +28255,8 @@ class TreatmentObjective_ResourceRecovery(TreatmentObjective):
         registry=_REGISTRY,
         label='Resource Recovery',
         definition='Recovery of a usable product -- water, energy or nutrients -- from a stream that would otherwise be discharged. A placeholder: the specific recovery objectives are not yet modeled.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
     )
 
 class TreatmentObjective_SilicaRemoval(TreatmentObjective_DissolvedSolidsRemoval):
@@ -26961,6 +28271,8 @@ class TreatmentObjective_SilicaRemoval(TreatmentObjective_DissolvedSolidsRemoval
         registry=_REGISTRY,
         label='Silica Removal',
         definition='Reduction of the dissolved silica content of the treated stream, generally to protect downstream membranes from silica scaling.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval'),
     )
 
 class TreatmentObjective_Softening(TreatmentObjective_DissolvedSolidsRemoval):
@@ -26975,6 +28287,8 @@ class TreatmentObjective_Softening(TreatmentObjective_DissolvedSolidsRemoval):
         registry=_REGISTRY,
         label='Softening',
         definition='Reduction of hardness by removing calcium and magnesium from the treated stream.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval'),
     )
 
 class TreatmentObjective_SolidsRemoval(TreatmentObjective_SuspendedSolidsRemoval):
@@ -26989,6 +28303,8 @@ class TreatmentObjective_SolidsRemoval(TreatmentObjective_SuspendedSolidsRemoval
         registry=_REGISTRY,
         label='Solids Removal (deprecated)',
         definition='Deprecated. Use TreatmentObjective-SuspendedSolidsRemoval for removal of suspended or settleable solids. This legacy term does not include dissolved solids removal.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-SuspendedSolidsRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-SuspendedSolidsRemoval'),
     )
 
 class TreatmentObjective_Stabilization(TreatmentObjective):
@@ -27003,6 +28319,8 @@ class TreatmentObjective_Stabilization(TreatmentObjective):
         registry=_REGISTRY,
         label='Stabilization',
         definition='Reduction of the volatile solids, pathogen content and odour potential of biosolids so that they can be stored, used or disposed of.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective',),
     )
 
 class TreatmentObjective_SulfateRemoval(TreatmentObjective_DissolvedSolidsRemoval):
@@ -27017,6 +28335,8 @@ class TreatmentObjective_SulfateRemoval(TreatmentObjective_DissolvedSolidsRemova
         registry=_REGISTRY,
         label='Sulfate Removal',
         definition='Reduction of the dissolved sulfate content of the treated stream, as in acid mine drainage treatment where it is precipitated as gypsum or ettringite.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval'),
     )
 
 class TreatmentObjective_Thickening(TreatmentObjective_VolumeReduction):
@@ -27031,6 +28351,8 @@ class TreatmentObjective_Thickening(TreatmentObjective_VolumeReduction):
         registry=_REGISTRY,
         label='Thickening',
         definition='Raising the solids concentration of a sludge or slurry while it remains pumpable. Distinguished from dewatering by the state of the product.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-VolumeReduction',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-VolumeReduction'),
     )
 
 class TreatmentObjective_TurbidityRemoval(TreatmentObjective_SuspendedSolidsRemoval):
@@ -27045,6 +28367,8 @@ class TreatmentObjective_TurbidityRemoval(TreatmentObjective_SuspendedSolidsRemo
         registry=_REGISTRY,
         label='Turbidity Removal',
         definition='Reduction of the turbidity of the treated stream, the objective of polishing filtration.',
+        parent_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective-SuspendedSolidsRemoval',),
+        ancestor_iris=('https://watermetadata.org/ontology/watr#TreatmentObjective', 'https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval', 'https://watermetadata.org/ontology/watr#TreatmentObjective-SuspendedSolidsRemoval'),
     )
 
 class TricklingFilter(Filter):
@@ -27059,6 +28383,8 @@ class TricklingFilter(Filter):
         registry=_REGISTRY,
         label='Trickling Filter',
         definition='A filter system that treats wastewater by trickling it over a bed of rocks or plastic',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_TricklingFiltration'),),
     )
 
@@ -27074,6 +28400,8 @@ class Triplet(ThreeTuple):
         registry=_REGISTRY,
         label='Triplet',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ThreeTuple',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/ThreeTuple', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_TupleType_element_datatype = _PropertySpec(
@@ -27114,6 +28442,8 @@ class TupleType(CompositeDatatype):
         registry=_REGISTRY,
         label='Tuple Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_TupleType_element_datatype, _P_TupleType_element_type_count, _P_TupleType_length,),
     )
 
@@ -27226,6 +28556,8 @@ class TurbidityMeter(Sensor):
         registry=_REGISTRY,
         label='Turbidity Meter',
         definition='A sensor used to measure the turbidity (clarity) of a fluid',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Turbine(Equipment):
@@ -27240,6 +28572,8 @@ class Turbine(Equipment):
         registry=_REGISTRY,
         label='Turbine',
         definition='A piece of `Equipment` that converts mechanical energy into electric energy.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
@@ -27257,6 +28591,8 @@ class TwoPositionDamper(Damper):
         registry=_REGISTRY,
         label='Two Position Damper',
         definition='A damper that can take two positions: fully open and fully closed.',
+        parent_iris=('http://data.ashrae.org/standard223#Damper',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Damper', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_TwoTupleType_element_datatype = _PropertySpec(
@@ -27288,6 +28624,8 @@ class TwoTupleType(N_TupleType):
         registry=_REGISTRY,
         label='Two-Tuple Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/N-TupleType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-TupleType', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_TwoTupleType_element_datatype, _P_TwoTupleType_element_type_count,),
     )
 
@@ -27397,6 +28735,8 @@ class TwoWayValve(Valve_2):
         registry=_REGISTRY,
         label='Two-way valve',
         definition='A `Valve` that can divert a fluid in one of two directions.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None),
@@ -27415,6 +28755,8 @@ class TypeList(Datatype):
         registry=_REGISTRY,
         label='Type list',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Datatype',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class TypeMatrix(Matrix):
@@ -27429,6 +28771,8 @@ class TypeMatrix(Matrix):
         registry=_REGISTRY,
         label='Type matrix',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Matrix',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Matrix', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_TypeVector_datatype = _PropertySpec(
@@ -27453,6 +28797,8 @@ class TypeVector(Vector):
         registry=_REGISTRY,
         label='Type vector',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/Vector',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Vector', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_TypeVector_datatype,),
     )
 
@@ -27565,6 +28911,8 @@ class UCUMcs(_EntityBase):
         registry=_REGISTRY,
         label='case-sensitive UCUM code',
         definition=None,
+        parent_iris=('http://www.w3.org/2001/XMLSchema#string',),
+        ancestor_iris=('http://www.w3.org/2001/XMLSchema#string',),
     )
 
 _P_USBCable_medium = _PropertySpec(
@@ -27590,6 +28938,8 @@ class USBCable(Conductor):
         registry=_REGISTRY,
         label='USB cable',
         definition='A type of `Conductor` that consists of 1 to 5 pairs of twisted wire and is used for `Signal-USB` communication.',
+        parent_iris=('http://data.ashrae.org/standard223#Conductor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_USBCable_medium,),
     )
 
@@ -27646,6 +28996,8 @@ class USBOutlet(Equipment):
         registry=_REGISTRY,
         label='USB outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a USB communication network, typically via a USB cable.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-USB', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-USB', medium_options=(), min_count=1, max_count=1),
@@ -27664,6 +29016,8 @@ class UVH2O2Reactor(Reactor):
         registry=_REGISTRY,
         label='UV/H2O2 Reactor',
         definition='A specific reactor used in Advanced Oxidation Processes (AOPs) combining UV light with hydrogen peroxide.',
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_AdvancedOxidation'), ('has_treatment_objective', 'TreatmentObjective_OrganicsRemoval')),
     )
 
@@ -27731,6 +29085,8 @@ class UltrafiltrationUnit(Filter):
         registry=_REGISTRY,
         label='Ultrafiltration Unit',
         definition='A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid',
+        parent_iris=('https://watermetadata.org/ontology/watr#Filter',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_Ultrafiltration'),),
     )
 
@@ -27746,6 +29102,8 @@ class UltravioletLightUnit(DisinfectionUnit):
         registry=_REGISTRY,
         label='Ultravioletlight Unit',
         definition='A unit using ultraviolet light for disinfection',
+        parent_iris=('https://watermetadata.org/ontology/watr#DisinfectionUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#DisinfectionUnit', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
         class_defaults=(('has_process', 'Process_UVIrradiation'),),
     )
 
@@ -27813,6 +29171,8 @@ class UnsignedBigIntegerType(BigIntegerType, UnsignedIntegerType):
         registry=_REGISTRY,
         label='Unsigned Big Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/BigIntegerType', 'http://qudt.org/schema/qudt/UnsignedIntegerType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/BigIntegerType', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/UnsignedIntegerType', 'http://qudt.org/schema/qudt/UnsignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_UnsignedLongIntegerType_literal = _PropertySpec(
@@ -27836,6 +29196,8 @@ class UnsignedLongIntegerType(LongIntegerType, UnsignedIntegerType):
         registry=_REGISTRY,
         label='Unsigned Long Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/LongIntegerType', 'http://qudt.org/schema/qudt/UnsignedIntegerType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/LongIntegerType', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/UnsignedIntegerType', 'http://qudt.org/schema/qudt/UnsignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_UnsignedLongIntegerType_literal,),
     )
 
@@ -27960,6 +29322,8 @@ class UnsignedMediumIntegerType(UnsignedIntegerType):
         registry=_REGISTRY,
         label='Unsigned Medium Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/UnsignedIntegerType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/UnsignedIntegerType', 'http://qudt.org/schema/qudt/UnsignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class UnsignedShortIntegerType(ShortIntegerType, UnsignedIntegerType):
@@ -27974,6 +29338,8 @@ class UnsignedShortIntegerType(ShortIntegerType, UnsignedIntegerType):
         registry=_REGISTRY,
         label='Unsigned Short Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/ShortIntegerType', 'http://qudt.org/schema/qudt/UnsignedIntegerType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/ShortIntegerType', 'http://qudt.org/schema/qudt/UnsignedIntegerType', 'http://qudt.org/schema/qudt/UnsignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class UnsignedVariableLengthIntegerType(UnsignedIntegerType, VariableLengthIntegerType):
@@ -27988,6 +29354,8 @@ class UnsignedVariableLengthIntegerType(UnsignedIntegerType, VariableLengthInteg
         registry=_REGISTRY,
         label='Unsigned Variable Length Integer Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/UnsignedIntegerType', 'http://qudt.org/schema/qudt/VariableLengthIntegerType'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/UnsignedIntegerType', 'http://qudt.org/schema/qudt/UnsignedType', 'http://qudt.org/schema/qudt/VariableLengthIntegerType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_UserQuantityKind_has_quantity_kind = _PropertySpec(
@@ -28013,6 +29381,8 @@ class UserQuantityKind(AbstractQuantityKind):
         registry=_REGISTRY,
         label='User Quantity Kind',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/AbstractQuantityKind',),
+        ancestor_iris=('http://qudt.org/schema/qudt/AbstractQuantityKind', 'http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_UserQuantityKind_has_quantity_kind,),
     )
 
@@ -28089,6 +29459,8 @@ class ValueReference(_EntityBase):
         registry=_REGISTRY,
         label='Value Reference',
         definition=None,
+        parent_iris=('http://www.w3.org/2002/07/owl#Thing',),
+        ancestor_iris=('http://www.w3.org/2002/07/owl#Thing',),
     )
 
 class Valve(Valve_2):
@@ -28103,6 +29475,8 @@ class Valve(Valve_2):
         registry=_REGISTRY,
         label='Valve',
         definition='A device that regulates, directs or controls the flow of a fluid (gases or liquids) by opening, closing, or partially obstructing various passageways.',
+        parent_iris=('http://data.ashrae.org/standard223#Valve',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 _P_VariableFrequencyDrive_2_connected_to = _PropertySpec(
@@ -28127,6 +29501,8 @@ class VariableFrequencyDrive_2(Equipment):
         registry=_REGISTRY,
         label='Variable frequency drive',
         definition='A piece of `Equipment` that varies its output frequency to vary the rotating speed and torque of a motor, given a fixed input frequency. Used with fans or pumps to vary the flow in the system as a function of a maintained pressure.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_VariableFrequencyDrive_2_connected_to,),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
@@ -28201,6 +29577,8 @@ class VariableFrequencyDrive(VariableFrequencyDrive_2):
         registry=_REGISTRY,
         label='Variable Frequency Drive',
         definition='A type of AC motor drive that controls speed and torque by varying the frequency of the input electricity.',
+        parent_iris=('http://data.ashrae.org/standard223#VariableFrequencyDrive',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#VariableFrequencyDrive', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class VariableIntervalTimeSeriesArray(TimeSeriesArray):
@@ -28215,6 +29593,8 @@ class VariableIntervalTimeSeriesArray(TimeSeriesArray):
         registry=_REGISTRY,
         label='Variable Interval Time Series Array Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TimeSeriesArray',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/TimeSeriesArray', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class VariableIntervalTimeSeriesArrayType(TimeSeriesArrayType):
@@ -28229,6 +29609,8 @@ class VariableIntervalTimeSeriesArrayType(TimeSeriesArrayType):
         registry=_REGISTRY,
         label='Variable Interval Time Series Array Type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/TimeSeriesArrayType',),
+        ancestor_iris=('http://qudt.org/schema/qudt/ArrayType', 'http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/TimeSeriesArrayType', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class VehicleCoordinateSystem(AerospaceCoordinateSystem):
@@ -28243,6 +29625,8 @@ class VehicleCoordinateSystem(AerospaceCoordinateSystem):
         registry=_REGISTRY,
         label='Vehicle coordinate system',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/AerospaceCoordinateSystem',),
+        ancestor_iris=('http://qudt.org/schema/qudt/AerospaceCoordinateSystem', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/CoordinateSystem', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2004/02/skos/core#Concept'),
     )
 
 class Viewpoint(Dimension):
@@ -28257,6 +29641,8 @@ class Viewpoint(Dimension):
         registry=_REGISTRY,
         label='ViewpointDimension',
         definition=None,
+        parent_iris=('http://www.linkedmodel.org/schema/vaem#Dimension',),
+        ancestor_iris=('http://www.linkedmodel.org/schema/vaem#Dimension', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 _P_VoltageSensor_observes = _PropertySpec(
@@ -28282,6 +29668,8 @@ class VoltageSensor(Sensor):
         registry=_REGISTRY,
         label='Voltage sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of voltage.',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_VoltageSensor_observes,),
     )
 
@@ -28365,6 +29753,8 @@ class VolumeSensor(Sensor):
         registry=_REGISTRY,
         label='Volume Sensor',
         definition='A sensor used to measure the volume of a substance',
+        parent_iris=('http://data.ashrae.org/standard223#Sensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class WaterOutlet(Equipment):
@@ -28379,6 +29769,8 @@ class WaterOutlet(Equipment):
         registry=_REGISTRY,
         label='Water outlet',
         definition='A piece of `Equipment` that contains one or more pipe fittings for connecting plumbing equipment (e.g., `Faucet`) to a plumbing system.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1),
@@ -28397,6 +29789,8 @@ class WaterToAirHeatPump(HeatPump):
         registry=_REGISTRY,
         label='Water-to-air heat pump',
         definition='A `HeatPump` that transfers thermal energy between air and a body of water.',
+        parent_iris=('http://data.ashrae.org/standard223#HeatPump',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatPump', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
@@ -28417,6 +29811,8 @@ class WaterToWaterHeatPump(HeatPump):
         registry=_REGISTRY,
         label='Water-to-water heat pump',
         definition='A `HeatPump` that transfers thermal energy between two flows of water.',
+        parent_iris=('http://data.ashrae.org/standard223#HeatPump',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatPump', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=2, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=2, max_count=None),
@@ -28435,6 +29831,8 @@ class WetDryStateType(DiscreteState):
         registry=_REGISTRY,
         label='Wet dry state type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/DiscreteState', 'http://qudt.org/schema/qudt/EnumeratedValue'),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/DiscreteState', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 class Wetland(Equipment):
@@ -28449,6 +29847,8 @@ class Wetland(Equipment):
         registry=_REGISTRY,
         label='Wetland',
         definition='A marsh or bog-like area that is permanently or seasonally saturated with water, used for pre- or post-treatment.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class Window(Equipment):
@@ -28463,6 +29863,8 @@ class Window(Equipment):
         registry=_REGISTRY,
         label='Window',
         definition='A piece of `Equipment` that provides a pathway for `EM-Light` or `Fluid-Air` (or both) to flow from a room to another room or the building exterior through a vertical or nearly vertical area of the room envelope.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-Light', 'http://data.ashrae.org/standard223#Fluid-Air'), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-Light', 'http://data.ashrae.org/standard223#Fluid-Air'), min_count=1, max_count=None),
@@ -28481,6 +29883,8 @@ class WindowShade(Equipment):
         registry=_REGISTRY,
         label='Window shade',
         definition='A piece of `Equipment` that can be adjusted to allow, regulate, or stop the flow of light through a `Window`.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
 class WiredEthernetOutlet(Equipment):
@@ -28495,6 +29899,8 @@ class WiredEthernetOutlet(Equipment):
         registry=_REGISTRY,
         label='Wired Ethernet outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a wired Ethernet communication network, typically via a wired Ethernet cable.',
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-WiredEthernet', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-WiredEthernet', medium_options=(), min_count=1, max_count=1),
@@ -28513,6 +29919,8 @@ class YesNoType(EnumeratedValue):
         registry=_REGISTRY,
         label='Yes no type',
         definition=None,
+        parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
+        ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
 _P_Zone_has_domain = _PropertySpec(
@@ -28556,6 +29964,8 @@ class Zone(Concept):
         registry=_REGISTRY,
         label='Zone',
         definition='A logical grouping of one or more `DomainSpace`s or other `Zone`s for some building service or control-related purpose. `Zone`s can have properties that are inputs or outputs to a `Function` (see {s223:Function}), which can be executed by `Controller`s (see {s223:Controller}) or other `Equipment`.',
+        parent_iris=('http://data.ashrae.org/standard223#Concept',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Zone_has_domain, _P_Zone_has_domain_space, _P_Zone_has_zone,),
     )
 
@@ -28631,6 +30041,8 @@ class ZoneGroup(Zone):
         registry=_REGISTRY,
         label='Zone Group',
         definition='A ZoneGroup is a grouping of zones that may be scheduled together. Zone groupings must be assigned based on rules in Clause 3.1.3 of Guideline 36.',
+        parent_iris=('http://data.ashrae.org/standard223#Zone',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Zone', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_ZoneGroup_contains_, _P_ZoneGroup_has_domain,),
     )
 
@@ -28695,6 +30107,8 @@ class Zone_2(Zone):
         registry=_REGISTRY,
         label='Zone',
         definition='A thermal zone with the points required for Guideline 36 control sequences. It is a collection of s223:DomainSpace instances.',
+        parent_iris=('http://data.ashrae.org/standard223#Zone',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Zone', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         properties=(_P_Zone_2_has_domain,),
     )
 
@@ -28743,6 +30157,8 @@ class hexbinary(_EntityBase):
         registry=_REGISTRY,
         label='hexbinary',
         definition=None,
+        parent_iris=('http://www.w3.org/2001/XMLSchema#string',),
+        ancestor_iris=('http://www.w3.org/2001/XMLSchema#string',),
     )
 
 class pHSensor(ConcentrationSensor):
@@ -28757,6 +30173,8 @@ class pHSensor(ConcentrationSensor):
         registry=_REGISTRY,
         label='pH Sensor',
         definition='A sensor used to measure the pH of a solution',
+        parent_iris=('https://watermetadata.org/ontology/watr#ConcentrationSensor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#ConcentrationSensor', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#ConcentrationSensor'),
     )
 
 

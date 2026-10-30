@@ -137,6 +137,8 @@ def _emit_class(
     lines.append("        registry=_REGISTRY,")
     lines.append(f"        label={cls.label!r},")
     lines.append(f"        definition={cls.definition!r},")
+    lines.append(f"        parent_iris={cls.parent_iris!r},")
+    lines.append(f"        ancestor_iris={cls.ancestor_iris!r},")
     if cls.abstract:
         lines.append("        abstract=True,")
     if cls.own_props:

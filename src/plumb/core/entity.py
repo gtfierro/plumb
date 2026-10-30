@@ -98,10 +98,24 @@ class ClassMetaView:
     @property
     def parents(self) -> tuple[type[Entity], ...]:
         """Direct ontology superclasses (as Python classes)."""
+        iris = self._cls._classinfo.parent_iris
+        if iris is not None:
+            return tuple(
+                self.registry.by_iri[iri] for iri in iris if iri in self.registry.by_iri
+            )
         return tuple(
             base
             for base in self._cls.__bases__
             if issubclass(base, Entity) and "_classinfo" in base.__dict__
+        )
+
+    def is_a(self, parent: type[Entity] | str) -> bool:
+        """Test ontology ancestry independently of Python inheritance repairs."""
+        iri = parent if isinstance(parent, str) else parent.meta.iri
+        return any(
+            info.iri == iri or iri in info.ancestor_iris
+            for base in self._cls.__mro__
+            if (info := base.__dict__.get("_classinfo")) is not None
         )
 
     @property
@@ -136,7 +150,7 @@ class ClassMetaView:
             cls = registry.by_name.get(f"{self._cls.__name__}_{name_or_iri}")
         if cls is None:
             cls = registry.by_iri.get(name_or_iri)
-        if cls is None or cls is self._cls or not issubclass(cls, self._cls):
+        if cls is None or cls is self._cls or not cls.meta.is_a(self._cls):
             raise KeyError(
                 f"{name_or_iri!r} is not a registered subclass of {self._cls.__name__}"
             )
@@ -968,7 +982,7 @@ class Entity:
                     f"{type(self).__name__}.{spec.name} expects an ontology "
                     f"class, got {value!r}"
                 )
-            if not spec.ranges or issubclass(value, allowed):
+            if not spec.ranges or any(value.meta.is_a(cls) for cls in allowed):
                 return
             names = " | ".join(spec.ranges)
             raise RangeError(
@@ -992,7 +1006,7 @@ class Entity:
             )
         if not spec.ranges:
             return
-        if not isinstance(value, allowed) and value.meta.iri not in allowed_iris:
+        if not any(value.meta.is_a(cls) for cls in allowed):
             names = " | ".join(rng for rng in spec.ranges)
             raise RangeError(
                 f"{type(self).__name__}.{spec.name} expects {names}, got "
