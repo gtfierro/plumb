@@ -1,5 +1,25 @@
 # Implementation roadmap
 
+## Next: compiler and runtime hardening
+
+The [compiler hardening plan](compiler-hardening-plan.md) defines the proposed
+sequence for making S223/223P and WaTr updates reproducible and predictable:
+
+1. Pin source documents and import closures; gate offline regeneration in CI.
+2. Correct constraint composition and establish a shared semantic IR.
+3. Extract domain adapters and converge base/configuration compiler semantics.
+4. Link imported class identities across S223 and WaTr.
+5. Separate core model lifecycle from the S223 resolution backend.
+6. Add semantic upgrade reports and ontology-evolution tests.
+
+The plan includes acceptance checks, compatibility constraints, and a prototype
+gate for imported classes with package-specific shape restrictions. Import
+closure pinning is part of this work, rather than deferred.
+
+Design criterion: deep modules with simple interfaces. These phases assign
+ownership of complexity; they should reduce caller coordination and keep
+compiler passes, adapters, and backend selection behind small public APIs.
+
 ## Completed in the current framework pass
 
 - Strict `Model.compile(validate=True)` with local, reproducible shape bundles.
@@ -22,10 +42,6 @@
   quantity and stream-state patterns settle.
 - Source traceability/provenance for generated model facts. Revisit before
   adding interchange or translation workflows.
-- A committed lockfile pinning the versions and hashes of each generated
-  package's imports closure. Generation is byte-identical for an unchanged
-  closure and each package bundles its compiled graph, but regenerating Brick,
-  S223, or WaTr still resolves imports from the network.
 
 ## Later development line
 
