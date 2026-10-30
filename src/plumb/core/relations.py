@@ -45,52 +45,44 @@ class RelSet(Generic[T]):
         self._spec = spec
         self._items: list[T] = []
 
-    def add(self, *items: T) -> None:
-        """Link one or more target entities. Duplicates are ignored."""
-        self._owner._model._assert_mutable()
-        if self._owner._shape_constraints:
+    def _replace(self, items: Iterable[T]) -> None:
+        """Validate the complete update before touching either side of an edge."""
+        owner, spec = self._owner, self._spec
+        owner._model._assert_mutable()
+        proposed = list(dict.fromkeys(_link_value(spec, item) for item in items))
+        for item in proposed:
+            owner._check_range(spec, item)
+        _check_maximum(owner, spec, len(proposed))
+        if owner._shape_constraints:
             from .shape_constraints import check_values
 
-            check_values(
-                self._owner,
-                self._spec.name,
-                list(dict.fromkeys([*self._items, *items])),
-            )
-        changed = False
-        changed_items: list[T] = []
-        for item in items:
-            item = _link_value(self._spec, item)
-            self._owner._check_range(self._spec, item)
-            if item in self._items:
-                continue
-            self._items.append(item)
-            if self._spec.kind == "object":
-                _link_inverse(self._owner, self._spec, item)
-            changed = True
-            changed_items.append(item)
-        if changed:
-            self._owner._model._touch(self._owner, *changed_items)
+            check_values(owner, spec.name, proposed)
+        added = [item for item in proposed if item not in self._items]
+        removed = [item for item in self._items if item not in proposed]
+        if spec.kind == "object":
+            for item in added:
+                _check_inverse(owner, spec, item)
+            for item in removed:
+                _unlink_inverse(owner, spec, item)
+            for item in added:
+                _link_inverse(owner, spec, item)
+        self._items[:] = proposed
+        if added or removed:
+            owner._model._touch(owner, *added, *removed)
+
+    def add(self, *items: T) -> None:
+        """Link target entities atomically. Duplicates are ignored."""
+        self._replace([*self._items, *items])
 
     def remove(self, item: T) -> None:
-        """Unlink a target entity (and the mirrored inverse edge)."""
-        self._owner._model._assert_mutable()
-        if self._owner._shape_constraints:
-            from .shape_constraints import check_values
-
-            check_values(
-                self._owner,
-                self._spec.name,
-                [value for value in self._items if value != item],
-            )
-        self._items.remove(item)
-        if self._spec.kind == "object":
-            _unlink_inverse(self._owner, self._spec, item)
-        self._owner._model._touch(self._owner, item)
+        """Unlink a target entity and its mirrored inverse edge."""
+        proposed = list(self._items)
+        proposed.remove(item)
+        self._replace(proposed)
 
     def clear(self) -> None:
-        """Unlink everything."""
-        for item in list(self._items):
-            self.remove(item)
+        """Unlink everything as one update."""
+        self._replace([])
 
     def __iter__(self) -> Iterator[T]:
         return iter(self._items)
@@ -134,22 +126,7 @@ class Rel(Generic[T]):
 
     def __set__(self, obj: Entity, value: Iterable[T]) -> None:
         """Replace the full contents (used by constructor kwargs)."""
-        store: RelSet[T] = obj._store_for(self.spec)
-        values = _collection(obj, self.spec, value)
-        if obj._shape_constraints:
-            for item in values:
-                obj._check_range(self.spec, item)
-            from .shape_constraints import check_values
-
-            check_values(obj, self.spec.name, values)
-            with obj._model._atomic():
-                for item in list(store._items):
-                    if item not in values:
-                        store.remove(item)
-                store.add(*values)
-            return
-        store.clear()
-        store.add(*values)
+        obj._store_for(self.spec)._replace(_collection(obj, self.spec, value))
 
 
 class RelOne(Generic[T]):
@@ -179,6 +156,9 @@ class RelOne(Generic[T]):
         if value is not None:
             value = _link_value(self.spec, value)
             obj._check_range(self.spec, value)
+        _check_maximum(obj, self.spec, int(value is not None))
+        if value is not None:
+            _check_inverse(obj, self.spec, value)
         previous = obj._data.get(self.spec.name)
         if previous is not None:
             _unlink_inverse(obj, self.spec, previous)
@@ -214,6 +194,7 @@ class TermOne(Generic[V]):
         from .terms import TermValue
 
         obj._model._assert_mutable()
+        _check_maximum(obj, self.spec, int(value is not None))
         if value is not None and not isinstance(value, TermValue):
             raise RangeError(
                 f"{type(obj).__name__}.{self.spec.name} expects a compiled "
@@ -266,6 +247,7 @@ class ValueOne(Generic[V]):
 
     def __set__(self, obj: Entity, value: V | None) -> None:
         obj._model._assert_mutable()
+        _check_maximum(obj, self.spec, int(value is not None))
         obj._data[self.spec.name] = value
         obj._model._touch(obj)
 
@@ -299,6 +281,7 @@ class EnumOne(Generic[V]):
 
     def __set__(self, obj: Entity, value: V | None) -> None:
         obj._model._assert_mutable()
+        _check_maximum(obj, self.spec, int(value is not None))
         if value is not None:
             _check_enum(obj, self.spec, value)
         obj._data[self.spec.name] = value
@@ -324,6 +307,11 @@ class EnumValues(Generic[V]):
 
     def _replace(self, values: list[V]) -> None:
         owner = self._owner
+        owner._model._assert_mutable()
+        values = list(dict.fromkeys(values))
+        for value in values:
+            _check_enum(owner, self._spec, value)
+        _check_maximum(owner, self._spec, len(values))
         if owner._shape_constraints:
             from .shape_constraints import check_values
 
@@ -404,12 +392,7 @@ class EnumSet(Generic[V]):
         return EnumValues(obj, self.spec)
 
     def __set__(self, obj: Entity, value: Iterable[V]) -> None:
-        obj._model._assert_mutable()
-        values = _collection(obj, self.spec, value)
-        for item in values:
-            _check_enum(obj, self.spec, item)
-        obj._data[self.spec.name] = values
-        obj._model._touch(obj)
+        EnumValues(obj, self.spec)._replace(_collection(obj, self.spec, value))
 
 
 def _collection(obj: Entity, spec: PropertySpec, value: object) -> list:
@@ -442,18 +425,32 @@ def _check_enum(obj: Entity, spec: PropertySpec, value: object) -> None:
             f"(from the generated enums module), got {type(value).__name__} "
             f"({value!r})"
         )
-    if not spec.enum_ranges:
+    groups = spec.range_groups or ((spec.enum_ranges,) if spec.enum_ranges else ())
+    if not groups:
         return
     registry = obj.meta.registry
-    for root_iri in spec.enum_ranges:
-        root = registry.enums_by_iri.get(root_iri)
-        if root is not None and value.is_a(root):
-            return
-    allowed = " | ".join(_local(iri) for iri in spec.enum_ranges)
+    if all(
+        any(
+            (root := registry.enums_by_iri.get(iri)) is not None and value.is_a(root)
+            for iri in group
+        )
+        for group in groups
+    ):
+        return
+    allowed = " & ".join(
+        "(" + " | ".join(_local(iri) for iri in group) + ")" for group in groups
+    )
     raise RangeError(
         f"{type(obj).__name__}.{spec.name} expects {allowed} (or a "
         f"descendant), got {_local(value.iri)}"
     )
+
+
+def _check_maximum(obj: Entity, spec: PropertySpec, count: int) -> None:
+    if spec.max_count is not None and count > spec.max_count:
+        raise RangeError(
+            f"{type(obj).__name__}.{spec.name} permits at most {spec.max_count} values"
+        )
 
 
 class Lit(Generic[V]):
@@ -480,6 +477,7 @@ class Lit(Generic[V]):
 
     def __set__(self, obj: Entity, value: V | None) -> None:
         obj._model._assert_mutable()
+        _check_maximum(obj, self.spec, int(value is not None))
         if value is not None and not _literal_ok(self.spec.datatype, value):
             raise RangeError(
                 f"{type(obj).__name__}.{self.spec.name} expects "
@@ -515,30 +513,23 @@ def _link_value(spec: PropertySpec, value: Any) -> Any:
     return value
 
 
-def _link_inverse(owner: Entity, spec: PropertySpec, target: object) -> None:
-    """Mirror ``owner --spec--> target`` onto the target's inverse property.
-
-    Writes into the target's store directly (not via ``add``/``__set__``) to
-    avoid recursing back here. A scalar (RelOne) inverse is filled when
-    empty; a conflicting existing value is an error rather than a silent
-    overwrite (e.g. a ConnectionPoint can only belong to one Connectable).
-    """
-    if spec.inverse is None:
-        return
+def _check_inverse(owner: Entity, spec: PropertySpec, target: object) -> None:
+    """Validate an inverse edge without mutating the target."""
     from .entity import Entity
 
-    if not isinstance(target, Entity):
+    if spec.inverse is None or not isinstance(target, Entity):
         return
     desc = getattr(type(target), spec.inverse, None)
+    if not isinstance(desc, (Rel, RelOne)):
+        return
+    target._check_range(desc.spec, owner)
     if isinstance(desc, Rel):
-        store = target._store_for(desc.spec)
-        if owner not in store._items:
-            store._items.append(owner)
-    elif isinstance(desc, RelOne):
+        values = list(target._store_for(desc.spec))
+        if owner not in values:
+            values.append(owner)
+    else:
         current = target._data.get(desc.spec.name)
-        if current is None:
-            target._data[desc.spec.name] = owner
-        elif current is not owner:
+        if current is not None and current is not owner:
             from .errors import ModelingError
 
             raise ModelingError(
@@ -546,6 +537,27 @@ def _link_inverse(owner: Entity, spec: PropertySpec, target: object) -> None:
                 f"linking {owner!r}.{spec.name} would conflict "
                 f"(remove the existing link first)"
             )
+        values = [owner]
+    _check_maximum(target, desc.spec, len(values))
+    if target._shape_constraints:
+        from .shape_constraints import check_values
+
+        check_values(target, desc.spec.name, values if isinstance(desc, Rel) else owner)
+
+
+def _link_inverse(owner: Entity, spec: PropertySpec, target: object) -> None:
+    """Write a preflighted inverse edge without recursively invoking descriptors."""
+    from .entity import Entity
+
+    if spec.inverse is None or not isinstance(target, Entity):
+        return
+    desc = getattr(type(target), spec.inverse, None)
+    if isinstance(desc, Rel):
+        store = target._store_for(desc.spec)
+        if owner not in store._items:
+            store._items.append(owner)
+    elif isinstance(desc, RelOne):
+        target._data[desc.spec.name] = owner
 
 
 def _unlink_inverse(owner: Entity, spec: PropertySpec, target: object) -> None:

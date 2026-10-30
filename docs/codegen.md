@@ -56,6 +56,27 @@ from Python bases. `Class.meta.parents`, hierarchy discovery, and
 accepting legitimate ontology subtypes even when Python cannot inherit every
 parent.
 
+## Effective property constraints
+
+The shared compiler composes property constraints over the RDF parent graph
+before selecting Python bases. Repeated declarations and inheritance intersect
+their counts (`max(minCount)`, `min(maxCount)`); contradictory bounds fail with
+the predicate and source shapes. Required constructor arguments enforce the
+numeric minimum. Cyclic object requirements can defer constructor enforcement
+while preserving their semantic minimum in metadata and bundled SHACL.
+
+Ranges retain conjunctions separately from explicit `sh:or` alternatives.
+Runtime checks enforce every group. An annotation uses the known narrower
+range where possible; otherwise one conjunct is a conservative approximation
+because Python lacks general intersection types. The compiler includes semantic
+subtypes omitted by MRO repair in annotations and materializes inherited
+descriptors that Python would otherwise lose.
+
+Predicate identity precedes naming: distinct predicates with the same Python
+name receive distinct suffixes. Equivalent predicates still share their chosen
+canonical IRI. Collection mutations validate the complete change, including
+maximum counts and inverse links, before changing the model.
+
 ## UX overlays
 
 Operator sugar and containment rules are *policy*, not ontology fact, so they

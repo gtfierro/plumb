@@ -209,6 +209,12 @@ def _emit_spec(cls: ClassIR, prop: PropIR) -> str:
         args.append(f"definition={prop.definition!r}")
     if prop.kind in {"object", "class"} and prop.ranges:
         args.append(f"ranges={prop.ranges!r}")
+    if prop.range_groups:
+        args.append(f"range_groups={prop.range_groups!r}")
+    if prop.sources:
+        args.append(f"sources={prop.sources!r}")
+    if prop.min_count:
+        args.append(f"min_count={prop.min_count}")
     if prop.kind == "literal":
         args.append(f"datatype={prop.datatype}")
     if prop.kind == "enum" and prop.enum_ranges:
@@ -259,17 +265,6 @@ def _range_union(prop: PropIR) -> str:
     return union
 
 
-def _effective_props(cls: ClassIR, by_name: dict[str, ClassIR]) -> dict[str, PropIR]:
-    """name -> spec including inherited, subclass declarations winning."""
-    merged: dict[str, PropIR] = {}
-    for parent in cls.parents:
-        if parent in by_name:
-            merged.update(_effective_props(by_name[parent], by_name))
-    for prop in cls.own_props:
-        merged[prop.name] = prop
-    return merged
-
-
 def _effective_defaults(cls: ClassIR, by_name: dict[str, ClassIR]) -> set[str]:
     """Names of properties a class default fills, including inherited ones."""
     names = {name for name, _value in cls.class_defaults}
@@ -287,7 +282,7 @@ def _init_props(cls: ClassIR, by_name: dict[str, ClassIR]) -> dict[str, PropIR]:
         name: replace(prop, required=False)
         if prop.required and name in defaulted
         else prop
-        for name, prop in _effective_props(cls, by_name).items()
+        for name, prop in cls.effective_props.items()
     }
 
 
@@ -383,7 +378,9 @@ def _docstring(text: str, indent: str) -> str:
         body = text.replace("\r", "")
         if "\n" in body:
             body = body.replace("\n", f"\n{indent}")
-            return f'{indent}"""{body}\n{indent}"""'
+            return "\n".join(
+                line.rstrip() for line in f'{indent}"""{body}\n{indent}"""'.splitlines()
+            )
         return f'{indent}"""{body}"""'
     return f"{indent}{text!r}"
 
@@ -472,10 +469,7 @@ def _emit_overlay(overlay: Overlay, ir: SchemaIR) -> str:
     of ontology versions.
     """
     names = ir.class_names()
-    props = {
-        c.name: set(_effective_props(c, {x.name: x for x in ir.classes}))
-        for c in ir.classes
-    }
+    props = {c.name: set(c.effective_props) for c in ir.classes}
     lines = ["", "# -- UX overlay: operator sugar and containment rules --", ""]
     if overlay.connector:
         if "Connectable" in names:

@@ -2,7 +2,7 @@
 
 The IR is deliberately plain (dataclasses of strings) so the emitter is a
 dumb renderer and this module holds all the RDF interpretation. Sources of
-information, in increasing precedence:
+conjunctive constraints:
 
 1. class hierarchy: ``owl:Class``/``rdfs:Class`` + ``rdfs:subClassOf``;
 2. property attachment: ``rdfs:domain``/``rdfs:range`` (and
@@ -29,6 +29,7 @@ from rdflib.collection import Collection
 from rdflib.namespace import SH
 
 from . import naming
+from .constraints import cardinality, class_groups, property_shapes
 
 _SCHEMA_DOMAIN = (
     URIRef("https://schema.org/domainIncludes"),
@@ -85,8 +86,11 @@ class PropIR:
     label: str | None = None
     definition: str | None = None
     ranges: tuple[str, ...] = ()  # python class names (object props)
+    range_groups: tuple[tuple[str, ...], ...] = ()  # conjunction of IRI unions
+    sources: tuple[str, ...] = ()  # contributing property shapes/declarations
     datatype: str = "str"  # python type name (literal props)
     required: bool = False
+    min_count: int = 0  # graph requirement; survives constructor deferral
     max_count: int | None = None
     inverse: str | None = None
     enum_ranges: tuple[str, ...] = ()  # enum member IRIs (enum props)
@@ -126,6 +130,7 @@ class ClassIR:
     parent_iris: tuple[str, ...] = ()  # RDF edges, independent of Python bases
     ancestor_iris: tuple[str, ...] = ()
     own_props: list[PropIR] = field(default_factory=list)
+    effective_props: dict[str, PropIR] = field(default_factory=dict, repr=False)
     cp_slots: list[CPSlotIR] = field(default_factory=list)
     cp_constraints: list[CPConstraintIR] = field(default_factory=list)
     abstract: bool = False
@@ -221,6 +226,7 @@ def extract(
             abstract=_is_abstract(graph, iri),
         )
 
+    ordered = _topo_sort(list(classes.values()))
     primary_ns = primary_namespace or _primary_namespace(classes)
     canonical = _canonical_predicates(graph, primary_ns)
 
@@ -234,10 +240,12 @@ def extract(
                 prop.deferred = True
     _attach_class_defaults(graph, classes, names, canonical, class_properties)
     _type_untyped_enum_properties(classes)
+    _name_properties(classes, primary_ns)
 
-    ordered = _topo_sort(list(classes.values()))
+    _compose_properties(ordered, graph, enum_iris)
     _resolve_mro(ordered)
     _demote_cyclic_required(ordered)
+    _complete_properties(ordered)
     return SchemaIR(
         ontology_name=name,
         ontology_iri=ontology_iri or "",
@@ -488,14 +496,8 @@ def _shape_target_classes(
 
 
 def _attach_prop(cls: ClassIR, ir: PropIR) -> None:
-    """Attach a property, resolving same-name collisions by namespace.
-
-    When two predicates yield the same attribute name on one class, the one
-    sharing the class's own namespace wins (a Brick class keeps the Brick
-    predicate over the bundled RealEstateCore one); otherwise first-attached
-    (sorted order) stays.
-    """
-    existing = next((p for p in cls.own_props if p.name == ir.name), None)
+    """Attach by semantic identity; Python names are assigned afterwards."""
+    existing = next((p for p in cls.own_props if p.predicate == ir.predicate), None)
     if existing is None:
         cls.own_props.append(ir)
         return
@@ -537,6 +539,33 @@ def _prop_ir(
         label=_text(graph, prop, RDFS.label),
         definition=_definition(graph, prop),
         ranges=tuple(sorted(names[r] for r in ranges if r in names)),
+        range_groups=tuple(
+            sorted(
+                {
+                    (str(value),)
+                    for value in graph.objects(prop, RDFS.range)
+                    if str(value) in names
+                }
+                | {
+                    tuple(
+                        sorted(
+                            r for r in _values(graph, prop, _SCHEMA_RANGE) if r in names
+                        )
+                    )
+                }
+                - {()}
+            )
+        )
+        or tuple(
+            sorted(
+                {
+                    group
+                    for shape in graph.subjects(SH.targetObjectsOf, prop)
+                    for group in class_groups(graph, shape)
+                }
+            )
+        ),
+        sources=(str(prop),),
         datatype=_DATATYPES.get(datatype_ranges[0], "str")
         if datatype_ranges
         else "str",
@@ -561,15 +590,7 @@ def _attach_shape_properties(
     attributes.
     """
     inverse_names = _inverse_map(graph, canonical)
-    by_name = {item.name: item for item in classes.values()}
-    pairs = list(_shape_class_pairs(graph, classes))
-    pairs.sort(
-        key=lambda pair: (
-            _class_depth(classes[pair[1]], by_name),
-            pair[1],
-            str(pair[0]),
-        )
-    )
+    pairs = sorted(_shape_class_pairs(graph, classes), key=lambda p: (p[1], str(p[0])))
     for shape, class_iri in pairs:
         for referenced in graph.objects(shape, SH.node):
             classes[class_iri].cp_constraints.append(
@@ -585,7 +606,8 @@ def _attach_shape_properties(
                 classes[class_iri].cp_constraints.append(
                     CPConstraintIR(operator=operator, children=children)
                 )
-        for pshape in graph.objects(shape, SH.property):
+        direct_properties = set(graph.objects(shape, SH.property))
+        for pshape in property_shapes(graph, shape):
             path = graph.value(pshape, SH.path)
             if not isinstance(path, URIRef):
                 continue  # property paths beyond a plain IRI are out of scope
@@ -599,57 +621,47 @@ def _attach_shape_properties(
             qualified = graph.value(pshape, SH.qualifiedValueShape)
             if qualified is not None:
                 slot = _cp_slot(graph, pshape, qualified, names, enum_iris)
-                if slot is not None:
+                if slot is not None and pshape in direct_properties:
                     classes[class_iri].cp_slots.append(slot)
                 continue  # qualified constraints are not plain attributes
 
-            min_count = _int(graph, pshape, SH.minCount)
-            max_count = _int(graph, pshape, SH.maxCount)
+            min_count, max_count = cardinality(graph, [pshape])
             sh_class = graph.value(pshape, SH["class"])
             sh_datatype = graph.value(pshape, SH.datatype)
 
             cls = classes[class_iri]
             predicate = canonical.get(str(path), str(path))
             prop_name = naming.property_name(predicate)
-            existing = next((p for p in cls.own_props if p.name == prop_name), None)
+            existing = next(
+                (p for p in cls.own_props if p.predicate == predicate), None
+            )
             if existing is None:
-                inherited = _inherited_prop(cls, prop_name, by_name)
-                declarative = any(
-                    item is not None
-                    for item in (min_count, max_count, sh_class, sh_datatype)
+                kind = "literal" if sh_datatype is not None else "object"
+                if predicate in _UNCONSTRAINED_VALUE_PREDICATES:
+                    kind = "value"
+                existing = PropIR(
+                    name=prop_name,
+                    predicate=predicate,
+                    kind=kind,
+                    label=_text(graph, path, RDFS.label),
+                    definition=_definition(graph, path),
+                    inverse=inverse_names.get(predicate),
                 )
-                if inherited is not None and not declarative:
-                    # A SPARQL-only shape constrains an inherited property; it
-                    # does not redeclare or loosen its Python descriptor.
-                    continue
-                if inherited is not None:
-                    existing = replace(inherited)
-                else:
-                    kind = "literal" if sh_datatype is not None else "object"
-                    if predicate in _UNCONSTRAINED_VALUE_PREDICATES:
-                        kind = "value"
-                    existing = PropIR(
-                        name=prop_name,
-                        predicate=predicate,
-                        kind=kind,
-                        label=_text(graph, path, RDFS.label),
-                        definition=_definition(graph, path),
-                        inverse=inverse_names.get(predicate),
-                    )
                 cls.own_props.append(existing)
-            if min_count is not None and min_count >= 1:
+            existing.min_count, existing.max_count = cardinality(
+                graph, [pshape], minimum=existing.min_count, maximum=existing.max_count
+            )
+            existing.sources = tuple(sorted(set(existing.sources) | {str(pshape)}))
+            existing.range_groups = tuple(
+                sorted(set(existing.range_groups) | set(class_groups(graph, pshape)))
+            )
+            if min_count >= 1:
                 existing.required = True
-            if max_count is not None:
-                existing.max_count = max_count
             if isinstance(sh_class, URIRef) and str(sh_class) in enum_iris:
                 existing.kind = "enum"
-                existing.enum_ranges = tuple(
-                    sorted(set(existing.enum_ranges) | {str(sh_class)})
-                )
+                existing.enum_ranges = (str(sh_class),)
             elif isinstance(sh_class, URIRef) and str(sh_class) in names:
-                existing.ranges = tuple(
-                    sorted(set(existing.ranges) | {names[str(sh_class)]})
-                )
+                existing.ranges = (names[str(sh_class)],)
             if isinstance(sh_datatype, URIRef) and sh_datatype in _DATATYPES:
                 existing.kind = "literal"
                 existing.datatype = _DATATYPES[sh_datatype]
@@ -707,45 +719,11 @@ def _attach_class_defaults(
                 and minimum >= 1
                 and str(value) in names
             ):
-                entry = (naming.property_name(predicate), names[str(value)])
+                entry = (predicate, names[str(value)])
                 if entry not in classes[class_iri].class_defaults:
                     classes[class_iri].class_defaults.append(entry)
     for cls in classes.values():
         cls.class_defaults.sort()
-
-
-def _inherited_prop(
-    cls: ClassIR,
-    name: str,
-    by_name: dict[str, ClassIR],
-) -> PropIR | None:
-    """Find the nearest property declaration in ``cls``'s parent graph."""
-    for parent_name in cls.parents:
-        parent = by_name.get(parent_name)
-        if parent is None:
-            continue
-        own = next((prop for prop in parent.own_props if prop.name == name), None)
-        if own is not None:
-            return own
-        inherited = _inherited_prop(parent, name, by_name)
-        if inherited is not None:
-            return inherited
-    return None
-
-
-def _class_depth(
-    cls: ClassIR,
-    by_name: dict[str, ClassIR],
-    seen: frozenset[str] = frozenset(),
-) -> int:
-    """Maximum parent depth, used to apply base-class shapes first."""
-    if cls.name in seen:
-        return 0
-    parents = [by_name[name] for name in cls.parents if name in by_name]
-    if not parents:
-        return 0
-    nested_seen = seen | {cls.name}
-    return 1 + max(_class_depth(parent, by_name, nested_seen) for parent in parents)
 
 
 _CP_DIRECTIONS = {
@@ -912,8 +890,8 @@ def _inverse_map(graph: rdflib.Graph, canonical: dict[str, str]) -> dict[str, st
             if isinstance(a, URIRef) and isinstance(b, URIRef):
                 ca = canonical.get(str(a), str(a))
                 cb = canonical.get(str(b), str(b))
-                inverses[ca] = naming.property_name(cb)
-                inverses[cb] = naming.property_name(ca)
+                inverses[ca] = cb
+                inverses[cb] = ca
     return inverses
 
 
@@ -957,9 +935,7 @@ def _topo_sort(classes: list[ClassIR]) -> list[ClassIR]:
         if cls.name in seen:
             return
         if cls.name in visiting:
-            # subclass cycle in the ontology: break it by treating the
-            # remaining parent link as already emitted (documented limitation)
-            return
+            raise ValueError(f"{cls.iri}: cyclic ontology inheritance")
         visiting.add(cls.name)
         for parent in cls.parents:
             if parent in by_name:
@@ -1015,75 +991,176 @@ def _resolve_mro(ordered: list[ClassIR]) -> None:
         cls.parents = tuple(b.__name__ for b in bases)
 
 
-def _demote_cyclic_required(ordered: list[ClassIR]) -> None:
-    """Break constructor deadlocks between mutually-required object props.
+def _name_properties(classes: dict[str, ClassIR], primary_ns: str) -> None:
+    """Assign one unambiguous Python name to each semantic predicate."""
+    predicates = {prop.predicate for cls in classes.values() for prop in cls.own_props}
+    names = naming.disambiguate(
+        {iri: naming.property_name(iri) for iri in predicates},
+        preferred_namespace=primary_ns,
+    )
+    for cls in classes.values():
+        # Specs attached to several domains can share an object.
+        cls.own_props = [
+            replace(prop, name=names[prop.predicate], inverse=names.get(prop.inverse))
+            for prop in cls.own_props
+        ]
+        cls.class_defaults = [
+            (names[predicate], value) for predicate, value in cls.class_defaults
+        ]
 
-    223 example: a Junction requires >= 1 ConnectionPoint, and every
-    ConnectionPoint requires its Connectable — neither can be constructed
-    first if both requirements are constructor-enforced. When required
-    object property P on class C targets a range R that itself requires a
-    back-link to C (or an ancestor of C), P is demoted to validate-time
-    (optional constructor arg): the "pointed-at" side keeps its requirement
-    because its target naturally exists first.
-    """
-    by_name = {c.name: c for c in ordered}
 
-    def ancestors(cls: ClassIR) -> set[str]:
-        out: set[str] = set()
-        frontier = list(cls.parents)
-        while frontier:
-            parent = frontier.pop()
-            if parent in out or parent not in by_name:
-                continue
-            out.add(parent)
-            frontier.extend(by_name[parent].parents)
-        return out
+def _compose_properties(
+    ordered: list[ClassIR], graph: rdflib.Graph, enum_iris: set[str]
+) -> None:
+    """Compute effective constraints once, before projecting Python inheritance."""
+    by_name = {cls.name: cls for cls in ordered}
+    names = {cls.iri: cls.name for cls in ordered}
+    ancestry: dict[str, set[str]] = {}
 
-    def effective_required_object_props(cls: ClassIR) -> list[PropIR]:
-        merged: dict[str, PropIR] = {}
-        for parent in cls.parents:
-            if parent in by_name:
-                for prop in effective_required_object_props(by_name[parent]):
-                    merged[prop.name] = prop
-        for prop in cls.own_props:
-            if prop.kind == "object" and prop.required:
-                merged[prop.name] = prop
-        return list(merged.values())
+    def is_a(child: str, parent: str) -> bool:
+        if child not in ancestry:
+            ancestry[child] = {
+                str(node)
+                for node in graph.transitive_objects(URIRef(child), RDFS.subClassOf)
+            }
+        return parent in ancestry[child]
 
-    def effective_ranges(cls: ClassIR, prop_name: str) -> set[str]:
-        """Ranges for a property, including declarations up the hierarchy
-        (a subclass row that only narrows minCount carries no sh:class)."""
-        out: set[str] = set()
-        frontier = [cls.name]
-        seen: set[str] = set()
-        while frontier:
-            current = frontier.pop()
-            if current in seen or current not in by_name:
-                continue
-            seen.add(current)
-            for prop in by_name[current].own_props:
-                if prop.name == prop_name:
-                    out.update(prop.ranges)
-            frontier.extend(by_name[current].parents)
-        return out
+    def merge(left: PropIR, right: PropIR) -> PropIR:
+        if left.predicate != right.predicate:
+            raise ValueError(
+                f"property name collision {left.name}: {left.predicate}, {right.predicate}"
+            )
+        maxima = [n for n in (left.max_count, right.max_count) if n is not None]
+        untyped = right.kind == "object" and not right.ranges and not right.range_groups
+        result = replace(
+            right,
+            kind=left.kind if untyped else right.kind,
+            datatype=left.datatype if untyped else right.datatype,
+            inverse=right.inverse or left.inverse,
+            label=right.label or left.label,
+            definition=right.definition or left.definition,
+            required=left.required or right.required,
+            min_count=max(left.min_count, right.min_count),
+            max_count=min(maxima) if maxima else None,
+            range_groups=tuple(
+                sorted(set(left.range_groups) | set(right.range_groups))
+            ),
+            sources=tuple(sorted(set(left.sources) | set(right.sources))),
+            deferred=left.deferred or right.deferred,
+        )
+        if result.max_count is not None and result.min_count > result.max_count:
+            raise ValueError(
+                f"{result.predicate}: contradictory cardinalities "
+                f"({result.min_count}..{result.max_count}); sources: {result.sources}"
+            )
+        return result
 
     for cls in ordered:
-        family = {cls.name} | ancestors(cls)
+        effective: dict[str, PropIR] = {}
+        for parent in cls.parents:
+            for prop in by_name[parent].effective_props.values():
+                effective[prop.name] = (
+                    merge(effective[prop.name], prop)
+                    if prop.name in effective
+                    else prop
+                )
+        own_names = {prop.name for prop in cls.own_props}
         for prop in cls.own_props:
+            effective[prop.name] = (
+                merge(effective[prop.name], prop) if prop.name in effective else prop
+            )
+        for name, prop in effective.items():
+            if not prop.range_groups:
+                continue
+            candidates = {iri for group in prop.range_groups for iri in group}
+            narrowed = {
+                iri
+                for iri in candidates
+                if all(
+                    any(is_a(iri, root) for root in group)
+                    for group in prop.range_groups
+                )
+            }
+            # A named intersection may not exist. A single conjunct is a safe
+            # annotation approximation; runtime metadata retains every group.
+            projection = narrowed or set(
+                sorted(prop.range_groups, key=lambda g: (len(g), g))[0]
+            )
+            effective[name] = replace(
+                prop,
+                kind="enum" if candidates <= enum_iris else prop.kind,
+                ranges=tuple(sorted(names[iri] for iri in projection if iri in names)),
+                enum_ranges=tuple(sorted(projection))
+                if candidates <= enum_iris or prop.kind == "enum"
+                else (),
+            )
+        cls.effective_props = effective
+        cls.own_props = [effective[name] for name in sorted(own_names)]
+
+
+def _demote_cyclic_required(ordered: list[ClassIR]) -> None:
+    """Defer constructor requirements that need a mutually-required object.
+
+    Semantic minimum counts remain intact for graph validation. Only the
+    constructor projection is relaxed to permit staged cyclic authoring.
+    """
+    by_name = {cls.name: cls for cls in ordered}
+    for cls in ordered:
+        family = {cls.iri, *cls.ancestor_iris}
+        for prop in cls.effective_props.values():
             if prop.kind != "object" or not prop.required:
                 continue
-            for range_name in effective_ranges(cls, prop.name):
-                range_cls = by_name.get(range_name)
-                if range_cls is None:
+            for range_name in prop.ranges:
+                target = by_name.get(range_name)
+                if target is None:
                     continue
-                back = effective_required_object_props(range_cls)
                 if any(
-                    set(other.ranges) & family
-                    for other in back
-                    if other.name != prop.name
+                    other.kind == "object"
+                    and other.min_count > 0
+                    and other.name != prop.name
+                    and any(family.intersection(group) for group in other.range_groups)
+                    for other in target.effective_props.values()
                 ):
                     prop.required = False
                     break
+
+
+def _complete_properties(ordered: list[ClassIR]) -> None:
+    """Materialize constraints Python's chosen bases would otherwise lose."""
+    by_name = {cls.name: cls for cls in ordered}
+    stand_ins: dict[str, type] = {}
+    for cls in ordered:
+        stand_ins[cls.name] = type(
+            cls.name, tuple(stand_ins[p] for p in cls.parents), {}
+        )
+    projections: dict[tuple[str, ...], tuple[str, ...]] = {}
+    for cls in ordered:
+        for prop in cls.effective_props.values():
+            if prop.ranges not in projections:
+                roots = list(prop.ranges)
+                iris = {by_name[root].iri for root in roots}
+                for candidate in ordered:
+                    if iris.intersection(candidate.ancestor_iris) and not any(
+                        issubclass(stand_ins[candidate.name], stand_ins[root])
+                        for root in roots
+                    ):
+                        roots.append(candidate.name)
+                projections[prop.ranges] = tuple(sorted(roots))
+            prop.ranges = projections[prop.ranges]
+    for cls in ordered:
+        stand_in = stand_ins[cls.name]
+        inherited: dict[str, PropIR] = {}
+        for base in reversed(stand_in.__mro__[1:]):
+            parent = by_name.get(base.__name__)
+            if parent is not None:
+                inherited.update((prop.name, prop) for prop in parent.own_props)
+        own = {}
+        for name, prop in cls.effective_props.items():
+            if name not in inherited or inherited[name] != replace(
+                prop, sources=inherited[name].sources
+            ):
+                own[name] = prop
+        cls.own_props = [own[name] for name in sorted(own)]
 
 
 def _values(graph, subject, predicates) -> list[str]:

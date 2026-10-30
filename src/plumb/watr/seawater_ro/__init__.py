@@ -38,7 +38,7 @@ class AdvancedOxidationStage(_BASE.UVH2O2Reactor):
         properties=(),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#AdvancedOxidationStageShape/hasProcess/0', required=(_BASE.Process_AdvancedOxidation,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#AdvancedOxidationStageShape/hasProcess/0', required=(_BASE.Process_AdvancedOxidation,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     def __init__(self, name: str | None = None, *,
         actuated_by_property: _Iterable[_BASE.ActuatableProperty] | None = None,
@@ -47,7 +47,7 @@ class AdvancedOxidationStage(_BASE.UVH2O2Reactor):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -59,22 +59,22 @@ class AdvancedOxidationStage(_BASE.UVH2O2Reactor):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class BackwashSeparator(_BASE.UnitProcess):
@@ -89,7 +89,7 @@ class BackwashSeparator(_BASE.UnitProcess):
         cp_slots=(_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', min_count=1, max_count=1, name='byproduct', label='byproduct'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='treated', label='treated'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#BackwashSeparatorShape/hasProcess/0', required=(_BASE.Process_Separation,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#BackwashSeparatorShape/hasProcess/0', required=(_BASE.Process_Separation,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     _shape_max_ports = 3
     byproduct = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Fluid-Sludge'], direction='out', label='byproduct')
@@ -107,7 +107,7 @@ class BackwashSeparator(_BASE.UnitProcess):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -119,22 +119,22 @@ class BackwashSeparator(_BASE.UnitProcess):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class BackwashStage(_BASE.UnitProcess):
@@ -148,7 +148,7 @@ class BackwashStage(_BASE.UnitProcess):
         properties=(),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#BackwashStageShape/hasProcess/0', required=(_BASE.Process_Backwashing,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#BackwashStageShape/hasProcess/0', required=(_BASE.Process_Backwashing,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     def __init__(self, name: str | None = None, *,
         actuated_by_property: _Iterable[_BASE.ActuatableProperty] | None = None,
@@ -157,7 +157,7 @@ class BackwashStage(_BASE.UnitProcess):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -169,22 +169,22 @@ class BackwashStage(_BASE.UnitProcess):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class BoosterPump(_BASE.Pump):
@@ -204,7 +204,7 @@ class BoosterPump(_BASE.Pump):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -216,22 +216,22 @@ class BoosterPump(_BASE.Pump):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class CartridgeFiltrationStage(_BASE.CartridgeFiltrationUnit):
@@ -245,7 +245,7 @@ class CartridgeFiltrationStage(_BASE.CartridgeFiltrationUnit):
         properties=(),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#CartridgeFiltrationStageShape/hasProcess/0', required=(_BASE.Process_Filtration,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#CartridgeFiltrationStageShape/hasProcess/0', required=(_BASE.Process_Filtration,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     def __init__(self, name: str | None = None, *,
         actuated_by_property: _Iterable[_BASE.ActuatableProperty] | None = None,
@@ -254,7 +254,7 @@ class CartridgeFiltrationStage(_BASE.CartridgeFiltrationUnit):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -266,22 +266,22 @@ class CartridgeFiltrationStage(_BASE.CartridgeFiltrationUnit):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class ChlorinationStage(_BASE.ChlorinationUnit):
@@ -295,7 +295,7 @@ class ChlorinationStage(_BASE.ChlorinationUnit):
         properties=(),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#ChlorinationStageShape/hasProcess/0', required=(_BASE.Process_Chlorination,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#ChlorinationStageShape/hasProcess/0', required=(_BASE.Process_Chlorination,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     def __init__(self, name: str | None = None, *,
         actuated_by_property: _Iterable[_BASE.ActuatableProperty] | None = None,
@@ -304,7 +304,7 @@ class ChlorinationStage(_BASE.ChlorinationUnit):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -316,22 +316,22 @@ class ChlorinationStage(_BASE.ChlorinationUnit):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class CoagulationStage(_BASE.CoagulationBasin):
@@ -345,7 +345,7 @@ class CoagulationStage(_BASE.CoagulationBasin):
         properties=(),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#CoagulationStageShape/hasProcess/0', required=(_BASE.Process_Coagulation,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#CoagulationStageShape/hasProcess/0', required=(_BASE.Process_Coagulation,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     def __init__(self, name: str | None = None, *,
         actuated_by_property: _Iterable[_BASE.ActuatableProperty] | None = None,
@@ -354,7 +354,7 @@ class CoagulationStage(_BASE.CoagulationBasin):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -366,22 +366,22 @@ class CoagulationStage(_BASE.CoagulationBasin):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class DosingStage(_BASE.Reactor):
@@ -395,7 +395,7 @@ class DosingStage(_BASE.Reactor):
         properties=(),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#DosingStageShape/hasProcess/0', required=(_BASE.Process_Dosing,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#DosingStageShape/hasProcess/0', required=(_BASE.Process_Dosing,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     def __init__(self, name: str | None = None, *,
         actuated_by_property: _Iterable[_BASE.ActuatableProperty] | None = None,
@@ -404,7 +404,7 @@ class DosingStage(_BASE.Reactor):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -416,22 +416,22 @@ class DosingStage(_BASE.Reactor):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class EnergyRecoveryExchanger(_BASE.PressureExchanger):
@@ -451,7 +451,7 @@ class EnergyRecoveryExchanger(_BASE.PressureExchanger):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -463,22 +463,22 @@ class EnergyRecoveryExchanger(_BASE.PressureExchanger):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class FeedSplitter(_BASE.Junction):
@@ -493,7 +493,7 @@ class FeedSplitter(_BASE.Junction):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='pressure_exchanger', label='pressure_exchanger'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='pump', label='pump'),),
     )
     _shape_constraints = (
-        _ShapeValues('medium', 'https://watermetadata.org/plumb/seawater-ro#FeedSplitterShape/hasMedium/0', required=(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'],), defaults=(), choices=(), minimum=0, maximum=1),
+        _ShapeValues('medium', 'https://watermetadata.org/plumb/seawater-ro#FeedSplitterShape/hasMedium/0', required=(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'],), defaults=(), choices=(), minimum=1, maximum=1),
     )
     _shape_max_ports = 3
     inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
@@ -516,15 +516,15 @@ class FeedSplitter(_BASE.Junction):
         medium: _EnumValue | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
+            'has_optional_connection_point': has_optional_connection_point,
         })
 
 class HighPressurePump(_BASE.Pump):
@@ -544,7 +544,7 @@ class HighPressurePump(_BASE.Pump):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -556,22 +556,22 @@ class HighPressurePump(_BASE.Pump):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class IntakePump(_BASE.Pump):
@@ -594,7 +594,7 @@ class IntakePump(_BASE.Pump):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -606,22 +606,22 @@ class IntakePump(_BASE.Pump):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class Landfill(_BASE.Equipment):
@@ -649,7 +649,7 @@ class Landfill(_BASE.Equipment):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -661,22 +661,22 @@ class Landfill(_BASE.Equipment):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class MediaFilter(_BASE.UnitProcess):
@@ -691,7 +691,7 @@ class MediaFilter(_BASE.UnitProcess):
         cp_slots=(_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='backwash', label='backwash'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='product', label='product'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#MediaFilterShape/hasProcess/0', required=(_BASE.Process_MediaFiltration,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#MediaFilterShape/hasProcess/0', required=(_BASE.Process_MediaFiltration,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     _shape_max_ports = 3
     backwash = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='backwash')
@@ -709,7 +709,7 @@ class MediaFilter(_BASE.UnitProcess):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -721,22 +721,22 @@ class MediaFilter(_BASE.UnitProcess):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class MediaFiltrationStage(_BASE.UnitProcess):
@@ -750,7 +750,7 @@ class MediaFiltrationStage(_BASE.UnitProcess):
         properties=(),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#MediaFiltrationStageShape/hasProcess/0', required=(_BASE.Process_MediaFiltration,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#MediaFiltrationStageShape/hasProcess/0', required=(_BASE.Process_MediaFiltration,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     def __init__(self, name: str | None = None, *,
         actuated_by_property: _Iterable[_BASE.ActuatableProperty] | None = None,
@@ -759,7 +759,7 @@ class MediaFiltrationStage(_BASE.UnitProcess):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -771,22 +771,22 @@ class MediaFiltrationStage(_BASE.UnitProcess):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class MixingStage(_BASE.StaticMixer):
@@ -800,7 +800,7 @@ class MixingStage(_BASE.StaticMixer):
         properties=(),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#MixingStageShape/hasProcess/0', required=(_BASE.Process_Mixing,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#MixingStageShape/hasProcess/0', required=(_BASE.Process_Mixing,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     def __init__(self, name: str | None = None, *,
         actuated_by_property: _Iterable[_BASE.ActuatableProperty] | None = None,
@@ -809,7 +809,7 @@ class MixingStage(_BASE.StaticMixer):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -821,22 +821,22 @@ class MixingStage(_BASE.StaticMixer):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class PermeateConnection(_BASE.Pipe):
@@ -860,13 +860,13 @@ class PermeateConnection(_BASE.Pipe):
         medium: _EnumValue | None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connects_from': connects_from,
-            'has_role': has_role,
+            'medium': medium,
             'cnx': cnx,
-            'connects_to': connects_to,
             'connects_at': connects_at,
+            'connects_from': connects_from,
+            'connects_to': connects_to,
+            'has_role': has_role,
             'has_thermodynamic_phase': has_thermodynamic_phase,
         })
 
@@ -882,7 +882,7 @@ class ROFeedMixer(_BASE.StaticMixer):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='booster', label='booster'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='high_pressure', label='high_pressure'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='outlet', label='outlet'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#ROFeedMixerShape/hasProcess/0', required=(_BASE.Process_Mixing,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#ROFeedMixerShape/hasProcess/0', required=(_BASE.Process_Mixing,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     _shape_max_ports = 3
     booster = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='booster')
@@ -900,7 +900,7 @@ class ROFeedMixer(_BASE.StaticMixer):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -912,22 +912,22 @@ class ROFeedMixer(_BASE.StaticMixer):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class ROStage(_BASE.ReverseOsmosisMembrane):
@@ -942,7 +942,7 @@ class ROStage(_BASE.ReverseOsmosisMembrane):
         cp_slots=(_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='concentrate', label='concentrate'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='permeate', label='permeate'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#ROStageShape/hasProcess/0', required=(_BASE.Process_ReverseOsmosis,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/seawater-ro#ROStageShape/hasProcess/0', required=(_BASE.Process_ReverseOsmosis,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     _shape_max_ports = 3
     concentrate = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='concentrate')
@@ -960,7 +960,7 @@ class ROStage(_BASE.ReverseOsmosisMembrane):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -972,22 +972,22 @@ class ROStage(_BASE.ReverseOsmosisMembrane):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class SeawaterFeed(_BASE.Equipment):
@@ -1016,7 +1016,7 @@ class SeawaterFeed(_BASE.Equipment):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -1028,22 +1028,22 @@ class SeawaterFeed(_BASE.Equipment):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class StorageTank(_BASE.Tank):
@@ -1066,7 +1066,7 @@ class StorageTank(_BASE.Tank):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -1078,22 +1078,22 @@ class StorageTank(_BASE.Tank):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 @_dataclass(frozen=True, kw_only=True)

@@ -158,6 +158,17 @@ def test_class_hierarchy(mini):
     assert issubclass(mini.ExhaustFan, mini.Fan)
 
 
+def test_disambiguation_reserves_intrinsic_suffixed_names():
+    result = naming.disambiguate(
+        {
+            "urn:a#pet": "pet",
+            "urn:b#pet": "pet",
+            "urn:c#pet_2": "pet_2",
+        }
+    )
+    assert result == {"urn:a#pet": "pet", "urn:b#pet": "pet_3", "urn:c#pet_2": "pet_2"}
+
+
 def test_ontology_info(mini):
     assert mini.ONTOLOGY.name == "Mini"
     assert mini.ONTOLOGY.iri == "urn:mini"

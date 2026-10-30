@@ -48,14 +48,6 @@ from . import enums as enums
 
 _REGISTRY.register_enums(enums)
 
-_P_Concept_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-)
-
 _P_Concept_has_property = _PropertySpec(
     name='has_property',
     predicate='http://data.ashrae.org/standard223#hasProperty',
@@ -63,11 +55,22 @@ _P_Concept_has_property = _PropertySpec(
     label='has property',
     definition='A `Relation` that associates a `Concept` with a `Property`.',
     ranges=('Property',),
+    range_groups=(('http://data.ashrae.org/standard223#Property',),),
+    sources=('b894486338780f2f7730cd6ec',),
+)
+
+_P_Concept_medium = _PropertySpec(
+    name='medium',
+    predicate='http://data.ashrae.org/standard223#hasMedium',
+    kind='enum',
+    label='has medium',
+    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
+    sources=('b08ea5991a9d595339cdac23a', 'b490b774633a41f304e59947b', 'b5aecdad0a8f3f7f4ac11e130', 'b9c3a652daf6472abbe15c7f2'),
 )
 
 class Concept(_EntityBase):
     """All classes and relations defined in the 223 standard are subclasses of `Concept`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Concept
     """
 
@@ -79,14 +82,14 @@ class Concept(_EntityBase):
         definition='All classes and relations defined in the 223 standard are subclasses of `Concept`.',
         parent_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
         ancestor_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
-        properties=(_P_Concept_medium, _P_Concept_has_property,),
+        properties=(_P_Concept_has_property, _P_Concept_medium,),
     )
-
-    medium: _EnumSet[_EnumValue] = _EnumSet(_P_Concept_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
     has_property: _Rel[Property] = _Rel(_P_Concept_has_property)
     """A `Relation` that associates a `Concept` with a `Property`. (http://data.ashrae.org/standard223#hasProperty)"""
+
+    medium: _EnumSet[_EnumValue] = _EnumSet(_P_Concept_medium)
+    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
     def __init__(
         self,
@@ -114,7 +117,7 @@ class Concept(_EntityBase):
 
 class Class_2(Concept):
     """This is a modeling construct. All classes defined in the 223 standard are instances of `Class`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Class
     """
 
@@ -130,7 +133,7 @@ class Class_2(Concept):
 
 class AbstractClass(Class_2):
     """This is a modeling construct. Instances of abstract classes cannot be created. All abstract classes in this standard have a more specific subclass.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#AbstractClass
     """
 
@@ -149,6 +152,7 @@ _P_Concept_2_abbreviation = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/abbreviation',
     kind='literal',
     label='abbreviation',
+    sources=('http://qudt.org/schema/qudt/Concept-abbreviation',),
     datatype=str,
     max_count=1,
 )
@@ -159,6 +163,7 @@ _P_Concept_2_code = _PropertySpec(
     kind='object',
     label='code',
     definition='A unique value that is assigned to an enumeration member.',
+    sources=('http://qudt.org/schema/qudt/Concept-code',),
 )
 
 _P_Concept_2_deprecated = _PropertySpec(
@@ -166,6 +171,7 @@ _P_Concept_2_deprecated = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/deprecated',
     kind='literal',
     label='deprecated',
+    sources=('http://qudt.org/schema/qudt/Concept-deprecated',),
     datatype=bool,
     max_count=1,
 )
@@ -175,6 +181,7 @@ _P_Concept_2_deprecated_in_version = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/deprecatedInVersion',
     kind='literal',
     label='deprecated in version',
+    sources=('http://qudt.org/schema/qudt/Concept-deprecatedInVersion',),
     datatype=str,
     max_count=1,
 )
@@ -184,6 +191,7 @@ _P_Concept_2_description = _PropertySpec(
     predicate='http://purl.org/dc/terms/description',
     kind='object',
     label='description',
+    sources=('http://qudt.org/schema/qudt/Concept-description',),
 )
 
 _P_Concept_2_exact_match = _PropertySpec(
@@ -192,6 +200,8 @@ _P_Concept_2_exact_match = _PropertySpec(
     kind='object',
     label='exact match',
     ranges=('Concept_2',),
+    range_groups=(('http://qudt.org/schema/qudt/Concept',),),
+    sources=('http://qudt.org/schema/qudt/Concept-exactMatch',),
 )
 
 _P_Concept_2_guidance = _PropertySpec(
@@ -199,6 +209,7 @@ _P_Concept_2_guidance = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/guidance',
     kind='literal',
     label='guidance',
+    sources=('http://qudt.org/schema/qudt/Concept-guidance',),
     datatype=str,
 )
 
@@ -208,6 +219,8 @@ _P_Concept_2_has_rule = _PropertySpec(
     kind='object',
     label='has rule',
     ranges=('Rule',),
+    range_groups=(('http://qudt.org/schema/qudt/Rule',),),
+    sources=('http://qudt.org/schema/qudt/Concept-hasRule',),
 )
 
 _P_Concept_2_id = _PropertySpec(
@@ -215,6 +228,7 @@ _P_Concept_2_id = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/id',
     kind='literal',
     label='qudt id',
+    sources=('http://qudt.org/schema/qudt/Concept-id',),
     datatype=str,
     max_count=1,
 )
@@ -224,6 +238,7 @@ _P_Concept_2_is_replaced_by = _PropertySpec(
     predicate='http://purl.org/dc/terms/isReplacedBy',
     kind='object',
     label='is replaced by',
+    sources=('http://qudt.org/schema/qudt/Concept-isReplacedBy',),
     max_count=1,
 )
 
@@ -232,18 +247,21 @@ _P_Concept_2_plain_text_description = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/plainTextDescription',
     kind='object',
     label='description (plain text)',
+    sources=('http://qudt.org/schema/qudt/Concept-plainTextDescription',),
 )
 
-_P_Concept_2_type_ = _PropertySpec(
-    name='type_',
+_P_Concept_2_type__2 = _PropertySpec(
+    name='type__2',
     predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
     kind='object',
+    sources=('http://qudt.org/schema/qudt/Concept-type',),
+    min_count=1,
     required=True,
 )
 
 class Concept_2(_EntityBase):
     """QUDT Concept
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Concept
     """
 
@@ -255,7 +273,7 @@ class Concept_2(_EntityBase):
         definition=None,
         parent_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
         ancestor_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
-        properties=(_P_Concept_2_abbreviation, _P_Concept_2_code, _P_Concept_2_deprecated, _P_Concept_2_deprecated_in_version, _P_Concept_2_description, _P_Concept_2_exact_match, _P_Concept_2_guidance, _P_Concept_2_has_rule, _P_Concept_2_id, _P_Concept_2_is_replaced_by, _P_Concept_2_plain_text_description, _P_Concept_2_type_,),
+        properties=(_P_Concept_2_abbreviation, _P_Concept_2_code, _P_Concept_2_deprecated, _P_Concept_2_deprecated_in_version, _P_Concept_2_description, _P_Concept_2_exact_match, _P_Concept_2_guidance, _P_Concept_2_has_rule, _P_Concept_2_id, _P_Concept_2_is_replaced_by, _P_Concept_2_plain_text_description, _P_Concept_2_type__2,),
     )
 
     abbreviation: _Lit[str] = _Lit(_P_Concept_2_abbreviation)
@@ -291,14 +309,14 @@ class Concept_2(_EntityBase):
     plain_text_description: _Rel[_EntityBase] = _Rel(_P_Concept_2_plain_text_description)
     """description (plain text) (http://qudt.org/schema/qudt/plainTextDescription)"""
 
-    type_: _Rel[_EntityBase] = _Rel(_P_Concept_2_type_)
-    """type_ (http://www.w3.org/1999/02/22-rdf-syntax-ns#type)"""
+    type__2: _Rel[_EntityBase] = _Rel(_P_Concept_2_type__2)
+    """type__2 (http://www.w3.org/1999/02/22-rdf-syntax-ns#type)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -323,7 +341,7 @@ class Concept_2(_EntityBase):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -343,6 +361,7 @@ _P_Datatype_ansi_sql_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/ansiSQLName',
     kind='literal',
     label='ANSI SQL name',
+    sources=('http://qudt.org/schema/qudt/Datatype-ansiSQLName',),
     datatype=str,
     max_count=1,
 )
@@ -353,6 +372,8 @@ _P_Datatype_basis = _PropertySpec(
     kind='object',
     label='basis',
     ranges=('Datatype',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',),),
+    sources=('http://qudt.org/schema/qudt/Datatype-basis',),
     max_count=1,
 )
 
@@ -361,6 +382,7 @@ _P_Datatype_bounded = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/bounded',
     kind='literal',
     label='bounded',
+    sources=('http://qudt.org/schema/qudt/Datatype-bounded',),
     datatype=bool,
     max_count=1,
 )
@@ -370,6 +392,7 @@ _P_Datatype_c_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/cName',
     kind='literal',
     label='C Language name',
+    sources=('http://qudt.org/schema/qudt/Datatype-cName',),
     datatype=str,
     max_count=1,
 )
@@ -380,15 +403,8 @@ _P_Datatype_cardinality = _PropertySpec(
     kind='object',
     label='cardinality',
     ranges=('CardinalityType',),
-    max_count=1,
-)
-
-_P_Datatype_id = _PropertySpec(
-    name='id',
-    predicate='http://qudt.org/schema/qudt/id',
-    kind='literal',
-    label='qudt id',
-    datatype=str,
+    range_groups=(('http://qudt.org/schema/qudt/CardinalityType',),),
+    sources=('http://qudt.org/schema/qudt/Datatype-cardinality',),
     max_count=1,
 )
 
@@ -397,6 +413,7 @@ _P_Datatype_java_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/javaName',
     kind='literal',
     label='java name',
+    sources=('http://qudt.org/schema/qudt/Datatype-javaName',),
     datatype=str,
     max_count=1,
 )
@@ -406,6 +423,7 @@ _P_Datatype_js_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/jsName',
     kind='literal',
     label='Javascript name',
+    sources=('http://qudt.org/schema/qudt/Datatype-jsName',),
     datatype=str,
     max_count=1,
 )
@@ -415,6 +433,7 @@ _P_Datatype_matlab_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/matlabName',
     kind='literal',
     label='matlab name',
+    sources=('http://qudt.org/schema/qudt/Datatype-matlabName',),
     datatype=str,
     max_count=1,
 )
@@ -424,6 +443,7 @@ _P_Datatype_microsoft_sql_server_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/microsoftSQLServerName',
     kind='literal',
     label='Microsoft SQL Server name',
+    sources=('http://qudt.org/schema/qudt/Datatype-microsoftSQLServerName',),
     datatype=str,
     max_count=1,
 )
@@ -433,6 +453,7 @@ _P_Datatype_my_sql_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/mySQLName',
     kind='literal',
     label='MySQL name',
+    sources=('http://qudt.org/schema/qudt/Datatype-mySQLName',),
     datatype=str,
 )
 
@@ -441,6 +462,7 @@ _P_Datatype_odbc_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/odbcName',
     kind='literal',
     label='ODBC name',
+    sources=('http://qudt.org/schema/qudt/Datatype-odbcName',),
     datatype=str,
     max_count=1,
 )
@@ -450,6 +472,7 @@ _P_Datatype_ole_db_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/oleDBName',
     kind='literal',
     label='OLE DB name',
+    sources=('http://qudt.org/schema/qudt/Datatype-oleDBName',),
     datatype=str,
     max_count=1,
 )
@@ -459,6 +482,7 @@ _P_Datatype_oracle_sql_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/oracleSQLName',
     kind='literal',
     label='ORACLE SQL name',
+    sources=('http://qudt.org/schema/qudt/Datatype-oracleSQLName',),
     datatype=str,
     max_count=1,
 )
@@ -469,6 +493,8 @@ _P_Datatype_ordered_type = _PropertySpec(
     kind='object',
     label='ordered type',
     ranges=('OrderedType',),
+    range_groups=(('http://qudt.org/schema/qudt/OrderedType',),),
+    sources=('http://qudt.org/schema/qudt/Datatype-orderedType',),
     max_count=1,
 )
 
@@ -477,6 +503,7 @@ _P_Datatype_protocol_buffers_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/protocolBuffersName',
     kind='literal',
     label='protocol buffers name',
+    sources=('http://qudt.org/schema/qudt/Datatype-protocolBuffersName',),
     datatype=str,
     max_count=1,
 )
@@ -486,6 +513,7 @@ _P_Datatype_python_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/pythonName',
     kind='literal',
     label='python name',
+    sources=('http://qudt.org/schema/qudt/Datatype-pythonName',),
     datatype=str,
     max_count=1,
 )
@@ -495,13 +523,14 @@ _P_Datatype_vb_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/vbName',
     kind='literal',
     label='Visual Basic name',
+    sources=('http://qudt.org/schema/qudt/Datatype-vbName',),
     datatype=str,
     max_count=1,
 )
 
 class Datatype(Concept_2):
     """Datatype
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Datatype
     """
 
@@ -513,7 +542,7 @@ class Datatype(Concept_2):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/Concept',),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Datatype_ansi_sql_name, _P_Datatype_basis, _P_Datatype_bounded, _P_Datatype_c_name, _P_Datatype_cardinality, _P_Datatype_id, _P_Datatype_java_name, _P_Datatype_js_name, _P_Datatype_matlab_name, _P_Datatype_microsoft_sql_server_name, _P_Datatype_my_sql_name, _P_Datatype_odbc_name, _P_Datatype_ole_db_name, _P_Datatype_oracle_sql_name, _P_Datatype_ordered_type, _P_Datatype_protocol_buffers_name, _P_Datatype_python_name, _P_Datatype_vb_name,),
+        properties=(_P_Datatype_ansi_sql_name, _P_Datatype_basis, _P_Datatype_bounded, _P_Datatype_c_name, _P_Datatype_cardinality, _P_Datatype_java_name, _P_Datatype_js_name, _P_Datatype_matlab_name, _P_Datatype_microsoft_sql_server_name, _P_Datatype_my_sql_name, _P_Datatype_odbc_name, _P_Datatype_ole_db_name, _P_Datatype_oracle_sql_name, _P_Datatype_ordered_type, _P_Datatype_protocol_buffers_name, _P_Datatype_python_name, _P_Datatype_vb_name,),
     )
 
     ansi_sql_name: _Lit[str] = _Lit(_P_Datatype_ansi_sql_name)
@@ -530,9 +559,6 @@ class Datatype(Concept_2):
 
     cardinality: _RelOne[CardinalityType] = _RelOne(_P_Datatype_cardinality)
     """cardinality (http://qudt.org/schema/qudt/cardinality)"""
-
-    id: _Lit[str] = _Lit(_P_Datatype_id)
-    """qudt id (http://qudt.org/schema/qudt/id)"""
 
     java_name: _Lit[str] = _Lit(_P_Datatype_java_name)
     """java name (http://qudt.org/schema/qudt/javaName)"""
@@ -574,7 +600,7 @@ class Datatype(Concept_2):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -616,7 +642,7 @@ class Datatype(Concept_2):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -654,12 +680,14 @@ _P_StructuredDatatype_element_datatype = _PropertySpec(
     kind='object',
     label='element datatype',
     ranges=('Datatype',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',),),
+    sources=('http://qudt.org/schema/qudt/StructuredDatatype-elementType',),
     max_count=1,
 )
 
 class StructuredDatatype(Datatype):
     """Structured Data Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/StructuredDatatype
     """
 
@@ -681,7 +709,7 @@ class StructuredDatatype(Datatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -724,7 +752,7 @@ class StructuredDatatype(Datatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -759,7 +787,7 @@ class StructuredDatatype(Datatype):
 
 class AbstractDatatype(StructuredDatatype):
     """Abstract Datatype
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/AbstractDatatype
     """
 
@@ -778,6 +806,7 @@ _P_AbstractQuantityKind_alt_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/altSymbol',
     kind='object',
     label='alt symbol',
+    sources=('http://qudt.org/schema/qudt/AbstractQuantityKind-altSymbol',),
 )
 
 _P_AbstractQuantityKind_broader = _PropertySpec(
@@ -787,7 +816,8 @@ _P_AbstractQuantityKind_broader = _PropertySpec(
     label='has broader',
     definition='Relates a concept to a concept that is more general in meaning.',
     ranges=('QuantityKind',),
-    inverse='narrower',
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/AbstractQuantityKind-broader',),
 )
 
 _P_AbstractQuantityKind_latex_symbol = _PropertySpec(
@@ -795,6 +825,7 @@ _P_AbstractQuantityKind_latex_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/latexSymbol',
     kind='literal',
     label='latex symbol',
+    sources=('http://qudt.org/schema/qudt/AbstractQuantityKind-latexSymbol',),
     datatype=str,
 )
 
@@ -804,6 +835,8 @@ _P_AbstractQuantityKind_organized_under = _PropertySpec(
     kind='object',
     label='organized under',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/AbstractQuantityKind-organizedUnder',),
 )
 
 _P_AbstractQuantityKind_specialization_of = _PropertySpec(
@@ -812,6 +845,8 @@ _P_AbstractQuantityKind_specialization_of = _PropertySpec(
     kind='object',
     label='specialization of',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/AbstractQuantityKind-specializationOf',),
 )
 
 _P_AbstractQuantityKind_symbol = _PropertySpec(
@@ -819,12 +854,13 @@ _P_AbstractQuantityKind_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/symbol',
     kind='object',
     label='symbol',
+    sources=('http://qudt.org/schema/qudt/AbstractQuantityKind-symbol',),
     max_count=1,
 )
 
 class AbstractQuantityKind(Concept_2):
     """Quantity Kind (abstract)
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/AbstractQuantityKind
     """
 
@@ -861,7 +897,7 @@ class AbstractQuantityKind(Concept_2):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alt_symbol: _Iterable[_EntityBase] = (),
         broader: _Iterable[QuantityKind] = (),
@@ -892,7 +928,7 @@ class AbstractQuantityKind(Concept_2):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alt_symbol=alt_symbol,
                 broader=broader,
@@ -913,63 +949,15 @@ class AbstractQuantityKind(Concept_2):
             ),
         )
 
-_P_Property_has_internal_reference = _PropertySpec(
-    name='has_internal_reference',
-    predicate='http://data.ashrae.org/standard223#hasInternalReference',
-    kind='object',
-    label='has internal reference',
-    definition='A `Relation` that associates a `Property` with another equivalent `Property`. For example, a `Property` that represents a `Zone`\ntemperature could have one or more `hasInternalReference` relations to another `Property` that is a temperature measurement from one room in the zone (see Figure 11-2).\n\n![Zone Internal Reference.](figures/Figure_11-2_Zone_Internal_Reference.svg)\n\nAnother use of `hasInternalReference` is to make a `Property` of a piece of equipment\nvisible as a `Property` of a piece of containing equipment.\nThis is illustrated in Figure 11-3.\n\n![Equipment Containment.](figures/Figure_11-3_Equipment_Contains_3.svg)\n\nNote that the `hasInternalReference` relation is transitive.',
-    ranges=('Property',),
-    inverse='is_internal_reference_of',
-)
-
 _P_Property_has_aspect = _PropertySpec(
     name='has_aspect',
     predicate='http://data.ashrae.org/standard223#hasAspect',
     kind='enum',
     label='has aspect',
     definition='`hasAspect` is used to establish the context of a `Property`. The value must be an instance of `EnumerationKind`. For example, if a `Property` has a temperature value of 45.3, the `hasAspect` relation is used to state what that represents, such as a temperature limit during working hours, etc. A `Property` can have any number of `hasAspect` relations as needed to establish the context.',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind',),),
+    sources=('b7aae26ef63bbb043e563d719',),
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind',),
-)
-
-_P_Property_is_internal_reference_of = _PropertySpec(
-    name='is_internal_reference_of',
-    predicate='http://data.ashrae.org/standard223#isInternalReferenceOf',
-    kind='object',
-    label='is internal reference of',
-    definition='The inverse of the relation `hasInternalReference` (see {s223:hasInternalReference}).',
-    ranges=('Property',),
-    max_count=1,
-    inverse='has_internal_reference',
-)
-
-_P_Property_of_medium = _PropertySpec(
-    name='of_medium',
-    predicate='http://data.ashrae.org/standard223#ofMedium',
-    kind='enum',
-    label='of medium',
-    definition='A `Relation` that associates a `Property` with the specific Medium it describes. A `Property` corresponding to the temperature of a medium would be associated with this medium using the relation `ofMedium`.',
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
-    max_count=1,
-)
-
-_P_Property_has_value = _PropertySpec(
-    name='has_value',
-    predicate='http://data.ashrae.org/standard223#hasValue',
-    kind='value',
-    label='has value',
-    definition='A `Relation` that associates something with a fixed value, as opposed to a computed, measured, or externally derived value.',
-    max_count=1,
-)
-
-_P_Property_of_substance = _PropertySpec(
-    name='of_substance',
-    predicate='http://data.ashrae.org/standard223#ofSubstance',
-    kind='enum',
-    label='of substance',
-    definition='A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix.',
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Substance',),
-    max_count=1,
 )
 
 _P_Property_has_external_reference = _PropertySpec(
@@ -979,6 +967,43 @@ _P_Property_has_external_reference = _PropertySpec(
     label='has external reference',
     definition='A `Relation` that associates a `Property` with an external telemetry source.',
     ranges=('ExternalReference',),
+    range_groups=(('http://data.ashrae.org/standard223#ExternalReference',),),
+    sources=('bb4a11af5339522c2de8f79ac',),
+)
+
+_P_Property_has_internal_reference = _PropertySpec(
+    name='has_internal_reference',
+    predicate='http://data.ashrae.org/standard223#hasInternalReference',
+    kind='object',
+    label='has internal reference',
+    definition='A `Relation` that associates a `Property` with another equivalent `Property`. For example, a `Property` that represents a `Zone`\ntemperature could have one or more `hasInternalReference` relations to another `Property` that is a temperature measurement from one room in the zone (see Figure 11-2).\n\n![Zone Internal Reference.](figures/Figure_11-2_Zone_Internal_Reference.svg)\n\nAnother use of `hasInternalReference` is to make a `Property` of a piece of equipment\nvisible as a `Property` of a piece of containing equipment.\nThis is illustrated in Figure 11-3.\n\n![Equipment Containment.](figures/Figure_11-3_Equipment_Contains_3.svg)\n\nNote that the `hasInternalReference` relation is transitive.',
+    ranges=('Property',),
+    range_groups=(('http://data.ashrae.org/standard223#Property',),),
+    sources=('b127c98e51ab3fa45a5828492', 'b33295a0378a77d0ada611a70', 'b6360bf2ea6267d753a772461'),
+    inverse='is_internal_reference_of',
+)
+
+_P_Property_has_value = _PropertySpec(
+    name='has_value',
+    predicate='http://data.ashrae.org/standard223#hasValue',
+    kind='value',
+    label='has value',
+    definition='A `Relation` that associates something with a fixed value, as opposed to a computed, measured, or externally derived value.',
+    sources=('b94eb7c61639855466de28113', 'bc4f7ae22af7ed3730ac1bac4'),
+    max_count=1,
+)
+
+_P_Property_is_internal_reference_of = _PropertySpec(
+    name='is_internal_reference_of',
+    predicate='http://data.ashrae.org/standard223#isInternalReferenceOf',
+    kind='object',
+    label='is internal reference of',
+    definition='The inverse of the relation `hasInternalReference` (see {s223:hasInternalReference}).',
+    ranges=('Property',),
+    range_groups=(('http://data.ashrae.org/standard223#Property',),),
+    sources=('b7bde08b9f16713c82265df9d',),
+    max_count=1,
+    inverse='has_internal_reference',
 )
 
 _P_Property_of_constituent = _PropertySpec(
@@ -987,35 +1012,60 @@ _P_Property_of_constituent = _PropertySpec(
     kind='object',
     label='of constituent',
     definition='A `Relation` that associates a `Property` that characterizes a `Medium-Mix` with one of the constituents of that mix (e.g., `Fluid-Water` `composedOf` `Property` `ofConstituent` `Constituent-H2O`).',
+    sources=('bf24db484d2f3f1f1fffcd2b0',),
+)
+
+_P_Property_of_medium = _PropertySpec(
+    name='of_medium',
+    predicate='http://data.ashrae.org/standard223#ofMedium',
+    kind='enum',
+    label='of medium',
+    definition='A `Relation` that associates a `Property` with the specific Medium it describes. A `Property` corresponding to the temperature of a medium would be associated with this medium using the relation `ofMedium`.',
+    range_groups=(('http://data.ashrae.org/standard223#Substance-Medium',),),
+    sources=('b7f47b631f571b101f621e646',),
+    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
+    max_count=1,
+)
+
+_P_Property_of_substance = _PropertySpec(
+    name='of_substance',
+    predicate='http://data.ashrae.org/standard223#ofSubstance',
+    kind='enum',
+    label='of substance',
+    definition='A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix.',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Substance',),),
+    sources=('b9ea31a97ca9f035e9e7e247d', 'bebe08be113ec9d15cc2075b3'),
+    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Substance',),
+    max_count=1,
 )
 
 class Property(Concept):
     """An attribute, quality, or characteristic of a feature of interest.
-    
+
     The `Property` class is the parent of all variations of a `Property`, which are:
-    
+
     - `ActuatableProperty`, a subclass of `Property` that can be modified by a user or machine outside of the model (typically by a command);
     - `ObservableProperty`, a subclass of `Property` that are observed (typically measures);
     - `EnumerableProperty`, a subclass of `Property` defined by `EnumerationKind`; and
     - `QuantifiableProperty`, a subclass of `Property` defined by numerical values.
-    
+
     And their subclass combinations:
-    
+
     - `QuantifiableActuatableProperty`,
     - `QuantifiableObservableProperty`,
     - `EnumeratedObservableProperty`, and
     - `EnumeratedActuatableProperty`.
-    
+
     A `QuantifiableProperty` (or subclass thereof) shall always be associated with a `Unit` and a `QuantityKind`, either explicitly from the `Property`,
     or through the associated Value. If the `Unit` is defined, the SHACL reasoner (if invoked) will figure out and assert a `QuantityKind` if it is
     unambiguous.
-    
+
     Enumerable properties shall be associated with an `EnumerationKind`. Different types of properties are shown in Figure 11-1.
-    
+
     ![Different types of Properties](figures/Figure_11-1_Flavors_of_Properties.svg)
-    
+
     A `Property` instance that is not an instance of one of the subclasses is unconstrained with respect to its value.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Property
     """
 
@@ -1027,44 +1077,44 @@ class Property(Concept):
         definition='An attribute, quality, or characteristic of a feature of interest.\n\nThe `Property` class is the parent of all variations of a `Property`, which are:\n\n- `ActuatableProperty`, a subclass of `Property` that can be modified by a user or machine outside of the model (typically by a command);\n- `ObservableProperty`, a subclass of `Property` that are observed (typically measures);\n- `EnumerableProperty`, a subclass of `Property` defined by `EnumerationKind`; and\n- `QuantifiableProperty`, a subclass of `Property` defined by numerical values.\n\nAnd their subclass combinations:\n\n- `QuantifiableActuatableProperty`,\n- `QuantifiableObservableProperty`,\n- `EnumeratedObservableProperty`, and\n- `EnumeratedActuatableProperty`.\n\nA `QuantifiableProperty` (or subclass thereof) shall always be associated with a `Unit` and a `QuantityKind`, either explicitly from the `Property`,\nor through the associated Value. If the `Unit` is defined, the SHACL reasoner (if invoked) will figure out and assert a `QuantityKind` if it is\nunambiguous.\n\nEnumerable properties shall be associated with an `EnumerationKind`. Different types of properties are shown in Figure 11-1.\n\n![Different types of Properties](figures/Figure_11-1_Flavors_of_Properties.svg)\n\nA `Property` instance that is not an instance of one of the subclasses is unconstrained with respect to its value.',
         parent_iris=('http://data.ashrae.org/standard223#Concept',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Property_has_internal_reference, _P_Property_has_aspect, _P_Property_is_internal_reference_of, _P_Property_of_medium, _P_Property_has_value, _P_Property_of_substance, _P_Property_has_external_reference, _P_Property_of_constituent,),
+        properties=(_P_Property_has_aspect, _P_Property_has_external_reference, _P_Property_has_internal_reference, _P_Property_has_value, _P_Property_is_internal_reference_of, _P_Property_of_constituent, _P_Property_of_medium, _P_Property_of_substance,),
     )
-
-    has_internal_reference: _Rel[Property] = _Rel(_P_Property_has_internal_reference)
-    """A `Relation` that associates a `Property` with another equivalent `Property`. For example, a `Property` that represents a `Zone`
-    temperature could have one or more `hasInternalReference` relations to another `Property` that is a temperature measurement from one room in the zone (see Figure 11-2).
-    
-    ![Zone Internal Reference.](figures/Figure_11-2_Zone_Internal_Reference.svg)
-    
-    Another use of `hasInternalReference` is to make a `Property` of a piece of equipment
-    visible as a `Property` of a piece of containing equipment.
-    This is illustrated in Figure 11-3.
-    
-    ![Equipment Containment.](figures/Figure_11-3_Equipment_Contains_3.svg)
-    
-    Note that the `hasInternalReference` relation is transitive. (http://data.ashrae.org/standard223#hasInternalReference)
-    """
 
     has_aspect: _EnumSet[_EnumValue] = _EnumSet(_P_Property_has_aspect)
     """`hasAspect` is used to establish the context of a `Property`. The value must be an instance of `EnumerationKind`. For example, if a `Property` has a temperature value of 45.3, the `hasAspect` relation is used to state what that represents, such as a temperature limit during working hours, etc. A `Property` can have any number of `hasAspect` relations as needed to establish the context. (http://data.ashrae.org/standard223#hasAspect)"""
 
-    is_internal_reference_of: _RelOne[Property] = _RelOne(_P_Property_is_internal_reference_of)
-    """The inverse of the relation `hasInternalReference` (see {s223:hasInternalReference}). (http://data.ashrae.org/standard223#isInternalReferenceOf)"""
+    has_external_reference: _Rel[ExternalReference] = _Rel(_P_Property_has_external_reference)
+    """A `Relation` that associates a `Property` with an external telemetry source. (http://data.ashrae.org/standard223#hasExternalReference)"""
 
-    of_medium: _EnumOne[_EnumValue] = _EnumOne(_P_Property_of_medium)
-    """A `Relation` that associates a `Property` with the specific Medium it describes. A `Property` corresponding to the temperature of a medium would be associated with this medium using the relation `ofMedium`. (http://data.ashrae.org/standard223#ofMedium)"""
+    has_internal_reference: _Rel[Property] = _Rel(_P_Property_has_internal_reference)
+    """A `Relation` that associates a `Property` with another equivalent `Property`. For example, a `Property` that represents a `Zone`
+    temperature could have one or more `hasInternalReference` relations to another `Property` that is a temperature measurement from one room in the zone (see Figure 11-2).
+
+    ![Zone Internal Reference.](figures/Figure_11-2_Zone_Internal_Reference.svg)
+
+    Another use of `hasInternalReference` is to make a `Property` of a piece of equipment
+    visible as a `Property` of a piece of containing equipment.
+    This is illustrated in Figure 11-3.
+
+    ![Equipment Containment.](figures/Figure_11-3_Equipment_Contains_3.svg)
+
+    Note that the `hasInternalReference` relation is transitive. (http://data.ashrae.org/standard223#hasInternalReference)
+    """
 
     has_value: _ValueOne[object] = _ValueOne(_P_Property_has_value)
     """A `Relation` that associates something with a fixed value, as opposed to a computed, measured, or externally derived value. (http://data.ashrae.org/standard223#hasValue)"""
 
-    of_substance: _EnumOne[_EnumValue] = _EnumOne(_P_Property_of_substance)
-    """A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix. (http://data.ashrae.org/standard223#ofSubstance)"""
-
-    has_external_reference: _Rel[ExternalReference] = _Rel(_P_Property_has_external_reference)
-    """A `Relation` that associates a `Property` with an external telemetry source. (http://data.ashrae.org/standard223#hasExternalReference)"""
+    is_internal_reference_of: _RelOne[Property] = _RelOne(_P_Property_is_internal_reference_of)
+    """The inverse of the relation `hasInternalReference` (see {s223:hasInternalReference}). (http://data.ashrae.org/standard223#isInternalReferenceOf)"""
 
     of_constituent: _Rel[_EntityBase] = _Rel(_P_Property_of_constituent)
     """A `Relation` that associates a `Property` that characterizes a `Medium-Mix` with one of the constituents of that mix (e.g., `Fluid-Water` `composedOf` `Property` `ofConstituent` `Constituent-H2O`). (http://data.ashrae.org/standard223#ofConstituent)"""
+
+    of_medium: _EnumOne[_EnumValue] = _EnumOne(_P_Property_of_medium)
+    """A `Relation` that associates a `Property` with the specific Medium it describes. A `Property` corresponding to the temperature of a medium would be associated with this medium using the relation `ofMedium`. (http://data.ashrae.org/standard223#ofMedium)"""
+
+    of_substance: _EnumOne[_EnumValue] = _EnumOne(_P_Property_of_substance)
+    """A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix. (http://data.ashrae.org/standard223#ofSubstance)"""
 
     def __init__(
         self,
@@ -1109,7 +1159,7 @@ class Property(Concept):
 class ActuatableProperty(Property):
     """The term "actuatable" implies that writing to the `ActuatableProperty` value will directly trigger a physical actuation by either an `Actuator` or `Equipment`.
     In contrast, the term "observable" (see {s223:ObservableProperty}) implies that reading the `ObservableProperty` value will return the result of a physical observation.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ActuatableProperty
     """
 
@@ -1123,13 +1173,15 @@ class ActuatableProperty(Property):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_Connectable_connected_through = _PropertySpec(
-    name='connected_through',
-    predicate='http://data.ashrae.org/standard223#connectedThrough',
+_P_Connectable_cnx = _PropertySpec(
+    name='cnx',
+    predicate='http://data.ashrae.org/standard223#cnx',
     kind='object',
-    label='connected through',
-    definition='A `Relation` that associates a `Connectable` with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things.',
-    ranges=('Connection',),
+    label='cnx',
+    definition='A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.',
+    ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('b5c7de35b6a913e84096a45d9', 'b7e07cff51177986b8f64bb06'),
 )
 
 _P_Connectable_connected = _PropertySpec(
@@ -1139,15 +1191,8 @@ _P_Connectable_connected = _PropertySpec(
     label='connected',
     definition='The relation `connected` indicates that two connectable things are `connected` without regard to the direction of flow.',
     ranges=('Connectable',),
-)
-
-_P_Connectable_cnx = _PropertySpec(
-    name='cnx',
-    predicate='http://data.ashrae.org/standard223#cnx',
-    kind='object',
-    label='cnx',
-    definition='A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.',
-    ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#Connectable',),),
+    sources=('b4378a93760ff413779cb18db',),
 )
 
 _P_Connectable_connected_from = _PropertySpec(
@@ -1157,7 +1202,20 @@ _P_Connectable_connected_from = _PropertySpec(
     label='connected from',
     definition='The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}).',
     ranges=('Connectable',),
+    range_groups=(('http://data.ashrae.org/standard223#Connectable',),),
+    sources=('b5fe5575d8ff2586af6168548',),
     inverse='connected_to',
+)
+
+_P_Connectable_connected_through = _PropertySpec(
+    name='connected_through',
+    predicate='http://data.ashrae.org/standard223#connectedThrough',
+    kind='object',
+    label='connected through',
+    definition='A `Relation` that associates a `Connectable` with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things.',
+    ranges=('Connection',),
+    range_groups=(('http://data.ashrae.org/standard223#Connection',),),
+    sources=('b283171481c48b41a4546dad9',),
 )
 
 _P_Connectable_connected_to = _PropertySpec(
@@ -1167,16 +1225,9 @@ _P_Connectable_connected_to = _PropertySpec(
     label='connected to',
     definition='The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}).',
     ranges=('Connectable',),
+    range_groups=(('http://data.ashrae.org/standard223#Connectable',),),
+    sources=('b9831b15fc9bd705787c7d0e2',),
     inverse='connected_from',
-)
-
-_P_Connectable_has_optional_connection_point = _PropertySpec(
-    name='has_optional_connection_point',
-    predicate='http://data.ashrae.org/standard223#hasOptionalConnectionPoint',
-    kind='object',
-    label='has optional connection point',
-    definition='The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context.',
-    ranges=('ConnectionPoint',),
 )
 
 _P_Connectable_has_connection_point = _PropertySpec(
@@ -1186,12 +1237,25 @@ _P_Connectable_has_connection_point = _PropertySpec(
     label='has connection point',
     definition='One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).',
     ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('be2099568566b78227dcced58',),
     inverse='owner',
+)
+
+_P_Connectable_has_optional_connection_point = _PropertySpec(
+    name='has_optional_connection_point',
+    predicate='http://data.ashrae.org/standard223#hasOptionalConnectionPoint',
+    kind='object',
+    label='has optional connection point',
+    definition='The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context.',
+    ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('bbf8aaab37aca192eece5eb71',),
 )
 
 class Connectable(Concept):
     """`Connectable` is an abstract class representing `Equipment` (see {s223:Equipment}), a `DomainSpace` (see {s223:DomainSpace}), or a `Junction` (see {s223:Junction}) that can be `connected` to other `Connectable`s via `ConnectionPoint`s and `Connection`s.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Connectable
     """
 
@@ -1204,29 +1268,29 @@ class Connectable(Concept):
         parent_iris=('http://data.ashrae.org/standard223#Concept',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         abstract=True,
-        properties=(_P_Connectable_connected_through, _P_Connectable_connected, _P_Connectable_cnx, _P_Connectable_connected_from, _P_Connectable_connected_to, _P_Connectable_has_optional_connection_point, _P_Connectable_has_connection_point,),
+        properties=(_P_Connectable_cnx, _P_Connectable_connected, _P_Connectable_connected_from, _P_Connectable_connected_through, _P_Connectable_connected_to, _P_Connectable_has_connection_point, _P_Connectable_has_optional_connection_point,),
     )
-
-    connected_through: _Rel[Connection] = _Rel(_P_Connectable_connected_through)
-    """A `Relation` that associates a `Connectable` with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things. (http://data.ashrae.org/standard223#connectedThrough)"""
-
-    connected: _Rel[Connectable] = _Rel(_P_Connectable_connected)
-    """The relation `connected` indicates that two connectable things are `connected` without regard to the direction of flow. (http://data.ashrae.org/standard223#connected)"""
 
     cnx: _Rel[ConnectionPoint] = _Rel(_P_Connectable_cnx)
     """A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences. (http://data.ashrae.org/standard223#cnx)"""
 
+    connected: _Rel[Connectable] = _Rel(_P_Connectable_connected)
+    """The relation `connected` indicates that two connectable things are `connected` without regard to the direction of flow. (http://data.ashrae.org/standard223#connected)"""
+
     connected_from: _Rel[Connectable] = _Rel(_P_Connectable_connected_from)
     """The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}). (http://data.ashrae.org/standard223#connectedFrom)"""
+
+    connected_through: _Rel[Connection] = _Rel(_P_Connectable_connected_through)
+    """A `Relation` that associates a `Connectable` with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things. (http://data.ashrae.org/standard223#connectedThrough)"""
 
     connected_to: _Rel[Connectable] = _Rel(_P_Connectable_connected_to)
     """The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}). (http://data.ashrae.org/standard223#connectedTo)"""
 
-    has_optional_connection_point: _Rel[ConnectionPoint] = _Rel(_P_Connectable_has_optional_connection_point)
-    """The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context. (http://data.ashrae.org/standard223#hasOptionalConnectionPoint)"""
-
     has_connection_point: _Rel[ConnectionPoint] = _Rel(_P_Connectable_has_connection_point)
     """One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}). (http://data.ashrae.org/standard223#hasConnectionPoint)"""
+
+    has_optional_connection_point: _Rel[ConnectionPoint] = _Rel(_P_Connectable_has_optional_connection_point)
+    """The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context. (http://data.ashrae.org/standard223#hasOptionalConnectionPoint)"""
 
     def __init__(
         self,
@@ -1266,24 +1330,6 @@ class Connectable(Concept):
             ),
         )
 
-_P_Equipment_has_process = _PropertySpec(
-    name='has_process',
-    predicate='https://watermetadata.org/ontology/watr#hasProcess',
-    kind='class',
-    label='has process',
-    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-    ranges=('Process',),
-)
-
-_P_Equipment_has_treatment_objective = _PropertySpec(
-    name='has_treatment_objective',
-    predicate='https://watermetadata.org/ontology/watr#hasTreatmentObjective',
-    kind='class',
-    label='has treatment objective',
-    definition='Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess.',
-    ranges=('TreatmentObjective',),
-)
-
 _P_Equipment_actuated_by_property = _PropertySpec(
     name='actuated_by_property',
     predicate='http://data.ashrae.org/standard223#actuatedByProperty',
@@ -1291,15 +1337,8 @@ _P_Equipment_actuated_by_property = _PropertySpec(
     label='actuated by property',
     definition='A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`\nis an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of\n`Equipment` being actuated (see {s223:actuates}).',
     ranges=('ActuatableProperty',),
-)
-
-_P_Equipment_has_physical_location = _PropertySpec(
-    name='has_physical_location',
-    predicate='http://data.ashrae.org/standard223#hasPhysicalLocation',
-    kind='object',
-    label='has physical location',
-    definition='A `Relation` that associates a piece of `Equipment` with its physical location (i.e., in a `PhysicalSpace`). The physical location of a piece of `Equipment` is not necessarily the same as the location affected by the operation of the `Equipment`. For example, an air handler may physically be located on the roof, but its effect is to provide conditioned air to a `Zone` or `DomainSpace` within the building. By following the path of connections, it can be determined what other equipment or spaces are possibly impacted by the `Equipment`.',
-    ranges=('PhysicalSpace',),
+    range_groups=(('http://data.ashrae.org/standard223#ActuatableProperty',),),
+    sources=('b244bc874756dd5dc97be3617',),
 )
 
 _P_Equipment_contains_ = _PropertySpec(
@@ -1308,6 +1347,9 @@ _P_Equipment_contains_ = _PropertySpec(
     kind='object',
     label='contains',
     definition='A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s.',
+    ranges=('Equipment', 'Junction'),
+    range_groups=(('http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Junction'),),
+    sources=('b69091e8dfe0a9f3725f14148', 'b834e4d184f741a712a18dabc'),
 )
 
 _P_Equipment_executes = _PropertySpec(
@@ -1317,6 +1359,30 @@ _P_Equipment_executes = _PropertySpec(
     label='executes',
     definition='A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes.',
     ranges=('Function',),
+    range_groups=(('http://data.ashrae.org/standard223#Function',),),
+    sources=('bc10aa2950c93e29291717e55',),
+)
+
+_P_Equipment_has_physical_location = _PropertySpec(
+    name='has_physical_location',
+    predicate='http://data.ashrae.org/standard223#hasPhysicalLocation',
+    kind='object',
+    label='has physical location',
+    definition='A `Relation` that associates a piece of `Equipment` with its physical location (i.e., in a `PhysicalSpace`). The physical location of a piece of `Equipment` is not necessarily the same as the location affected by the operation of the `Equipment`. For example, an air handler may physically be located on the roof, but its effect is to provide conditioned air to a `Zone` or `DomainSpace` within the building. By following the path of connections, it can be determined what other equipment or spaces are possibly impacted by the `Equipment`.',
+    ranges=('PhysicalSpace',),
+    range_groups=(('http://data.ashrae.org/standard223#PhysicalSpace',),),
+    sources=('b67b0f96d7708f79624e4fe0b',),
+)
+
+_P_Equipment_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('https://watermetadata.org/ontology/watr#hasProcess',),
 )
 
 _P_Equipment_has_role = _PropertySpec(
@@ -1325,18 +1391,31 @@ _P_Equipment_has_role = _PropertySpec(
     kind='enum',
     label='has role',
     definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
+    sources=('be7260e57dcb51463c8fc48d4',),
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
+)
+
+_P_Equipment_has_treatment_objective = _PropertySpec(
+    name='has_treatment_objective',
+    predicate='https://watermetadata.org/ontology/watr#hasTreatmentObjective',
+    kind='class',
+    label='has treatment objective',
+    definition='Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess.',
+    ranges=('TreatmentObjective',),
+    range_groups=(('https://watermetadata.org/ontology/watr#TreatmentObjective',),),
+    sources=('https://watermetadata.org/ontology/watr#hasTreatmentObjective',),
 )
 
 class Equipment(Connectable):
     """`Equipment` is the modeling construct used to represent a thing designed to accomplish a specific task, or a complex thing
     that contains component pieces of `Equipment` that are connected to each other and work together to accomplish a task. `Equipment` can have
     `Connection`s and `ConnectionPoint`s through which one or more kinds of medium (see {s223:Substance-Medium}) might flow. Examples of `Equipment` defined in this ontology include `Pump`, `Fan`, `AirHeatExchanger`, `Luminaire`, and `Sensor`. `Equipment` can be connected to other `Connectable`s such as other `Equipment` or `DomainSpace`s.
-    
+
     The graphical depiction of Equipment used in this document is a round-cornered rectangle as shown in Figure 5-1.
-    
+
     ![Graphical Depiction of Equipment.](figures/Figure_5-1_Graphical_Depiciton_of_Equipment.svg)
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Equipment
     """
 
@@ -1348,14 +1427,8 @@ class Equipment(Connectable):
         definition='`Equipment` is the modeling construct used to represent a thing designed to accomplish a specific task, or a complex thing\nthat contains component pieces of `Equipment` that are connected to each other and work together to accomplish a task. `Equipment` can have\n`Connection`s and `ConnectionPoint`s through which one or more kinds of medium (see {s223:Substance-Medium}) might flow. Examples of `Equipment` defined in this ontology include `Pump`, `Fan`, `AirHeatExchanger`, `Luminaire`, and `Sensor`. `Equipment` can be connected to other `Connectable`s such as other `Equipment` or `DomainSpace`s.\n\nThe graphical depiction of Equipment used in this document is a round-cornered rectangle as shown in Figure 5-1.\n\n![Graphical Depiction of Equipment.](figures/Figure_5-1_Graphical_Depiciton_of_Equipment.svg)',
         parent_iris=('http://data.ashrae.org/standard223#Connectable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Equipment_has_process, _P_Equipment_has_treatment_objective, _P_Equipment_actuated_by_property, _P_Equipment_has_physical_location, _P_Equipment_contains_, _P_Equipment_executes, _P_Equipment_has_role,),
+        properties=(_P_Equipment_actuated_by_property, _P_Equipment_contains_, _P_Equipment_executes, _P_Equipment_has_physical_location, _P_Equipment_has_process, _P_Equipment_has_role, _P_Equipment_has_treatment_objective,),
     )
-
-    has_process: _Rel[type[Process]] = _Rel(_P_Equipment_has_process)
-    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
-
-    has_treatment_objective: _Rel[type[TreatmentObjective]] = _Rel(_P_Equipment_has_treatment_objective)
-    """Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess. (https://watermetadata.org/ontology/watr#hasTreatmentObjective)"""
 
     actuated_by_property: _Rel[ActuatableProperty] = _Rel(_P_Equipment_actuated_by_property)
     """A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`
@@ -1363,17 +1436,23 @@ class Equipment(Connectable):
     `Equipment` being actuated (see {s223:actuates}). (http://data.ashrae.org/standard223#actuatedByProperty)
     """
 
-    has_physical_location: _Rel[PhysicalSpace] = _Rel(_P_Equipment_has_physical_location)
-    """A `Relation` that associates a piece of `Equipment` with its physical location (i.e., in a `PhysicalSpace`). The physical location of a piece of `Equipment` is not necessarily the same as the location affected by the operation of the `Equipment`. For example, an air handler may physically be located on the roof, but its effect is to provide conditioned air to a `Zone` or `DomainSpace` within the building. By following the path of connections, it can be determined what other equipment or spaces are possibly impacted by the `Equipment`. (http://data.ashrae.org/standard223#hasPhysicalLocation)"""
-
-    contains_: _Rel[_EntityBase] = _Rel(_P_Equipment_contains_)
+    contains_: _Rel[Equipment | Junction] = _Rel(_P_Equipment_contains_)
     """A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s. (http://data.ashrae.org/standard223#contains)"""
 
     executes: _Rel[Function] = _Rel(_P_Equipment_executes)
     """A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes. (http://data.ashrae.org/standard223#executes)"""
 
+    has_physical_location: _Rel[PhysicalSpace] = _Rel(_P_Equipment_has_physical_location)
+    """A `Relation` that associates a piece of `Equipment` with its physical location (i.e., in a `PhysicalSpace`). The physical location of a piece of `Equipment` is not necessarily the same as the location affected by the operation of the `Equipment`. For example, an air handler may physically be located on the roof, but its effect is to provide conditioned air to a `Zone` or `DomainSpace` within the building. By following the path of connections, it can be determined what other equipment or spaces are possibly impacted by the `Equipment`. (http://data.ashrae.org/standard223#hasPhysicalLocation)"""
+
+    has_process: _Rel[type[Process]] = _Rel(_P_Equipment_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
+
     has_role: _EnumSet[_EnumValue] = _EnumSet(_P_Equipment_has_role)
     """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
+
+    has_treatment_objective: _Rel[type[TreatmentObjective]] = _Rel(_P_Equipment_has_treatment_objective)
+    """Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess. (https://watermetadata.org/ontology/watr#hasTreatmentObjective)"""
 
     def __init__(
         self,
@@ -1385,7 +1464,7 @@ class Equipment(Connectable):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -1434,6 +1513,9 @@ _P_Actuator_actuated_by_property = _PropertySpec(
     label='actuated by property',
     definition='A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`\nis an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of\n`Equipment` being actuated (see {s223:actuates}).',
     ranges=('ActuatableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#ActuatableProperty',),),
+    sources=('b244bc874756dd5dc97be3617', 'bb12f7647c7a4f02d88af0ad0'),
+    min_count=1,
     required=True,
 )
 
@@ -1444,12 +1526,14 @@ _P_Actuator_actuates = _PropertySpec(
     label='actuates',
     definition='A `Relation` that associates an `Actuator` with the `Equipment` that it actuates.',
     ranges=('Equipment',),
+    range_groups=(('http://data.ashrae.org/standard223#Equipment',),),
+    sources=('bdc357ed939aca87e4f495835',),
 )
 
 class Actuator(Equipment):
     """A piece of `Equipment` that receives control signals and electrically, pneumatically, or hydraulically makes changes in the
     physical world, such as the position of a valve or damper.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Actuator
     """
 
@@ -1484,7 +1568,7 @@ class Actuator(Equipment):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -1529,7 +1613,7 @@ class Actuator(Equipment):
 
 class Tank(Equipment):
     """A vessel with at least one fluid connection point. A storage tank may use a single bidirectional port; flow-through subclasses require the appropriate inlet and outlet points.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Tank
     """
 
@@ -1550,12 +1634,15 @@ _P_UnitProcess_has_process = _PropertySpec(
     label='has process',
     definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
     ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess'),
+    min_count=1,
     required=True,
 )
 
 class UnitProcess(Equipment):
     """A unit process is a specific type of water treatment process that can be applied to water.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#UnitProcess
     """
 
@@ -1584,7 +1671,7 @@ class UnitProcess(Equipment):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -1627,7 +1714,7 @@ class UnitProcess(Equipment):
 
 class Reactor(Tank, UnitProcess):
     """A vessel in which a reaction or biological/chemical treatment process takes place
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Reactor
     """
 
@@ -1647,7 +1734,7 @@ class Reactor(Tank, UnitProcess):
 
 class AerationBasin(Reactor):
     """A basin in a biological treatment train where air or oxygen is transferred into the mixed liquor to sustain the aerobic biomass. Named for the aeration equipment installed, not for the regime it is run in: a swing zone with diffusers that is operated unaerated is still an aeration basin, carrying Role-Anoxic.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#AerationBasin
     """
 
@@ -1672,7 +1759,7 @@ class AerationBasin(Reactor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -1716,7 +1803,7 @@ class AerationBasin(Reactor):
 
 class Digester(Reactor):
     """A container to promote decomposition of organic waste
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Digester
     """
 
@@ -1741,7 +1828,7 @@ class Digester(Reactor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -1785,7 +1872,7 @@ class Digester(Reactor):
 
 class AerobicDigester(Digester):
     """A container to promote decomposition of organic waste in aerobic conditions
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#AerobicDigester
     """
 
@@ -1806,11 +1893,13 @@ _P_CoordinateSystem_coordinate_center = _PropertySpec(
     kind='object',
     label='coordinate center',
     ranges=('CoordinateCenterKind',),
+    range_groups=(('http://qudt.org/schema/qudt/CoordinateCenterKind',),),
+    sources=('http://qudt.org/schema/qudt/coordinateCenter',),
 )
 
 class CoordinateSystem(Concept_2):
     """Coordinate system
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CoordinateSystem
     """
 
@@ -1832,7 +1921,7 @@ class CoordinateSystem(Concept_2):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         coordinate_center: _Iterable[CoordinateCenterKind] = (),
@@ -1858,7 +1947,7 @@ class CoordinateSystem(Concept_2):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 coordinate_center=coordinate_center,
@@ -1876,7 +1965,7 @@ class CoordinateSystem(Concept_2):
 
 class AerospaceCoordinateSystem(CoordinateSystem):
     """Aerospace Coordinate system
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/AerospaceCoordinateSystem
     """
 
@@ -1893,7 +1982,7 @@ class AerospaceCoordinateSystem(CoordinateSystem):
 class AirHandlingUnit(Equipment):
     """A piece of `Equipment` consisting of a fan or fans and other equipment necessary to perform one or more of the following functions:
     circulating, filtration, heating, cooling, heat recovery, humidifying, dehumidifying, and mixing of air.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#AirHandlingUnit
     """
 
@@ -1913,7 +2002,7 @@ class AirHandlingUnit(Equipment):
 
 class AirHeatExchanger(Equipment):
     """A piece of `Equipment` that transfers heat from one air stream to another while keeping the two media separate.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#AirHeatExchanger
     """
 
@@ -1934,7 +2023,7 @@ class AirHeatExchanger(Equipment):
 
 class Valve_2(Equipment):
     """A piece of `Equipment` that can be adjusted to allow, regulate, or stop the flow of fluid in a pipe or a duct.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Valve
     """
 
@@ -1959,7 +2048,7 @@ class Valve_2(Equipment):
 
 class AirReleaseValve(Valve_2):
     """Valve for vent trapped air pockets
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#AirReleaseValve
     """
 
@@ -1975,7 +2064,7 @@ class AirReleaseValve(Valve_2):
 
 class SeparationTank(Tank, UnitProcess):
     """A tank that has at least two outlets (e.g. overflow and underflow)
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#SeparationTank
     """
 
@@ -2003,7 +2092,7 @@ class SeparationTank(Tank, UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -2047,7 +2136,7 @@ class SeparationTank(Tank, UnitProcess):
 
 class AirStripper(SeparationTank):
     """A vessel, typically a packed tower, in which air is contacted with water to transfer dissolved gases and volatile organic compounds out of the water and into an off-gas stream
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#AirStripper
     """
 
@@ -2064,7 +2153,7 @@ class AirStripper(SeparationTank):
 
 class HeatPump(Equipment):
     """A piece of `Equipment` that heats or cools spaces by transferring thermal energy from one thermal environment to another using a reversible refrigeration cycle.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#HeatPump
     """
 
@@ -2080,7 +2169,7 @@ class HeatPump(Equipment):
 
 class AirToAirHeatPump(HeatPump):
     """A `HeatPump` that transfers thermal energy between two bodies of air.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#AirToAirHeatPump
     """
 
@@ -2100,7 +2189,7 @@ class AirToAirHeatPump(HeatPump):
 
 class AlgebraicDatatype(StructuredDatatype):
     """Algebraic Datatype
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/AlgebraicDatatype
     """
 
@@ -2116,7 +2205,7 @@ class AlgebraicDatatype(StructuredDatatype):
 
 class EnumeratedValue_2(_EntityBase):
     """DTYPE Enumerated Value
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/dtype#EnumeratedValue
     """
 
@@ -2132,7 +2221,7 @@ class EnumeratedValue_2(_EntityBase):
 
 class Aspect(_EntityBase):
     """QUDT Aspect
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Aspect
     """
 
@@ -2146,19 +2235,21 @@ class Aspect(_EntityBase):
         ancestor_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
     )
 
-_P_Verifiable_informative_reference = _PropertySpec(
-    name='informative_reference',
-    predicate='http://qudt.org/schema/qudt/informativeReference',
-    kind='object',
-    label='informative reference',
-)
-
 _P_Verifiable_dbpedia_match = _PropertySpec(
     name='dbpedia_match',
     predicate='http://qudt.org/schema/qudt/dbpediaMatch',
     kind='literal',
     label='dbpedia match',
+    sources=('http://qudt.org/schema/qudt/Verifiable-dbpediaMatch',),
     datatype=str,
+)
+
+_P_Verifiable_informative_reference = _PropertySpec(
+    name='informative_reference',
+    predicate='http://qudt.org/schema/qudt/informativeReference',
+    kind='object',
+    label='informative reference',
+    sources=('http://qudt.org/schema/qudt/InformativeReferencePropertyShape',),
 )
 
 _P_Verifiable_iso_normative_reference = _PropertySpec(
@@ -2166,6 +2257,7 @@ _P_Verifiable_iso_normative_reference = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/isoNormativeReference',
     kind='literal',
     label='normative reference (ISO)',
+    sources=('http://qudt.org/schema/qudt/Verifiable-isoNormativeReference',),
     datatype=str,
 )
 
@@ -2174,6 +2266,7 @@ _P_Verifiable_normative_reference = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/normativeReference',
     kind='literal',
     label='normative reference',
+    sources=('http://qudt.org/schema/qudt/Verifiable-normativeReference',),
     datatype=str,
 )
 
@@ -2182,12 +2275,13 @@ _P_Verifiable_wikidata_match = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/wikidataMatch',
     kind='object',
     label='Wikidata match',
+    sources=('http://qudt.org/schema/qudt/Verifiable-wikidataMatch',),
     max_count=1,
 )
 
 class Verifiable(Aspect):
     """Verifiable
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Verifiable
     """
 
@@ -2199,14 +2293,14 @@ class Verifiable(Aspect):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/Aspect',),
         ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Verifiable_informative_reference, _P_Verifiable_dbpedia_match, _P_Verifiable_iso_normative_reference, _P_Verifiable_normative_reference, _P_Verifiable_wikidata_match,),
+        properties=(_P_Verifiable_dbpedia_match, _P_Verifiable_informative_reference, _P_Verifiable_iso_normative_reference, _P_Verifiable_normative_reference, _P_Verifiable_wikidata_match,),
     )
-
-    informative_reference: _Rel[_EntityBase] = _Rel(_P_Verifiable_informative_reference)
-    """informative reference (http://qudt.org/schema/qudt/informativeReference)"""
 
     dbpedia_match: _Lit[str] = _Lit(_P_Verifiable_dbpedia_match)
     """dbpedia match (http://qudt.org/schema/qudt/dbpediaMatch)"""
+
+    informative_reference: _Rel[_EntityBase] = _Rel(_P_Verifiable_informative_reference)
+    """informative reference (http://qudt.org/schema/qudt/informativeReference)"""
 
     iso_normative_reference: _Lit[str] = _Lit(_P_Verifiable_iso_normative_reference)
     """normative reference (ISO) (http://qudt.org/schema/qudt/isoNormativeReference)"""
@@ -2252,6 +2346,7 @@ _P_EnumeratedValue_abbreviation = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/abbreviation',
     kind='literal',
     label='abbreviation',
+    sources=('http://qudt.org/schema/qudt/EnumeratedValue-abbreviation',),
     datatype=str,
     max_count=1,
 )
@@ -2261,6 +2356,7 @@ _P_EnumeratedValue_alt_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/altSymbol',
     kind='object',
     label='alt symbol',
+    sources=('http://qudt.org/schema/qudt/EnumeratedValue-altSymbol',),
 )
 
 _P_EnumeratedValue_description = _PropertySpec(
@@ -2268,6 +2364,7 @@ _P_EnumeratedValue_description = _PropertySpec(
     predicate='http://purl.org/dc/terms/description',
     kind='object',
     label='description',
+    sources=('http://qudt.org/schema/qudt/EnumeratedValue-description',),
     max_count=1,
 )
 
@@ -2276,12 +2373,13 @@ _P_EnumeratedValue_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/symbol',
     kind='object',
     label='symbol',
+    sources=('http://qudt.org/schema/qudt/EnumeratedValue-symbol',),
     max_count=1,
 )
 
 class EnumeratedValue(EnumeratedValue_2, Verifiable):
     """Enumerated Value
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/EnumeratedValue
     """
 
@@ -2348,7 +2446,7 @@ class EnumeratedValue(EnumeratedValue_2, Verifiable):
 
 class AlignmentType(EnumeratedValue):
     """Alignment type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/AlignmentType
     """
 
@@ -2364,7 +2462,7 @@ class AlignmentType(EnumeratedValue):
 
 class AnaerobicDigester(Digester):
     """A container to promote decomposition of organic waste in anaerobic conditions
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#AnaerobicDigester
     """
 
@@ -2379,19 +2477,12 @@ class AnaerobicDigester(Digester):
         class_defaults=(('has_process', 'Process_AnaerobicDigestion'),),
     )
 
-_P_Unit_unit_for = _PropertySpec(
-    name='unit_for',
-    predicate='http://qudt.org/schema/qudt/unitFor',
-    kind='object',
-    label='unit for',
-    inverse='has_unit',
-)
-
 _P_Unit_alt_symbol = _PropertySpec(
     name='alt_symbol',
     predicate='http://qudt.org/schema/qudt/altSymbol',
     kind='object',
     label='alt symbol',
+    sources=('http://qudt.org/schema/qudt/Unit-altSymbol',),
 )
 
 _P_Unit_applicable_system = _PropertySpec(
@@ -2400,6 +2491,8 @@ _P_Unit_applicable_system = _PropertySpec(
     kind='object',
     label='applicable system',
     ranges=('SystemOfUnits',),
+    range_groups=(('http://qudt.org/schema/qudt/SystemOfUnits',),),
+    sources=('http://qudt.org/schema/qudt/Unit-applicableSystem',),
 )
 
 _P_Unit_categorized_by_quantity_kind = _PropertySpec(
@@ -2408,6 +2501,8 @@ _P_Unit_categorized_by_quantity_kind = _PropertySpec(
     kind='object',
     label='categorized by quantity kind',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/Unit-categorizedByQuantityKind',),
 )
 
 _P_Unit_conversion_multiplier = _PropertySpec(
@@ -2415,6 +2510,7 @@ _P_Unit_conversion_multiplier = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/conversionMultiplier',
     kind='literal',
     label='conversion multiplier',
+    sources=('http://qudt.org/schema/qudt/Unit-conversionMultiplier',),
     datatype=float,
     max_count=1,
 )
@@ -2424,6 +2520,7 @@ _P_Unit_conversion_multiplier_sn = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/conversionMultiplierSN',
     kind='literal',
     label='conversion multiplier scientific',
+    sources=('http://qudt.org/schema/qudt/Unit-conversionMultiplierSN',),
     datatype=float,
     max_count=1,
 )
@@ -2433,6 +2530,7 @@ _P_Unit_conversion_offset = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/conversionOffset',
     kind='literal',
     label='conversion offset',
+    sources=('http://qudt.org/schema/qudt/Unit-conversionOffset',),
     datatype=float,
     max_count=1,
 )
@@ -2442,6 +2540,7 @@ _P_Unit_conversion_offset_sn = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/conversionOffsetSN',
     kind='literal',
     label='conversion offset scientific',
+    sources=('http://qudt.org/schema/qudt/Unit-conversionOffsetSN',),
     datatype=float,
     max_count=1,
 )
@@ -2452,6 +2551,8 @@ _P_Unit_defined_unit_of_system = _PropertySpec(
     kind='object',
     label='defined unit of system',
     ranges=('SystemOfUnits',),
+    range_groups=(('http://qudt.org/schema/qudt/SystemOfUnits',),),
+    sources=('http://qudt.org/schema/qudt/Unit-definedUnitOfSystem',),
     inverse='has_defined_unit',
 )
 
@@ -2461,6 +2562,8 @@ _P_Unit_derived_coherent_unit_of_system = _PropertySpec(
     kind='object',
     label='is coherent derived unit of system',
     ranges=('SystemOfUnits',),
+    range_groups=(('http://qudt.org/schema/qudt/SystemOfUnits',),),
+    sources=('http://qudt.org/schema/qudt/Unit-derivedCoherentUnitOfSystem',),
     inverse='has_derived_coherent_unit',
 )
 
@@ -2470,6 +2573,8 @@ _P_Unit_derived_unit_of_system = _PropertySpec(
     kind='object',
     label='is derived unit of system',
     ranges=('SystemOfUnits',),
+    range_groups=(('http://qudt.org/schema/qudt/SystemOfUnits',),),
+    sources=('http://qudt.org/schema/qudt/Unit-derivedUnitOfSystem',),
     inverse='has_derived_unit',
 )
 
@@ -2478,6 +2583,7 @@ _P_Unit_eclass_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/eclassCode',
     kind='literal',
     label='ECLASS code',
+    sources=('http://qudt.org/schema/qudt/Unit-eclassCode',),
     datatype=str,
 )
 
@@ -2486,6 +2592,7 @@ _P_Unit_expression = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/expression',
     kind='object',
     label='expression',
+    sources=('http://qudt.org/schema/qudt/Unit-expression',),
 )
 
 _P_Unit_factor_unit_scalar = _PropertySpec(
@@ -2493,6 +2600,7 @@ _P_Unit_factor_unit_scalar = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/factorUnitScalar',
     kind='literal',
     label='factorUnitScalar',
+    sources=('http://qudt.org/schema/qudt/Unit-factorUnitScalar',),
     datatype=float,
     max_count=1,
 )
@@ -2503,6 +2611,9 @@ _P_Unit_has_dimension_vector = _PropertySpec(
     kind='object',
     label='has dimension vector',
     ranges=('QuantityKindDimensionVector',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKindDimensionVector',),),
+    sources=('http://qudt.org/schema/qudt/Unit-hasDimensionVector',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -2512,6 +2623,7 @@ _P_Unit_has_factor_unit = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/hasFactorUnit',
     kind='object',
     label='hasFactorUnit',
+    sources=('http://qudt.org/schema/qudt/Unit-hasFactorUnit',),
 )
 
 _P_Unit_has_quantity_kind = _PropertySpec(
@@ -2521,6 +2633,9 @@ _P_Unit_has_quantity_kind = _PropertySpec(
     label='has quantity kind',
     definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/Unit-hasQuantityKind',),
+    min_count=1,
     required=True,
 )
 
@@ -2530,6 +2645,8 @@ _P_Unit_has_reciprocal_unit = _PropertySpec(
     kind='object',
     label='has reciprocal unit',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/Unit-hasReciprocalUnit',),
 )
 
 _P_Unit_iec61360_code = _PropertySpec(
@@ -2537,7 +2654,18 @@ _P_Unit_iec61360_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/iec61360Code',
     kind='literal',
     label='IEC 61360 code',
+    sources=('http://qudt.org/schema/qudt/Unit-iec61360Code',),
     datatype=str,
+)
+
+_P_Unit_is_unit_of_system = _PropertySpec(
+    name='is_unit_of_system',
+    predicate='http://qudt.org/schema/qudt/isUnitOfSystem',
+    kind='object',
+    label='is unit of system',
+    ranges=('SystemOfUnits',),
+    range_groups=(('http://qudt.org/schema/qudt/SystemOfUnits',),),
+    sources=('http://qudt.org/schema/qudt/Unit-unitOfSystem',),
 )
 
 _P_Unit_latex_definition = _PropertySpec(
@@ -2545,6 +2673,7 @@ _P_Unit_latex_definition = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/latexDefinition',
     kind='literal',
     label='latex definition',
+    sources=('http://qudt.org/schema/qudt/Unit-latexDefinition',),
     datatype=str,
 )
 
@@ -2553,6 +2682,7 @@ _P_Unit_latex_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/latexSymbol',
     kind='literal',
     label='latex symbol',
+    sources=('http://qudt.org/schema/qudt/Unit-latexSymbol',),
     datatype=str,
 )
 
@@ -2561,6 +2691,7 @@ _P_Unit_math_m_ldefinition = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/mathMLdefinition',
     kind='literal',
     label='mathML definition',
+    sources=('http://qudt.org/schema/qudt/Unit-mathMLdefinition',),
     datatype=str,
     max_count=1,
 )
@@ -2570,6 +2701,7 @@ _P_Unit_om_unit = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/omUnit',
     kind='object',
     label='om unit',
+    sources=('http://qudt.org/schema/qudt/Unit-omUnit',),
 )
 
 _P_Unit_prefix = _PropertySpec(
@@ -2578,6 +2710,8 @@ _P_Unit_prefix = _PropertySpec(
     kind='object',
     label='prefix',
     ranges=('Prefix',),
+    range_groups=(('http://qudt.org/schema/qudt/Prefix',),),
+    sources=('http://qudt.org/schema/qudt/Unit-prefix',),
     max_count=1,
 )
 
@@ -2587,6 +2721,8 @@ _P_Unit_qkdv_denominator = _PropertySpec(
     kind='object',
     label='denominator dimension vector',
     ranges=('QuantityKindDimensionVector',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKindDimensionVector',),),
+    sources=('http://qudt.org/schema/qudt/Unit-qkdvDenominator',),
     max_count=1,
 )
 
@@ -2596,6 +2732,8 @@ _P_Unit_qkdv_numerator = _PropertySpec(
     kind='object',
     label='numerator dimension vector',
     ranges=('QuantityKindDimensionVector',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKindDimensionVector',),),
+    sources=('http://qudt.org/schema/qudt/Unit-qkdvNumerator',),
     max_count=1,
 )
 
@@ -2605,6 +2743,8 @@ _P_Unit_scaling_of = _PropertySpec(
     kind='object',
     label='scalingOf',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/Unit-scalingOf',),
     max_count=1,
 )
 
@@ -2613,6 +2753,7 @@ _P_Unit_si_exact_match = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/siExactMatch',
     kind='object',
     label='Individual from SI Reference Point',
+    sources=('http://qudt.org/schema/qudt/Unit-siExactMatch',),
     max_count=1,
 )
 
@@ -2621,6 +2762,7 @@ _P_Unit_si_units_expression = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/siUnitsExpression',
     kind='literal',
     label='si units expression',
+    sources=('http://qudt.org/schema/qudt/Unit-siUnitsExpression',),
     datatype=str,
 )
 
@@ -2629,6 +2771,7 @@ _P_Unit_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/symbol',
     kind='object',
     label='symbol',
+    sources=('http://qudt.org/schema/qudt/Unit-symbol',),
     max_count=1,
 )
 
@@ -2637,6 +2780,7 @@ _P_Unit_ucum_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/ucumCode',
     kind='literal',
     label='ucum code',
+    sources=('http://qudt.org/schema/qudt/Unit-ucumCode',),
     datatype=str,
     max_count=1,
 )
@@ -2646,6 +2790,7 @@ _P_Unit_udunits_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/udunitsCode',
     kind='literal',
     label='udunits code',
+    sources=('http://qudt.org/schema/qudt/Unit-udunitsCode',),
     datatype=str,
 )
 
@@ -2654,7 +2799,17 @@ _P_Unit_unece_common_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/uneceCommonCode',
     kind='literal',
     label='unece common code',
+    sources=('http://qudt.org/schema/qudt/Unit-uneceCommonCode',),
     datatype=str,
+)
+
+_P_Unit_unit_for = _PropertySpec(
+    name='unit_for',
+    predicate='http://qudt.org/schema/qudt/unitFor',
+    kind='object',
+    label='unit for',
+    sources=('http://qudt.org/schema/qudt/unitFor',),
+    inverse='has_unit',
 )
 
 _P_Unit_unit_for_quantity_kind = _PropertySpec(
@@ -2663,19 +2818,13 @@ _P_Unit_unit_for_quantity_kind = _PropertySpec(
     kind='object',
     label='unit for quantity kind',
     ranges=('QuantityKind',),
-)
-
-_P_Unit_is_unit_of_system = _PropertySpec(
-    name='is_unit_of_system',
-    predicate='http://qudt.org/schema/qudt/isUnitOfSystem',
-    kind='object',
-    label='is unit of system',
-    ranges=('SystemOfUnits',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/Unit-unitForQuantityKind',),
 )
 
 class Unit(Concept_2, Verifiable):
     """Unit
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Unit
     """
 
@@ -2687,11 +2836,8 @@ class Unit(Concept_2, Verifiable):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable'),
         ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Unit_unit_for, _P_Unit_alt_symbol, _P_Unit_applicable_system, _P_Unit_categorized_by_quantity_kind, _P_Unit_conversion_multiplier, _P_Unit_conversion_multiplier_sn, _P_Unit_conversion_offset, _P_Unit_conversion_offset_sn, _P_Unit_defined_unit_of_system, _P_Unit_derived_coherent_unit_of_system, _P_Unit_derived_unit_of_system, _P_Unit_eclass_code, _P_Unit_expression, _P_Unit_factor_unit_scalar, _P_Unit_has_dimension_vector, _P_Unit_has_factor_unit, _P_Unit_has_quantity_kind, _P_Unit_has_reciprocal_unit, _P_Unit_iec61360_code, _P_Unit_latex_definition, _P_Unit_latex_symbol, _P_Unit_math_m_ldefinition, _P_Unit_om_unit, _P_Unit_prefix, _P_Unit_qkdv_denominator, _P_Unit_qkdv_numerator, _P_Unit_scaling_of, _P_Unit_si_exact_match, _P_Unit_si_units_expression, _P_Unit_symbol, _P_Unit_ucum_code, _P_Unit_udunits_code, _P_Unit_unece_common_code, _P_Unit_unit_for_quantity_kind, _P_Unit_is_unit_of_system,),
+        properties=(_P_Unit_alt_symbol, _P_Unit_applicable_system, _P_Unit_categorized_by_quantity_kind, _P_Unit_conversion_multiplier, _P_Unit_conversion_multiplier_sn, _P_Unit_conversion_offset, _P_Unit_conversion_offset_sn, _P_Unit_defined_unit_of_system, _P_Unit_derived_coherent_unit_of_system, _P_Unit_derived_unit_of_system, _P_Unit_eclass_code, _P_Unit_expression, _P_Unit_factor_unit_scalar, _P_Unit_has_dimension_vector, _P_Unit_has_factor_unit, _P_Unit_has_quantity_kind, _P_Unit_has_reciprocal_unit, _P_Unit_iec61360_code, _P_Unit_is_unit_of_system, _P_Unit_latex_definition, _P_Unit_latex_symbol, _P_Unit_math_m_ldefinition, _P_Unit_om_unit, _P_Unit_prefix, _P_Unit_qkdv_denominator, _P_Unit_qkdv_numerator, _P_Unit_scaling_of, _P_Unit_si_exact_match, _P_Unit_si_units_expression, _P_Unit_symbol, _P_Unit_ucum_code, _P_Unit_udunits_code, _P_Unit_unece_common_code, _P_Unit_unit_for, _P_Unit_unit_for_quantity_kind,),
     )
-
-    unit_for: _Rel[_EntityBase] = _Rel(_P_Unit_unit_for)
-    """unit for (http://qudt.org/schema/qudt/unitFor)"""
 
     alt_symbol: _Rel[_EntityBase] = _Rel(_P_Unit_alt_symbol)
     """alt symbol (http://qudt.org/schema/qudt/altSymbol)"""
@@ -2747,6 +2893,9 @@ class Unit(Concept_2, Verifiable):
     iec61360_code: _Lit[str] = _Lit(_P_Unit_iec61360_code)
     """IEC 61360 code (http://qudt.org/schema/qudt/iec61360Code)"""
 
+    is_unit_of_system: _Rel[SystemOfUnits] = _Rel(_P_Unit_is_unit_of_system)
+    """is unit of system (http://qudt.org/schema/qudt/isUnitOfSystem)"""
+
     latex_definition: _Lit[str] = _Lit(_P_Unit_latex_definition)
     """latex definition (http://qudt.org/schema/qudt/latexDefinition)"""
 
@@ -2789,11 +2938,11 @@ class Unit(Concept_2, Verifiable):
     unece_common_code: _Lit[str] = _Lit(_P_Unit_unece_common_code)
     """unece common code (http://qudt.org/schema/qudt/uneceCommonCode)"""
 
+    unit_for: _Rel[_EntityBase] = _Rel(_P_Unit_unit_for)
+    """unit for (http://qudt.org/schema/qudt/unitFor)"""
+
     unit_for_quantity_kind: _Rel[QuantityKind] = _Rel(_P_Unit_unit_for_quantity_kind)
     """unit for quantity kind (http://qudt.org/schema/qudt/unitForQuantityKind)"""
-
-    is_unit_of_system: _Rel[SystemOfUnits] = _Rel(_P_Unit_is_unit_of_system)
-    """is unit of system (http://qudt.org/schema/qudt/isUnitOfSystem)"""
 
     def __init__(
         self,
@@ -2801,7 +2950,7 @@ class Unit(Concept_2, Verifiable):
         *,
         has_dimension_vector: QuantityKindDimensionVector | None,
         has_quantity_kind: _Iterable[QuantityKind | _TermValue],
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alt_symbol: _Iterable[_EntityBase] = (),
         applicable_system: _Iterable[SystemOfUnits] = (),
@@ -2866,7 +3015,7 @@ class Unit(Concept_2, Verifiable):
             **_provided(
                 has_dimension_vector=has_dimension_vector,
                 has_quantity_kind=has_quantity_kind,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alt_symbol=alt_symbol,
                 applicable_system=applicable_system,
@@ -2921,7 +3070,7 @@ class Unit(Concept_2, Verifiable):
 
 class DimensionlessUnit(Unit):
     """Dimensionless Unit
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DimensionlessUnit
     """
 
@@ -2937,7 +3086,7 @@ class DimensionlessUnit(Unit):
 
 class AngleUnit(DimensionlessUnit):
     """Angle unit
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/AngleUnit
     """
 
@@ -2953,7 +3102,7 @@ class AngleUnit(DimensionlessUnit):
 
 class Electrode(Equipment):
     """A component where electrochemical reactions occur in electrified processes.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Electrode
     """
 
@@ -2969,7 +3118,7 @@ class Electrode(Equipment):
 
 class Anode(Electrode):
     """An electrode where oxidation occurs, often a sacrificial component in electrocoagulation.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Anode
     """
 
@@ -2983,28 +3132,15 @@ class Anode(Electrode):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Electrode'),
     )
 
-_P_Array_is_heterogeneous = _PropertySpec(
-    name='is_heterogeneous',
-    predicate='http://qudt.org/schema/qudt/isHeterogeneous',
-    kind='literal',
-    label='is heterogeneous',
-    datatype=bool,
-    max_count=1,
-)
-
-_P_Array_value = _PropertySpec(
-    name='value',
-    predicate='http://qudt.org/schema/qudt/value',
-    kind='object',
-    label='value',
-)
-
 _P_Array_datatype = _PropertySpec(
     name='datatype',
     predicate='http://qudt.org/schema/qudt/datatype',
     kind='object',
     label='datatype',
     ranges=('Datatype',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',),),
+    sources=('http://qudt.org/schema/qudt/DatatypePropertyShape',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -3014,6 +3150,7 @@ _P_Array_dimensionality = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/dimensionality',
     kind='literal',
     label='dimensionality',
+    sources=('http://qudt.org/schema/qudt/DimensionalityPropertyShape',),
     datatype=int,
     max_count=1,
 )
@@ -3023,11 +3160,30 @@ _P_Array_dimensions = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/dimensions',
     kind='object',
     label='dimensions',
+    sources=('http://qudt.org/schema/qudt/DimensionsPropertyShape',),
+)
+
+_P_Array_is_heterogeneous = _PropertySpec(
+    name='is_heterogeneous',
+    predicate='http://qudt.org/schema/qudt/isHeterogeneous',
+    kind='literal',
+    label='is heterogeneous',
+    sources=('http://qudt.org/schema/qudt/Array-isHeterogeneous',),
+    datatype=bool,
+    max_count=1,
+)
+
+_P_Array_value = _PropertySpec(
+    name='value',
+    predicate='http://qudt.org/schema/qudt/value',
+    kind='object',
+    label='value',
+    sources=('http://qudt.org/schema/qudt/Array-value',),
 )
 
 class Array(StructuredDatatype):
     """Array
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Array
     """
 
@@ -3039,17 +3195,11 @@ class Array(StructuredDatatype):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/StructuredDatatype',),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Array_is_heterogeneous, _P_Array_value, _P_Array_datatype, _P_Array_dimensionality, _P_Array_dimensions,),
+        properties=(_P_Array_datatype, _P_Array_dimensionality, _P_Array_dimensions, _P_Array_is_heterogeneous, _P_Array_value,),
         cp_constraints=(
             _CPConstraint(operator='opaque'),
         ),
     )
-
-    is_heterogeneous: _Lit[bool] = _Lit(_P_Array_is_heterogeneous)
-    """is heterogeneous (http://qudt.org/schema/qudt/isHeterogeneous)"""
-
-    value: _Rel[_EntityBase] = _Rel(_P_Array_value)
-    """value (http://qudt.org/schema/qudt/value)"""
 
     datatype: _RelOne[Datatype] = _RelOne(_P_Array_datatype)
     """datatype (http://qudt.org/schema/qudt/datatype)"""
@@ -3060,12 +3210,18 @@ class Array(StructuredDatatype):
     dimensions: _Rel[_EntityBase] = _Rel(_P_Array_dimensions)
     """dimensions (http://qudt.org/schema/qudt/dimensions)"""
 
+    is_heterogeneous: _Lit[bool] = _Lit(_P_Array_is_heterogeneous)
+    """is heterogeneous (http://qudt.org/schema/qudt/isHeterogeneous)"""
+
+    value: _Rel[_EntityBase] = _Rel(_P_Array_value)
+    """value (http://qudt.org/schema/qudt/value)"""
+
     def __init__(
         self,
         name: str | None = None,
         *,
         datatype: Datatype | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -3113,7 +3269,7 @@ class Array(StructuredDatatype):
             model=model,
             **_provided(
                 datatype=datatype,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -3155,12 +3311,13 @@ _P_DataItem_value = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/value',
     kind='object',
     label='value',
+    sources=('http://qudt.org/schema/qudt/DataItem-value',),
     max_count=1,
 )
 
 class DataItem(Concept_2):
     """Data Item
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DataItem
     """
 
@@ -3182,7 +3339,7 @@ class DataItem(Concept_2):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -3208,7 +3365,7 @@ class DataItem(Concept_2):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -3230,16 +3387,10 @@ _P_List_datatype = _PropertySpec(
     kind='object',
     label='datatype',
     ranges=('Datatype',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',),),
+    sources=('http://qudt.org/schema/qudt/DatatypePropertyShape',),
+    min_count=1,
     required=True,
-    max_count=1,
-)
-
-_P_List_quantity_ = _PropertySpec(
-    name='quantity_',
-    predicate='http://qudt.org/schema/qudt/quantity',
-    kind='object',
-    label='quantity',
-    ranges=('Quantity',),
     max_count=1,
 )
 
@@ -3250,13 +3401,26 @@ _P_List_has_unit = _PropertySpec(
     label='has unit',
     definition='A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/MaybeUnitPropertyShape',),
     max_count=1,
     inverse='unit_for',
 )
 
+_P_List_quantity_ = _PropertySpec(
+    name='quantity_',
+    predicate='http://qudt.org/schema/qudt/quantity',
+    kind='object',
+    label='quantity',
+    ranges=('Quantity',),
+    range_groups=(('http://qudt.org/schema/qudt/Quantity',),),
+    sources=('http://qudt.org/schema/qudt/MaybeQuantityPropertyShape',),
+    max_count=1,
+)
+
 class List(DataItem):
     """List
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/List
     """
 
@@ -3268,24 +3432,24 @@ class List(DataItem):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/DataItem',),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_List_datatype, _P_List_quantity_, _P_List_has_unit,),
+        properties=(_P_List_datatype, _P_List_has_unit, _P_List_quantity_,),
     )
 
     datatype: _RelOne[Datatype] = _RelOne(_P_List_datatype)
     """datatype (http://qudt.org/schema/qudt/datatype)"""
 
-    quantity_: _RelOne[Quantity] = _RelOne(_P_List_quantity_)
-    """quantity (http://qudt.org/schema/qudt/quantity)"""
-
     has_unit: _RelOne[Unit | _TermValue] = _RelOne(_P_List_has_unit)
     """A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`. (http://qudt.org/schema/qudt/hasUnit)"""
+
+    quantity_: _RelOne[Quantity] = _RelOne(_P_List_quantity_)
+    """quantity (http://qudt.org/schema/qudt/quantity)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
         datatype: Datatype | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -3314,7 +3478,7 @@ class List(DataItem):
             model=model,
             **_provided(
                 datatype=datatype,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -3334,7 +3498,7 @@ class List(DataItem):
 
 class Array2DvalueList(List):
     """2D Array Value List
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Array2DvalueList
     """
 
@@ -3350,7 +3514,7 @@ class Array2DvalueList(List):
 
 class ArrayDataOrder(EnumeratedValue):
     """Array data order
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ArrayDataOrder
     """
 
@@ -3370,6 +3534,8 @@ _P_CompositeDatatype_alignment = _PropertySpec(
     kind='object',
     label='alignment',
     ranges=('AlignmentType',),
+    range_groups=(('http://qudt.org/schema/qudt/AlignmentType',),),
+    sources=('http://qudt.org/schema/qudt/CompositeDatatype-alignment',),
 )
 
 _P_CompositeDatatype_padding = _PropertySpec(
@@ -3378,12 +3544,14 @@ _P_CompositeDatatype_padding = _PropertySpec(
     kind='object',
     label='padding',
     ranges=('PaddingType',),
+    range_groups=(('http://qudt.org/schema/qudt/PaddingType',),),
+    sources=('http://qudt.org/schema/qudt/CompositeDatatype-padding',),
     max_count=1,
 )
 
 class CompositeDatatype(StructuredDatatype):
     """Composite Data Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CompositeDatatype
     """
 
@@ -3408,7 +3576,7 @@ class CompositeDatatype(StructuredDatatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alignment: _Iterable[AlignmentType] = (),
         ansi_sql_name: str | None = None,
@@ -3453,7 +3621,7 @@ class CompositeDatatype(StructuredDatatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alignment=alignment,
                 ansi_sql_name=ansi_sql_name,
@@ -3490,7 +3658,7 @@ class CompositeDatatype(StructuredDatatype):
 
 class ArrayType(CompositeDatatype):
     """Array Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ArrayType
     """
 
@@ -3506,7 +3674,7 @@ class ArrayType(CompositeDatatype):
 
 class AspectClass(_EntityBase):
     """Aspect Class
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/AspectClass
     """
 
@@ -3522,7 +3690,7 @@ class AspectClass(_EntityBase):
 
 class Dimension(_EntityBase):
     """Domain
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/vaem#Dimension
     """
 
@@ -3538,7 +3706,7 @@ class Dimension(_EntityBase):
 
 class Aspect_2(Dimension):
     """Aspect Dimension
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/vaem#Aspect
     """
 
@@ -3554,7 +3722,7 @@ class Aspect_2(Dimension):
 
 class AssociativeArray(Array):
     """Associative Array
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/AssociativeArray
     """
 
@@ -3573,12 +3741,13 @@ _P_ModalCue_duration = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/duration',
     kind='object',
     label='duration',
+    sources=('http://qudt.org/schema/qudt/ModalCue-duration',),
     max_count=1,
 )
 
 class ModalCue(EnumeratedValue):
     """Modal Cue
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ModalCue
     """
 
@@ -3641,6 +3810,8 @@ _P_AuralCue_sound = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/sound',
     kind='literal',
     label='sound',
+    sources=('http://qudt.org/schema/qudt/AuralCue-sound',),
+    min_count=1,
     datatype=str,
     required=True,
     max_count=1,
@@ -3648,7 +3819,7 @@ _P_AuralCue_sound = _PropertySpec(
 
 class AuralCue(ModalCue):
     """Aural Cue
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/AuralCue
     """
 
@@ -3710,7 +3881,7 @@ class AuralCue(ModalCue):
 
 class AxialOrientationType(EnumeratedValue):
     """Axial Orientation Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/AxialOrientationType
     """
 
@@ -3726,7 +3897,7 @@ class AxialOrientationType(EnumeratedValue):
 
 class ExternalReference(Concept):
     """`ExternalReference` is an abstract class that represents application programming interface or protocol parameter values necessary to associate a `Property` with information external to the model, such as BACnet objects or telemetry values.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ExternalReference
     """
 
@@ -3741,62 +3912,13 @@ class ExternalReference(Concept):
         abstract=True,
     )
 
-_P_BACnetExternalReference_object_identifier = _PropertySpec(
-    name='object_identifier',
-    predicate='http://data.ashrae.org/bacnet/2020#object-identifier',
-    kind='literal',
-    label='Object identifier',
-    definition='The Object_Identifier property of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1.',
-    datatype=str,
-    max_count=1,
-)
-
 _P_BACnetExternalReference_device_identifier = _PropertySpec(
     name='device_identifier',
     predicate='http://data.ashrae.org/bacnet/2020#device-identifier',
     kind='literal',
     label='Device identifier',
     definition='The Object_Identifier property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.1.',
-    datatype=str,
-    max_count=1,
-)
-
-_P_BACnetExternalReference_property_identifier = _PropertySpec(
-    name='property_identifier',
-    predicate='http://data.ashrae.org/bacnet/2020#property-identifier',
-    kind='literal',
-    label='Property identifier',
-    definition='The Object_Identifier `Property` of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1.',
-    datatype=str,
-    max_count=1,
-)
-
-_P_BACnetExternalReference_property_array_index = _PropertySpec(
-    name='property_array_index',
-    predicate='http://data.ashrae.org/bacnet/2020#property-array-index',
-    kind='literal',
-    label='Property array index',
-    definition='If the property identified is of datatype array, this optional property of type Unsigned shall indicate the array index of\nthe element of the `Property` referenced by the ReadProperty service or the Read Access Specification of the ReadPropertyMultiple service. If the bacnet:property-array-index is omitted, this shall mean that the entire\narray shall be referenced.  See ASHRAE 135-2024 Clause 15.5.1.1.3 and Clause 15.7.1.1.1.',
-    datatype=int,
-    max_count=1,
-)
-
-_P_BACnetExternalReference_priority_for_writing = _PropertySpec(
-    name='priority_for_writing',
-    predicate='http://data.ashrae.org/bacnet/2020#priority-for-writing',
-    kind='literal',
-    label='Priority for writing',
-    definition='This parameter shall be an integer in the range 1..16, which indicates the priority assigned to the WriteProperty service. If an attempt\nis made to write to a commandable property without specifying the bacnet:priority-for-writing, a default priority of 16 (the lowest priority) shall\nbe assumed. If an attempt is made to write to a property that is not commandable with a specified priority, the priority shall be\nignored.  See ASHRAE 135-2024 Clause 15.9.1.1.5.',
-    datatype=int,
-    max_count=1,
-)
-
-_P_BACnetExternalReference_object_name = _PropertySpec(
-    name='object_name',
-    predicate='http://data.ashrae.org/bacnet/2020#object-name',
-    kind='literal',
-    label='Object name',
-    definition='The Object_Name property of the object being referenced.  For example, for the object name of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.2.',
+    sources=('b1a900c8cd314611fa217ec20',),
     datatype=str,
     max_count=1,
 )
@@ -3807,13 +3929,69 @@ _P_BACnetExternalReference_device_name = _PropertySpec(
     kind='literal',
     label='Device name',
     definition='The name of the BACnet device being referenced, more formally the Object_Name property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.2.',
+    sources=('be33b0e747a136e0fc72bb73c',),
+    datatype=str,
+    max_count=1,
+)
+
+_P_BACnetExternalReference_object_identifier = _PropertySpec(
+    name='object_identifier',
+    predicate='http://data.ashrae.org/bacnet/2020#object-identifier',
+    kind='literal',
+    label='Object identifier',
+    definition='The Object_Identifier property of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1.',
+    sources=('b07d17670e222bead75c11fc1',),
+    datatype=str,
+    max_count=1,
+)
+
+_P_BACnetExternalReference_object_name = _PropertySpec(
+    name='object_name',
+    predicate='http://data.ashrae.org/bacnet/2020#object-name',
+    kind='literal',
+    label='Object name',
+    definition='The Object_Name property of the object being referenced.  For example, for the object name of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.2.',
+    sources=('bba37523c93e38be4ede2e364',),
+    datatype=str,
+    max_count=1,
+)
+
+_P_BACnetExternalReference_priority_for_writing = _PropertySpec(
+    name='priority_for_writing',
+    predicate='http://data.ashrae.org/bacnet/2020#priority-for-writing',
+    kind='literal',
+    label='Priority for writing',
+    definition='This parameter shall be an integer in the range 1..16, which indicates the priority assigned to the WriteProperty service. If an attempt\nis made to write to a commandable property without specifying the bacnet:priority-for-writing, a default priority of 16 (the lowest priority) shall\nbe assumed. If an attempt is made to write to a property that is not commandable with a specified priority, the priority shall be\nignored.  See ASHRAE 135-2024 Clause 15.9.1.1.5.',
+    sources=('bb1db1615b4c880bcd2cbc8c9',),
+    datatype=int,
+    max_count=1,
+)
+
+_P_BACnetExternalReference_property_array_index = _PropertySpec(
+    name='property_array_index',
+    predicate='http://data.ashrae.org/bacnet/2020#property-array-index',
+    kind='literal',
+    label='Property array index',
+    definition='If the property identified is of datatype array, this optional property of type Unsigned shall indicate the array index of\nthe element of the `Property` referenced by the ReadProperty service or the Read Access Specification of the ReadPropertyMultiple service. If the bacnet:property-array-index is omitted, this shall mean that the entire\narray shall be referenced.  See ASHRAE 135-2024 Clause 15.5.1.1.3 and Clause 15.7.1.1.1.',
+    sources=('b6f23479914a488e0faf05368',),
+    datatype=int,
+    max_count=1,
+)
+
+_P_BACnetExternalReference_property_identifier = _PropertySpec(
+    name='property_identifier',
+    predicate='http://data.ashrae.org/bacnet/2020#property-identifier',
+    kind='literal',
+    label='Property identifier',
+    definition='The Object_Identifier `Property` of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1.',
+    sources=('b51af76b24f3d1335988cfaf2',),
     datatype=str,
     max_count=1,
 )
 
 class BACnetExternalReference(ExternalReference):
     """An `ExternalReference` that contains BACnet protocol parameter values necessary to associate a `Property` with a value.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#BACnetExternalReference
     """
 
@@ -3825,23 +4003,20 @@ class BACnetExternalReference(ExternalReference):
         definition='An `ExternalReference` that contains BACnet protocol parameter values necessary to associate a `Property` with a value.',
         parent_iris=('http://data.ashrae.org/standard223#ExternalReference',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ExternalReference', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_BACnetExternalReference_object_identifier, _P_BACnetExternalReference_device_identifier, _P_BACnetExternalReference_property_identifier, _P_BACnetExternalReference_property_array_index, _P_BACnetExternalReference_priority_for_writing, _P_BACnetExternalReference_object_name, _P_BACnetExternalReference_device_name,),
+        properties=(_P_BACnetExternalReference_device_identifier, _P_BACnetExternalReference_device_name, _P_BACnetExternalReference_object_identifier, _P_BACnetExternalReference_object_name, _P_BACnetExternalReference_priority_for_writing, _P_BACnetExternalReference_property_array_index, _P_BACnetExternalReference_property_identifier,),
     )
-
-    object_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_object_identifier)
-    """The Object_Identifier property of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1. (http://data.ashrae.org/bacnet/2020#object-identifier)"""
 
     device_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_device_identifier)
     """The Object_Identifier property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.1. (http://data.ashrae.org/bacnet/2020#device-identifier)"""
 
-    property_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_property_identifier)
-    """The Object_Identifier `Property` of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1. (http://data.ashrae.org/bacnet/2020#property-identifier)"""
+    device_name: _Lit[str] = _Lit(_P_BACnetExternalReference_device_name)
+    """The name of the BACnet device being referenced, more formally the Object_Name property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.2. (http://data.ashrae.org/bacnet/2020#device-name)"""
 
-    property_array_index: _Lit[int] = _Lit(_P_BACnetExternalReference_property_array_index)
-    """If the property identified is of datatype array, this optional property of type Unsigned shall indicate the array index of
-    the element of the `Property` referenced by the ReadProperty service or the Read Access Specification of the ReadPropertyMultiple service. If the bacnet:property-array-index is omitted, this shall mean that the entire
-    array shall be referenced.  See ASHRAE 135-2024 Clause 15.5.1.1.3 and Clause 15.7.1.1.1. (http://data.ashrae.org/bacnet/2020#property-array-index)
-    """
+    object_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_object_identifier)
+    """The Object_Identifier property of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1. (http://data.ashrae.org/bacnet/2020#object-identifier)"""
+
+    object_name: _Lit[str] = _Lit(_P_BACnetExternalReference_object_name)
+    """The Object_Name property of the object being referenced.  For example, for the object name of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.2. (http://data.ashrae.org/bacnet/2020#object-name)"""
 
     priority_for_writing: _Lit[int] = _Lit(_P_BACnetExternalReference_priority_for_writing)
     """This parameter shall be an integer in the range 1..16, which indicates the priority assigned to the WriteProperty service. If an attempt
@@ -3850,11 +4025,14 @@ class BACnetExternalReference(ExternalReference):
     ignored.  See ASHRAE 135-2024 Clause 15.9.1.1.5. (http://data.ashrae.org/bacnet/2020#priority-for-writing)
     """
 
-    object_name: _Lit[str] = _Lit(_P_BACnetExternalReference_object_name)
-    """The Object_Name property of the object being referenced.  For example, for the object name of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.2. (http://data.ashrae.org/bacnet/2020#object-name)"""
+    property_array_index: _Lit[int] = _Lit(_P_BACnetExternalReference_property_array_index)
+    """If the property identified is of datatype array, this optional property of type Unsigned shall indicate the array index of
+    the element of the `Property` referenced by the ReadProperty service or the Read Access Specification of the ReadPropertyMultiple service. If the bacnet:property-array-index is omitted, this shall mean that the entire
+    array shall be referenced.  See ASHRAE 135-2024 Clause 15.5.1.1.3 and Clause 15.7.1.1.1. (http://data.ashrae.org/bacnet/2020#property-array-index)
+    """
 
-    device_name: _Lit[str] = _Lit(_P_BACnetExternalReference_device_name)
-    """The name of the BACnet device being referenced, more formally the Object_Name property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.2. (http://data.ashrae.org/bacnet/2020#device-name)"""
+    property_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_property_identifier)
+    """The Object_Identifier `Property` of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1. (http://data.ashrae.org/bacnet/2020#property-identifier)"""
 
     def __init__(
         self,
@@ -3896,7 +4074,7 @@ class BACnetExternalReference(ExternalReference):
 
 class Graph(DataItem):
     """Graph Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Graph
     """
 
@@ -3912,7 +4090,7 @@ class Graph(DataItem):
 
 class Tree(Graph):
     """Tree Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Tree
     """
 
@@ -3931,13 +4109,14 @@ _P_BalancedTree_max_depth = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/maxDepth',
     kind='literal',
     label='max depth',
+    sources=('http://qudt.org/schema/qudt/BalancedTree-maxDepth',),
     datatype=int,
     max_count=1,
 )
 
 class BalancedTree(Tree):
     """Balanced Tree Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/BalancedTree
     """
 
@@ -3959,7 +4138,7 @@ class BalancedTree(Tree):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -3986,7 +4165,7 @@ class BalancedTree(Tree):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -4005,7 +4184,7 @@ class BalancedTree(Tree):
 
 class BallValve(Valve_2):
     """A valve which operates using a spherical ball with a hole (also known as a bore) through the middle.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#BallValve
     """
 
@@ -4025,6 +4204,9 @@ _P_BaseDimensionMagnitude_has_base_quantity_kind = _PropertySpec(
     kind='object',
     label='has base quantity kind',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/BaseDimensionMagnitude-hasBaseQuantityKind',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -4034,6 +4216,8 @@ _P_BaseDimensionMagnitude_vector_magnitude = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/vectorMagnitude',
     kind='literal',
     label='vector magnitude',
+    sources=('http://qudt.org/schema/qudt/BaseDimensionMagnitude-vectorMagnitude',),
+    min_count=1,
     datatype=float,
     required=True,
     max_count=1,
@@ -4041,7 +4225,7 @@ _P_BaseDimensionMagnitude_vector_magnitude = _PropertySpec(
 
 class BaseDimensionMagnitude(Concept_2):
     """Base Dimension Magnitude
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/BaseDimensionMagnitude
     """
 
@@ -4067,7 +4251,7 @@ class BaseDimensionMagnitude(Concept_2):
         name: str | None = None,
         *,
         has_base_quantity_kind: QuantityKind | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         vector_magnitude: float | None,
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
@@ -4094,7 +4278,7 @@ class BaseDimensionMagnitude(Concept_2):
             model=model,
             **_provided(
                 has_base_quantity_kind=has_base_quantity_kind,
-                type_=type_,
+                type__2=type__2,
                 vector_magnitude=vector_magnitude,
                 abbreviation=abbreviation,
                 code=code,
@@ -4112,7 +4296,7 @@ class BaseDimensionMagnitude(Concept_2):
 
 class Bathtub(Equipment):
     """A piece of `Equipment` for bathing that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Bathtub
     """
 
@@ -4132,7 +4316,7 @@ class Bathtub(Equipment):
 
 class Battery_2(Equipment):
     """A piece of `Equipment` that stores a defined amount of chemical energy that can be converted to electrical energy via a chemical process. This process, typically referred to as discharging, produces a specific electrical voltage and current.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Battery
     """
 
@@ -4154,7 +4338,7 @@ class Battery_2(Equipment):
 
 class Battery(Battery_2):
     """A device that stores energy for later use
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Battery
     """
 
@@ -4170,7 +4354,7 @@ class Battery(Battery_2):
 
 class DewateringUnit(UnitProcess):
     """A unit used to remove water from solid material
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#DewateringUnit
     """
 
@@ -4187,7 +4371,7 @@ class DewateringUnit(UnitProcess):
 
 class BeltFilterPress(DewateringUnit):
     """A dewatering unit that uses a belt system to separate solids from liquids
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#BeltFilterPress
     """
 
@@ -4212,7 +4396,7 @@ class BeltFilterPress(DewateringUnit):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -4256,7 +4440,7 @@ class BeltFilterPress(DewateringUnit):
 
 class Thickener(UnitProcess):
     """A device used to increase the solids concentration of a slurry
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Thickener
     """
 
@@ -4273,7 +4457,7 @@ class Thickener(UnitProcess):
 
 class BeltThickener(Thickener):
     """A thickener that uses a belt system to separate solids from liquids
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#BeltThickener
     """
 
@@ -4298,7 +4482,7 @@ class BeltThickener(Thickener):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -4340,37 +4524,6 @@ class BeltThickener(Thickener):
             ),
         )
 
-_P_ConnectionPoint_has_electrical_phase = _PropertySpec(
-    name='has_electrical_phase',
-    predicate='http://data.ashrae.org/standard223#hasElectricalPhase',
-    kind='enum',
-    label='has electrical phase',
-    definition='A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`.',
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-ElectricalPhaseIdentifier',),
-    max_count=1,
-)
-
-_P_ConnectionPoint_paired_with = _PropertySpec(
-    name='paired_with',
-    predicate='http://data.ashrae.org/standard223#pairedConnectionPoint',
-    kind='object',
-    label='paired connection point',
-    definition='A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`.',
-    ranges=('ConnectionPoint',),
-    max_count=1,
-)
-
-_P_ConnectionPoint_maps_to = _PropertySpec(
-    name='maps_to',
-    predicate='http://data.ashrae.org/standard223#mapsTo',
-    kind='object',
-    label='maps to',
-    definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
-    ranges=('ConnectionPoint',),
-    max_count=1,
-    deferred=True,
-)
-
 _P_ConnectionPoint_connection = _PropertySpec(
     name='connection',
     predicate='http://data.ashrae.org/standard223#connectsThrough',
@@ -4378,30 +4531,21 @@ _P_ConnectionPoint_connection = _PropertySpec(
     label='connects through',
     definition='A `Relation` that associates a `ConnectionPoint` with a `Connection`, without regard to the direction of flow.',
     ranges=('Connection',),
+    range_groups=(('http://data.ashrae.org/standard223#Connection',),),
+    sources=('b45e5b28f4870913fb56aa255', 'bf34e91b5b4ffadb3428bcf8e'),
     max_count=1,
     inverse='connects_at',
 )
 
-_P_ConnectionPoint_owner = _PropertySpec(
-    name='owner',
-    predicate='http://data.ashrae.org/standard223#isConnectionPointOf',
-    kind='object',
-    label='is connection point of',
-    definition='One of two `Relation`s that associates a `ConnectionPoint` with a `Connectable`. It is the inverse of the relation `hasConnectionPoint` (see {s223:hasConnectionPoint}).',
-    ranges=('Connectable',),
-    required=True,
-    max_count=1,
-    inverse='has_connection_point',
-)
-
-_P_ConnectionPoint_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
+_P_ConnectionPoint_has_electrical_phase = _PropertySpec(
+    name='has_electrical_phase',
+    predicate='http://data.ashrae.org/standard223#hasElectricalPhase',
     kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
-    required=True,
+    label='has electrical phase',
+    definition='A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`.',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-ElectricalPhaseIdentifier',),),
+    sources=('b0c1fffe312fa41f8bd4a2137',),
+    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-ElectricalPhaseIdentifier',),
     max_count=1,
 )
 
@@ -4411,20 +4555,76 @@ _P_ConnectionPoint_has_role = _PropertySpec(
     kind='enum',
     label='has role',
     definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
+    sources=('bef0b92e208ad61a4fb3f8497',),
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
+)
+
+_P_ConnectionPoint_maps_to = _PropertySpec(
+    name='maps_to',
+    predicate='http://data.ashrae.org/standard223#mapsTo',
+    kind='object',
+    label='maps to',
+    definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
+    ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('b33487dbc91b59884232238e0', 'bb034c0077500f468d0b8a00c', 'bcd0844fd5cbcd23016dbbec4', 'be1d4db06086f9ad97cf53289'),
+    max_count=1,
+    deferred=True,
+)
+
+_P_ConnectionPoint_medium = _PropertySpec(
+    name='medium',
+    predicate='http://data.ashrae.org/standard223#hasMedium',
+    kind='enum',
+    label='has medium',
+    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
+    range_groups=(('http://data.ashrae.org/standard223#Substance-Medium',),),
+    sources=('b08ea5991a9d595339cdac23a', 'b1b444a3bb99efa738b533c51', 'b490b774633a41f304e59947b', 'b5aecdad0a8f3f7f4ac11e130', 'b9c3a652daf6472abbe15c7f2', 'bcbdbd8352d5e02d426a20e1f'),
+    min_count=1,
+    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
+    required=True,
+    max_count=1,
+)
+
+_P_ConnectionPoint_owner = _PropertySpec(
+    name='owner',
+    predicate='http://data.ashrae.org/standard223#isConnectionPointOf',
+    kind='object',
+    label='is connection point of',
+    definition='One of two `Relation`s that associates a `ConnectionPoint` with a `Connectable`. It is the inverse of the relation `hasConnectionPoint` (see {s223:hasConnectionPoint}).',
+    ranges=('Connectable',),
+    range_groups=(('http://data.ashrae.org/standard223#Connectable',),),
+    sources=('bbbc51213b878601a6b8f0562',),
+    min_count=1,
+    required=True,
+    max_count=1,
+    inverse='has_connection_point',
+)
+
+_P_ConnectionPoint_paired_with = _PropertySpec(
+    name='paired_with',
+    predicate='http://data.ashrae.org/standard223#pairedConnectionPoint',
+    kind='object',
+    label='paired connection point',
+    definition='A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`.',
+    ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('b276ff53b66e82c6d438739d4',),
+    max_count=1,
 )
 
 class ConnectionPoint(Concept):
     """A `ConnectionPoint` is an abstract modeling construct used to represent the fact that one `Connectable` can be connected to another `Connectable` using a `Connection`. It is the abstract representation of the flange, wire terminal, or other physical feature where a connection is made. `Equipment`, `DomainSpace`s and `Junction`s can have one or more `ConnectionPoint`s (see {s223:Connectable}).
-    
+
     A `ConnectionPoint` is constrained to relate to a specific medium such as air, water, or electricity which determines what can be connected to it. For example, constraining a `ConnectionPoint` to be for air means it cannot be used for an electrical connection.
-    
+
     A `ConnectionPoint` belongs to exactly one `Connectable` (see {s223:Connectable}).
-    
+
     `ConnectionPoint`s are represented graphically in this standard by a triangle with the point indicating a direction of flow, or a diamond in the case of a bidirectional flow as shown in Figure 6-1.
-    
+
     ![Graphical Representation of a ConnectionPoint](figures/Figure_5-2_Graphical_Depiciton_of_Connection_Points.svg)
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ConnectionPoint
     """
 
@@ -4437,29 +4637,29 @@ class ConnectionPoint(Concept):
         parent_iris=('http://data.ashrae.org/standard223#Concept',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         abstract=True,
-        properties=(_P_ConnectionPoint_has_electrical_phase, _P_ConnectionPoint_paired_with, _P_ConnectionPoint_maps_to, _P_ConnectionPoint_connection, _P_ConnectionPoint_owner, _P_ConnectionPoint_medium, _P_ConnectionPoint_has_role,),
+        properties=(_P_ConnectionPoint_connection, _P_ConnectionPoint_has_electrical_phase, _P_ConnectionPoint_has_role, _P_ConnectionPoint_maps_to, _P_ConnectionPoint_medium, _P_ConnectionPoint_owner, _P_ConnectionPoint_paired_with,),
     )
-
-    has_electrical_phase: _EnumOne[_EnumValue] = _EnumOne(_P_ConnectionPoint_has_electrical_phase)
-    """A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`. (http://data.ashrae.org/standard223#hasElectricalPhase)"""
-
-    paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_ConnectionPoint_paired_with)
-    """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
-
-    maps_to: _RelOne[ConnectionPoint | _DeferredEndpoint] = _RelOne(_P_ConnectionPoint_maps_to)
-    """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
     connection: _RelOne[Connection] = _RelOne(_P_ConnectionPoint_connection)
     """A `Relation` that associates a `ConnectionPoint` with a `Connection`, without regard to the direction of flow. (http://data.ashrae.org/standard223#connectsThrough)"""
 
-    owner: _RelOne[Connectable] = _RelOne(_P_ConnectionPoint_owner)
-    """One of two `Relation`s that associates a `ConnectionPoint` with a `Connectable`. It is the inverse of the relation `hasConnectionPoint` (see {s223:hasConnectionPoint}). (http://data.ashrae.org/standard223#isConnectionPointOf)"""
+    has_electrical_phase: _EnumOne[_EnumValue] = _EnumOne(_P_ConnectionPoint_has_electrical_phase)
+    """A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`. (http://data.ashrae.org/standard223#hasElectricalPhase)"""
+
+    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_ConnectionPoint_has_role)
+    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
+
+    maps_to: _RelOne[ConnectionPoint | _DeferredEndpoint] = _RelOne(_P_ConnectionPoint_maps_to)
+    """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_ConnectionPoint_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_ConnectionPoint_has_role)
-    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
+    owner: _RelOne[Connectable] = _RelOne(_P_ConnectionPoint_owner)
+    """One of two `Relation`s that associates a `ConnectionPoint` with a `Connectable`. It is the inverse of the relation `hasConnectionPoint` (see {s223:hasConnectionPoint}). (http://data.ashrae.org/standard223#isConnectionPointOf)"""
+
+    paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_ConnectionPoint_paired_with)
+    """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
 
     def __init__(
         self,
@@ -4497,30 +4697,22 @@ class ConnectionPoint(Concept):
             ),
         )
 
-_P_BidirectionalConnectionPoint_paired_with = _PropertySpec(
-    name='paired_with',
-    predicate='http://data.ashrae.org/standard223#pairedConnectionPoint',
-    kind='object',
-    label='paired connection point',
-    definition='A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`.',
-    ranges=('ConnectionPoint',),
-    max_count=1,
-)
-
 _P_BidirectionalConnectionPoint_maps_to = _PropertySpec(
     name='maps_to',
     predicate='http://data.ashrae.org/standard223#mapsTo',
     kind='object',
     label='maps to',
     definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
-    ranges=('BidirectionalConnectionPoint', 'ConnectionPoint'),
+    ranges=('BidirectionalConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#BidirectionalConnectionPoint',), ('http://data.ashrae.org/standard223#ConnectionPoint',)),
+    sources=('b2eb0e0cfa158479c1b81512a', 'b33487dbc91b59884232238e0', 'bb034c0077500f468d0b8a00c', 'bcd0844fd5cbcd23016dbbec4', 'be1d4db06086f9ad97cf53289'),
     max_count=1,
     deferred=True,
 )
 
 class BidirectionalConnectionPoint(ConnectionPoint):
     """A `BidirectionalConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow either into or out of the associated `Connectable`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#BidirectionalConnectionPoint
     """
 
@@ -4532,13 +4724,10 @@ class BidirectionalConnectionPoint(ConnectionPoint):
         definition='A `BidirectionalConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow either into or out of the associated `Connectable`.',
         parent_iris=('http://data.ashrae.org/standard223#ConnectionPoint',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ConnectionPoint', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_BidirectionalConnectionPoint_paired_with, _P_BidirectionalConnectionPoint_maps_to,),
+        properties=(_P_BidirectionalConnectionPoint_maps_to,),
     )
 
-    paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_BidirectionalConnectionPoint_paired_with)
-    """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
-
-    maps_to: _RelOne[BidirectionalConnectionPoint | ConnectionPoint | _DeferredEndpoint] = _RelOne(_P_BidirectionalConnectionPoint_maps_to)
+    maps_to: _RelOne[BidirectionalConnectionPoint | _DeferredEndpoint] = _RelOne(_P_BidirectionalConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
     def __init__(
@@ -4551,7 +4740,7 @@ class BidirectionalConnectionPoint(ConnectionPoint):
         has_electrical_phase: _EnumValue | None = None,
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
-        maps_to: BidirectionalConnectionPoint | ConnectionPoint | _DeferredEndpoint | None = None,
+        maps_to: BidirectionalConnectionPoint | _DeferredEndpoint | None = None,
         paired_with: ConnectionPoint | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -4583,6 +4772,8 @@ _P_ScalarDatatype_bit_order = _PropertySpec(
     kind='object',
     label='bit order',
     ranges=('EndianType',),
+    range_groups=(('http://qudt.org/schema/qudt/EndianType',),),
+    sources=('http://qudt.org/schema/qudt/ScalarDatatype-bitOrder',),
     max_count=1,
 )
 
@@ -4591,6 +4782,7 @@ _P_ScalarDatatype_bits = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/bits',
     kind='literal',
     label='bits',
+    sources=('http://qudt.org/schema/qudt/ScalarDatatype-bits',),
     datatype=int,
     max_count=1,
 )
@@ -4601,6 +4793,8 @@ _P_ScalarDatatype_byte_order = _PropertySpec(
     kind='object',
     label='byte order',
     ranges=('EndianType',),
+    range_groups=(('http://qudt.org/schema/qudt/EndianType',),),
+    sources=('http://qudt.org/schema/qudt/ScalarDatatype-byteOrder',),
     max_count=1,
 )
 
@@ -4609,6 +4803,7 @@ _P_ScalarDatatype_bytes = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/bytes',
     kind='literal',
     label='bytes',
+    sources=('http://qudt.org/schema/qudt/ScalarDatatype-bytes',),
     datatype=int,
     max_count=1,
 )
@@ -4619,6 +4814,8 @@ _P_ScalarDatatype_encoding = _PropertySpec(
     kind='object',
     label='encoding',
     ranges=('Encoding',),
+    range_groups=(('http://qudt.org/schema/qudt/Encoding',),),
+    sources=('http://qudt.org/schema/qudt/ScalarDatatype-encoding',),
     max_count=1,
 )
 
@@ -4627,6 +4824,7 @@ _P_ScalarDatatype_length = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/length',
     kind='literal',
     label='length',
+    sources=('http://qudt.org/schema/qudt/ScalarDatatype-length',),
     datatype=int,
     max_count=1,
 )
@@ -4636,6 +4834,7 @@ _P_ScalarDatatype_max_exclusive = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/maxExclusive',
     kind='literal',
     label='max exclusive',
+    sources=('http://qudt.org/schema/qudt/ScalarDatatype-maxExclusive',),
     datatype=str,
     max_count=1,
 )
@@ -4645,6 +4844,7 @@ _P_ScalarDatatype_max_inclusive = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/maxInclusive',
     kind='object',
     label='max inclusive',
+    sources=('http://qudt.org/schema/qudt/ScalarDatatype-maxInclusive',),
     max_count=1,
 )
 
@@ -4653,6 +4853,7 @@ _P_ScalarDatatype_min_exclusive = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/minExclusive',
     kind='object',
     label='min exclusive',
+    sources=('http://qudt.org/schema/qudt/ScalarDatatype-minExclusive',),
     max_count=1,
 )
 
@@ -4661,6 +4862,7 @@ _P_ScalarDatatype_min_inclusive = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/minInclusive',
     kind='object',
     label='min inclusive',
+    sources=('http://qudt.org/schema/qudt/ScalarDatatype-minInclusive',),
     max_count=1,
 )
 
@@ -4669,12 +4871,14 @@ _P_ScalarDatatype_rdfs_datatype = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/rdfsDatatype',
     kind='object',
     label='rdfs datatype',
+    range_groups=(('http://www.w3.org/2000/01/rdf-schema#Datatype',),),
+    sources=('http://qudt.org/schema/qudt/ScalarDatatype-rdfsDatatype',),
     max_count=1,
 )
 
 class ScalarDatatype(Datatype):
     """Scalar Datatype
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ScalarDatatype
     """
 
@@ -4726,7 +4930,7 @@ class ScalarDatatype(Datatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -4779,7 +4983,7 @@ class ScalarDatatype(Datatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -4827,6 +5031,7 @@ _P_NumericType_accuracy = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/accuracy',
     kind='literal',
     label='accuracy',
+    sources=('http://qudt.org/schema/qudt/NumericType-accuracy',),
     datatype=int,
     max_count=1,
 )
@@ -4837,12 +5042,14 @@ _P_NumericType_signedness = _PropertySpec(
     kind='object',
     label='signedness',
     ranges=('SignednessType',),
+    range_groups=(('http://qudt.org/schema/qudt/SignednessType',),),
+    sources=('http://qudt.org/schema/qudt/NumericType-signedness',),
     max_count=1,
 )
 
 class NumericType(ScalarDatatype):
     """Numeric Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/NumericType
     """
 
@@ -4867,7 +5074,7 @@ class NumericType(ScalarDatatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         accuracy: int | None = None,
         ansi_sql_name: str | None = None,
@@ -4922,7 +5129,7 @@ class NumericType(ScalarDatatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 accuracy=accuracy,
                 ansi_sql_name=ansi_sql_name,
@@ -4969,7 +5176,7 @@ class NumericType(ScalarDatatype):
 
 class OrdinalType(ScalarDatatype):
     """Ordinal Data Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/OrdinalType
     """
 
@@ -4985,7 +5192,7 @@ class OrdinalType(ScalarDatatype):
 
 class IntegerDatatype(NumericType, OrdinalType):
     """Integer Datatype
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/IntegerDatatype
     """
 
@@ -5001,7 +5208,7 @@ class IntegerDatatype(NumericType, OrdinalType):
 
 class BigIntegerType(IntegerDatatype):
     """Big Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/BigIntegerType
     """
 
@@ -5020,6 +5227,7 @@ _P_Prefix_alt_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/altSymbol',
     kind='object',
     label='alt symbol',
+    sources=('http://qudt.org/schema/qudt/Prefix-altSymbol',),
 )
 
 _P_Prefix_latex_symbol = _PropertySpec(
@@ -5027,6 +5235,7 @@ _P_Prefix_latex_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/latexSymbol',
     kind='literal',
     label='latex symbol',
+    sources=('http://qudt.org/schema/qudt/Prefix-latexSymbol',),
     datatype=str,
 )
 
@@ -5035,6 +5244,7 @@ _P_Prefix_prefix_multiplier = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/prefixMultiplier',
     kind='literal',
     label='prefix multiplier',
+    sources=('http://qudt.org/schema/qudt/Prefix-prefixMultiplier',),
     datatype=float,
     max_count=1,
 )
@@ -5044,6 +5254,7 @@ _P_Prefix_prefix_multiplier_sn = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/prefixMultiplierSN',
     kind='literal',
     label='prefix multiplier scientific',
+    sources=('http://qudt.org/schema/qudt/Prefix-prefixMultiplierSN',),
     datatype=float,
     max_count=1,
 )
@@ -5053,6 +5264,7 @@ _P_Prefix_si_exact_match = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/siExactMatch',
     kind='object',
     label='Individual from SI Reference Point',
+    sources=('http://qudt.org/schema/qudt/Prefix-siExactMatch',),
     max_count=1,
 )
 
@@ -5061,6 +5273,7 @@ _P_Prefix_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/symbol',
     kind='object',
     label='symbol',
+    sources=('http://qudt.org/schema/qudt/Prefix-symbol',),
     max_count=1,
 )
 
@@ -5069,12 +5282,13 @@ _P_Prefix_ucum_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/ucumCode',
     kind='literal',
     label='ucum code',
+    sources=('http://qudt.org/schema/qudt/Prefix-ucumCode',),
     datatype=str,
 )
 
 class Prefix(Concept_2, Verifiable):
     """Prefix
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Prefix
     """
 
@@ -5114,7 +5328,7 @@ class Prefix(Concept_2, Verifiable):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alt_symbol: _Iterable[_EntityBase] = (),
         code: _Iterable[_EntityBase] = (),
@@ -5151,7 +5365,7 @@ class Prefix(Concept_2, Verifiable):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alt_symbol=alt_symbol,
                 code=code,
@@ -5180,7 +5394,7 @@ class Prefix(Concept_2, Verifiable):
 
 class BinaryPrefix(Prefix):
     """Binary Prefix
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/BinaryPrefix
     """
 
@@ -5196,7 +5410,7 @@ class BinaryPrefix(Prefix):
 
 class BinaryTree(Tree):
     """Binary Tree Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/BinaryTree
     """
 
@@ -5213,7 +5427,7 @@ class BinaryTree(Tree):
 class Filter_2(Equipment):
     """A piece of `Equipment` that removes contaminants from gases or liquids. See {s223:Substance-Medium} for
     more details on validating compatible mediums upstream and downstream of a `Filter`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Filter
     """
 
@@ -5233,7 +5447,7 @@ class Filter_2(Equipment):
 
 class Filter(Filter_2, UnitProcess):
     """An equipment used to remove impurities from liquids or gases
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Filter
     """
 
@@ -5258,7 +5472,7 @@ class Filter(Filter_2, UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -5302,7 +5516,7 @@ class Filter(Filter_2, UnitProcess):
 
 class BiologicalAeratedFilter(Filter, Reactor):
     """A filter that uses biological processes to remove contaminants.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#BiologicalAeratedFilter
     """
 
@@ -5322,6 +5536,7 @@ _P_Encoding_bits = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/bits',
     kind='literal',
     label='bits',
+    sources=('http://qudt.org/schema/qudt/Encoding-bits',),
     datatype=int,
     max_count=1,
 )
@@ -5331,13 +5546,14 @@ _P_Encoding_bytes = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/bytes',
     kind='literal',
     label='bytes',
+    sources=('http://qudt.org/schema/qudt/Encoding-bytes',),
     datatype=int,
     max_count=1,
 )
 
 class Encoding(_EntityBase):
     """Encoding
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Encoding
     """
 
@@ -5384,7 +5600,7 @@ class Encoding(_EntityBase):
 
 class BitEncodingType(Encoding):
     """Bit Encoding
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/BitEncodingType
     """
 
@@ -5400,7 +5616,7 @@ class BitEncodingType(Encoding):
 
 class Boiler_2(Equipment):
     """A piece of `Equipment` that uses fuel or electricity to heat water or other fluids and supply steam or hot water for heating, humidification, or other applications.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Boiler
     """
 
@@ -5420,7 +5636,7 @@ class Boiler_2(Equipment):
 
 class Boiler(Boiler_2, UnitProcess):
     """A device for heating water
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Boiler
     """
 
@@ -5445,7 +5661,7 @@ class Boiler(Boiler_2, UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -5489,7 +5705,7 @@ class Boiler(Boiler_2, UnitProcess):
 
 class BooleanEncodingType(Encoding):
     """Boolean Encoding Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/BooleanEncodingType
     """
 
@@ -5508,13 +5724,15 @@ _P_BooleanType_encoding = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/encoding',
     kind='object',
     label='encoding',
-    ranges=('BooleanEncodingType', 'Encoding'),
+    ranges=('BooleanEncodingType',),
+    range_groups=(('http://qudt.org/schema/qudt/BooleanEncodingType',), ('http://qudt.org/schema/qudt/Encoding',)),
+    sources=('http://qudt.org/schema/qudt/BooleanType-encoding', 'http://qudt.org/schema/qudt/ScalarDatatype-encoding'),
     max_count=1,
 )
 
 class BooleanType(OrdinalType):
     """Boolean Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/BooleanType
     """
 
@@ -5529,14 +5747,14 @@ class BooleanType(OrdinalType):
         properties=(_P_BooleanType_encoding,),
     )
 
-    encoding: _RelOne[BooleanEncodingType | Encoding] = _RelOne(_P_BooleanType_encoding)
+    encoding: _RelOne[BooleanEncodingType] = _RelOne(_P_BooleanType_encoding)
     """encoding (http://qudt.org/schema/qudt/encoding)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -5551,7 +5769,7 @@ class BooleanType(OrdinalType):
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
         description: _Iterable[_EntityBase] = (),
-        encoding: BooleanEncodingType | Encoding | None = None,
+        encoding: BooleanEncodingType | None = None,
         exact_match: _Iterable[Concept_2] = (),
         guidance: str | None = None,
         has_rule: _Iterable[Rule] = (),
@@ -5589,7 +5807,7 @@ class BooleanType(OrdinalType):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -5634,7 +5852,7 @@ class BooleanType(OrdinalType):
 
 class BooleanTypeEnumeratedValue(EnumeratedValue):
     """boolean value
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/BooleanTypeEnumeratedValue
     """
 
@@ -5650,7 +5868,7 @@ class BooleanTypeEnumeratedValue(EnumeratedValue):
 
 class ButterflyValve(Valve_2):
     """A quarter-turn rotary valve used to isolate, start, stop, or regulate the flow of fluids
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ButterflyValve
     """
 
@@ -5666,7 +5884,7 @@ class ButterflyValve(Valve_2):
 
 class ByteEncodingType(Encoding):
     """Byte Encoding
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ByteEncodingType
     """
 
@@ -5686,13 +5904,14 @@ _P_CardinalityType_literal = _PropertySpec(
     kind='literal',
     label='literal',
     definition='',
+    sources=('http://qudt.org/schema/qudt/CardinalityType-literal',),
     datatype=str,
     max_count=1,
 )
 
 class CardinalityType(EnumeratedValue):
     """Cardinality Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CardinalityType
     """
 
@@ -5755,7 +5974,9 @@ _P_Tuple_element_datatype = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/elementDatatype',
     kind='object',
     label='element datatype',
-    ranges=('Datatype', 'TupleMember'),
+    ranges=('TupleMember',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',), ('http://qudt.org/schema/qudt/TupleMember',)),
+    sources=('http://qudt.org/schema/qudt/StructuredDatatype-elementType', 'http://qudt.org/schema/qudt/Tuple-elementType'),
     max_count=1,
 )
 
@@ -5764,6 +5985,7 @@ _P_Tuple_element_type_count = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/elementTypeCount',
     kind='literal',
     label='element type count',
+    sources=('http://qudt.org/schema/qudt/Tuple-elementTypeCount',),
     datatype=int,
 )
 
@@ -5772,13 +5994,14 @@ _P_Tuple_length = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/length',
     kind='literal',
     label='length',
+    sources=('http://qudt.org/schema/qudt/Tuple-length',),
     datatype=int,
     max_count=1,
 )
 
 class Tuple(CompositeDatatype):
     """Tuple
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Tuple
     """
 
@@ -5793,7 +6016,7 @@ class Tuple(CompositeDatatype):
         properties=(_P_Tuple_element_datatype, _P_Tuple_element_type_count, _P_Tuple_length,),
     )
 
-    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_Tuple_element_datatype)
+    element_datatype: _RelOne[TupleMember] = _RelOne(_P_Tuple_element_datatype)
     """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
 
     element_type_count: _Lit[int] = _Lit(_P_Tuple_element_type_count)
@@ -5806,7 +6029,7 @@ class Tuple(CompositeDatatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alignment: _Iterable[AlignmentType] = (),
         ansi_sql_name: str | None = None,
@@ -5818,7 +6041,7 @@ class Tuple(CompositeDatatype):
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
         description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | TupleMember | None = None,
+        element_datatype: TupleMember | None = None,
         element_type_count: int | None = None,
         exact_match: _Iterable[Concept_2] = (),
         guidance: str | None = None,
@@ -5853,7 +6076,7 @@ class Tuple(CompositeDatatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alignment=alignment,
                 ansi_sql_name=ansi_sql_name,
@@ -5892,7 +6115,7 @@ class Tuple(CompositeDatatype):
 
 class Coordinates(Tuple):
     """Coordinates
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Coordinates
     """
 
@@ -5908,7 +6131,7 @@ class Coordinates(Tuple):
 
 class CartesianCoordinates(Coordinates):
     """Cartesian Coordinate Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CartesianCoordinates
     """
 
@@ -5924,7 +6147,7 @@ class CartesianCoordinates(Coordinates):
 
 class CartesianCoordinatesType(CompositeDatatype):
     """Cartesian Coordinate Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CartesianCoordinatesType
     """
 
@@ -5940,7 +6163,7 @@ class CartesianCoordinatesType(CompositeDatatype):
 
 class CartridgeFiltrationUnit(Filter):
     """A filter system using a cartridge to remove contaminants from fluids
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#CartridgeFiltrationUnit
     """
 
@@ -5956,7 +6179,7 @@ class CartridgeFiltrationUnit(Filter):
 
 class Cathode(Electrode):
     """An electrode where reduction occurs.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Cathode
     """
 
@@ -5972,7 +6195,7 @@ class Cathode(Electrode):
 
 class CentrifugalDewateringUnit(DewateringUnit):
     """A dewatering unit that uses centrifugal force to separate solids from liquids
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#CentrifugalDewateringUnit
     """
 
@@ -5997,7 +6220,7 @@ class CentrifugalDewateringUnit(DewateringUnit):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -6041,7 +6264,7 @@ class CentrifugalDewateringUnit(DewateringUnit):
 
 class CentrifugalThickener(Thickener):
     """A thickener that uses centrifugal force to separate solids from liquids
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#CentrifugalThickener
     """
 
@@ -6066,7 +6289,7 @@ class CentrifugalThickener(Thickener):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -6110,7 +6333,7 @@ class CentrifugalThickener(Thickener):
 
 class CharEncodingType(Encoding):
     """Char Encoding Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CharEncodingType
     """
 
@@ -6126,7 +6349,7 @@ class CharEncodingType(Encoding):
 
 class CharacterType(OrdinalType):
     """Character Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CharacterType
     """
 
@@ -6142,7 +6365,7 @@ class CharacterType(OrdinalType):
 
 class CheckValve(Valve_2):
     """A valve that normally allows fluid (liquid or gas) to flow through it in only one direction
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#CheckValve
     """
 
@@ -6158,7 +6381,7 @@ class CheckValve(Valve_2):
 
 class ChilledBeam(Equipment):
     """A piece of `Equipment` with a colder surface temperature where air passes through, and air movement is induced in the room to achieve cooling. Cooling medium is generally water.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ChilledBeam
     """
 
@@ -6179,21 +6402,21 @@ class ChilledBeam(Equipment):
 
 class Coil(Equipment):
     """A piece of `Equipment` consisting of a pipe or tube that is formed into a helical or serpentine shape, may or may not be finned, and is used in cooling or heating equipment.
-    
+
     A `Coil` shall conform to exactly one of the following patterns:
-    
+
     - **Pattern 1:**
       - The `Coil` has exactly two inlet connection points using the medium `Mix-Fluid`, with exactly one being `Fluid-Air`.
       - The `Coil` has exactly two outlet connection points using the medium `Mix-Fluid`, with exactly one being `Fluid-Air`.
-    
+
     - **Pattern 2:**
       - The Coil has exactly one inlet connection point using the medium `Mix-Fluid`.
       - The Coil has exactly one outlet connection point using the medium `Mix-Fluid`.
       - The Coil has one or two bidirectional connection points using the medium `Mix-Fluid` or `Medium-ThermalContact`.
-    
+
     - **Pattern 3:**
       - The Coil has exactly three bidirectional connection points using the medium `Mix-Fluid` or `Medium-ThermalContact`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Coil
     """
 
@@ -6225,7 +6448,7 @@ class Coil(Equipment):
 
 class CoolingCoil(Coil):
     """A `Coil` that is specifically used to cool air.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#CoolingCoil
     """
 
@@ -6241,7 +6464,7 @@ class CoolingCoil(Coil):
 
 class ChilledWaterCoil(CoolingCoil):
     """A cooling coil with a connected chilled water valve.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#ChilledWaterCoil
     """
 
@@ -6257,7 +6480,7 @@ class ChilledWaterCoil(CoolingCoil):
 
 class ChilledWaterValve(Valve_2):
     """A valve that controls the flow of chilled water through a chilled water coil.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#ChilledWaterValve
     """
 
@@ -6279,7 +6502,7 @@ class ChilledWaterValve(Valve_2):
 
 class Chiller(Equipment):
     """A piece of `Equipment` that removes heat from a liquid coolant via a vapor-compression, adsorption refrigeration, or absorption refrigeration cycles.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Chiller
     """
 
@@ -6299,7 +6522,7 @@ class Chiller(Equipment):
 
 class DisinfectionUnit(Reactor):
     """A unit used to eliminate or reduce harmful microorganisms
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#DisinfectionUnit
     """
 
@@ -6316,7 +6539,7 @@ class DisinfectionUnit(Reactor):
 
 class ChlorinationUnit(DisinfectionUnit):
     """A unit that uses chlorine or chlorine compounds for disinfection.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ChlorinationUnit
     """
 
@@ -6341,7 +6564,7 @@ class ChlorinationUnit(DisinfectionUnit):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -6388,6 +6611,8 @@ _P_Citation_description = _PropertySpec(
     predicate='http://purl.org/dc/terms/description',
     kind='object',
     label='description',
+    sources=('http://qudt.org/schema/qudt/Citation-description', 'http://qudt.org/schema/qudt/Concept-description'),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -6397,13 +6622,14 @@ _P_Citation_url = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/url',
     kind='literal',
     label='url',
+    sources=('http://qudt.org/schema/qudt/Citation-url',),
     datatype=str,
     max_count=1,
 )
 
 class Citation(Concept_2):
     """Citation
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Citation
     """
 
@@ -6429,7 +6655,7 @@ class Citation(Concept_2):
         name: str | None = None,
         *,
         description: _EntityBase | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -6455,7 +6681,7 @@ class Citation(Concept_2):
             model=model,
             **_provided(
                 description=description,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -6472,7 +6698,7 @@ class Citation(Concept_2):
 
 class SedimentationTank(SeparationTank):
     """A tank in which suspended solids separate from water by settling under gravity
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#SedimentationTank
     """
 
@@ -6489,7 +6715,7 @@ class SedimentationTank(SeparationTank):
 
 class Clarifier(SedimentationTank):
     """A sedimentation tank operated for its clarified overflow, which passes to the next stage of treatment
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Clarifier
     """
 
@@ -6517,6 +6743,8 @@ _P_Class_achieves_treatment_objective = _PropertySpec(
     label='achieves treatment objective',
     definition="Relates a process type to the treatment objective it achieves wherever it is performed. Used to derive an equipment's treatment objective from its process.",
     ranges=('Class',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Class',),),
+    sources=('https://watermetadata.org/ontology/watr#achievesTreatmentObjective',),
 )
 
 _P_Class_includes_process = _PropertySpec(
@@ -6526,11 +6754,13 @@ _P_Class_includes_process = _PropertySpec(
     label='includes process',
     definition='Relates a compound process to a constituent process that a system performing it is expected to carry out, typically through a member. Used to check coverage, not validity.',
     ranges=('Class',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Class',),),
+    sources=('https://watermetadata.org/ontology/watr#includesProcess',),
 )
 
 class Class(_EntityBase):
     """This is a modeling construct. All classes defined in the watr ontology are instances of `watr:Class`.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Class
     """
 
@@ -6577,7 +6807,7 @@ class Class(_EntityBase):
 
 class ClothesWasher(Equipment):
     """A piece of `Equipment` that automatically cleans a load of textiles (e.g., clothing, bedding).
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ClothesWasher
     """
 
@@ -6598,7 +6828,7 @@ class ClothesWasher(Equipment):
 
 class CoagulationBasin(Reactor):
     """A basin where coagulation occurs to destabilize particles in water
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#CoagulationBasin
     """
 
@@ -6623,7 +6853,7 @@ class CoagulationBasin(Reactor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -6665,24 +6895,6 @@ class CoagulationBasin(Reactor):
             ),
         )
 
-_P_Connection_connects_from = _PropertySpec(
-    name='connects_from',
-    predicate='http://data.ashrae.org/standard223#connectsFrom',
-    kind='object',
-    label='connects from',
-    definition='A `Relation` that associates a `Connectable` with a `Connection`, with an implied direction of flow. B `connectsFrom` A indicates a flow from A to B.',
-    ranges=('Connectable',),
-)
-
-_P_Connection_has_role = _PropertySpec(
-    name='has_role',
-    predicate='http://data.ashrae.org/standard223#hasRole',
-    kind='enum',
-    label='has role',
-    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
-)
-
 _P_Connection_cnx = _PropertySpec(
     name='cnx',
     predicate='http://data.ashrae.org/standard223#cnx',
@@ -6690,26 +6902,8 @@ _P_Connection_cnx = _PropertySpec(
     label='cnx',
     definition='A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.',
     ranges=('ConnectionPoint',),
-)
-
-_P_Connection_connects_to = _PropertySpec(
-    name='connects_to',
-    predicate='http://data.ashrae.org/standard223#connectsTo',
-    kind='object',
-    label='connects to',
-    definition='A `Relation` that associates a `Connection` with a `Connectable`, with an implied direction of flow. A `connectsTo` B indicates a flow from A to B.',
-    ranges=('Connectable',),
-)
-
-_P_Connection_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
-    required=True,
-    max_count=1,
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('b4479e0a22cb783423fa8fdf8', 'b454110a4c1b1cf380dd5154a'),
 )
 
 _P_Connection_connects_at = _PropertySpec(
@@ -6719,8 +6913,44 @@ _P_Connection_connects_at = _PropertySpec(
     label='connects at',
     definition='A `Relation` that associates a `Connection` with a specific `ConnectionPoint`.',
     ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('bcc0554fe27774b293d04f8f7',),
+    min_count=2,
     required=True,
     inverse='connection',
+)
+
+_P_Connection_connects_from = _PropertySpec(
+    name='connects_from',
+    predicate='http://data.ashrae.org/standard223#connectsFrom',
+    kind='object',
+    label='connects from',
+    definition='A `Relation` that associates a `Connectable` with a `Connection`, with an implied direction of flow. B `connectsFrom` A indicates a flow from A to B.',
+    ranges=('Connectable',),
+    range_groups=(('http://data.ashrae.org/standard223#Connectable',),),
+    sources=('b0b1e21915d1f88d732ca9ea7',),
+)
+
+_P_Connection_connects_to = _PropertySpec(
+    name='connects_to',
+    predicate='http://data.ashrae.org/standard223#connectsTo',
+    kind='object',
+    label='connects to',
+    definition='A `Relation` that associates a `Connection` with a `Connectable`, with an implied direction of flow. A `connectsTo` B indicates a flow from A to B.',
+    ranges=('Connectable',),
+    range_groups=(('http://data.ashrae.org/standard223#Connectable',),),
+    sources=('b53ad55b56d04aab26e0e0bf7',),
+)
+
+_P_Connection_has_role = _PropertySpec(
+    name='has_role',
+    predicate='http://data.ashrae.org/standard223#hasRole',
+    kind='enum',
+    label='has role',
+    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
+    sources=('b0c62568a80ac0452c05ed1db',),
+    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
 )
 
 _P_Connection_has_thermodynamic_phase = _PropertySpec(
@@ -6729,7 +6959,23 @@ _P_Connection_has_thermodynamic_phase = _PropertySpec(
     kind='enum',
     label='has thermodynamic phase',
     definition='A `Relation` that associates a Medium with its thermodynamic phases.',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-ThermodynamicPhase',),),
+    sources=('beb8f86d7a6cb7b66f442c436',),
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-ThermodynamicPhase',),
+    max_count=1,
+)
+
+_P_Connection_medium = _PropertySpec(
+    name='medium',
+    predicate='http://data.ashrae.org/standard223#hasMedium',
+    kind='enum',
+    label='has medium',
+    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
+    range_groups=(('http://data.ashrae.org/standard223#Substance-Medium',),),
+    sources=('b08ea5991a9d595339cdac23a', 'b12ca976aa7f6ff2f39104dba', 'b490b774633a41f304e59947b', 'b4dc0d1658287df40e921ad35', 'b59c7af6a2db2bd70f0dac26a', 'b5aecdad0a8f3f7f4ac11e130', 'b73706e6130865d1a05507c79', 'b779b3e6d70bca0b584bb320c', 'b9c3a652daf6472abbe15c7f2', 'ba0b040374feef1cc9f970b08', 'bb2dc6068ee4797c8be4b9372', 'be44de150b3c396415bd19166'),
+    min_count=1,
+    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
+    required=True,
     max_count=1,
 )
 
@@ -6739,16 +6985,16 @@ class Connection(Concept):
     to either `Equipment` (see {s223:Equipment}), `DomainSpace` (see {s223:DomainSpace}), or `Junction` (see {s223:Junction}). See Figure 6-2. If the direction
     of flow is constrained, that constraint is indicated by using one or more `InletConnectionPoint`s (see {s223:InletConnectionPoint}) to represent the
     inflow points and `OutletConnectionPoint`s (see {s223:OutletConnectionPoint}) to represent the outflow points.
-    
+
     A `Connection` may contain branches or intersections. These may be modeled using `Junction`s if it is necessary to identify a specific intersection
     (see {s223:Junction}).
-    
+
     The constraint to maintain compatible mediums among a `Connection` and all of its associated `ConnectionPoint`s gives rise to multiple
     validation test cases, where the specified medium might be a pure medium, or a mixture with constituents. See {s223:Substance-Medium} for
     more details.
-    
+
     ![Graphical Depiction of Connection.](figures/Figure_5-3_Connection.svg)
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Connection
     """
 
@@ -6760,7 +7006,7 @@ class Connection(Concept):
         definition='A `Connection` is the modeling construct used to represent the thing (e.g., pipe, duct, conductor, or free space) that is used to convey\nsome Medium (e.g., water, air, electricity, light, Wi-Fi) between two connectable things. All connections have two or more connection points bound\nto either `Equipment` (see {s223:Equipment}), `DomainSpace` (see {s223:DomainSpace}), or `Junction` (see {s223:Junction}). See Figure 6-2. If the direction\nof flow is constrained, that constraint is indicated by using one or more `InletConnectionPoint`s (see {s223:InletConnectionPoint}) to represent the\ninflow points and `OutletConnectionPoint`s (see {s223:OutletConnectionPoint}) to represent the outflow points.\n\nA `Connection` may contain branches or intersections. These may be modeled using `Junction`s if it is necessary to identify a specific intersection\n(see {s223:Junction}).\n\nThe constraint to maintain compatible mediums among a `Connection` and all of its associated `ConnectionPoint`s gives rise to multiple\nvalidation test cases, where the specified medium might be a pure medium, or a mixture with constituents. See {s223:Substance-Medium} for\nmore details.\n\n![Graphical Depiction of Connection.](figures/Figure_5-3_Connection.svg)',
         parent_iris=('http://data.ashrae.org/standard223#Concept',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Connection_connects_from, _P_Connection_has_role, _P_Connection_cnx, _P_Connection_connects_to, _P_Connection_medium, _P_Connection_connects_at, _P_Connection_has_thermodynamic_phase,),
+        properties=(_P_Connection_cnx, _P_Connection_connects_at, _P_Connection_connects_from, _P_Connection_connects_to, _P_Connection_has_role, _P_Connection_has_thermodynamic_phase, _P_Connection_medium,),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='and', children=(
@@ -6772,26 +7018,26 @@ class Connection(Concept):
         ),
     )
 
-    connects_from: _Rel[Connectable] = _Rel(_P_Connection_connects_from)
-    """A `Relation` that associates a `Connectable` with a `Connection`, with an implied direction of flow. B `connectsFrom` A indicates a flow from A to B. (http://data.ashrae.org/standard223#connectsFrom)"""
-
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_Connection_has_role)
-    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
-
     cnx: _Rel[ConnectionPoint] = _Rel(_P_Connection_cnx)
     """A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences. (http://data.ashrae.org/standard223#cnx)"""
-
-    connects_to: _Rel[Connectable] = _Rel(_P_Connection_connects_to)
-    """A `Relation` that associates a `Connection` with a `Connectable`, with an implied direction of flow. A `connectsTo` B indicates a flow from A to B. (http://data.ashrae.org/standard223#connectsTo)"""
-
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_Connection_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
     connects_at: _Rel[ConnectionPoint] = _Rel(_P_Connection_connects_at)
     """A `Relation` that associates a `Connection` with a specific `ConnectionPoint`. (http://data.ashrae.org/standard223#connectsAt)"""
 
+    connects_from: _Rel[Connectable] = _Rel(_P_Connection_connects_from)
+    """A `Relation` that associates a `Connectable` with a `Connection`, with an implied direction of flow. B `connectsFrom` A indicates a flow from A to B. (http://data.ashrae.org/standard223#connectsFrom)"""
+
+    connects_to: _Rel[Connectable] = _Rel(_P_Connection_connects_to)
+    """A `Relation` that associates a `Connection` with a `Connectable`, with an implied direction of flow. A `connectsTo` B indicates a flow from A to B. (http://data.ashrae.org/standard223#connectsTo)"""
+
+    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_Connection_has_role)
+    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
+
     has_thermodynamic_phase: _EnumOne[_EnumValue] = _EnumOne(_P_Connection_has_thermodynamic_phase)
     """A `Relation` that associates a Medium with its thermodynamic phases. (http://data.ashrae.org/standard223#hasThermodynamicPhase)"""
+
+    medium: _EnumOne[_EnumValue] = _EnumOne(_P_Connection_medium)
+    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
     def __init__(
         self,
@@ -6835,14 +7081,17 @@ _P_Waveguide_medium = _PropertySpec(
     kind='enum',
     label='has medium',
     definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    enum_ranges=('http://data.ashrae.org/standard223#Constituent-EM', 'http://data.ashrae.org/standard223#Substance-Medium'),
+    range_groups=(('http://data.ashrae.org/standard223#Constituent-EM',), ('http://data.ashrae.org/standard223#Substance-Medium',)),
+    sources=('b08ea5991a9d595339cdac23a', 'b12ca976aa7f6ff2f39104dba', 'b490b774633a41f304e59947b', 'b4dc0d1658287df40e921ad35', 'b59c7af6a2db2bd70f0dac26a', 'b5aecdad0a8f3f7f4ac11e130', 'b73706e6130865d1a05507c79', 'b779b3e6d70bca0b584bb320c', 'b9c3a652daf6472abbe15c7f2', 'ba0b040374feef1cc9f970b08', 'bb2dc6068ee4797c8be4b9372', 'be44de150b3c396415bd19166', 'be4fd28291eae62cab922e936'),
+    min_count=1,
+    enum_ranges=('http://data.ashrae.org/standard223#Constituent-EM',),
     required=True,
     max_count=1,
 )
 
 class Waveguide(Connection):
     """A type of `Connection` the represents structures, such as fiber optic or coaxial cables, used to convey electromagnetic energy (i.e., `Constituent-EM`) in a specific direction. Without the physical constraint of a waveguide, waves would expand into three-dimensional space and their intensities would decrease according to the inverse square law.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Waveguide
     """
 
@@ -6896,20 +7145,9 @@ class Waveguide(Connection):
             ),
         )
 
-_P_CoaxialCable_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    enum_ranges=('http://data.ashrae.org/standard223#Constituent-EM', 'http://data.ashrae.org/standard223#Substance-Medium'),
-    required=True,
-    max_count=1,
-)
-
 class CoaxialCable(Waveguide):
     """A type of `Waveguide` that consists of a central conductor, surrounded by an insulator, a metallic shield, and an outer jacket, all sharing the same geometric axis - which allows it to efficiently transmit high-frequency signals over long distances with minimal interference - and is used for `Wideband-DOCSIS` and `Wideband-CATV` communication.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#CoaxialCable
     """
 
@@ -6921,51 +7159,11 @@ class CoaxialCable(Waveguide):
         definition='A type of `Waveguide` that consists of a central conductor, surrounded by an insulator, a metallic shield, and an outer jacket, all sharing the same geometric axis - which allows it to efficiently transmit high-frequency signals over long distances with minimal interference - and is used for `Wideband-DOCSIS` and `Wideband-CATV` communication.',
         parent_iris=('http://data.ashrae.org/standard223#Waveguide',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_CoaxialCable_medium,),
     )
-
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_CoaxialCable_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        connects_at: _Iterable[ConnectionPoint],
-        medium: _EnumValue | None,
-        cnx: _Iterable[ConnectionPoint] = (),
-        connects_from: _Iterable[Connectable] = (),
-        connects_to: _Iterable[Connectable] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        has_thermodynamic_phase: _EnumValue | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                connects_at=connects_at,
-                medium=medium,
-                cnx=cnx,
-                connects_from=connects_from,
-                connects_to=connects_to,
-                has_property=has_property,
-                has_role=has_role,
-                has_thermodynamic_phase=has_thermodynamic_phase,
-            ),
-        )
 
 class Enumeration_2(_EntityBase):
     """DTYPE Enumeration
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/dtype#Enumeration
     """
 
@@ -6981,7 +7179,7 @@ class Enumeration_2(_EntityBase):
 
 class CodeList(Enumeration_2):
     """Codelist
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/dtype#CodeList
     """
 
@@ -6997,7 +7195,7 @@ class CodeList(Enumeration_2):
 
 class CoffeeMaker(Equipment):
     """A piece of `Equipment` that automatically brews coffee.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#CoffeeMaker
     """
 
@@ -7016,7 +7214,7 @@ class CoffeeMaker(Equipment):
 
 class Cogenerator(UnitProcess):
     """An equipment that produces both electricity and heat from the same energy source
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Cogenerator
     """
 
@@ -7041,7 +7239,7 @@ class Cogenerator(UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -7085,7 +7283,7 @@ class Cogenerator(UnitProcess):
 
 class Collection(StructuredDatatype):
     """Collection Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Collection
     """
 
@@ -7101,7 +7299,7 @@ class Collection(StructuredDatatype):
 
 class VisualCue(ModalCue):
     """Visual Cue
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/VisualCue
     """
 
@@ -7120,6 +7318,8 @@ _P_ColorCue_rgb_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/rgbCode',
     kind='literal',
     label='rgb code',
+    sources=('http://qudt.org/schema/qudt/ColorCue-rgbCode',),
+    min_count=1,
     datatype=str,
     required=True,
     max_count=1,
@@ -7127,7 +7327,7 @@ _P_ColorCue_rgb_code = _PropertySpec(
 
 class ColorCue(VisualCue):
     """Color Cue
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ColorCue
     """
 
@@ -7192,6 +7392,7 @@ _P_Comment_description = _PropertySpec(
     predicate='http://purl.org/dc/terms/description',
     kind='object',
     label='description',
+    sources=('http://qudt.org/schema/qudt/Comment-description',),
     max_count=1,
 )
 
@@ -7200,12 +7401,13 @@ _P_Comment_rationale = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/rationale',
     kind='literal',
     label='rationale',
+    sources=('http://qudt.org/schema/qudt/Comment-rationale',),
     datatype=str,
 )
 
 class Comment(Verifiable):
     """Comment
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Comment
     """
 
@@ -7262,7 +7464,7 @@ class Comment(Verifiable):
 
 class CompositeCodeList(CodeList):
     """Composite Code List
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/dtype#CompositeCodeList
     """
 
@@ -7282,11 +7484,13 @@ _P_CompositeDataStructure_field = _PropertySpec(
     kind='object',
     label='field',
     ranges=('DataSetElement',),
+    range_groups=(('http://qudt.org/schema/qudt/DataSetElement',),),
+    sources=('http://qudt.org/schema/qudt/CompositeDataStructure-dataElement',),
 )
 
 class CompositeDataStructure(CompositeDatatype):
     """Composite Data Structure
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CompositeDataStructure
     """
 
@@ -7308,7 +7512,7 @@ class CompositeDataStructure(CompositeDatatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alignment: _Iterable[AlignmentType] = (),
         ansi_sql_name: str | None = None,
@@ -7354,7 +7558,7 @@ class CompositeDataStructure(CompositeDatatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alignment=alignment,
                 ansi_sql_name=ansi_sql_name,
@@ -7390,18 +7594,12 @@ class CompositeDataStructure(CompositeDatatype):
             ),
         )
 
-_P_Table_dimensions = _PropertySpec(
-    name='dimensions',
-    predicate='http://qudt.org/schema/qudt/dimensions',
-    kind='object',
-    label='dimensions',
-)
-
 _P_Table_by_row = _PropertySpec(
     name='by_row',
     predicate='http://qudt.org/schema/qudt/byRow',
     kind='literal',
     label='by row',
+    sources=('http://qudt.org/schema/qudt/Table-byRow',),
     datatype=bool,
     max_count=1,
 )
@@ -7411,6 +7609,7 @@ _P_Table_columns = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/columns',
     kind='literal',
     label='columns',
+    sources=('http://qudt.org/schema/qudt/Table-columns',),
     datatype=int,
     max_count=1,
 )
@@ -7420,8 +7619,17 @@ _P_Table_dimensionality = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/dimensionality',
     kind='literal',
     label='dimensionality',
+    sources=('http://qudt.org/schema/qudt/Table-dimensionality',),
     datatype=int,
     max_count=1,
+)
+
+_P_Table_dimensions = _PropertySpec(
+    name='dimensions',
+    predicate='http://qudt.org/schema/qudt/dimensions',
+    kind='object',
+    label='dimensions',
+    sources=('http://qudt.org/schema/qudt/DimensionsPropertyShape',),
 )
 
 _P_Table_rows = _PropertySpec(
@@ -7429,13 +7637,14 @@ _P_Table_rows = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/rows',
     kind='literal',
     label='rows',
+    sources=('http://qudt.org/schema/qudt/Table-rows',),
     datatype=int,
     max_count=1,
 )
 
 class Table(StructuredDatatype):
     """Table Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Table
     """
 
@@ -7447,11 +7656,8 @@ class Table(StructuredDatatype):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/StructuredDatatype',),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Table_dimensions, _P_Table_by_row, _P_Table_columns, _P_Table_dimensionality, _P_Table_rows,),
+        properties=(_P_Table_by_row, _P_Table_columns, _P_Table_dimensionality, _P_Table_dimensions, _P_Table_rows,),
     )
-
-    dimensions: _Rel[_EntityBase] = _Rel(_P_Table_dimensions)
-    """dimensions (http://qudt.org/schema/qudt/dimensions)"""
 
     by_row: _Lit[bool] = _Lit(_P_Table_by_row)
     """by row (http://qudt.org/schema/qudt/byRow)"""
@@ -7462,6 +7668,9 @@ class Table(StructuredDatatype):
     dimensionality: _Lit[int] = _Lit(_P_Table_dimensionality)
     """dimensionality (http://qudt.org/schema/qudt/dimensionality)"""
 
+    dimensions: _Rel[_EntityBase] = _Rel(_P_Table_dimensions)
+    """dimensions (http://qudt.org/schema/qudt/dimensions)"""
+
     rows: _Lit[int] = _Lit(_P_Table_rows)
     """rows (http://qudt.org/schema/qudt/rows)"""
 
@@ -7469,7 +7678,7 @@ class Table(StructuredDatatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -7517,7 +7726,7 @@ class Table(StructuredDatatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -7557,7 +7766,7 @@ class Table(StructuredDatatype):
 
 class CompositeTable(Table):
     """Composite Table Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CompositeTable
     """
 
@@ -7573,7 +7782,7 @@ class CompositeTable(Table):
 
 class Function_2(Concept_2):
     """Function
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Function
     """
 
@@ -7589,7 +7798,7 @@ class Function_2(Concept_2):
 
 class CompositionFunction(Function_2):
     """Composition function
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CompositionFunction
     """
 
@@ -7609,13 +7818,16 @@ _P_CompositionTree_function = _PropertySpec(
     kind='object',
     label='function',
     ranges=('CompositionFunction',),
+    range_groups=(('http://qudt.org/schema/qudt/CompositionFunction',),),
+    sources=('http://qudt.org/schema/qudt/CompositionTree-compositionFunction',),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class CompositionTree(Tree):
     """Composition Tree
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CompositionTree
     """
 
@@ -7638,7 +7850,7 @@ class CompositionTree(Tree):
         name: str | None = None,
         *,
         function: CompositionFunction | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -7665,7 +7877,7 @@ class CompositionTree(Tree):
             model=model,
             **_provided(
                 function=function,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -7683,7 +7895,7 @@ class CompositionTree(Tree):
 
 class Compressor_2(Equipment):
     """A piece of `Equipment` that mechanically increases the pressure of a gas.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Compressor
     """
 
@@ -7703,7 +7915,7 @@ class Compressor_2(Equipment):
 
 class Compressor(Compressor_2):
     """An equipment that increases the pressure of a gas
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Compressor
     """
 
@@ -7721,7 +7933,7 @@ class Computer(Equipment):
     """A piece of `Equipment` that can be programmed to automatically carry out sequences of arithmetic or logical operations (computation).
     Modern digital electronic computers can perform generic sets of operations known as programs. These programs enable computers to perform a
     wide range of tasks.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Computer
     """
 
@@ -7740,7 +7952,7 @@ class Computer(Equipment):
 
 class ComputerPrinter(Equipment):
     """A piece of `Equipment` that processes an input electrical or RF signal, typically from a `Computer`, and outputs a durable representation of information, typically text and/or graphics, typically on paper.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ComputerPrinter
     """
 
@@ -7758,25 +7970,15 @@ class ComputerPrinter(Equipment):
         ),
     )
 
-_P_Sensor_has_reference_location = _PropertySpec(
-    name='has_reference_location',
-    predicate='http://data.ashrae.org/standard223#hasReferenceLocation',
+_P_Sensor_has_measurement_range = _PropertySpec(
+    name='has_measurement_range',
+    predicate='https://watermetadata.org/ontology/watr#hasMeasurementRange',
     kind='object',
-    label='has reference location',
-    definition='A `Relation` that associates  a differential sensor with the topological location of the baseline (reference) `Property` (see {s223:observes}).',
-    max_count=1,
-    deferred=True,
-)
-
-_P_Sensor_has_observation_location = _PropertySpec(
-    name='has_observation_location',
-    predicate='http://data.ashrae.org/standard223#hasObservationLocation',
-    kind='object',
-    label='has observation location',
-    definition='A `Relation` that associates a `Sensor` with the topological location where it is observing a `Property` (see {s223:observes}). The observation location shall be a `Connectable` (see {s223:Connectable}), `Connection` (see {s223:Connection}), or `ConnectionPoint` (see {s223:ConnectionPoint}).',
-    required=True,
-    max_count=1,
-    deferred=True,
+    label='has measurement range',
+    definition='The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor.',
+    ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('bd202b41a3347d7115dceb941',),
 )
 
 _P_Sensor_has_measurement_resolution = _PropertySpec(
@@ -7786,6 +7988,32 @@ _P_Sensor_has_measurement_resolution = _PropertySpec(
     label='has measurement resolution',
     definition='A `Relation` that associates a `Sensor` with the `QuantifiableProperty` whose value indicates the smallest recognizable change in engineering units that the `Sensor` is able to measure.',
     ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('ba86af95482aa527fbcd94669',),
+)
+
+_P_Sensor_has_observation_location = _PropertySpec(
+    name='has_observation_location',
+    predicate='http://data.ashrae.org/standard223#hasObservationLocation',
+    kind='object',
+    label='has observation location',
+    definition='A `Relation` that associates a `Sensor` with the topological location where it is observing a `Property` (see {s223:observes}). The observation location shall be a `Connectable` (see {s223:Connectable}), `Connection` (see {s223:Connection}), or `ConnectionPoint` (see {s223:ConnectionPoint}).',
+    sources=('b505c4deb2367e4945adda6fc',),
+    min_count=1,
+    required=True,
+    max_count=1,
+    deferred=True,
+)
+
+_P_Sensor_has_reference_location = _PropertySpec(
+    name='has_reference_location',
+    predicate='http://data.ashrae.org/standard223#hasReferenceLocation',
+    kind='object',
+    label='has reference location',
+    definition='A `Relation` that associates  a differential sensor with the topological location of the baseline (reference) `Property` (see {s223:observes}).',
+    sources=('b29179c01ba87f1629fdbb637',),
+    max_count=1,
+    deferred=True,
 )
 
 _P_Sensor_observes = _PropertySpec(
@@ -7794,17 +8022,10 @@ _P_Sensor_observes = _PropertySpec(
     kind='object',
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
+    sources=('bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
+    min_count=1,
     required=True,
     max_count=1,
-)
-
-_P_Sensor_has_measurement_range = _PropertySpec(
-    name='has_measurement_range',
-    predicate='https://watermetadata.org/ontology/watr#hasMeasurementRange',
-    kind='object',
-    label='has measurement range',
-    definition='The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor.',
-    ranges=('QuantifiableProperty',),
 )
 
 class Sensor(Equipment):
@@ -7813,34 +8034,34 @@ class Sensor(Equipment):
     which may be quantifiable (see {s223:QuantifiableObservableProperty}), such as a
     temperature, flow, or concentration, or enumerable (see {s223:EnumeratedObservableProperty}),
     such as an occupancy state.
-    
+
     If a `Sensor` observes a `QuantifiableObservableProperty` relative to an assumed
     or common reference point, it can be modeled with only an observation location.
     For example:
-    
+
     ```turtle
     @prefix : <http://example.com/> .
-    
+
     :example1 a s223:TemperatureSensor ;
         s223:hasObservationLocation :location1 ;
         qudt:hasQuantityKind quantitykind:Temperature .
     ```
-    
+
     If a `Sensor` observes a `QuantifiableObservableProperty` relative to a unique
     or specified reference point, it can be modeled with an observation location and
     a reference location.  The difference between two values can be indicated by setting `qudt:isDeltaQuantity` to `true`. For example:
-    
+
     ```turtle
     @prefix : <http://example.com/> .
-    
+
     :example2 a s223:TemperatureSensor ;
         s223:hasObservationLocation :location1 ;
         s223:hasReferenceLocation :location2 ;
         qudt:hasQuantityKind quantitykind:Temperature ;
         qudt:isDeltaQuantity true .
     ```
-    
-    
+
+
     Ontology: WATR — http://data.ashrae.org/standard223#Sensor
     """
 
@@ -7852,26 +8073,26 @@ class Sensor(Equipment):
         definition='\nA piece of `Equipment` that `observes` an `ObservableProperty` (see {s223:ObservableProperty})\nwhich may be quantifiable (see {s223:QuantifiableObservableProperty}), such as a\ntemperature, flow, or concentration, or enumerable (see {s223:EnumeratedObservableProperty}),\nsuch as an occupancy state.\n\nIf a `Sensor` observes a `QuantifiableObservableProperty` relative to an assumed\nor common reference point, it can be modeled with only an observation location.\nFor example:\n\n```turtle\n@prefix : <http://example.com/> .\n\n:example1 a s223:TemperatureSensor ;\n    s223:hasObservationLocation :location1 ;\n    qudt:hasQuantityKind quantitykind:Temperature .\n```\n\nIf a `Sensor` observes a `QuantifiableObservableProperty` relative to a unique\nor specified reference point, it can be modeled with an observation location and\na reference location.  The difference between two values can be indicated by setting `qudt:isDeltaQuantity` to `true`. For example:\n\n```turtle\n@prefix : <http://example.com/> .\n\n:example2 a s223:TemperatureSensor ;\n    s223:hasObservationLocation :location1 ;\n    s223:hasReferenceLocation :location2 ;\n    qudt:hasQuantityKind quantitykind:Temperature ;\n    qudt:isDeltaQuantity true .\n```\n',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Sensor_has_reference_location, _P_Sensor_has_observation_location, _P_Sensor_has_measurement_resolution, _P_Sensor_observes, _P_Sensor_has_measurement_range,),
+        properties=(_P_Sensor_has_measurement_range, _P_Sensor_has_measurement_resolution, _P_Sensor_has_observation_location, _P_Sensor_has_reference_location, _P_Sensor_observes,),
     )
 
-    has_reference_location: _RelOne[_EntityBase | _DeferredEndpoint] = _RelOne(_P_Sensor_has_reference_location)
-    """A `Relation` that associates  a differential sensor with the topological location of the baseline (reference) `Property` (see {s223:observes}). (http://data.ashrae.org/standard223#hasReferenceLocation)"""
+    has_measurement_range: _Rel[QuantifiableProperty] = _Rel(_P_Sensor_has_measurement_range)
+    """The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor. (https://watermetadata.org/ontology/watr#hasMeasurementRange)"""
+
+    has_measurement_resolution: _Rel[QuantifiableProperty] = _Rel(_P_Sensor_has_measurement_resolution)
+    """A `Relation` that associates a `Sensor` with the `QuantifiableProperty` whose value indicates the smallest recognizable change in engineering units that the `Sensor` is able to measure. (http://data.ashrae.org/standard223#hasMeasurementResolution)"""
 
     has_observation_location: _RelOne[_EntityBase | _DeferredEndpoint] = _RelOne(_P_Sensor_has_observation_location)
     """A `Relation` that associates a `Sensor` with the topological location where it is observing a `Property` (see {s223:observes}). The observation location shall be a `Connectable` (see {s223:Connectable}), `Connection` (see {s223:Connection}), or `ConnectionPoint` (see {s223:ConnectionPoint}). (http://data.ashrae.org/standard223#hasObservationLocation)"""
 
-    has_measurement_resolution: _Rel[QuantifiableProperty] = _Rel(_P_Sensor_has_measurement_resolution)
-    """A `Relation` that associates a `Sensor` with the `QuantifiableProperty` whose value indicates the smallest recognizable change in engineering units that the `Sensor` is able to measure. (http://data.ashrae.org/standard223#hasMeasurementResolution)"""
+    has_reference_location: _RelOne[_EntityBase | _DeferredEndpoint] = _RelOne(_P_Sensor_has_reference_location)
+    """A `Relation` that associates  a differential sensor with the topological location of the baseline (reference) `Property` (see {s223:observes}). (http://data.ashrae.org/standard223#hasReferenceLocation)"""
 
     observes: _RelOne[_EntityBase] = _RelOne(_P_Sensor_observes)
     """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
-
-    has_measurement_range: _Rel[QuantifiableProperty] = _Rel(_P_Sensor_has_measurement_range)
-    """The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor. (https://watermetadata.org/ontology/watr#hasMeasurementRange)"""
 
     def __init__(
         self,
@@ -7885,7 +8106,7 @@ class Sensor(Equipment):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -7942,6 +8163,9 @@ _P_ConcentrationSensor_2_observes = _PropertySpec(
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
     ranges=('QuantifiableObservableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
+    sources=('bba2526521d93118bfa382b7e', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -7951,7 +8175,7 @@ class ConcentrationSensor_2(Sensor):
     in contrast to a `ParticulateSensor` that `observes` a `QuantifiableObservableProperty` that represents an amount of a particulate in a medium
     (see {s223:ParticulateSensor}). The 223 standard does not constrain the `Unit` or `QuantityKind` reported by a `ConcentrationSensor`, but possible
     `QuantityKind`s include `Concentration` (moles per volume), `Density` (mass per volume), `MoleFraction`, and `VolumeFraction`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ConcentrationSensor
     """
 
@@ -7984,7 +8208,7 @@ class ConcentrationSensor_2(Sensor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -8036,7 +8260,7 @@ class ConcentrationSensor_2(Sensor):
 
 class ConcentrationSensor(ConcentrationSensor_2):
     """A sensor used to measure the concentration of specific substances (e.g., Total Dissolved Solids)
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ConcentrationSensor
     """
 
@@ -8052,7 +8276,7 @@ class ConcentrationSensor(ConcentrationSensor_2):
 
 class HeatExchanger(Equipment):
     """Equipment that transfers heat between media, such as an evaporator or a condenser. Unlike s223:HydronicHeatExchanger, it places no constraint on the number, pairing or phase of its connection points, so it covers single-feed evaporators and air-cooled condensers.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#HeatExchanger
     """
 
@@ -8068,7 +8292,7 @@ class HeatExchanger(Equipment):
 
 class Condenser(HeatExchanger, UnitProcess):
     """A device used to condense a gaseous substance back into a liquid
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Condenser
     """
 
@@ -8093,7 +8317,7 @@ class Condenser(HeatExchanger, UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -8137,7 +8361,7 @@ class Condenser(HeatExchanger, UnitProcess):
 
 class Conditioner(Equipment):
     """An equipment used to prepare raw biogas from a digester by removing impurities
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Conditioner
     """
 
@@ -8153,7 +8377,7 @@ class Conditioner(Equipment):
 
 class ConductivitySensor(Sensor):
     """A sensor used to measure the electrical conductivity of a solution
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ConductivitySensor
     """
 
@@ -8173,6 +8397,8 @@ _P_Conductor_has_electrical_phase = _PropertySpec(
     kind='enum',
     label='has electrical phase',
     definition='A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`.',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-ElectricalPhaseIdentifier',),),
+    sources=('b77fd01effefeb8667a24bef5', 'b7c1fd5bdb8242d06002b2f0d'),
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-ElectricalPhaseIdentifier',),
     max_count=1,
 )
@@ -8183,14 +8409,17 @@ _P_Conductor_medium = _PropertySpec(
     kind='enum',
     label='has medium',
     definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    enum_ranges=('http://data.ashrae.org/standard223#Constituent-Electricity', 'http://data.ashrae.org/standard223#Substance-Medium'),
+    range_groups=(('http://data.ashrae.org/standard223#Constituent-Electricity',), ('http://data.ashrae.org/standard223#Substance-Medium',)),
+    sources=('b08ea5991a9d595339cdac23a', 'b12ca976aa7f6ff2f39104dba', 'b490b774633a41f304e59947b', 'b4dc0d1658287df40e921ad35', 'b59c7af6a2db2bd70f0dac26a', 'b5aecdad0a8f3f7f4ac11e130', 'b73706e6130865d1a05507c79', 'b779b3e6d70bca0b584bb320c', 'b9c3a652daf6472abbe15c7f2', 'ba0b040374feef1cc9f970b08', 'bb2dc6068ee4797c8be4b9372', 'be44de150b3c396415bd19166', 'bf23cebcd33cb5adb3d3b263d'),
+    min_count=1,
+    enum_ranges=('http://data.ashrae.org/standard223#Constituent-Electricity',),
     required=True,
     max_count=1,
 )
 
 class Conductor(Connection):
     """A `Connection` that represents one or more wires used to convey `Constituent-Electricity`. Each instance of `Conductor` applies to no more than one electrical circuit.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Conductor
     """
 
@@ -8255,6 +8484,8 @@ _P_Quantifiable_data_encoding = _PropertySpec(
     kind='object',
     label='data encoding',
     ranges=('DataEncoding',),
+    range_groups=(('http://qudt.org/schema/qudt/DataEncoding',),),
+    sources=('http://qudt.org/schema/qudt/Quantifiable-dataEncoding',),
     max_count=1,
 )
 
@@ -8263,6 +8494,9 @@ _P_Quantifiable_datatype = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/datatype',
     kind='object',
     label='datatype',
+    ranges=('Datatype', 'EnumeratedValue'),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/EnumeratedValue'),),
+    sources=('http://qudt.org/schema/qudt/Quantifiable-datatype',),
     max_count=1,
 )
 
@@ -8273,6 +8507,8 @@ _P_Quantifiable_has_unit = _PropertySpec(
     label='has unit',
     definition='A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/Quantifiable-hasUnit',),
     max_count=1,
     inverse='unit_for',
 )
@@ -8282,6 +8518,7 @@ _P_Quantifiable_relative_standard_uncertainty = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/relativeStandardUncertainty',
     kind='literal',
     label='relative standard uncertainty',
+    sources=('http://qudt.org/schema/qudt/Quantifiable-relativeStandardUncertainty',),
     datatype=float,
     max_count=1,
 )
@@ -8291,6 +8528,7 @@ _P_Quantifiable_standard_uncertainty = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/standardUncertainty',
     kind='literal',
     label='standard uncertainty',
+    sources=('http://qudt.org/schema/qudt/Quantifiable-standardUncertainty',),
     datatype=float,
     max_count=1,
 )
@@ -8300,6 +8538,7 @@ _P_Quantifiable_standard_uncertainty_sn = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/standardUncertaintySN',
     kind='literal',
     label='standard uncertainty scientific',
+    sources=('http://qudt.org/schema/qudt/Quantifiable-standardUncertaintySN',),
     datatype=float,
     max_count=1,
 )
@@ -8309,6 +8548,7 @@ _P_Quantifiable_value = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/value',
     kind='object',
     label='value',
+    sources=('http://qudt.org/schema/qudt/Quantifiable-value',),
     max_count=1,
 )
 
@@ -8317,12 +8557,13 @@ _P_Quantifiable_value_sn = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/valueSN',
     kind='object',
     label='value scientific',
+    sources=('http://qudt.org/schema/qudt/Quantifiable-valueSN',),
     max_count=1,
 )
 
 class Quantifiable(Aspect):
     """Quantifiable
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Quantifiable
     """
 
@@ -8340,7 +8581,7 @@ class Quantifiable(Aspect):
     data_encoding: _RelOne[DataEncoding] = _RelOne(_P_Quantifiable_data_encoding)
     """data encoding (http://qudt.org/schema/qudt/dataEncoding)"""
 
-    datatype: _RelOne[_EntityBase] = _RelOne(_P_Quantifiable_datatype)
+    datatype: _RelOne[Datatype | EnumeratedValue] = _RelOne(_P_Quantifiable_datatype)
     """datatype (http://qudt.org/schema/qudt/datatype)"""
 
     has_unit: _RelOne[Unit | _TermValue] = _RelOne(_P_Quantifiable_has_unit)
@@ -8366,7 +8607,7 @@ class Quantifiable(Aspect):
         name: str | None = None,
         *,
         data_encoding: DataEncoding | None = None,
-        datatype: _EntityBase | None = None,
+        datatype: Datatype | EnumeratedValue | None = None,
         has_unit: Unit | _TermValue | None = None,
         relative_standard_uncertainty: float | None = None,
         standard_uncertainty: float | None = None,
@@ -8399,7 +8640,7 @@ class Quantifiable(Aspect):
 
 class QuantityValue(Concept_2, Quantifiable, Verifiable):
     """Quantity value
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityValue
     """
 
@@ -8417,11 +8658,11 @@ class QuantityValue(Concept_2, Quantifiable, Verifiable):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         data_encoding: DataEncoding | None = None,
-        datatype: _EntityBase | None = None,
+        datatype: Datatype | EnumeratedValue | None = None,
         dbpedia_match: str | None = None,
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
@@ -8455,7 +8696,7 @@ class QuantityValue(Concept_2, Quantifiable, Verifiable):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 data_encoding=data_encoding,
@@ -8488,13 +8729,14 @@ _P_ConstantValue_exact_constant = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/exactConstant',
     kind='literal',
     label='exact constant',
+    sources=('http://qudt.org/schema/qudt/ConstantValue-exactConstant',),
     datatype=bool,
     max_count=1,
 )
 
 class ConstantValue(QuantityValue):
     """Constant value
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ConstantValue
     """
 
@@ -8516,11 +8758,11 @@ class ConstantValue(QuantityValue):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         data_encoding: DataEncoding | None = None,
-        datatype: _EntityBase | None = None,
+        datatype: Datatype | EnumeratedValue | None = None,
         dbpedia_match: str | None = None,
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
@@ -8555,7 +8797,7 @@ class ConstantValue(QuantityValue):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 data_encoding=data_encoding,
@@ -8591,12 +8833,13 @@ _P_ContextualUnit_broader = _PropertySpec(
     label='has broader',
     definition='Relates a concept to a concept that is more general in meaning.',
     ranges=('Unit',),
-    inverse='narrower',
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/ContextualUnit-broader',),
 )
 
 class ContextualUnit(Unit):
     """Contextual Unit
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ContextualUnit
     """
 
@@ -8620,7 +8863,7 @@ class ContextualUnit(Unit):
         *,
         has_dimension_vector: QuantityKindDimensionVector | None,
         has_quantity_kind: _Iterable[QuantityKind | _TermValue],
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alt_symbol: _Iterable[_EntityBase] = (),
         applicable_system: _Iterable[SystemOfUnits] = (),
@@ -8686,7 +8929,7 @@ class ContextualUnit(Unit):
             **_provided(
                 has_dimension_vector=has_dimension_vector,
                 has_quantity_kind=has_quantity_kind,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alt_symbol=alt_symbol,
                 applicable_system=applicable_system,
@@ -8742,7 +8985,7 @@ class ContextualUnit(Unit):
 
 class ContinuouslyStirredTankReactor(Reactor):
     """A reactor in which contents are well mixed and reactants are added continuously
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ContinuouslyStirredTankReactor
     """
 
@@ -8756,18 +8999,9 @@ class ContinuouslyStirredTankReactor(Reactor):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
     )
 
-_P_Controller_2_executes = _PropertySpec(
-    name='executes',
-    predicate='http://data.ashrae.org/standard223#executes',
-    kind='object',
-    label='executes',
-    definition='A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes.',
-    ranges=('Function',),
-)
-
 class Controller_2(Equipment):
     """A piece of `Equipment` that regulates the normal operation of other `Equipment` by executing one or more `Function`s.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Controller
     """
 
@@ -8779,67 +9013,11 @@ class Controller_2(Equipment):
         definition='A piece of `Equipment` that regulates the normal operation of other `Equipment` by executing one or more `Function`s.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Controller_2_executes,),
     )
-
-    executes: _Rel[Function] = _Rel(_P_Controller_2_executes)
-    """A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes. (http://data.ashrae.org/standard223#executes)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
 
 class Controller(Controller_2):
     """A piece of equipment for regulation of a system or component in normal operation, which executes one or more `Function`s.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Controller
     """
 
@@ -8855,7 +9033,7 @@ class Controller(Controller_2):
 
 class CoolingTower(Equipment):
     """A piece of `Equipment` that uses atmospheric air to cool warm water, generally by direct contact via evaporation.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#CoolingTower
     """
 
@@ -8878,6 +9056,7 @@ _P_Scale_data_structure = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/dataStructure',
     kind='literal',
     label='data structure',
+    sources=('http://qudt.org/schema/qudt/Scale-dataStructure',),
     datatype=str,
     max_count=1,
 )
@@ -8888,6 +9067,8 @@ _P_Scale_permissible_maths = _PropertySpec(
     kind='object',
     label='permissible maths',
     ranges=('MathsFunctionType',),
+    range_groups=(('http://qudt.org/schema/qudt/MathsFunctionType',),),
+    sources=('http://qudt.org/schema/qudt/Scale-permissibleMaths',),
 )
 
 _P_Scale_permissible_transformation = _PropertySpec(
@@ -8896,6 +9077,8 @@ _P_Scale_permissible_transformation = _PropertySpec(
     kind='object',
     label='permissible transformation',
     ranges=('TransformType',),
+    range_groups=(('http://qudt.org/schema/qudt/TransformType',),),
+    sources=('http://qudt.org/schema/qudt/Scale-permissibleTransformation',),
 )
 
 _P_Scale_scale_type = _PropertySpec(
@@ -8904,12 +9087,14 @@ _P_Scale_scale_type = _PropertySpec(
     kind='object',
     label='scale type',
     ranges=('ScaleType',),
+    range_groups=(('http://qudt.org/schema/qudt/ScaleType',),),
+    sources=('http://qudt.org/schema/qudt/Scale-scaleType',),
     max_count=1,
 )
 
 class Scale(Concept_2, Verifiable):
     """Scale
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Scale
     """
 
@@ -8940,7 +9125,7 @@ class Scale(Concept_2, Verifiable):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         data_structure: str | None = None,
@@ -8974,7 +9159,7 @@ class Scale(Concept_2, Verifiable):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 data_structure=data_structure,
@@ -9000,7 +9185,7 @@ class Scale(Concept_2, Verifiable):
 
 class NominalScale(Scale):
     """Nominal scale
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/NominalScale
     """
 
@@ -9016,7 +9201,7 @@ class NominalScale(Scale):
 
 class CoordinateCenterKind(EnumeratedValue, NominalScale):
     """Coordinate Center Kind
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CoordinateCenterKind
     """
 
@@ -9034,7 +9219,7 @@ class CoordinateCenterKind(EnumeratedValue, NominalScale):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alt_symbol: _Iterable[_EntityBase] = (),
         code: _Iterable[_EntityBase] = (),
@@ -9042,7 +9227,7 @@ class CoordinateCenterKind(EnumeratedValue, NominalScale):
         dbpedia_match: str | None = None,
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
-        description: _Iterable[_EntityBase] = (),
+        description: _EntityBase | None = None,
         exact_match: _Iterable[Concept_2] = (),
         guidance: str | None = None,
         has_rule: _Iterable[Rule] = (),
@@ -9070,7 +9255,7 @@ class CoordinateCenterKind(EnumeratedValue, NominalScale):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alt_symbol=alt_symbol,
                 code=code,
@@ -9101,7 +9286,9 @@ _P_TupleMember_element_datatype = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/elementDatatype',
     kind='object',
     label='element datatype',
-    ranges=('Datatype', 'ScalarDatatype'),
+    ranges=('ScalarDatatype',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',), ('http://qudt.org/schema/qudt/ScalarDatatype',)),
+    sources=('http://qudt.org/schema/qudt/StructuredDatatype-elementType', 'http://qudt.org/schema/qudt/TupleMember-elementType'),
     max_count=1,
 )
 
@@ -9110,13 +9297,15 @@ _P_TupleMember_order_in_structure = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/orderInStructure',
     kind='object',
     label='order in structure',
+    sources=('http://qudt.org/schema/qudt/TupleMember-orderInStructure',),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class TupleMember(CompositeDatatype):
     """Tuple Member Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TupleMember
     """
 
@@ -9131,7 +9320,7 @@ class TupleMember(CompositeDatatype):
         properties=(_P_TupleMember_element_datatype, _P_TupleMember_order_in_structure,),
     )
 
-    element_datatype: _RelOne[Datatype | ScalarDatatype] = _RelOne(_P_TupleMember_element_datatype)
+    element_datatype: _RelOne[ScalarDatatype] = _RelOne(_P_TupleMember_element_datatype)
     """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
 
     order_in_structure: _RelOne[_EntityBase] = _RelOne(_P_TupleMember_order_in_structure)
@@ -9142,7 +9331,7 @@ class TupleMember(CompositeDatatype):
         name: str | None = None,
         *,
         order_in_structure: _EntityBase | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alignment: _Iterable[AlignmentType] = (),
         ansi_sql_name: str | None = None,
@@ -9154,7 +9343,7 @@ class TupleMember(CompositeDatatype):
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
         description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | ScalarDatatype | None = None,
+        element_datatype: ScalarDatatype | None = None,
         exact_match: _Iterable[Concept_2] = (),
         guidance: str | None = None,
         has_rule: _Iterable[Rule] = (),
@@ -9188,7 +9377,7 @@ class TupleMember(CompositeDatatype):
             model=model,
             **_provided(
                 order_in_structure=order_in_structure,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alignment=alignment,
                 ansi_sql_name=ansi_sql_name,
@@ -9225,7 +9414,7 @@ class TupleMember(CompositeDatatype):
 
 class CoordinateMember(TupleMember):
     """Coordinate Member
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CoordinateMember
     """
 
@@ -9239,18 +9428,9 @@ class CoordinateMember(TupleMember):
         ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/TupleMember', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_N_Tuple_element_datatype = _PropertySpec(
-    name='element_datatype',
-    predicate='http://qudt.org/schema/qudt/elementDatatype',
-    kind='object',
-    label='element datatype',
-    ranges=('Datatype', 'TupleMember'),
-    max_count=1,
-)
-
 class N_Tuple(Tuple):
     """N-Tuple Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/N-Tuple
     """
 
@@ -9262,120 +9442,11 @@ class N_Tuple(Tuple):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/Tuple',),
         ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_N_Tuple_element_datatype,),
     )
-
-    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_N_Tuple_element_datatype)
-    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        type_: _Iterable[_EntityBase],
-        abbreviation: str | None = None,
-        alignment: _Iterable[AlignmentType] = (),
-        ansi_sql_name: str | None = None,
-        basis: Datatype | None = None,
-        bounded: bool | None = None,
-        c_name: str | None = None,
-        cardinality: CardinalityType | None = None,
-        code: _Iterable[_EntityBase] = (),
-        deprecated: bool | None = None,
-        deprecated_in_version: str | None = None,
-        description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | TupleMember | None = None,
-        element_type_count: int | None = None,
-        exact_match: _Iterable[Concept_2] = (),
-        guidance: str | None = None,
-        has_rule: _Iterable[Rule] = (),
-        id: str | None = None,
-        is_replaced_by: _EntityBase | None = None,
-        java_name: str | None = None,
-        js_name: str | None = None,
-        length: int | None = None,
-        matlab_name: str | None = None,
-        microsoft_sql_server_name: str | None = None,
-        my_sql_name: str | None = None,
-        odbc_name: str | None = None,
-        ole_db_name: str | None = None,
-        oracle_sql_name: str | None = None,
-        ordered_type: OrderedType | None = None,
-        padding: PaddingType | None = None,
-        plain_text_description: _Iterable[_EntityBase] = (),
-        protocol_buffers_name: str | None = None,
-        python_name: str | None = None,
-        vb_name: str | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                type_=type_,
-                abbreviation=abbreviation,
-                alignment=alignment,
-                ansi_sql_name=ansi_sql_name,
-                basis=basis,
-                bounded=bounded,
-                c_name=c_name,
-                cardinality=cardinality,
-                code=code,
-                deprecated=deprecated,
-                deprecated_in_version=deprecated_in_version,
-                description=description,
-                element_datatype=element_datatype,
-                element_type_count=element_type_count,
-                exact_match=exact_match,
-                guidance=guidance,
-                has_rule=has_rule,
-                id=id,
-                is_replaced_by=is_replaced_by,
-                java_name=java_name,
-                js_name=js_name,
-                length=length,
-                matlab_name=matlab_name,
-                microsoft_sql_server_name=microsoft_sql_server_name,
-                my_sql_name=my_sql_name,
-                odbc_name=odbc_name,
-                ole_db_name=ole_db_name,
-                oracle_sql_name=oracle_sql_name,
-                ordered_type=ordered_type,
-                padding=padding,
-                plain_text_description=plain_text_description,
-                protocol_buffers_name=protocol_buffers_name,
-                python_name=python_name,
-                vb_name=vb_name,
-            ),
-        )
-
-_P_TwoTuple_element_datatype = _PropertySpec(
-    name='element_datatype',
-    predicate='http://qudt.org/schema/qudt/elementDatatype',
-    kind='object',
-    label='element datatype',
-    ranges=('Datatype', 'TupleMember'),
-    max_count=1,
-)
-
-_P_TwoTuple_element_type_count = _PropertySpec(
-    name='element_type_count',
-    predicate='http://qudt.org/schema/qudt/elementTypeCount',
-    kind='literal',
-    label='element type count',
-    datatype=int,
-)
 
 class TwoTuple(N_Tuple):
     """Two-Tuple
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TwoTuple
     """
 
@@ -9387,106 +9458,11 @@ class TwoTuple(N_Tuple):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/N-Tuple',),
         ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_TwoTuple_element_datatype, _P_TwoTuple_element_type_count,),
     )
-
-    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_TwoTuple_element_datatype)
-    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
-
-    element_type_count: _Lit[int] = _Lit(_P_TwoTuple_element_type_count)
-    """element type count (http://qudt.org/schema/qudt/elementTypeCount)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        type_: _Iterable[_EntityBase],
-        abbreviation: str | None = None,
-        alignment: _Iterable[AlignmentType] = (),
-        ansi_sql_name: str | None = None,
-        basis: Datatype | None = None,
-        bounded: bool | None = None,
-        c_name: str | None = None,
-        cardinality: CardinalityType | None = None,
-        code: _Iterable[_EntityBase] = (),
-        deprecated: bool | None = None,
-        deprecated_in_version: str | None = None,
-        description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | TupleMember | None = None,
-        element_type_count: int | None = None,
-        exact_match: _Iterable[Concept_2] = (),
-        guidance: str | None = None,
-        has_rule: _Iterable[Rule] = (),
-        id: str | None = None,
-        is_replaced_by: _EntityBase | None = None,
-        java_name: str | None = None,
-        js_name: str | None = None,
-        length: int | None = None,
-        matlab_name: str | None = None,
-        microsoft_sql_server_name: str | None = None,
-        my_sql_name: str | None = None,
-        odbc_name: str | None = None,
-        ole_db_name: str | None = None,
-        oracle_sql_name: str | None = None,
-        ordered_type: OrderedType | None = None,
-        padding: PaddingType | None = None,
-        plain_text_description: _Iterable[_EntityBase] = (),
-        protocol_buffers_name: str | None = None,
-        python_name: str | None = None,
-        vb_name: str | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                type_=type_,
-                abbreviation=abbreviation,
-                alignment=alignment,
-                ansi_sql_name=ansi_sql_name,
-                basis=basis,
-                bounded=bounded,
-                c_name=c_name,
-                cardinality=cardinality,
-                code=code,
-                deprecated=deprecated,
-                deprecated_in_version=deprecated_in_version,
-                description=description,
-                element_datatype=element_datatype,
-                element_type_count=element_type_count,
-                exact_match=exact_match,
-                guidance=guidance,
-                has_rule=has_rule,
-                id=id,
-                is_replaced_by=is_replaced_by,
-                java_name=java_name,
-                js_name=js_name,
-                length=length,
-                matlab_name=matlab_name,
-                microsoft_sql_server_name=microsoft_sql_server_name,
-                my_sql_name=my_sql_name,
-                odbc_name=odbc_name,
-                ole_db_name=ole_db_name,
-                oracle_sql_name=oracle_sql_name,
-                ordered_type=ordered_type,
-                padding=padding,
-                plain_text_description=plain_text_description,
-                protocol_buffers_name=protocol_buffers_name,
-                python_name=python_name,
-                vb_name=vb_name,
-            ),
-        )
 
 class Coordinates_2D(CartesianCoordinates, TwoTuple):
     """2D Coordinate Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Coordinates-2D
     """
 
@@ -9502,7 +9478,7 @@ class Coordinates_2D(CartesianCoordinates, TwoTuple):
 
 class Coordinates_2D_DoublePrecision(Coordinates_2D):
     """Coordinates-2D-Double precision
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Coordinates-2D-DoublePrecision
     """
 
@@ -9518,7 +9494,7 @@ class Coordinates_2D_DoublePrecision(Coordinates_2D):
 
 class Coordinates_2D_SinglePrecision(Coordinates_2D):
     """Cartesian Coordinates 2D Single Precision
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Coordinates-2D-SinglePrecision
     """
 
@@ -9532,26 +9508,9 @@ class Coordinates_2D_SinglePrecision(Coordinates_2D):
         ancestor_iris=('http://qudt.org/schema/qudt/CartesianCoordinates', 'http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Coordinates', 'http://qudt.org/schema/qudt/Coordinates-2D', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://qudt.org/schema/qudt/TwoTuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_ThreeTuple_element_datatype = _PropertySpec(
-    name='element_datatype',
-    predicate='http://qudt.org/schema/qudt/elementDatatype',
-    kind='object',
-    label='element datatype',
-    ranges=('Datatype', 'TupleMember'),
-    max_count=1,
-)
-
-_P_ThreeTuple_element_type_count = _PropertySpec(
-    name='element_type_count',
-    predicate='http://qudt.org/schema/qudt/elementTypeCount',
-    kind='literal',
-    label='element type count',
-    datatype=int,
-)
-
 class ThreeTuple(N_Tuple):
     """Three-Tuple
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ThreeTuple
     """
 
@@ -9563,106 +9522,11 @@ class ThreeTuple(N_Tuple):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/N-Tuple',),
         ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-Tuple', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_ThreeTuple_element_datatype, _P_ThreeTuple_element_type_count,),
     )
-
-    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_ThreeTuple_element_datatype)
-    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
-
-    element_type_count: _Lit[int] = _Lit(_P_ThreeTuple_element_type_count)
-    """element type count (http://qudt.org/schema/qudt/elementTypeCount)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        type_: _Iterable[_EntityBase],
-        abbreviation: str | None = None,
-        alignment: _Iterable[AlignmentType] = (),
-        ansi_sql_name: str | None = None,
-        basis: Datatype | None = None,
-        bounded: bool | None = None,
-        c_name: str | None = None,
-        cardinality: CardinalityType | None = None,
-        code: _Iterable[_EntityBase] = (),
-        deprecated: bool | None = None,
-        deprecated_in_version: str | None = None,
-        description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | TupleMember | None = None,
-        element_type_count: int | None = None,
-        exact_match: _Iterable[Concept_2] = (),
-        guidance: str | None = None,
-        has_rule: _Iterable[Rule] = (),
-        id: str | None = None,
-        is_replaced_by: _EntityBase | None = None,
-        java_name: str | None = None,
-        js_name: str | None = None,
-        length: int | None = None,
-        matlab_name: str | None = None,
-        microsoft_sql_server_name: str | None = None,
-        my_sql_name: str | None = None,
-        odbc_name: str | None = None,
-        ole_db_name: str | None = None,
-        oracle_sql_name: str | None = None,
-        ordered_type: OrderedType | None = None,
-        padding: PaddingType | None = None,
-        plain_text_description: _Iterable[_EntityBase] = (),
-        protocol_buffers_name: str | None = None,
-        python_name: str | None = None,
-        vb_name: str | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                type_=type_,
-                abbreviation=abbreviation,
-                alignment=alignment,
-                ansi_sql_name=ansi_sql_name,
-                basis=basis,
-                bounded=bounded,
-                c_name=c_name,
-                cardinality=cardinality,
-                code=code,
-                deprecated=deprecated,
-                deprecated_in_version=deprecated_in_version,
-                description=description,
-                element_datatype=element_datatype,
-                element_type_count=element_type_count,
-                exact_match=exact_match,
-                guidance=guidance,
-                has_rule=has_rule,
-                id=id,
-                is_replaced_by=is_replaced_by,
-                java_name=java_name,
-                js_name=js_name,
-                length=length,
-                matlab_name=matlab_name,
-                microsoft_sql_server_name=microsoft_sql_server_name,
-                my_sql_name=my_sql_name,
-                odbc_name=odbc_name,
-                ole_db_name=ole_db_name,
-                oracle_sql_name=oracle_sql_name,
-                ordered_type=ordered_type,
-                padding=padding,
-                plain_text_description=plain_text_description,
-                protocol_buffers_name=protocol_buffers_name,
-                python_name=python_name,
-                vb_name=vb_name,
-            ),
-        )
 
 class Coordinates_3D(CartesianCoordinates, ThreeTuple):
     """3D Coordinate Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Coordinates-3D
     """
 
@@ -9678,7 +9542,7 @@ class Coordinates_3D(CartesianCoordinates, ThreeTuple):
 
 class Coordinates_3D_DoublePrecision(Coordinates_3D):
     """3D Coordinates (Double Precision)
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Coordinates-3D-DoublePrecision
     """
 
@@ -9694,7 +9558,7 @@ class Coordinates_3D_DoublePrecision(Coordinates_3D):
 
 class Coordinates_3D_SinglePrecision(Coordinates_3D):
     """3D Coordinates (Single Precision)
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Coordinates-3D-SinglePrecision
     """
 
@@ -9710,7 +9574,7 @@ class Coordinates_3D_SinglePrecision(Coordinates_3D):
 
 class Coordinates_3D_Type(CartesianCoordinatesType, ThreeTuple):
     """3D Coordinate Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Coordinates-3D-Type
     """
 
@@ -9726,7 +9590,7 @@ class Coordinates_3D_Type(CartesianCoordinatesType, ThreeTuple):
 
 class CopyMachine(Equipment):
     """A piece of `Equipment` that processes an input of one or more durable representation(s) of information, typically text and/or graphics and typically on paper, and outputs one or more reproductions of the information for each input, typically on paper.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#CopyMachine
     """
 
@@ -9750,13 +9614,16 @@ _P_LightSensor_observes = _PropertySpec(
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
     ranges=('QuantifiableObservableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
+    sources=('bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156', 'bfd71067e4cb2fb6356addde6'),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class LightSensor(Sensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents an attribute of light, as specified by the `QuantityKind` of the `Property` being observed, as described in Clauses 5.6.5.1 through 5.6.5.3.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#LightSensor
     """
 
@@ -9789,7 +9656,7 @@ class LightSensor(Sensor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -9839,21 +9706,10 @@ class LightSensor(Sensor):
             ),
         )
 
-_P_CorrelatedColorTemperatureSensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    required=True,
-    max_count=1,
-)
-
 class CorrelatedColorTemperatureSensor(LightSensor):
     """A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a correlated color temperature (CCT) of a
     light source, defined as the absolute temperature of a blackbody whose chromaticity most nearly resembles that of the light source.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#CorrelatedColorTemperatureSensor
     """
 
@@ -9865,80 +9721,11 @@ class CorrelatedColorTemperatureSensor(LightSensor):
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a correlated color temperature (CCT) of a\nlight source, defined as the absolute temperature of a blackbody whose chromaticity most nearly resembles that of the light source.',
         parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#LightSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_CorrelatedColorTemperatureSensor_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_CorrelatedColorTemperatureSensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
 
 class CountingUnit(DimensionlessUnit):
     """Counting Unit
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CountingUnit
     """
 
@@ -9954,7 +9741,7 @@ class CountingUnit(DimensionlessUnit):
 
 class Crystallizer(UnitProcess):
     """An equipment used to produce solid crystals from a solution
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Crystallizer
     """
 
@@ -9979,7 +9766,7 @@ class Crystallizer(UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -10026,6 +9813,7 @@ _P_CurrencyUnit_currency_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/currencyCode',
     kind='literal',
     label='currency code',
+    sources=('http://qudt.org/schema/qudt/CurrencyUnit-currencyCode',),
     datatype=str,
 )
 
@@ -10034,6 +9822,7 @@ _P_CurrencyUnit_currency_exponent = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/currencyExponent',
     kind='literal',
     label='currency exponent',
+    sources=('http://qudt.org/schema/qudt/CurrencyUnit-currencyExponent',),
     datatype=int,
 )
 
@@ -10042,12 +9831,13 @@ _P_CurrencyUnit_currency_number = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/currencyNumber',
     kind='literal',
     label='currency number',
+    sources=('http://qudt.org/schema/qudt/CurrencyUnit-currencyNumber',),
     datatype=str,
 )
 
 class CurrencyUnit(DimensionlessUnit):
     """Currency Unit
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/CurrencyUnit
     """
 
@@ -10077,7 +9867,7 @@ class CurrencyUnit(DimensionlessUnit):
         *,
         has_dimension_vector: QuantityKindDimensionVector | None,
         has_quantity_kind: _Iterable[QuantityKind | _TermValue],
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alt_symbol: _Iterable[_EntityBase] = (),
         applicable_system: _Iterable[SystemOfUnits] = (),
@@ -10145,7 +9935,7 @@ class CurrencyUnit(DimensionlessUnit):
             **_provided(
                 has_dimension_vector=has_dimension_vector,
                 has_quantity_kind=has_quantity_kind,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alt_symbol=alt_symbol,
                 applicable_system=applicable_system,
@@ -10203,7 +9993,7 @@ class CurrencyUnit(DimensionlessUnit):
 
 class DMERecoverySystem(Equipment):
     """A system designed to recover a high percentage of Dimethyl Ether solvent in solvent-driven processes.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#DMERecoverySystem
     """
 
@@ -10219,7 +10009,7 @@ class DMERecoverySystem(Equipment):
 
 class Damper(Equipment):
     """A piece of `Equipment` inserted into an air distribution system permitting modification of the air resistance of the system and consequently changing the airflow rate or shutting off the airflow.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Damper
     """
 
@@ -10239,7 +10029,7 @@ class Damper(Equipment):
 
 class Damper_2(Damper):
     """A damper with an analog or two binary position command properties.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#Damper
     """
 
@@ -10265,6 +10055,8 @@ _P_DataEncoding_bit_order = _PropertySpec(
     kind='object',
     label='bit order',
     ranges=('EndianType',),
+    range_groups=(('http://qudt.org/schema/qudt/EndianType',),),
+    sources=('http://qudt.org/schema/qudt/DataEncoding-bitOrder',),
     max_count=1,
 )
 
@@ -10274,6 +10066,8 @@ _P_DataEncoding_byte_order = _PropertySpec(
     kind='object',
     label='byte order',
     ranges=('EndianType',),
+    range_groups=(('http://qudt.org/schema/qudt/EndianType',),),
+    sources=('http://qudt.org/schema/qudt/DataEncoding-byteOrder',),
     max_count=1,
 )
 
@@ -10283,12 +10077,14 @@ _P_DataEncoding_encoding = _PropertySpec(
     kind='object',
     label='encoding',
     ranges=('Encoding',),
+    range_groups=(('http://qudt.org/schema/qudt/Encoding',),),
+    sources=('http://qudt.org/schema/qudt/DataEncoding-encoding',),
     max_count=1,
 )
 
 class DataEncoding(Aspect):
     """Data Encoding
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DataEncoding
     """
 
@@ -10343,17 +10139,10 @@ _P_DataSetElement_element_label = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/elementLabel',
     kind='literal',
     label='element label',
+    sources=('http://qudt.org/schema/qudt/DataSetElement-elementLabel',),
+    min_count=1,
     datatype=str,
     required=True,
-    max_count=1,
-)
-
-_P_DataSetElement_optional = _PropertySpec(
-    name='optional',
-    predicate='http://qudt.org/schema/qudt/optional',
-    kind='literal',
-    label='optional',
-    datatype=bool,
     max_count=1,
 )
 
@@ -10364,12 +10153,24 @@ _P_DataSetElement_has_quantity_kind = _PropertySpec(
     label='has quantity kind',
     definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/DataSetElement-quantityKind',),
+    max_count=1,
+)
+
+_P_DataSetElement_optional = _PropertySpec(
+    name='optional',
+    predicate='http://qudt.org/schema/qudt/optional',
+    kind='literal',
+    label='optional',
+    sources=('http://qudt.org/schema/qudt/DataSetElement-optional',),
+    datatype=bool,
     max_count=1,
 )
 
 class DataSetElement(DataItem, Tuple):
     """QUDT DataSet Element
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DataSetElement
     """
 
@@ -10381,24 +10182,24 @@ class DataSetElement(DataItem, Tuple):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/Tuple'),
         ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_DataSetElement_element_label, _P_DataSetElement_optional, _P_DataSetElement_has_quantity_kind,),
+        properties=(_P_DataSetElement_element_label, _P_DataSetElement_has_quantity_kind, _P_DataSetElement_optional,),
     )
 
     element_label: _Lit[str] = _Lit(_P_DataSetElement_element_label)
     """element label (http://qudt.org/schema/qudt/elementLabel)"""
 
-    optional: _Lit[bool] = _Lit(_P_DataSetElement_optional)
-    """optional (http://qudt.org/schema/qudt/optional)"""
-
     has_quantity_kind: _RelOne[QuantityKind | _TermValue] = _RelOne(_P_DataSetElement_has_quantity_kind)
     """A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`. (http://qudt.org/schema/qudt/hasQuantityKind)"""
+
+    optional: _Lit[bool] = _Lit(_P_DataSetElement_optional)
+    """optional (http://qudt.org/schema/qudt/optional)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
         element_label: str | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alignment: _Iterable[AlignmentType] = (),
         ansi_sql_name: str | None = None,
@@ -10410,7 +10211,7 @@ class DataSetElement(DataItem, Tuple):
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
         description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | TupleMember | None = None,
+        element_datatype: TupleMember | None = None,
         element_type_count: int | None = None,
         exact_match: _Iterable[Concept_2] = (),
         guidance: str | None = None,
@@ -10449,7 +10250,7 @@ class DataSetElement(DataItem, Tuple):
             model=model,
             **_provided(
                 element_label=element_label,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alignment=alignment,
                 ansi_sql_name=ansi_sql_name,
@@ -10494,6 +10295,7 @@ _P_StringType_dimensionality = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/dimensionality',
     kind='object',
     label='dimensionality',
+    sources=('http://qudt.org/schema/qudt/StringType-dimensionality',),
 )
 
 _P_StringType_is_byte_string = _PropertySpec(
@@ -10501,6 +10303,7 @@ _P_StringType_is_byte_string = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/isByteString',
     kind='literal',
     label='is byte string',
+    sources=('http://qudt.org/schema/qudt/StringType-isByteString',),
     datatype=bool,
     max_count=1,
 )
@@ -10510,6 +10313,7 @@ _P_StringType_max_length = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/maxLength',
     kind='literal',
     label='max length',
+    sources=('http://qudt.org/schema/qudt/StringType-maxLength',),
     datatype=int,
     max_count=1,
 )
@@ -10520,11 +10324,13 @@ _P_StringType_member_datatype = _PropertySpec(
     kind='object',
     label='member datatype',
     ranges=('CharacterType',),
+    range_groups=(('http://qudt.org/schema/qudt/CharacterType',),),
+    sources=('http://qudt.org/schema/qudt/StringType-memberDatatype',),
 )
 
 class StringType(ScalarDatatype):
     """String Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/StringType
     """
 
@@ -10555,7 +10361,7 @@ class StringType(ScalarDatatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -10612,7 +10418,7 @@ class StringType(ScalarDatatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -10664,13 +10470,15 @@ _P_DateTimeStringType_encoding = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/encoding',
     kind='object',
     label='encoding',
-    ranges=('DateTimeStringEncodingType', 'Encoding'),
+    ranges=('DateTimeStringEncodingType',),
+    range_groups=(('http://qudt.org/schema/qudt/DateTimeStringEncodingType',), ('http://qudt.org/schema/qudt/Encoding',)),
+    sources=('http://qudt.org/schema/qudt/DateTimeStringType-encoding', 'http://qudt.org/schema/qudt/ScalarDatatype-encoding'),
     max_count=1,
 )
 
 class DateTimeStringType(StringType):
     """Temporal Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DateTimeStringType
     """
 
@@ -10685,14 +10493,14 @@ class DateTimeStringType(StringType):
         properties=(_P_DateTimeStringType_encoding,),
     )
 
-    encoding: _RelOne[DateTimeStringEncodingType | Encoding] = _RelOne(_P_DateTimeStringType_encoding)
+    encoding: _RelOne[DateTimeStringEncodingType] = _RelOne(_P_DateTimeStringType_encoding)
     """encoding (http://qudt.org/schema/qudt/encoding)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -10708,7 +10516,7 @@ class DateTimeStringType(StringType):
         deprecated_in_version: str | None = None,
         description: _Iterable[_EntityBase] = (),
         dimensionality: _Iterable[_EntityBase] = (),
-        encoding: DateTimeStringEncodingType | Encoding | None = None,
+        encoding: DateTimeStringEncodingType | None = None,
         exact_match: _Iterable[Concept_2] = (),
         guidance: str | None = None,
         has_rule: _Iterable[Rule] = (),
@@ -10749,7 +10557,7 @@ class DateTimeStringType(StringType):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -10798,7 +10606,7 @@ class DateTimeStringType(StringType):
 
 class DateStringType(DateTimeStringType):
     """Date String Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DateStringType
     """
 
@@ -10814,7 +10622,7 @@ class DateStringType(DateTimeStringType):
 
 class StringEncodingType(Encoding):
     """String Encoding Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/StringEncodingType
     """
 
@@ -10833,13 +10641,15 @@ _P_DateTimeStringEncodingType_allowed_pattern = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/allowedPattern',
     kind='literal',
     label='allowed pattern',
+    sources=('http://qudt.org/schema/qudt/DateTimeStringEncodingType-allowedPattern',),
+    min_count=1,
     datatype=str,
     required=True,
 )
 
 class DateTimeStringEncodingType(StringEncodingType):
     """Date Time String Encoding Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DateTimeStringEncodingType
     """
 
@@ -10885,7 +10695,7 @@ class DateTimeStringEncodingType(StringEncodingType):
 
 class DecimalPrefix(Prefix):
     """Decimal Prefix
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DecimalPrefix
     """
 
@@ -10901,7 +10711,7 @@ class DecimalPrefix(Prefix):
 
 class DerivedCodeList(CodeList):
     """Derived Code List
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/dtype#DerivedCodeList
     """
 
@@ -10917,7 +10727,7 @@ class DerivedCodeList(CodeList):
 
 class DerivedUnit(Unit):
     """Derived Unit
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DerivedUnit
     """
 
@@ -10933,7 +10743,7 @@ class DerivedUnit(Unit):
 
 class Map(Collection):
     """Map Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Map
     """
 
@@ -10949,7 +10759,7 @@ class Map(Collection):
 
 class Dictionary(Map):
     """Dictionary Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Dictionary
     """
 
@@ -10963,31 +10773,13 @@ class Dictionary(Map):
         ancestor_iris=('http://qudt.org/schema/qudt/Collection', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Map', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_DigitalCurrencyUnit_currency_exponent = _PropertySpec(
-    name='currency_exponent',
-    predicate='http://qudt.org/schema/qudt/currencyExponent',
-    kind='literal',
-    label='currency exponent',
-    datatype=int,
-    max_count=1,
-)
-
 _P_DigitalCurrencyUnit_blockchain_network = _PropertySpec(
     name='blockchain_network',
     predicate='http://qudt.org/schema/qudt/blockchainNetwork',
     kind='literal',
     label='blockchain network',
     definition="Primary network name (e.g., 'Bitcoin Mainnet', 'Ethereum Mainnet').",
-    datatype=str,
-    max_count=1,
-)
-
-_P_DigitalCurrencyUnit_has_dti_code = _PropertySpec(
-    name='has_dti_code',
-    predicate='http://qudt.org/schema/qudt/hasDTICode',
-    kind='literal',
-    label='has DTI code',
-    definition='ISO 24165 Digital Token Identifier (12-character alphanumeric).',
+    sources=('b6ab65813b636daf64e586da9',),
     datatype=str,
     max_count=1,
 )
@@ -10997,13 +10789,35 @@ _P_DigitalCurrencyUnit_currency_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/currencyCode',
     kind='literal',
     label='currency code',
+    sources=('bf3bcdb9104eb27cd149dd92d', 'http://qudt.org/schema/qudt/CurrencyUnit-currencyCode'),
+    datatype=str,
+    max_count=1,
+)
+
+_P_DigitalCurrencyUnit_currency_exponent = _PropertySpec(
+    name='currency_exponent',
+    predicate='http://qudt.org/schema/qudt/currencyExponent',
+    kind='literal',
+    label='currency exponent',
+    sources=('b0902c6900b0bbca66b064a52', 'http://qudt.org/schema/qudt/CurrencyUnit-currencyExponent'),
+    datatype=int,
+    max_count=1,
+)
+
+_P_DigitalCurrencyUnit_has_dti_code = _PropertySpec(
+    name='has_dti_code',
+    predicate='http://qudt.org/schema/qudt/hasDTICode',
+    kind='literal',
+    label='has DTI code',
+    definition='ISO 24165 Digital Token Identifier (12-character alphanumeric).',
+    sources=('b6cbf031159a278b4c0cfbcd6',),
     datatype=str,
     max_count=1,
 )
 
 class DigitalCurrencyUnit(CurrencyUnit):
     """A currency-like unit for cryptographic or tokenized assets. Instances should reference an ISO 24165 Digital Token Identifier (DTI) when available.
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DigitalCurrencyUnit
     """
 
@@ -11015,20 +10829,20 @@ class DigitalCurrencyUnit(CurrencyUnit):
         definition='A currency-like unit for cryptographic or tokenized assets. Instances should reference an ISO 24165 Digital Token Identifier (DTI) when available.',
         parent_iris=('http://qudt.org/schema/qudt/CurrencyUnit',),
         ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/CurrencyUnit', 'http://qudt.org/schema/qudt/DimensionlessUnit', 'http://qudt.org/schema/qudt/Unit', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_DigitalCurrencyUnit_currency_exponent, _P_DigitalCurrencyUnit_blockchain_network, _P_DigitalCurrencyUnit_has_dti_code, _P_DigitalCurrencyUnit_currency_code,),
+        properties=(_P_DigitalCurrencyUnit_blockchain_network, _P_DigitalCurrencyUnit_currency_code, _P_DigitalCurrencyUnit_currency_exponent, _P_DigitalCurrencyUnit_has_dti_code,),
     )
-
-    currency_exponent: _Lit[int] = _Lit(_P_DigitalCurrencyUnit_currency_exponent)
-    """currency exponent (http://qudt.org/schema/qudt/currencyExponent)"""
 
     blockchain_network: _Lit[str] = _Lit(_P_DigitalCurrencyUnit_blockchain_network)
     """Primary network name (e.g., 'Bitcoin Mainnet', 'Ethereum Mainnet'). (http://qudt.org/schema/qudt/blockchainNetwork)"""
 
-    has_dti_code: _Lit[str] = _Lit(_P_DigitalCurrencyUnit_has_dti_code)
-    """ISO 24165 Digital Token Identifier (12-character alphanumeric). (http://qudt.org/schema/qudt/hasDTICode)"""
-
     currency_code: _Lit[str] = _Lit(_P_DigitalCurrencyUnit_currency_code)
     """currency code (http://qudt.org/schema/qudt/currencyCode)"""
+
+    currency_exponent: _Lit[int] = _Lit(_P_DigitalCurrencyUnit_currency_exponent)
+    """currency exponent (http://qudt.org/schema/qudt/currencyExponent)"""
+
+    has_dti_code: _Lit[str] = _Lit(_P_DigitalCurrencyUnit_has_dti_code)
+    """ISO 24165 Digital Token Identifier (12-character alphanumeric). (http://qudt.org/schema/qudt/hasDTICode)"""
 
     def __init__(
         self,
@@ -11036,7 +10850,7 @@ class DigitalCurrencyUnit(CurrencyUnit):
         *,
         has_dimension_vector: QuantityKindDimensionVector | None,
         has_quantity_kind: _Iterable[QuantityKind | _TermValue],
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alt_symbol: _Iterable[_EntityBase] = (),
         applicable_system: _Iterable[SystemOfUnits] = (),
@@ -11106,7 +10920,7 @@ class DigitalCurrencyUnit(CurrencyUnit):
             **_provided(
                 has_dimension_vector=has_dimension_vector,
                 has_quantity_kind=has_quantity_kind,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alt_symbol=alt_symbol,
                 applicable_system=applicable_system,
@@ -11166,7 +10980,7 @@ class DigitalCurrencyUnit(CurrencyUnit):
 
 class DimensionalDatatype(StructuredDatatype):
     """Dimensional Data Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DimensionalDatatype
     """
 
@@ -11182,7 +10996,7 @@ class DimensionalDatatype(StructuredDatatype):
 
 class Discipline(Concept_2):
     """Discipline
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Discipline
     """
 
@@ -11198,7 +11012,7 @@ class Discipline(Concept_2):
 
 class Discipline_2(Dimension):
     """Discipline Dimension
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/vaem#Discipline
     """
 
@@ -11217,13 +11031,14 @@ _P_DiscreteState_inverted = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/inverted',
     kind='literal',
     label='inverted',
+    sources=('http://qudt.org/schema/qudt/DiscreteState-inverted',),
     datatype=bool,
     max_count=1,
 )
 
 class DiscreteState(EnumeratedValue):
     """Discrete State
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DiscreteState
     """
 
@@ -11283,7 +11098,7 @@ class DiscreteState(EnumeratedValue):
 
 class Dishwasher(Equipment):
     """A piece of `Equipment` that automatically cleans dishware, cookware, and cutlery.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Dishwasher
     """
 
@@ -11304,7 +11119,7 @@ class Dishwasher(Equipment):
 
 class DissolvedAirFlotationThickener(Thickener):
     """A thickener that uses dissolved air to separate solids from liquids
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#DissolvedAirFlotationThickener
     """
 
@@ -11329,7 +11144,7 @@ class DissolvedAirFlotationThickener(Thickener):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -11373,7 +11188,7 @@ class DissolvedAirFlotationThickener(Thickener):
 
 class Domain(Dimension):
     """Domain Dimension
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/vaem#Domain
     """
 
@@ -11393,6 +11208,9 @@ _P_DomainSpace_has_domain = _PropertySpec(
     kind='enum',
     label='has domain',
     definition='A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`).',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Domain',),),
+    sources=('ba3cb9d654fa531a9f0ca4633',),
+    min_count=1,
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Domain',),
     required=True,
     max_count=1,
@@ -11400,7 +11218,7 @@ _P_DomainSpace_has_domain = _PropertySpec(
 
 class DomainSpace(Connectable):
     """A portion of a `PhysicalSpace` that is affected by a building service associated with a domain. `DomainSpace`s may represent an entire `PhysicalSpace` or any portion of a `PhysicalSpace` (see {s223:PhysicalSpace}). Multiple `DomainSpace`s of the same domain may overlap, and `DomainSpace`s of different domains may also overlap, but `DomainSpace`s can not overlap multiple `PhysicalSpace`s. `DomainSpace`s may be grouped into `Zone`s using the relation `hasDomainSpace` (see {s223:hasDomainSpace}).
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#DomainSpace
     """
 
@@ -11460,7 +11278,7 @@ class DomainSpace(Connectable):
 
 class Door(Equipment):
     """A piece of `Equipment` consisting of hinged, sliding, or revolving barrier at the entrance to a building or room.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Door
     """
 
@@ -11479,7 +11297,7 @@ class Door(Equipment):
 
 class DoublePrecisionType(NumericType):
     """Double Precision Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/DoublePrecisionType
     """
 
@@ -11495,7 +11313,7 @@ class DoublePrecisionType(NumericType):
 
 class Drain(Valve_2):
     """A `Valve` that allows, regulates, or stops the flow of water from a `Sink`, `Shower`, `Bathtub`, or other plumbing service equipment into a plumbing drainage system that typically carries the mixture to a sewer system or septic tank.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Drain
     """
 
@@ -11515,7 +11333,7 @@ class Drain(Valve_2):
 
 class TerminalUnit(Equipment):
     """A piece of `Equipment` that modulates the volume of air delivered to a space.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#TerminalUnit
     """
 
@@ -11535,7 +11353,7 @@ class TerminalUnit(Equipment):
 
 class DualDuctTerminal(TerminalUnit):
     """A `TerminalUnit` that mixes two independent sources of primary air.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#DualDuctTerminal
     """
 
@@ -11554,7 +11372,7 @@ class DualDuctTerminal(TerminalUnit):
 
 class Duct(Connection):
     """A `Connection` that is used to transport air such as supply, return, and exhaust in HVAC (Heating, Ventilation, and Air Conditioning) systems.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Duct
     """
 
@@ -11568,21 +11386,10 @@ class Duct(Connection):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_DuvSensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    required=True,
-    max_count=1,
-)
-
 class DuvSensor(LightSensor):
     """A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a Duv of a light source, defined as the
     distance between the chromaticity of the light source and a blackbody radiator of equal correlated color temperature (CCT).
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#DuvSensor
     """
 
@@ -11594,76 +11401,7 @@ class DuvSensor(LightSensor):
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a Duv of a light source, defined as the\ndistance between the chromaticity of the light source and a blackbody radiator of equal correlated color temperature (CCT).',
         parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#LightSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_DuvSensor_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_DuvSensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
 
 _P_EM_medium = _PropertySpec(
     name='medium',
@@ -11671,14 +11409,17 @@ _P_EM_medium = _PropertySpec(
     kind='enum',
     label='has medium',
     definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    enum_ranges=('http://data.ashrae.org/standard223#Constituent-EM', 'http://data.ashrae.org/standard223#Substance-Medium'),
+    range_groups=(('http://data.ashrae.org/standard223#Constituent-EM',), ('http://data.ashrae.org/standard223#Substance-Medium',)),
+    sources=('b08ea5991a9d595339cdac23a', 'b12ca976aa7f6ff2f39104dba', 'b490b774633a41f304e59947b', 'b4dc0d1658287df40e921ad35', 'b59c7af6a2db2bd70f0dac26a', 'b5aecdad0a8f3f7f4ac11e130', 'b73706e6130865d1a05507c79', 'b779b3e6d70bca0b584bb320c', 'b9c3a652daf6472abbe15c7f2', 'ba0b040374feef1cc9f970b08', 'bb2dc6068ee4797c8be4b9372', 'be44de150b3c396415bd19166', 'beebbb4c5b0712b03c867ce9c'),
+    min_count=1,
+    enum_ranges=('http://data.ashrae.org/standard223#Constituent-EM',),
     required=True,
     max_count=1,
 )
 
 class EM(Connection):
     """A type of `Connection` that represents air, a vacuum, outer space, or a similar environment used to convey electromagnetic energy (i.e., `Constituent-EM`), without the use of a solid materials such as fiber optic cables or other such `Waveguide`s.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EM
     """
 
@@ -11734,7 +11475,7 @@ class EM(Connection):
 
 class TrajectoryCoordinateSystem(AerospaceCoordinateSystem):
     """Trajectory Coordinate System
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TrajectoryCoordinateSystem
     """
 
@@ -11750,7 +11491,7 @@ class TrajectoryCoordinateSystem(AerospaceCoordinateSystem):
 
 class EarthCoordinateSystem(TrajectoryCoordinateSystem):
     """Earth Coordinate System Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/EarthCoordinateSystem
     """
 
@@ -11766,7 +11507,7 @@ class EarthCoordinateSystem(TrajectoryCoordinateSystem):
 
 class EfficiencySensor(Sensor):
     """A sensor used to measure the efficiency of a system or equipment
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#EfficiencySensor
     """
 
@@ -11782,7 +11523,7 @@ class EfficiencySensor(Sensor):
 
 class ElectricClothesDryer(Equipment):
     """A piece of `Equipment` that automatically removes moisture from a load of textiles (e.g., clothing, bedding), typically after they are washed in a `ClothesWasher`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricClothesDryer
     """
 
@@ -11801,7 +11542,7 @@ class ElectricClothesDryer(Equipment):
 
 class ElectricCooktop(Equipment):
     """A piece of `Equipment` with a flat surface containing one or more heat sources designed for cooking with pots and pans.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricCooktop
     """
 
@@ -11825,13 +11566,16 @@ _P_ElectricCurrentSensor_observes = _PropertySpec(
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
     ranges=('QuantifiableObservableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
+    sources=('bd08797a7c86eae8c1d79a47f', 'be50f6020cf881de854cd1c39', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class ElectricCurrentSensor(Sensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of electric current.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricCurrentSensor
     """
 
@@ -11864,7 +11608,7 @@ class ElectricCurrentSensor(Sensor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -11916,7 +11660,7 @@ class ElectricCurrentSensor(Sensor):
 
 class ElectricEnergyConverter(Equipment):
     """A piece of `Equipment` that converts one form of electric power to another form of electric power.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricEnergyConverter
     """
 
@@ -11932,7 +11676,7 @@ class ElectricEnergyConverter(Equipment):
 
 class ElectricEnergyDCDCConverter(ElectricEnergyConverter):
     """An `ElectricEnergyConverter` that transforms direct current (DC) electric power from one voltage to another voltage.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricEnergyDCDCConverter
     """
 
@@ -11948,7 +11692,7 @@ class ElectricEnergyDCDCConverter(ElectricEnergyConverter):
 
 class ElectricEnergyInverter(ElectricEnergyConverter):
     """An `ElectricEnergyConverter` that tranforms direct current (DC) electric power to alternating current (AC) electric power, or vice versa.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricEnergyInverter
     """
 
@@ -11964,7 +11708,7 @@ class ElectricEnergyInverter(ElectricEnergyConverter):
 
 class ElectricEnergyTransformer(ElectricEnergyConverter):
     """An `ElectricEnergyConverter` that transforms alternating current (AC) electric power from one voltage to another voltage.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricEnergyTransformer
     """
 
@@ -11981,10 +11725,10 @@ class ElectricEnergyTransformer(ElectricEnergyConverter):
 class ElectricResistanceElement(Equipment):
     """A piece of `Equipment` that provides electrical resistance heating, for example an electric heating coil within a Fan Coil Unit.
     It shall have one electricity `InletConnectionPoint`, and fit one of the following two patterns:
-    
+
     - Pattern 1: An `ElectricResistanceElement` shall have exactly one Bidirectional `ConnectionPoint` using the medium `Mix-Fluid`.
     - Pattern 2: An `ElectricResistanceElement` shall have one inlet and one outlet using the medium `Mix-Fluid`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricResistanceElement
     """
 
@@ -12012,7 +11756,7 @@ class ElectricResistanceElement(Equipment):
 
 class ElectricHeatingCoil(ElectricResistanceElement):
     """An electrical heating element with an analog heating command.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#ElectricHeatingCoil
     """
 
@@ -12028,7 +11772,7 @@ class ElectricHeatingCoil(ElectricResistanceElement):
 
 class ElectricOven(Equipment):
     """A piece of `Equipment` with an enclosed chamber designed for baking, roasting, and other cooking methods that rely on circulating heat.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricOven
     """
 
@@ -12047,7 +11791,7 @@ class ElectricOven(Equipment):
 
 class ElectricWaterDispenser(Equipment):
     """A piece of `Equipment` that dispenses water and optionally heats and/or cools the water prior to dispensing.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricWaterDispenser
     """
 
@@ -12067,7 +11811,7 @@ class ElectricWaterDispenser(Equipment):
 
 class ElectricallyConductingMembrane(Filter):
     """A membrane capable of conducting electricity, used for in-situ cleaning or electro-oxidation processes.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ElectricallyConductingMembrane
     """
 
@@ -12083,7 +11827,7 @@ class ElectricallyConductingMembrane(Filter):
 
 class ElectricityBreaker(Equipment):
     """A piece of `Equipment` that automatically opens an electric circuit automatically at a predetermined overcurrent, so as to prevent damage to the circuit, the equipment connected to the circuit, and the building containing the circuit.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricityBreaker
     """
 
@@ -12105,7 +11849,7 @@ class ElectricityMeter(Equipment):
     """A piece of `Equipment` that contains at least one `VoltageSensor` and one `ElectricCurrentSensor`, and reports one or more
     properties of electricity. Example reported properties include the following `QuantityKind`s: `Voltage`, `ElectricCurrent`, `ActiveEnergy`,
     `ActivePower`, `ReactivePower`, `ApparentPower`, `PowerFactor`, and `Frequency` with unit Hertz. An `ElectricityMeter` may optionally contain a `Function` that represents the mathematical calculations of the reported properties of electricity.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricityMeter
     """
 
@@ -12121,7 +11865,7 @@ class ElectricityMeter(Equipment):
 
 class ElectricityOutlet(Equipment):
     """A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to electrical power, typically via a plug and cord. Not to be confused with an `OutletConnectionPoint` with the medium `Constituent-Electricity`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricityOutlet
     """
 
@@ -12141,7 +11885,7 @@ class ElectricityOutlet(Equipment):
 
 class ElectroDialyticCrystallizer(UnitProcess):
     """A modular system designed for brine concentration and crystallization, integrating electrodialysis and crystallization.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ElectroDialyticCrystallizer
     """
 
@@ -12166,7 +11910,7 @@ class ElectroDialyticCrystallizer(UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -12210,7 +11954,7 @@ class ElectroDialyticCrystallizer(UnitProcess):
 
 class ElectrocoagulationUnit(Reactor):
     """A unit that uses electrocoagulation for contaminant removal.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ElectrocoagulationUnit
     """
 
@@ -12235,7 +11979,7 @@ class ElectrocoagulationUnit(Reactor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -12279,7 +12023,7 @@ class ElectrocoagulationUnit(Reactor):
 
 class ElectrodialysisUnit(UnitProcess):
     """A unit that uses electricity to drive ion movement through a membrane
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ElectrodialysisUnit
     """
 
@@ -12304,7 +12048,7 @@ class ElectrodialysisUnit(UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -12348,7 +12092,7 @@ class ElectrodialysisUnit(UnitProcess):
 
 class Electrolyzer(UnitProcess):
     """An equipment that uses electricity to split liquids into constituent elements
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Electrolyzer
     """
 
@@ -12373,7 +12117,7 @@ class Electrolyzer(UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -12417,7 +12161,7 @@ class Electrolyzer(UnitProcess):
 
 class ElectromagneticFieldDevice(Equipment):
     """A device that generates an electromagnetic field, used as a pretreatment method for membrane scaling and fouling control.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ElectromagneticFieldDevice
     """
 
@@ -12433,7 +12177,7 @@ class ElectromagneticFieldDevice(Equipment):
 
 class ElectronicDisplay(Equipment):
     """A piece of `Equipment` that receives an input electrical signal and outputs information, typically text and/or graphics, in a visual form.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ElectronicDisplay
     """
 
@@ -12449,7 +12193,7 @@ class ElectronicDisplay(Equipment):
 
 class Elevator(Equipment):
     """A piece of `Equipment` that vertically transports people or freight between floors or levels of a building via a vertical shaft commonly referred to as a hoistway. The people or freight are typically situated on a platform, or in a container commonly referred to as a car, cab, cabin, cage, or carriage.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Elevator
     """
 
@@ -12468,7 +12212,7 @@ class Elevator(Equipment):
 
 class EndianType(EnumeratedValue):
     """Endian Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/EndianType
     """
 
@@ -12487,13 +12231,15 @@ _P_EngineeringValueTupleMember_element_datatype = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/elementDatatype',
     kind='object',
     label='element datatype',
-    ranges=('Datatype', 'RealSinglePrecisionType', 'ScalarDatatype'),
+    ranges=('RealSinglePrecisionType',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',), ('http://qudt.org/schema/qudt/RealSinglePrecisionType',), ('http://qudt.org/schema/qudt/ScalarDatatype',)),
+    sources=('http://qudt.org/schema/qudt/EngineeringValueTupleMember-elementType', 'http://qudt.org/schema/qudt/StructuredDatatype-elementType', 'http://qudt.org/schema/qudt/TupleMember-elementType'),
     max_count=1,
 )
 
 class EngineeringValueTupleMember(TupleMember):
     """Engineering Value Tuple Member
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/EngineeringValueTupleMember
     """
 
@@ -12508,7 +12254,7 @@ class EngineeringValueTupleMember(TupleMember):
         properties=(_P_EngineeringValueTupleMember_element_datatype,),
     )
 
-    element_datatype: _RelOne[Datatype | RealSinglePrecisionType | ScalarDatatype] = _RelOne(_P_EngineeringValueTupleMember_element_datatype)
+    element_datatype: _RelOne[RealSinglePrecisionType] = _RelOne(_P_EngineeringValueTupleMember_element_datatype)
     """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
 
     def __init__(
@@ -12516,7 +12262,7 @@ class EngineeringValueTupleMember(TupleMember):
         name: str | None = None,
         *,
         order_in_structure: _EntityBase | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alignment: _Iterable[AlignmentType] = (),
         ansi_sql_name: str | None = None,
@@ -12528,7 +12274,7 @@ class EngineeringValueTupleMember(TupleMember):
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
         description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | RealSinglePrecisionType | ScalarDatatype | None = None,
+        element_datatype: RealSinglePrecisionType | None = None,
         exact_match: _Iterable[Concept_2] = (),
         guidance: str | None = None,
         has_rule: _Iterable[Rule] = (),
@@ -12562,7 +12308,7 @@ class EngineeringValueTupleMember(TupleMember):
             model=model,
             **_provided(
                 order_in_structure=order_in_structure,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alignment=alignment,
                 ansi_sql_name=ansi_sql_name,
@@ -12603,6 +12349,9 @@ _P_EnumerableProperty_has_enumeration_kind = _PropertySpec(
     kind='enum',
     label='has enumeration kind',
     definition='A `Relation` that associates an `EnumerableProperty` with a class of enumeration values. This is used to, for example, identify what kind of substance is transported along a `Connection` or which day of the week a setpoint is active.',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind',),),
+    sources=('baf7e64b302199795068b3c52',),
+    min_count=1,
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind',),
     required=True,
     max_count=1,
@@ -12610,7 +12359,7 @@ _P_EnumerableProperty_has_enumeration_kind = _PropertySpec(
 
 class EnumerableProperty(Property):
     """An `EnumerableProperty` is a `Property` with an enumerated (fixed) set of possible values.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EnumerableProperty
     """
 
@@ -12672,7 +12421,7 @@ class EnumerableProperty(Property):
 
 class EnumeratedActuatableProperty(ActuatableProperty, EnumerableProperty):
     """An `EnumeratedActuatableProperty` is a `Property` with an enumerated (fixed) set of possible values that can be changed (actuated).
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EnumeratedActuatableProperty
     """
 
@@ -12689,7 +12438,7 @@ class EnumeratedActuatableProperty(ActuatableProperty, EnumerableProperty):
 class ObservableProperty(Property):
     """The term "observable" implies that reading the `ObservableProperty` value will return the result of a physical observation, usually by a `Sensor`.
     In contrast, the term "actuatable" (see {s223:ActuatableProperty}) implies that writing to the `ActuatableProperty` value will directly trigger a physical actuation.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ObservableProperty
     """
 
@@ -12705,7 +12454,7 @@ class ObservableProperty(Property):
 
 class EnumeratedObservableProperty(EnumerableProperty, ObservableProperty):
     """An `EnumeratedObservableProperty` is a `Property` with an enumerated (fixed) set of possible values that cannot be changed (can only be observed).
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EnumeratedObservableProperty
     """
 
@@ -12725,6 +12474,8 @@ _P_EnumeratedQuantity_enumerated_value = _PropertySpec(
     kind='object',
     label='enumerated value',
     ranges=('EnumeratedValue',),
+    range_groups=(('http://qudt.org/schema/qudt/EnumeratedValue',),),
+    sources=('http://qudt.org/schema/qudt/EnumeratedQuantity-enumeratedValue',),
     max_count=1,
 )
 
@@ -12734,12 +12485,14 @@ _P_EnumeratedQuantity_enumeration = _PropertySpec(
     kind='object',
     label='enumeration',
     ranges=('Enumeration',),
+    range_groups=(('http://qudt.org/schema/qudt/Enumeration',),),
+    sources=('http://qudt.org/schema/qudt/EnumeratedQuantity-enumeration',),
     max_count=1,
 )
 
 class EnumeratedQuantity(Concept_2):
     """Enumerated Quantity
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/EnumeratedQuantity
     """
 
@@ -12764,7 +12517,7 @@ class EnumeratedQuantity(Concept_2):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -12791,7 +12544,7 @@ class EnumeratedQuantity(Concept_2):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -12808,20 +12561,12 @@ class EnumeratedQuantity(Concept_2):
             ),
         )
 
-_P_Enumeration_abbreviation = _PropertySpec(
-    name='abbreviation',
-    predicate='http://qudt.org/schema/qudt/abbreviation',
-    kind='literal',
-    label='abbreviation',
-    datatype=str,
-    max_count=1,
-)
-
 _P_Enumeration_bits = _PropertySpec(
     name='bits',
     predicate='http://qudt.org/schema/qudt/bits',
     kind='literal',
     label='bits',
+    sources=('http://qudt.org/schema/qudt/Enumeration-bits',),
     datatype=int,
     max_count=1,
 )
@@ -12832,6 +12577,8 @@ _P_Enumeration_default = _PropertySpec(
     kind='object',
     label='default',
     ranges=('EnumeratedValue',),
+    range_groups=(('http://qudt.org/schema/qudt/EnumeratedValue',),),
+    sources=('http://qudt.org/schema/qudt/Enumeration-default',),
     max_count=1,
 )
 
@@ -12841,6 +12588,8 @@ _P_Enumeration_default_value = _PropertySpec(
     kind='object',
     label='Default Value',
     ranges=('EnumeratedValue',),
+    range_groups=(('http://qudt.org/schema/qudt/EnumeratedValue',),),
+    sources=('http://qudt.org/schema/qudt/Enumeration-defaultValue',),
 )
 
 _P_Enumeration_element = _PropertySpec(
@@ -12849,6 +12598,9 @@ _P_Enumeration_element = _PropertySpec(
     kind='object',
     label='element',
     ranges=('EnumeratedValue',),
+    range_groups=(('http://qudt.org/schema/qudt/EnumeratedValue',),),
+    sources=('http://qudt.org/schema/qudt/Enumeration-element',),
+    min_count=1,
     required=True,
 )
 
@@ -12857,20 +12609,23 @@ _P_Enumeration_encoding = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/encoding',
     kind='object',
     label='encoding',
+    sources=('http://qudt.org/schema/qudt/Enumeration-encoding',),
     max_count=1,
 )
 
-_P_Enumeration_value = _PropertySpec(
-    name='value',
+_P_Enumeration_value_2 = _PropertySpec(
+    name='value_2',
     predicate='http://www.linkedmodel.org/schema/dtype#value',
     kind='object',
     label='value',
     ranges=('EnumeratedValue',),
+    range_groups=(('http://qudt.org/schema/qudt/EnumeratedValue',),),
+    sources=('http://qudt.org/schema/qudt/Enumeration-value',),
 )
 
 class Enumeration(Enumeration_2, StructuredDatatype):
     """Enumeration
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Enumeration
     """
 
@@ -12882,11 +12637,8 @@ class Enumeration(Enumeration_2, StructuredDatatype):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.linkedmodel.org/schema/dtype#Enumeration'),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
-        properties=(_P_Enumeration_abbreviation, _P_Enumeration_bits, _P_Enumeration_default, _P_Enumeration_default_value, _P_Enumeration_element, _P_Enumeration_encoding, _P_Enumeration_value,),
+        properties=(_P_Enumeration_bits, _P_Enumeration_default, _P_Enumeration_default_value, _P_Enumeration_element, _P_Enumeration_encoding, _P_Enumeration_value_2,),
     )
-
-    abbreviation: _Lit[str] = _Lit(_P_Enumeration_abbreviation)
-    """abbreviation (http://qudt.org/schema/qudt/abbreviation)"""
 
     bits: _Lit[int] = _Lit(_P_Enumeration_bits)
     """bits (http://qudt.org/schema/qudt/bits)"""
@@ -12903,7 +12655,7 @@ class Enumeration(Enumeration_2, StructuredDatatype):
     encoding: _RelOne[_EntityBase] = _RelOne(_P_Enumeration_encoding)
     """encoding (http://qudt.org/schema/qudt/encoding)"""
 
-    value: _Rel[EnumeratedValue] = _Rel(_P_Enumeration_value)
+    value_2: _Rel[EnumeratedValue] = _Rel(_P_Enumeration_value_2)
     """value (http://www.linkedmodel.org/schema/dtype#value)"""
 
     def __init__(
@@ -12911,7 +12663,7 @@ class Enumeration(Enumeration_2, StructuredDatatype):
         name: str | None = None,
         *,
         element: _Iterable[EnumeratedValue],
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -12944,7 +12696,7 @@ class Enumeration(Enumeration_2, StructuredDatatype):
         plain_text_description: _Iterable[_EntityBase] = (),
         protocol_buffers_name: str | None = None,
         python_name: str | None = None,
-        value: _Iterable[EnumeratedValue] = (),
+        value_2: _Iterable[EnumeratedValue] = (),
         vb_name: str | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -12960,7 +12712,7 @@ class Enumeration(Enumeration_2, StructuredDatatype):
             model=model,
             **_provided(
                 element=element,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -12993,14 +12745,14 @@ class Enumeration(Enumeration_2, StructuredDatatype):
                 plain_text_description=plain_text_description,
                 protocol_buffers_name=protocol_buffers_name,
                 python_name=python_name,
-                value=value,
+                value_2=value_2,
                 vb_name=vb_name,
             ),
         )
 
 class EnumerationScale(Enumeration_2, Scale):
     """Enumeration scale
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/EnumerationScale
     """
 
@@ -13021,6 +12773,9 @@ _P_EquipmentRegion_has_connection_point = _PropertySpec(
     label='has connection point',
     definition='One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).',
     ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('b19dde1c6336e7d29a3a43f2b', 'be2099568566b78227dcced58'),
+    min_count=1,
     inverse='owner',
 )
 
@@ -13031,12 +12786,15 @@ _P_EquipmentRegion_has_process = _PropertySpec(
     label='has process',
     definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
     ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('b9c4b4437ef183c7c959b8811', 'https://watermetadata.org/ontology/watr#hasProcess'),
+    min_count=1,
     required=True,
 )
 
 class EquipmentRegion(Equipment):
     """An identifiable functional portion of a piece of equipment, distinguished by its treatment activity. It need not be physically partitioned or independently installed. Each region has exactly one direct equipment parent, at least one process, and at least one connection point. Nested regions must ultimately belong to equipment that is not itself a region. Roles are optional.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#EquipmentRegion
     """
 
@@ -13068,7 +12826,7 @@ class EquipmentRegion(Equipment):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -13111,7 +12869,7 @@ class EquipmentRegion(Equipment):
 
 class Escalator(Equipment):
     """A piece of `Equipment` that vertically transports people between floors or levels of a building via a moving staircase.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Escalator
     """
 
@@ -13134,16 +12892,19 @@ _P_EthernetCable_medium = _PropertySpec(
     kind='enum',
     label='has medium',
     definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    enum_ranges=('http://data.ashrae.org/standard223#Constituent-Electricity', 'http://data.ashrae.org/standard223#Signal-WiredEthernet', 'http://data.ashrae.org/standard223#Substance-Medium'),
+    range_groups=(('http://data.ashrae.org/standard223#Constituent-Electricity',), ('http://data.ashrae.org/standard223#Signal-WiredEthernet',), ('http://data.ashrae.org/standard223#Substance-Medium',)),
+    sources=('b08ea5991a9d595339cdac23a', 'b12ca976aa7f6ff2f39104dba', 'b490b774633a41f304e59947b', 'b4dc0d1658287df40e921ad35', 'b59c7af6a2db2bd70f0dac26a', 'b5aecdad0a8f3f7f4ac11e130', 'b73706e6130865d1a05507c79', 'b779b3e6d70bca0b584bb320c', 'b8e4fe72cf0c46e702d4ab09f', 'b9c3a652daf6472abbe15c7f2', 'ba0b040374feef1cc9f970b08', 'bb2dc6068ee4797c8be4b9372', 'be44de150b3c396415bd19166', 'bf23cebcd33cb5adb3d3b263d'),
+    min_count=1,
+    enum_ranges=('http://data.ashrae.org/standard223#Signal-WiredEthernet',),
     required=True,
     max_count=1,
 )
 
 class EthernetCable(Conductor):
     """A type of `Conductor` that consists of 1, 2 or 4 pairs of twisted wire and is used for `Signal-WiredEthernet` communication. Subclasses of `EthernetCable` represent common types used in buildings.
-    
+
     : EthernetCable Subclasses
-    
+
     | Subclass |
     |:-----------|
     | `EthernetCable-Cat1` |
@@ -13157,7 +12918,7 @@ class EthernetCable(Conductor):
     | `EthernetCable-Cat7` |
     | `EthernetCable-Cat7a` |
     | `EthernetCable-Cat8` |
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable
     """
 
@@ -13215,7 +12976,7 @@ class EthernetCable(Conductor):
 
 class EthernetCable_Cat1(EthernetCable):
     """EthernetCable-Cat1
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat1
     """
 
@@ -13231,7 +12992,7 @@ class EthernetCable_Cat1(EthernetCable):
 
 class EthernetCable_Cat2(EthernetCable):
     """EthernetCable-Cat2
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat2
     """
 
@@ -13247,7 +13008,7 @@ class EthernetCable_Cat2(EthernetCable):
 
 class EthernetCable_Cat3(EthernetCable):
     """EthernetCable-Cat3
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat3
     """
 
@@ -13263,7 +13024,7 @@ class EthernetCable_Cat3(EthernetCable):
 
 class EthernetCable_Cat4(EthernetCable):
     """EthernetCable-Cat4
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat4
     """
 
@@ -13279,7 +13040,7 @@ class EthernetCable_Cat4(EthernetCable):
 
 class EthernetCable_Cat5(EthernetCable):
     """EthernetCable-Cat5
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat5
     """
 
@@ -13295,7 +13056,7 @@ class EthernetCable_Cat5(EthernetCable):
 
 class EthernetCable_Cat5e(EthernetCable):
     """EthernetCable-Cat5e
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat5e
     """
 
@@ -13311,7 +13072,7 @@ class EthernetCable_Cat5e(EthernetCable):
 
 class EthernetCable_Cat6(EthernetCable):
     """EthernetCable-Cat6
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat6
     """
 
@@ -13327,7 +13088,7 @@ class EthernetCable_Cat6(EthernetCable):
 
 class EthernetCable_Cat6a(EthernetCable):
     """EthernetCable-Cat6a
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat6a
     """
 
@@ -13343,7 +13104,7 @@ class EthernetCable_Cat6a(EthernetCable):
 
 class EthernetCable_Cat7(EthernetCable):
     """EthernetCable-Cat7
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat7
     """
 
@@ -13359,7 +13120,7 @@ class EthernetCable_Cat7(EthernetCable):
 
 class EthernetCable_Cat7a(EthernetCable):
     """EthernetCable-Cat7a
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat7a
     """
 
@@ -13375,7 +13136,7 @@ class EthernetCable_Cat7a(EthernetCable):
 
 class EthernetCable_Cat8(EthernetCable):
     """EthernetCable-Cat8
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat8
     """
 
@@ -13392,7 +13153,7 @@ class EthernetCable_Cat8(EthernetCable):
 class EthernetPort(Equipment):
     """A piece of `Equipment` that connects a single instance of electrical equipment, such as `Computer`s and Wi-Fi access points,
     to an Ethernet network so it can communicate with other equipment and, optionally, with the Internet.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetPort
     """
 
@@ -13413,7 +13174,7 @@ class EthernetPort(Equipment):
 class EthernetSwitch(Equipment):
     """A piece of `Equipment` that connects one or more instances of electrical equipment, such as `Computer`s and Wi-Fi access points,
     to an Ethernet network so they can communicate with each other and, optionally, to the Internet.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#EthernetSwitch
     """
 
@@ -13433,7 +13194,7 @@ class EthernetSwitch(Equipment):
 
 class Evaporator(HeatExchanger, UnitProcess):
     """A device used to turn the liquid form of a substance into its gaseous form
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Evaporator
     """
 
@@ -13458,7 +13219,7 @@ class Evaporator(HeatExchanger, UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -13505,6 +13266,8 @@ _P_FactorUnit_exponent = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/exponent',
     kind='object',
     label='exponent',
+    sources=('http://qudt.org/schema/qudt/FactorUnit-exponent',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -13515,6 +13278,8 @@ _P_FactorUnit_has_unit = _PropertySpec(
     kind='object',
     label='has unit',
     definition='A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.',
+    sources=('http://qudt.org/schema/qudt/FactorUnit-hasUnit',),
+    min_count=1,
     required=True,
     max_count=1,
     inverse='unit_for',
@@ -13522,7 +13287,7 @@ _P_FactorUnit_has_unit = _PropertySpec(
 
 class FactorUnit(Concept_2):
     """Factor Unit
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/FactorUnit
     """
 
@@ -13549,7 +13314,7 @@ class FactorUnit(Concept_2):
         *,
         exponent: _EntityBase | None,
         has_unit: _EntityBase | _TermValue | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -13576,7 +13341,7 @@ class FactorUnit(Concept_2):
             **_provided(
                 exponent=exponent,
                 has_unit=has_unit,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -13593,7 +13358,7 @@ class FactorUnit(Concept_2):
 
 class Fan(Equipment):
     """A piece of `Equipment` that causes a gas (e.g., air) to flow.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Fan
     """
 
@@ -13613,7 +13378,7 @@ class Fan(Equipment):
 
 class FanCoilUnit(Equipment):
     """A piece of `Equipment` consisting of a `Coil` and a `Fan` that regulates the temperature of one or more spaces.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FanCoilUnit
     """
 
@@ -13633,7 +13398,7 @@ class FanCoilUnit(Equipment):
 
 class FanPoweredTerminal(TerminalUnit):
     """A `TerminalUnit` that contains a fan, and optionally has supplemental heating or cooling. Airflow may pass through or be parallel to the fan.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FanPoweredTerminal
     """
 
@@ -13649,7 +13414,7 @@ class FanPoweredTerminal(TerminalUnit):
 
 class Fan_2(Fan):
     """A fan with a start/stop command.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#Fan
     """
 
@@ -13665,7 +13430,7 @@ class Fan_2(Fan):
 
 class FanWithVFD(Fan_2):
     """A fan controlled by a VFD.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#FanWithVFD
     """
 
@@ -13681,7 +13446,7 @@ class FanWithVFD(Fan_2):
 
 class Faucet(Valve_2):
     """A `Valve` that allows, regulates, or stops the flow of hot or cold water from a plumbing supply system into a `Sink`, `Shower`, `Bathtub`, or other plumbing service equipment.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Faucet
     """
 
@@ -13701,7 +13466,7 @@ class Faucet(Valve_2):
 
 class FiberEthernetOutlet(Equipment):
     """A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a fiber Ethernet communication network, typically via a fiber Ethernet cable.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FiberEthernetOutlet
     """
 
@@ -13719,22 +13484,11 @@ class FiberEthernetOutlet(Equipment):
         ),
     )
 
-_P_FiberOpticCable_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    enum_ranges=('http://data.ashrae.org/standard223#Constituent-EM', 'http://data.ashrae.org/standard223#Substance-Medium'),
-    required=True,
-    max_count=1,
-)
-
 class FiberOpticCable(Waveguide):
     """A type of `Waveguide` that consists of thin, flexible strands of glass or plastic fibers that transmit data as pulses of light and is used for `Signal-FiberEthernet` or `Wideband-CATV` communication. Subclasses of `FiberOpticCable` represent common types used in buildings.
-    
+
     : FiberOpticCable Subclasses
-    
+
     | Subclass |
     |:-----------|
     | `FiberOpticCable-OM1` |
@@ -13744,7 +13498,7 @@ class FiberOpticCable(Waveguide):
     | `FiberOpticCable-OM5` |
     | `FiberOpticCable-OS1` |
     | `FiberOpticCable-OS2` |
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable
     """
 
@@ -13756,51 +13510,11 @@ class FiberOpticCable(Waveguide):
         definition='A type of `Waveguide` that consists of thin, flexible strands of glass or plastic fibers that transmit data as pulses of light and is used for `Signal-FiberEthernet` or `Wideband-CATV` communication. Subclasses of `FiberOpticCable` represent common types used in buildings.\n\n: FiberOpticCable Subclasses\n\n| Subclass |\n|:-----------|\n| `FiberOpticCable-OM1` |\n| `FiberOpticCable-OM2` |\n| `FiberOpticCable-OM3` |\n| `FiberOpticCable-OM4` |\n| `FiberOpticCable-OM5` |\n| `FiberOpticCable-OS1` |\n| `FiberOpticCable-OS2` |',
         parent_iris=('http://data.ashrae.org/standard223#Waveguide',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_FiberOpticCable_medium,),
     )
-
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_FiberOpticCable_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        connects_at: _Iterable[ConnectionPoint],
-        medium: _EnumValue | None,
-        cnx: _Iterable[ConnectionPoint] = (),
-        connects_from: _Iterable[Connectable] = (),
-        connects_to: _Iterable[Connectable] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        has_thermodynamic_phase: _EnumValue | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                connects_at=connects_at,
-                medium=medium,
-                cnx=cnx,
-                connects_from=connects_from,
-                connects_to=connects_to,
-                has_property=has_property,
-                has_role=has_role,
-                has_thermodynamic_phase=has_thermodynamic_phase,
-            ),
-        )
 
 class FiberOpticCable_OM1(FiberOpticCable):
     """FiberOpticCable-OM1
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OM1
     """
 
@@ -13816,7 +13530,7 @@ class FiberOpticCable_OM1(FiberOpticCable):
 
 class FiberOpticCable_OM2(FiberOpticCable):
     """FiberOpticCable-OM2
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OM2
     """
 
@@ -13832,7 +13546,7 @@ class FiberOpticCable_OM2(FiberOpticCable):
 
 class FiberOpticCable_OM3(FiberOpticCable):
     """FiberOpticCable-OM3
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OM3
     """
 
@@ -13848,7 +13562,7 @@ class FiberOpticCable_OM3(FiberOpticCable):
 
 class FiberOpticCable_OM4(FiberOpticCable):
     """FiberOpticCable-OM4
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OM4
     """
 
@@ -13864,7 +13578,7 @@ class FiberOpticCable_OM4(FiberOpticCable):
 
 class FiberOpticCable_OM5(FiberOpticCable):
     """FiberOpticCable-OM5
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OM5
     """
 
@@ -13880,7 +13594,7 @@ class FiberOpticCable_OM5(FiberOpticCable):
 
 class FiberOpticCable_OS1(FiberOpticCable):
     """FiberOpticCable-OS1
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OS1
     """
 
@@ -13896,7 +13610,7 @@ class FiberOpticCable_OS1(FiberOpticCable):
 
 class FiberOpticCable_OS2(FiberOpticCable):
     """FiberOpticCable-OS2
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OS2
     """
 
@@ -13915,17 +13629,10 @@ _P_FieldType_element_name = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/elementName',
     kind='literal',
     label='element name',
+    sources=('http://qudt.org/schema/qudt/FieldType-elementName',),
+    min_count=1,
     datatype=str,
     required=True,
-    max_count=1,
-)
-
-_P_FieldType_element_datatype = _PropertySpec(
-    name='element_datatype',
-    predicate='http://qudt.org/schema/qudt/elementDatatype',
-    kind='object',
-    label='element datatype',
-    ranges=('Datatype',),
     max_count=1,
 )
 
@@ -13934,6 +13641,8 @@ _P_FieldType_field_label = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/fieldLabel',
     kind='literal',
     label='field label',
+    sources=('http://qudt.org/schema/qudt/FieldType-fieldLabel',),
+    min_count=1,
     datatype=str,
     required=True,
     max_count=1,
@@ -13945,12 +13654,15 @@ _P_FieldType_field_type = _PropertySpec(
     kind='object',
     label='field type',
     ranges=('Datatype',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',),),
+    sources=('http://qudt.org/schema/qudt/FieldType-fieldType',),
+    min_count=1,
     required=True,
 )
 
 class FieldType(CompositeDatatype):
     """Field Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/FieldType
     """
 
@@ -13962,14 +13674,11 @@ class FieldType(CompositeDatatype):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/CompositeDatatype',),
         ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_FieldType_element_name, _P_FieldType_element_datatype, _P_FieldType_field_label, _P_FieldType_field_type,),
+        properties=(_P_FieldType_element_name, _P_FieldType_field_label, _P_FieldType_field_type,),
     )
 
     element_name: _Lit[str] = _Lit(_P_FieldType_element_name)
     """element name (http://qudt.org/schema/qudt/elementName)"""
-
-    element_datatype: _RelOne[Datatype] = _RelOne(_P_FieldType_element_datatype)
-    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
 
     field_label: _Lit[str] = _Lit(_P_FieldType_field_label)
     """field label (http://qudt.org/schema/qudt/fieldLabel)"""
@@ -13984,7 +13693,7 @@ class FieldType(CompositeDatatype):
         element_name: str | None,
         field_label: str | None,
         field_type: _Iterable[Datatype],
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alignment: _Iterable[AlignmentType] = (),
         ansi_sql_name: str | None = None,
@@ -14032,7 +13741,7 @@ class FieldType(CompositeDatatype):
                 element_name=element_name,
                 field_label=field_label,
                 field_type=field_type,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alignment=alignment,
                 ansi_sql_name=ansi_sql_name,
@@ -14072,6 +13781,7 @@ _P_Figure_figure_caption = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/figureCaption',
     kind='literal',
     label='figure caption',
+    sources=('http://qudt.org/schema/qudt/Figure-figureCaption',),
     datatype=str,
     max_count=1,
 )
@@ -14081,6 +13791,7 @@ _P_Figure_figure_label = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/figureLabel',
     kind='literal',
     label='figure label',
+    sources=('http://qudt.org/schema/qudt/Figure-figureLabel',),
     datatype=str,
     max_count=1,
 )
@@ -14090,6 +13801,7 @@ _P_Figure_height = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/height',
     kind='literal',
     label='height',
+    sources=('http://qudt.org/schema/qudt/Figure-height',),
     datatype=str,
     max_count=1,
 )
@@ -14099,6 +13811,7 @@ _P_Figure_image = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/image',
     kind='literal',
     label='image',
+    sources=('http://qudt.org/schema/qudt/Figure-image',),
     datatype=str,
     max_count=1,
 )
@@ -14108,6 +13821,8 @@ _P_Figure_image_location = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/imageLocation',
     kind='literal',
     label='image location',
+    sources=('http://qudt.org/schema/qudt/Figure-imageLocation',),
+    min_count=1,
     datatype=str,
     required=True,
     max_count=1,
@@ -14118,6 +13833,7 @@ _P_Figure_landscape = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/landscape',
     kind='literal',
     label='landscape',
+    sources=('http://qudt.org/schema/qudt/Figure-landscape',),
     datatype=bool,
     max_count=1,
 )
@@ -14127,13 +13843,14 @@ _P_Figure_width = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/width',
     kind='literal',
     label='width',
+    sources=('http://qudt.org/schema/qudt/Figure-width',),
     datatype=str,
     max_count=1,
 )
 
 class Figure(Concept_2):
     """Figure
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Figure
     """
 
@@ -14174,7 +13891,7 @@ class Figure(Concept_2):
         name: str | None = None,
         *,
         image_location: str | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -14206,7 +13923,7 @@ class Figure(Concept_2):
             model=model,
             **_provided(
                 image_location=image_location,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -14229,7 +13946,7 @@ class Figure(Concept_2):
 
 class FileFormat(EnumeratedValue):
     """File format
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/FileFormat
     """
 
@@ -14249,6 +13966,9 @@ _P_TimeSeriesArray_increment_datatype = _PropertySpec(
     kind='object',
     label='increment datatype',
     ranges=('TimeStringType',),
+    range_groups=(('http://qudt.org/schema/qudt/TimeStringType',),),
+    sources=('http://qudt.org/schema/qudt/TimeSeriesArray-incrementDatatype',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -14259,12 +13979,15 @@ _P_TimeSeriesArray_vector = _PropertySpec(
     kind='object',
     label='vector',
     ranges=('Vector',),
+    range_groups=(('http://qudt.org/schema/qudt/Vector',),),
+    sources=('http://qudt.org/schema/qudt/TimeSeriesArray-vector',),
+    min_count=1,
     max_count=1,
 )
 
 class TimeSeriesArray(Array):
     """Time Series Array
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TimeSeriesArray
     """
 
@@ -14291,7 +14014,7 @@ class TimeSeriesArray(Array):
         *,
         datatype: Datatype | None,
         increment_datatype: TimeStringType | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -14341,7 +14064,7 @@ class TimeSeriesArray(Array):
             **_provided(
                 datatype=datatype,
                 increment_datatype=increment_datatype,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -14381,7 +14104,7 @@ class TimeSeriesArray(Array):
 
 class FixedIntervalTimeSeriesArray(TimeSeriesArray):
     """Fixed Interval Time Series Array Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/FixedIntervalTimeSeriesArray
     """
 
@@ -14397,7 +14120,7 @@ class FixedIntervalTimeSeriesArray(TimeSeriesArray):
 
 class TimeSeriesArrayType(ArrayType):
     """Time Series Array Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TimeSeriesArrayType
     """
 
@@ -14413,7 +14136,7 @@ class TimeSeriesArrayType(ArrayType):
 
 class FixedIntervalTimeSeriesArrayType(TimeSeriesArrayType):
     """Fixed Interval Time Series Array Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/FixedIntervalTimeSeriesArrayType
     """
 
@@ -14429,7 +14152,7 @@ class FixedIntervalTimeSeriesArrayType(TimeSeriesArrayType):
 
 class Flare(Equipment):
     """A device used to burn off unwanted gas
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Flare
     """
 
@@ -14445,7 +14168,7 @@ class Flare(Equipment):
 
 class FloatingPointEncodingType(Encoding):
     """Floating Point Encoding
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/FloatingPointEncodingType
     """
 
@@ -14461,7 +14184,7 @@ class FloatingPointEncodingType(Encoding):
 
 class FlocculationBasin(Reactor):
     """A tank where flocculation occurs to aggregate particles in water
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#FlocculationBasin
     """
 
@@ -14486,7 +14209,7 @@ class FlocculationBasin(Reactor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -14535,13 +14258,16 @@ _P_FlowSensor_2_observes = _PropertySpec(
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
     ranges=('QuantifiableObservableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
+    sources=('b59d36af7a21597b917046ed1', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class FlowSensor_2(Sensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of flow of fluid, typically with a `QuantityKind` of `VolumeFlowRate`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FlowSensor
     """
 
@@ -14574,7 +14300,7 @@ class FlowSensor_2(Sensor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -14626,7 +14352,7 @@ class FlowSensor_2(Sensor):
 
 class FlowSensor(FlowSensor_2):
     """A sensor used to measure the flow rate of liquids or gases
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#FlowSensor
     """
 
@@ -14644,7 +14370,7 @@ class FlushToilet(Equipment):
     """A piece of `Equipment` that collects human waste (i.e., urine and/or feces, and sometimes toilet paper) in a chamber containing water,
     and contains an integral manual or automatic actuator that triggers the release of an additional volume of water that flushes everything from the chamber into
     a drainage system that typically carries the mixture to a sewer system or septic tank.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FlushToilet
     """
 
@@ -14664,7 +14390,7 @@ class FlushToilet(Equipment):
 
 class FrameType(EnumeratedValue):
     """Frame Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/FrameType
     """
 
@@ -14680,7 +14406,7 @@ class FrameType(EnumeratedValue):
 
 class Freezer(Equipment):
     """A piece of `Equipment` that maintains an internal temperature below the freezing point of water.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Freezer
     """
 
@@ -14699,7 +14425,7 @@ class Freezer(Equipment):
 
 class FrequencySensor(Sensor):
     """A sensor used to measure the frequency of a signal or mechanical vibration
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#FrequencySensor
     """
 
@@ -14715,7 +14441,7 @@ class FrequencySensor(Sensor):
 
 class FumeHood(Equipment):
     """A piece of `Equipment` that is typically mounted over a work area (e.g., a space, table, or shelf) and conducts unwanted gases away from the area.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#FumeHood
     """
 
@@ -14733,15 +14459,6 @@ class FumeHood(Equipment):
         ),
     )
 
-_P_Function_has_output = _PropertySpec(
-    name='has_output',
-    predicate='http://data.ashrae.org/standard223#hasOutput',
-    kind='object',
-    label='has output',
-    definition='A `Relation` that associates a `Function` (see {s223:Function}) with a `Property` (see {s223:Property}) that is calculated by the `Function`.',
-    ranges=('Property',),
-)
-
 _P_Function_has_input = _PropertySpec(
     name='has_input',
     predicate='http://data.ashrae.org/standard223#hasInput',
@@ -14749,11 +14466,24 @@ _P_Function_has_input = _PropertySpec(
     label='has input',
     definition='A `Relation` that associates a `Function` (see {s223:Function}) with a `Property` (see {s223:Property}) that is used as input to the `Function`.',
     ranges=('Property',),
+    range_groups=(('http://data.ashrae.org/standard223#Property',),),
+    sources=('bcde7ccbf350ec21b927bdeca',),
+)
+
+_P_Function_has_output = _PropertySpec(
+    name='has_output',
+    predicate='http://data.ashrae.org/standard223#hasOutput',
+    kind='object',
+    label='has output',
+    definition='A `Relation` that associates a `Function` (see {s223:Function}) with a `Property` (see {s223:Property}) that is calculated by the `Function`.',
+    ranges=('Property',),
+    range_groups=(('http://data.ashrae.org/standard223#Property',),),
+    sources=('b964cef95584d81665d6991dd',),
 )
 
 class Function(Concept):
     """A `Function` is used to model transfer and/or transformation of information (i.e., `Property`). It has relations to input Properties and output Properties. The actual algorithms that perform the transformations are described in CDL and are out of scope of the 223 standard.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Function
     """
 
@@ -14765,7 +14495,7 @@ class Function(Concept):
         definition='A `Function` is used to model transfer and/or transformation of information (i.e., `Property`). It has relations to input Properties and output Properties. The actual algorithms that perform the transformations are described in CDL and are out of scope of the 223 standard.',
         parent_iris=('http://data.ashrae.org/standard223#Concept',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Function_has_output, _P_Function_has_input,),
+        properties=(_P_Function_has_input, _P_Function_has_output,),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='opaque'),
@@ -14774,11 +14504,11 @@ class Function(Concept):
         ),
     )
 
-    has_output: _Rel[Property] = _Rel(_P_Function_has_output)
-    """A `Relation` that associates a `Function` (see {s223:Function}) with a `Property` (see {s223:Property}) that is calculated by the `Function`. (http://data.ashrae.org/standard223#hasOutput)"""
-
     has_input: _Rel[Property] = _Rel(_P_Function_has_input)
     """A `Relation` that associates a `Function` (see {s223:Function}) with a `Property` (see {s223:Property}) that is used as input to the `Function`. (http://data.ashrae.org/standard223#hasInput)"""
+
+    has_output: _Rel[Property] = _Rel(_P_Function_has_output)
+    """A `Relation` that associates a `Function` (see {s223:Function}) with a `Property` (see {s223:Property}) that is calculated by the `Function`. (http://data.ashrae.org/standard223#hasOutput)"""
 
     def __init__(
         self,
@@ -14814,6 +14544,8 @@ _P_FunctionDatatype_arg_type = _PropertySpec(
     kind='object',
     label='argType',
     ranges=('Datatype',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',),),
+    sources=('http://qudt.org/schema/qudt/FunctionDatatype-argType',),
 )
 
 _P_FunctionDatatype_function_arity = _PropertySpec(
@@ -14821,6 +14553,8 @@ _P_FunctionDatatype_function_arity = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/functionArity',
     kind='literal',
     label='function arity',
+    sources=('http://qudt.org/schema/qudt/FunctionDatatype-functionArity',),
+    min_count=1,
     datatype=int,
     required=True,
     max_count=1,
@@ -14832,12 +14566,14 @@ _P_FunctionDatatype_return_type = _PropertySpec(
     kind='object',
     label='return type',
     ranges=('Datatype',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',),),
+    sources=('http://qudt.org/schema/qudt/FunctionDatatype-returnType',),
     max_count=1,
 )
 
 class FunctionDatatype(StructuredDatatype):
     """Function Data Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/FunctionDatatype
     """
 
@@ -14866,7 +14602,7 @@ class FunctionDatatype(StructuredDatatype):
         name: str | None = None,
         *,
         function_arity: int | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         arg_type: _Iterable[Datatype] = (),
@@ -14912,7 +14648,7 @@ class FunctionDatatype(StructuredDatatype):
             model=model,
             **_provided(
                 function_arity=function_arity,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 arg_type=arg_type,
@@ -14949,7 +14685,7 @@ class FunctionDatatype(StructuredDatatype):
 
 class Furnace(Equipment):
     """A piece of `Equipment` that converts fuel or electrical energy into heat.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Furnace
     """
 
@@ -14969,7 +14705,7 @@ class Furnace(Equipment):
 
 class Gate(Valve_2):
     """Tool to control water flow and isolate sections
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Gate
     """
 
@@ -14990,13 +14726,16 @@ _P_PressureSensor_2_observes = _PropertySpec(
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
     ranges=('QuantifiableObservableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
+    sources=('bd08797a7c86eae8c1d79a47f', 'bd7b82cb90a3efeb37092a50f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class PressureSensor_2(Sensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of pressure.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#PressureSensor
     """
 
@@ -15029,7 +14768,7 @@ class PressureSensor_2(Sensor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -15079,22 +14818,11 @@ class PressureSensor_2(Sensor):
             ),
         )
 
-_P_GaugePressureSensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    required=True,
-    max_count=1,
-)
-
 class GaugePressureSensor(PressureSensor_2):
     """A `PressureSensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of pressure relative to atmospheric pressure.
     Such sensors are commonly used to monitor compressed gas cylinders, for example, where a gauge reading of zero signifies that the measured pressure
     is equal to the atmospheric pressure, not a vacuum.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#GaugePressureSensor
     """
 
@@ -15106,80 +14834,11 @@ class GaugePressureSensor(PressureSensor_2):
         definition='A `PressureSensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of pressure relative to atmospheric pressure.\nSuch sensors are commonly used to monitor compressed gas cylinders, for example, where a gauge reading of zero signifies that the measured pressure\nis equal to the atmospheric pressure, not a vacuum.',
         parent_iris=('http://data.ashrae.org/standard223#PressureSensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#PressureSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_GaugePressureSensor_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_GaugePressureSensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
 
 class Generator(Equipment):
     """A piece of `Equipment` that converts non-electric energy into electric energy.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Generator
     """
 
@@ -15198,7 +14857,7 @@ class Generator(Equipment):
 
 class GlobeValve(Valve_2):
     """A linear-motion valve primarily used for stopping, starting, and regulating (throttling) fluid flow
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#GlobeValve
     """
 
@@ -15214,7 +14873,7 @@ class GlobeValve(Valve_2):
 
 class GranularActivatedCarbonAdsorber(UnitProcess):
     """A unit that uses granulated activated carbon to adsorb impurities from water.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#GranularActivatedCarbonAdsorber
     """
 
@@ -15239,7 +14898,7 @@ class GranularActivatedCarbonAdsorber(UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -15283,7 +14942,7 @@ class GranularActivatedCarbonAdsorber(UnitProcess):
 
 class GraphMetaData(_EntityBase):
     """Graph Metadata
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/vaem#GraphMetaData
     """
 
@@ -15299,7 +14958,7 @@ class GraphMetaData(_EntityBase):
 
 class GraphRole(_EntityBase):
     """Graph role
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/vaem#GraphRole
     """
 
@@ -15315,7 +14974,7 @@ class GraphRole(_EntityBase):
 
 class GravityBeltThickener(BeltThickener):
     """A belt thickener in which gravity drains water through a porous moving belt. It uses filtration rather than the sedimentation mechanism of a conventional gravity thickener.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#GravityBeltThickener
     """
 
@@ -15331,7 +14990,7 @@ class GravityBeltThickener(BeltThickener):
 
 class GravityThickener(Thickener):
     """A thickener that uses gravity to separate solids from liquids
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#GravityThickener
     """
 
@@ -15362,7 +15021,7 @@ class GravityThickener(Thickener):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -15406,7 +15065,7 @@ class GravityThickener(Thickener):
 
 class Grinder(UnitProcess):
     """Machine that shreds solid waste into tiny particles
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Grinder
     """
 
@@ -15431,7 +15090,7 @@ class Grinder(UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -15475,7 +15134,7 @@ class Grinder(UnitProcess):
 
 class GritChamber(UnitProcess):
     """A chamber used to remove grit from wastewater
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#GritChamber
     """
 
@@ -15500,7 +15159,7 @@ class GritChamber(UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -15544,7 +15203,7 @@ class GritChamber(UnitProcess):
 
 class GroundCoordinateSystem(AerospaceCoordinateSystem):
     """Ground coordinate system
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/GroundCoordinateSystem
     """
 
@@ -15560,7 +15219,7 @@ class GroundCoordinateSystem(AerospaceCoordinateSystem):
 
 class GroundToAirHeatPump(HeatPump):
     """A `HeatPump` that transfers thermal energy between air and the ground.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#GroundToAirHeatPump
     """
 
@@ -15584,12 +15243,14 @@ _P_OrderedCollection_ordering_relation = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/orderingRelation',
     kind='object',
     label='Ordering Relation',
+    range_groups=(('http://www.linkedmodel.org/schema/dtype#ComparisonOperator',),),
+    sources=('http://qudt.org/schema/qudt/OrderedCollection-orderingRelation',),
     max_count=1,
 )
 
 class OrderedCollection(Collection):
     """Ordered Collection Kind
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/OrderedCollection
     """
 
@@ -15611,7 +15272,7 @@ class OrderedCollection(Collection):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -15655,7 +15316,7 @@ class OrderedCollection(Collection):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -15691,7 +15352,7 @@ class OrderedCollection(Collection):
 
 class OrderedTree(OrderedCollection, Tree):
     """Ordered Tree Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/OrderedTree
     """
 
@@ -15709,7 +15370,7 @@ class OrderedTree(OrderedCollection, Tree):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -15754,7 +15415,7 @@ class OrderedTree(OrderedCollection, Tree):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -15791,7 +15452,7 @@ class OrderedTree(OrderedCollection, Tree):
 
 class Heap(OrderedTree):
     """Heap
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Heap
     """
 
@@ -15807,7 +15468,7 @@ class Heap(OrderedTree):
 
 class HeatingCoil(Coil):
     """A `Coil` that is specifically used to heat air.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#HeatingCoil
     """
 
@@ -15821,19 +15482,9 @@ class HeatingCoil(Coil):
         ancestor_iris=('http://data.ashrae.org/standard223#Coil', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_HeterogenousArray_datatype = _PropertySpec(
-    name='datatype',
-    predicate='http://qudt.org/schema/qudt/datatype',
-    kind='object',
-    label='datatype',
-    ranges=('Datatype',),
-    required=True,
-    max_count=1,
-)
-
 class HeterogenousArray(Array):
     """Heterogenous Array
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/HeterogenousArray
     """
 
@@ -15845,105 +15496,11 @@ class HeterogenousArray(Array):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/Array',),
         ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_HeterogenousArray_datatype,),
     )
-
-    datatype: _RelOne[Datatype] = _RelOne(_P_HeterogenousArray_datatype)
-    """datatype (http://qudt.org/schema/qudt/datatype)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        datatype: Datatype | None,
-        type_: _Iterable[_EntityBase],
-        abbreviation: str | None = None,
-        ansi_sql_name: str | None = None,
-        basis: Datatype | None = None,
-        bounded: bool | None = None,
-        c_name: str | None = None,
-        cardinality: CardinalityType | None = None,
-        code: _Iterable[_EntityBase] = (),
-        deprecated: bool | None = None,
-        deprecated_in_version: str | None = None,
-        description: _Iterable[_EntityBase] = (),
-        dimensionality: int | None = None,
-        dimensions: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | None = None,
-        exact_match: _Iterable[Concept_2] = (),
-        guidance: str | None = None,
-        has_rule: _Iterable[Rule] = (),
-        id: str | None = None,
-        is_heterogeneous: bool | None = None,
-        is_replaced_by: _EntityBase | None = None,
-        java_name: str | None = None,
-        js_name: str | None = None,
-        matlab_name: str | None = None,
-        microsoft_sql_server_name: str | None = None,
-        my_sql_name: str | None = None,
-        odbc_name: str | None = None,
-        ole_db_name: str | None = None,
-        oracle_sql_name: str | None = None,
-        ordered_type: OrderedType | None = None,
-        plain_text_description: _Iterable[_EntityBase] = (),
-        protocol_buffers_name: str | None = None,
-        python_name: str | None = None,
-        value: _Iterable[_EntityBase] = (),
-        vb_name: str | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                datatype=datatype,
-                type_=type_,
-                abbreviation=abbreviation,
-                ansi_sql_name=ansi_sql_name,
-                basis=basis,
-                bounded=bounded,
-                c_name=c_name,
-                cardinality=cardinality,
-                code=code,
-                deprecated=deprecated,
-                deprecated_in_version=deprecated_in_version,
-                description=description,
-                dimensionality=dimensionality,
-                dimensions=dimensions,
-                element_datatype=element_datatype,
-                exact_match=exact_match,
-                guidance=guidance,
-                has_rule=has_rule,
-                id=id,
-                is_heterogeneous=is_heterogeneous,
-                is_replaced_by=is_replaced_by,
-                java_name=java_name,
-                js_name=js_name,
-                matlab_name=matlab_name,
-                microsoft_sql_server_name=microsoft_sql_server_name,
-                my_sql_name=my_sql_name,
-                odbc_name=odbc_name,
-                ole_db_name=ole_db_name,
-                oracle_sql_name=oracle_sql_name,
-                ordered_type=ordered_type,
-                plain_text_description=plain_text_description,
-                protocol_buffers_name=protocol_buffers_name,
-                python_name=python_name,
-                value=value,
-                vb_name=vb_name,
-            ),
-        )
 
 class TextStringType(StringType):
     """Text String Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TextStringType
     """
 
@@ -15957,29 +15514,12 @@ class TextStringType(StringType):
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StringType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_HexBinaryType_length = _PropertySpec(
-    name='length',
-    predicate='http://qudt.org/schema/qudt/length',
-    kind='literal',
-    label='length',
-    datatype=int,
-    max_count=1,
-)
-
-_P_HexBinaryType_max_length = _PropertySpec(
-    name='max_length',
-    predicate='http://qudt.org/schema/qudt/maxLength',
-    kind='literal',
-    label='max length',
-    datatype=int,
-    max_count=1,
-)
-
 _P_HexBinaryType_min_length = _PropertySpec(
     name='min_length',
     predicate='http://qudt.org/schema/qudt/minLength',
     kind='literal',
     label='min length',
+    sources=('http://qudt.org/schema/qudt/HexBinaryType-minLength',),
     datatype=int,
     max_count=1,
 )
@@ -15989,13 +15529,14 @@ _P_HexBinaryType_pattern = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/pattern',
     kind='literal',
     label='pattern',
+    sources=('http://qudt.org/schema/qudt/HexBinaryType-pattern',),
     datatype=str,
     max_count=1,
 )
 
 class HexBinaryType(TextStringType):
     """Hexidecimal Binary Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/HexBinaryType
     """
 
@@ -16007,14 +15548,8 @@ class HexBinaryType(TextStringType):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/TextStringType',),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StringType', 'http://qudt.org/schema/qudt/TextStringType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_HexBinaryType_length, _P_HexBinaryType_max_length, _P_HexBinaryType_min_length, _P_HexBinaryType_pattern,),
+        properties=(_P_HexBinaryType_min_length, _P_HexBinaryType_pattern,),
     )
-
-    length: _Lit[int] = _Lit(_P_HexBinaryType_length)
-    """length (http://qudt.org/schema/qudt/length)"""
-
-    max_length: _Lit[int] = _Lit(_P_HexBinaryType_max_length)
-    """max length (http://qudt.org/schema/qudt/maxLength)"""
 
     min_length: _Lit[int] = _Lit(_P_HexBinaryType_min_length)
     """min length (http://qudt.org/schema/qudt/minLength)"""
@@ -16026,7 +15561,7 @@ class HexBinaryType(TextStringType):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -16085,7 +15620,7 @@ class HexBinaryType(TextStringType):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -16136,7 +15671,7 @@ class HexBinaryType(TextStringType):
 
 class HomogeneousArray(Array):
     """Homogeneous Array
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/HomogeneousArray
     """
 
@@ -16152,7 +15687,7 @@ class HomogeneousArray(Array):
 
 class HotWaterCoil(HeatingCoil):
     """A hot water coil connected to a control valve.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#HotWaterCoil
     """
 
@@ -16168,7 +15703,7 @@ class HotWaterCoil(HeatingCoil):
 
 class HotWaterValve(Valve_2):
     """A valve that controls the flow of hot water through a hot water coil.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#HotWaterValve
     """
 
@@ -16190,7 +15725,7 @@ class HotWaterValve(Valve_2):
 
 class Humidifier(Equipment):
     """A piece of `Equipment` that adds moisture to a gas (e.g., air).
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Humidifier
     """
 
@@ -16206,7 +15741,7 @@ class Humidifier(Equipment):
 
 class Humidistat(Equipment):
     """A piece of `Equipment` that measures the relative humidity of the air and then uses this information to automatically adjust the amount of moisture in air.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Humidistat
     """
 
@@ -16227,13 +15762,16 @@ _P_HumiditySensor_observes = _PropertySpec(
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
     ranges=('QuantifiableObservableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
+    sources=('b35dbf06577bbe234c8e1c078', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class HumiditySensor(Sensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of relative or absolute humidity.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#HumiditySensor
     """
 
@@ -16266,7 +15804,7 @@ class HumiditySensor(Sensor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -16318,7 +15856,7 @@ class HumiditySensor(Sensor):
 
 class HydronicHeatExchanger(Equipment):
     """A piece of `Equipment` that transfers heat from one liquid stream to another while keeping the two media separate.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#HydronicHeatExchanger
     """
 
@@ -16339,7 +15877,7 @@ class HydronicHeatExchanger(Equipment):
 
 class IceMaker(Equipment):
     """A piece of `Equipment` that makes ice.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#IceMaker
     """
 
@@ -16362,13 +15900,15 @@ _P_IconicCue_image = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/image',
     kind='object',
     label='image',
+    sources=('http://qudt.org/schema/qudt/IconicCue-image',),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class IconicCue(ModalCue):
     """Iconic enumeration literal
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/IconicCue
     """
 
@@ -16428,21 +15968,10 @@ class IconicCue(ModalCue):
             ),
         )
 
-_P_IlluminanceSensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    required=True,
-    max_count=1,
-)
-
 class IlluminanceSensor(LightSensor):
     """A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents an illuminance, defined as the areal density of the
     luminous flux incident at a point on a surface.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#IlluminanceSensor
     """
 
@@ -16454,80 +15983,11 @@ class IlluminanceSensor(LightSensor):
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents an illuminance, defined as the areal density of the\nluminous flux incident at a point on a surface.',
         parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#LightSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_IlluminanceSensor_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_IlluminanceSensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
 
 class SepticTank(SedimentationTank):
     """A septic tank for on-site wastewater treatment
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#SepticTank
     """
 
@@ -16543,7 +16003,7 @@ class SepticTank(SedimentationTank):
 
 class ImhoffTank(SepticTank):
     """A sedimentation tank specifically designed for septic treatment
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ImhoffTank
     """
 
@@ -16559,7 +16019,7 @@ class ImhoffTank(SepticTank):
 
 class ReferenceFrame(Concept_2):
     """Reference Frame
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ReferenceFrame
     """
 
@@ -16575,7 +16035,7 @@ class ReferenceFrame(Concept_2):
 
 class InertialReferenceFrame(ReferenceFrame):
     """Inertial reference frame
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/InertialReferenceFrame
     """
 
@@ -16591,7 +16051,7 @@ class InertialReferenceFrame(ReferenceFrame):
 
 class InertialCoordinateFrame(InertialReferenceFrame):
     """Inertial Coordinate Frame
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/InertialCoordinateFrame
     """
 
@@ -16611,24 +16071,16 @@ _P_InletConnectionPoint_maps_to = _PropertySpec(
     kind='object',
     label='maps to',
     definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
-    ranges=('ConnectionPoint', 'InletConnectionPoint'),
+    ranges=('InletConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',), ('http://data.ashrae.org/standard223#InletConnectionPoint',)),
+    sources=('b33487dbc91b59884232238e0', 'b5035e70a40377a902155de4e', 'b9836a3846d271eb3c01b5838', 'bb034c0077500f468d0b8a00c', 'bcd0844fd5cbcd23016dbbec4', 'be1d4db06086f9ad97cf53289'),
     max_count=1,
     deferred=True,
 )
 
-_P_InletConnectionPoint_paired_with = _PropertySpec(
-    name='paired_with',
-    predicate='http://data.ashrae.org/standard223#pairedConnectionPoint',
-    kind='object',
-    label='paired connection point',
-    definition='A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`.',
-    ranges=('ConnectionPoint',),
-    max_count=1,
-)
-
 class InletConnectionPoint(ConnectionPoint):
     """An `InletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow into the associated `Connectable`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#InletConnectionPoint
     """
 
@@ -16640,14 +16092,11 @@ class InletConnectionPoint(ConnectionPoint):
         definition='An `InletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow into the associated `Connectable`.',
         parent_iris=('http://data.ashrae.org/standard223#ConnectionPoint',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ConnectionPoint', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_InletConnectionPoint_maps_to, _P_InletConnectionPoint_paired_with,),
+        properties=(_P_InletConnectionPoint_maps_to,),
     )
 
-    maps_to: _RelOne[ConnectionPoint | InletConnectionPoint | _DeferredEndpoint] = _RelOne(_P_InletConnectionPoint_maps_to)
+    maps_to: _RelOne[InletConnectionPoint | _DeferredEndpoint] = _RelOne(_P_InletConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
-
-    paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_InletConnectionPoint_paired_with)
-    """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
 
     def __init__(
         self,
@@ -16659,7 +16108,7 @@ class InletConnectionPoint(ConnectionPoint):
         has_electrical_phase: _EnumValue | None = None,
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
-        maps_to: ConnectionPoint | InletConnectionPoint | _DeferredEndpoint | None = None,
+        maps_to: InletConnectionPoint | _DeferredEndpoint | None = None,
         paired_with: ConnectionPoint | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -16687,7 +16136,7 @@ class InletConnectionPoint(ConnectionPoint):
 
 class IntegerEncodingType(Encoding):
     """Integer Encoding
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/IntegerEncodingType
     """
 
@@ -16705,6 +16154,7 @@ _P_IntegerListShape_first = _PropertySpec(
     name='first',
     predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#first',
     kind='literal',
+    sources=('b52c51514a54aa56c6aa5e4b8',),
     datatype=int,
 )
 
@@ -16712,11 +16162,12 @@ _P_IntegerListShape_rest = _PropertySpec(
     name='rest',
     predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#rest',
     kind='object',
+    sources=('b8a40e50a3483e3b0a7dc229e',),
 )
 
 class IntegerListShape(List):
     """IntegerListShape
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/IntegerListShape
     """
 
@@ -16742,7 +16193,7 @@ class IntegerListShape(List):
         name: str | None = None,
         *,
         datatype: Datatype | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -16773,7 +16224,7 @@ class IntegerListShape(List):
             model=model,
             **_provided(
                 datatype=datatype,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -16795,7 +16246,7 @@ class IntegerListShape(List):
 
 class InterpolatedTable(Table):
     """Interpolated Table Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/InterpolatedTable
     """
 
@@ -16811,7 +16262,7 @@ class InterpolatedTable(Table):
 
 class IntervalScale(Scale):
     """Interval scale
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/IntervalScale
     """
 
@@ -16827,7 +16278,7 @@ class IntervalScale(Scale):
 
 class IonExchangeMembrane(UnitProcess):
     """A membrane that selectively allows ions to pass through while blocking other substances
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#IonExchangeMembrane
     """
 
@@ -16852,7 +16303,7 @@ class IonExchangeMembrane(UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -16894,17 +16345,6 @@ class IonExchangeMembrane(UnitProcess):
             ),
         )
 
-_P_Junction_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
-    required=True,
-    max_count=1,
-)
-
 _P_Junction_has_connection_point = _PropertySpec(
     name='has_connection_point',
     predicate='http://data.ashrae.org/standard223#hasConnectionPoint',
@@ -16912,7 +16352,24 @@ _P_Junction_has_connection_point = _PropertySpec(
     label='has connection point',
     definition='One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).',
     ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('b8ad8d8b7d7a41f55c0bc4138', 'be2099568566b78227dcced58'),
+    min_count=2,
     inverse='owner',
+)
+
+_P_Junction_medium = _PropertySpec(
+    name='medium',
+    predicate='http://data.ashrae.org/standard223#hasMedium',
+    kind='enum',
+    label='has medium',
+    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
+    range_groups=(('http://data.ashrae.org/standard223#Substance-Medium',),),
+    sources=('b0070bb08b6715a4e7a32e88c', 'b08ea5991a9d595339cdac23a', 'b114c42d9256c0b70b09fad9c', 'b2b77f818aaa5e179e6cb3872', 'b490b774633a41f304e59947b', 'b5aecdad0a8f3f7f4ac11e130', 'b67b7bcfa9dd137bb3bc07a54', 'b7b6e8b6b692e00280f1836e8', 'b84423396b6605606439f6e08', 'b9c3a652daf6472abbe15c7f2', 'bb16c0d83de406776e044c163', 'bee798fa46491f095cadd03d0'),
+    min_count=1,
+    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
+    required=True,
+    max_count=1,
 )
 
 class Junction(Connectable):
@@ -16920,12 +16377,12 @@ class Junction(Connectable):
     such as specifying the observation location of a `Sensor`, or when a modeler wants to expose a branch point within a containing piece of `Equipment`.
     When a `Junction` is used, what might have been modeled as a single, branched `Connection`
     is separated into three or more separate connections, all tied together with the `Junction` and its associated connection points.
-    
+
     `Junction` is a subclass of `Connectable`, which gives it the ability to have connection points, but unlike `Equipment` (and like `Connection`)
     it is not allowed to change the `Substance-Medium` that passes through it. This is why `Junction` is a sibling class to `Equipment` and not a subclass.
     This constraint to maintain compatible mediums among a `Junction` and all of its associated `ConnectionPoint`s gives rise to multiple
     validation test cases, where the specified medium might be a pure medium, or a mixture with constituents (see {s223:Substance-Medium}).
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Junction
     """
 
@@ -16937,7 +16394,7 @@ class Junction(Connectable):
         definition='A `Junction` is a modeling construct used when a branching point within a `Connection` (see {s223:Connection}) is of significance,\nsuch as specifying the observation location of a `Sensor`, or when a modeler wants to expose a branch point within a containing piece of `Equipment`.\nWhen a `Junction` is used, what might have been modeled as a single, branched `Connection`\nis separated into three or more separate connections, all tied together with the `Junction` and its associated connection points.\n\n`Junction` is a subclass of `Connectable`, which gives it the ability to have connection points, but unlike `Equipment` (and like `Connection`)\nit is not allowed to change the `Substance-Medium` that passes through it. This is why `Junction` is a sibling class to `Equipment` and not a subclass.\nThis constraint to maintain compatible mediums among a `Junction` and all of its associated `ConnectionPoint`s gives rise to multiple\nvalidation test cases, where the specified medium might be a pure medium, or a mixture with constituents (see {s223:Substance-Medium}).',
         parent_iris=('http://data.ashrae.org/standard223#Connectable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Junction_medium, _P_Junction_has_connection_point,),
+        properties=(_P_Junction_has_connection_point, _P_Junction_medium,),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='and', children=(
@@ -16949,11 +16406,11 @@ class Junction(Connectable):
         ),
     )
 
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_Junction_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-
     has_connection_point: _Rel[ConnectionPoint] = _Rel(_P_Junction_has_connection_point)
     """One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}). (http://data.ashrae.org/standard223#hasConnectionPoint)"""
+
+    medium: _EnumOne[_EnumValue] = _EnumOne(_P_Junction_medium)
+    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
     def __init__(
         self,
@@ -16999,13 +16456,15 @@ _P_KinestheticCue_code = _PropertySpec(
     kind='object',
     label='code',
     definition='A unique value that is assigned to an enumeration member.',
+    sources=('http://qudt.org/schema/qudt/KinestheticCue-code',),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class KinestheticCue(ModalCue):
     """Kinesthetic Cue
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/KinestheticCue
     """
 
@@ -17067,7 +16526,7 @@ class KinestheticCue(ModalCue):
 
 class LargeObject(CompositeDatatype):
     """Large object
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/LargeObject
     """
 
@@ -17083,7 +16542,7 @@ class LargeObject(CompositeDatatype):
 
 class LargeObjectType(CompositeDatatype):
     """Large object
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/LargeObjectType
     """
 
@@ -17099,7 +16558,7 @@ class LargeObjectType(CompositeDatatype):
 
 class LatexString(_EntityBase):
     """Latex String
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/LatexString
     """
 
@@ -17115,7 +16574,7 @@ class LatexString(_EntityBase):
 
 class LevelSensor(Sensor):
     """A sensor used to detect the level of liquids or solids in a tank
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#LevelSensor
     """
 
@@ -17131,7 +16590,7 @@ class LevelSensor(Sensor):
 
 class LimitType(EnumeratedValue):
     """Limit type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/LimitType
     """
 
@@ -17147,7 +16606,7 @@ class LimitType(EnumeratedValue):
 
 class LocalCoordinateSystem(TrajectoryCoordinateSystem):
     """Local Coordinate System
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/LocalCoordinateSystem
     """
 
@@ -17163,7 +16622,7 @@ class LocalCoordinateSystem(TrajectoryCoordinateSystem):
 
 class LogarithmicUnit(DimensionlessUnit):
     """Logarithmic Unit
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/LogarithmicUnit
     """
 
@@ -17179,7 +16638,7 @@ class LogarithmicUnit(DimensionlessUnit):
 
 class LongIntegerType(IntegerDatatype):
     """Long Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/LongIntegerType
     """
 
@@ -17195,7 +16654,7 @@ class LongIntegerType(IntegerDatatype):
 
 class Luminaire(Equipment):
     """A piece of `Equipment` consisting of a light source(s) and ballast(s) or driver(s) (when applicable), together with the parts designed to distribute the light, to position and protect the light source(s), and to connect the light source(s) to the power supply. Also known as a light fixture.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Luminaire
     """
 
@@ -17215,7 +16674,7 @@ class Luminaire(Equipment):
 
 class LunarCoordinateSystem(TrajectoryCoordinateSystem):
     """Lunar Coordinate System
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/LunarCoordinateSystem
     """
 
@@ -17231,7 +16690,7 @@ class LunarCoordinateSystem(TrajectoryCoordinateSystem):
 
 class MajorMinorType(EnumeratedValue):
     """Major minor type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/MajorMinorType
     """
 
@@ -17247,7 +16706,7 @@ class MajorMinorType(EnumeratedValue):
 
 class ManualMeasurementPort(Sensor):
     """A location where manual measurements are taken
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ManualMeasurementPort
     """
 
@@ -17263,7 +16722,7 @@ class ManualMeasurementPort(Sensor):
 
 class MarsCoordinateSystem(TrajectoryCoordinateSystem):
     """Mars Coordinate System Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/MarsCoordinateSystem
     """
 
@@ -17282,11 +16741,12 @@ _P_MassPropertiesArray_has_quantity_kinds_list = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/hasQuantityKindsList',
     kind='object',
     label='quantity kinds',
+    sources=('http://qudt.org/schema/qudt/QuantityKindsPropertyShape',),
 )
 
 class MassPropertiesArray(HeterogenousArray):
     """Mass Properties Array
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/MassPropertiesArray
     """
 
@@ -17309,7 +16769,7 @@ class MassPropertiesArray(HeterogenousArray):
         name: str | None = None,
         *,
         datatype: Datatype | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -17358,7 +16818,7 @@ class MassPropertiesArray(HeterogenousArray):
             model=model,
             **_provided(
                 datatype=datatype,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -17398,7 +16858,7 @@ class MassPropertiesArray(HeterogenousArray):
 
 class MathsFunctionType(Concept_2):
     """Maths Function Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/MathsFunctionType
     """
 
@@ -17414,7 +16874,7 @@ class MathsFunctionType(Concept_2):
 
 class Matrix(Array):
     """Matrix
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Matrix
     """
 
@@ -17433,13 +16893,14 @@ _P_MatrixElementOrder_by_row = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/byRow',
     kind='literal',
     label='by row',
+    sources=('http://qudt.org/schema/qudt/MatrixElementOrder-byRow',),
     datatype=bool,
     max_count=1,
 )
 
 class MatrixElementOrder(StructuredDatatype):
     """Matrix Element Order
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/MatrixElementOrder
     """
 
@@ -17461,7 +16922,7 @@ class MatrixElementOrder(StructuredDatatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -17505,7 +16966,7 @@ class MatrixElementOrder(StructuredDatatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -17541,7 +17002,7 @@ class MatrixElementOrder(StructuredDatatype):
 
 class MediaFiltrationUnit(Filter):
     """A filter system that uses a bed of material to filter out contaminants
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#MediaFiltrationUnit
     """
 
@@ -17558,7 +17019,7 @@ class MediaFiltrationUnit(Filter):
 
 class MembraneAeratedBiofilmReaactor(Reactor):
     """A reactor that grows biofilm on membranes supplied with air
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#MembraneAeratedBiofilmReaactor
     """
 
@@ -17583,7 +17044,7 @@ class MembraneAeratedBiofilmReaactor(Reactor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -17627,7 +17088,7 @@ class MembraneAeratedBiofilmReaactor(Reactor):
 
 class MembraneBioreactor(Filter, Reactor, SeparationTank):
     """A filter system that combines a membrane process like microfiltration with a biological reactor
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#MembraneBioreactor
     """
 
@@ -17644,7 +17105,7 @@ class MembraneBioreactor(Filter, Reactor, SeparationTank):
 
 class MemoryOrderType(EnumeratedValue):
     """Memory order type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/MemoryOrderType
     """
 
@@ -17660,7 +17121,7 @@ class MemoryOrderType(EnumeratedValue):
 
 class MicrofiltrationUnit(Filter):
     """A filter system which removes contaminants from a liquid by passing it through a microporous membrane
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#MicrofiltrationUnit
     """
 
@@ -17677,7 +17138,7 @@ class MicrofiltrationUnit(Filter):
 
 class MicrowaveOven(ElectricOven):
     """An `ElectricOven` that cooks food by exposing it to electromagnetic radiation in the microwave frequency range.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#MicrowaveOven
     """
 
@@ -17696,7 +17157,7 @@ class MicrowaveOven(ElectricOven):
 
 class MixingBasin(Reactor):
     """A tank where mixed liquor is stirred without aeration
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#MixingBasin
     """
 
@@ -17721,7 +17182,7 @@ class MixingBasin(Reactor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -17768,12 +17229,14 @@ _P_ModalEnumeration_default_value = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/defaultValue',
     kind='object',
     label='Default Value',
-    ranges=('EnumeratedValue', 'ModalCue'),
+    ranges=('ModalCue',),
+    range_groups=(('http://qudt.org/schema/qudt/EnumeratedValue',), ('http://qudt.org/schema/qudt/ModalCue',)),
+    sources=('http://qudt.org/schema/qudt/Enumeration-defaultValue', 'http://qudt.org/schema/qudt/ModalEnumeration-defaultValue'),
 )
 
 class ModalEnumeration(Enumeration):
     """Modal Enumeration
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ModalEnumeration
     """
 
@@ -17788,7 +17251,7 @@ class ModalEnumeration(Enumeration):
         properties=(_P_ModalEnumeration_default_value,),
     )
 
-    default_value: _Rel[EnumeratedValue | ModalCue] = _Rel(_P_ModalEnumeration_default_value)
+    default_value: _Rel[ModalCue] = _Rel(_P_ModalEnumeration_default_value)
     """Default Value (http://qudt.org/schema/qudt/defaultValue)"""
 
     def __init__(
@@ -17796,7 +17259,7 @@ class ModalEnumeration(Enumeration):
         name: str | None = None,
         *,
         element: _Iterable[EnumeratedValue],
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -17806,7 +17269,7 @@ class ModalEnumeration(Enumeration):
         cardinality: CardinalityType | None = None,
         code: _Iterable[_EntityBase] = (),
         default: EnumeratedValue | None = None,
-        default_value: _Iterable[EnumeratedValue | ModalCue] = (),
+        default_value: _Iterable[ModalCue] = (),
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
         description: _Iterable[_EntityBase] = (),
@@ -17829,7 +17292,7 @@ class ModalEnumeration(Enumeration):
         plain_text_description: _Iterable[_EntityBase] = (),
         protocol_buffers_name: str | None = None,
         python_name: str | None = None,
-        value: _Iterable[EnumeratedValue] = (),
+        value_2: _Iterable[EnumeratedValue] = (),
         vb_name: str | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -17845,7 +17308,7 @@ class ModalEnumeration(Enumeration):
             model=model,
             **_provided(
                 element=element,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -17878,14 +17341,14 @@ class ModalEnumeration(Enumeration):
                 plain_text_description=plain_text_description,
                 protocol_buffers_name=protocol_buffers_name,
                 python_name=python_name,
-                value=value,
+                value_2=value_2,
                 vb_name=vb_name,
             ),
         )
 
 class MolybdenumSulfideBasedMembrane(Filter):
     """A specific material demonstrating effectiveness in removing heavy metals and oxyanions with high selectivity.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#MolybdenumSulfideBasedMembrane
     """
 
@@ -17901,7 +17364,7 @@ class MolybdenumSulfideBasedMembrane(Filter):
 
 class Monitor(ElectronicDisplay):
     """An `ElectronicDisplay` designed primarily for the output of visual information supplied by a `Computer`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Monitor
     """
 
@@ -17917,7 +17380,7 @@ class Monitor(ElectronicDisplay):
 
 class Motor(Equipment):
     """A piece of `Equipment` that converts electrical energy into mechanical energy.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Motor
     """
 
@@ -17936,7 +17399,7 @@ class Motor(Equipment):
 
 class MovingBedBioreactor(Filter, Reactor):
     """MBBR process using suspended growth media a tank
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#MovingBedBioreactor
     """
 
@@ -17953,7 +17416,7 @@ class MovingBedBioreactor(Filter, Reactor):
 
 class MultiDimensionalArray(Array):
     """Multi-Dimensional Array Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/MultiDimensionalArray
     """
 
@@ -17972,12 +17435,13 @@ _P_MultiDimensionalDataFormat_descriptor = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/descriptor',
     kind='object',
     label='descriptor',
+    sources=('http://qudt.org/schema/qudt/MultiDimensionalDataFormat-descriptor',),
     max_count=1,
 )
 
 class MultiDimensionalDataFormat(CompositeDatatype):
     """Multi dimensional data format
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/MultiDimensionalDataFormat
     """
 
@@ -17999,7 +17463,7 @@ class MultiDimensionalDataFormat(CompositeDatatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alignment: _Iterable[AlignmentType] = (),
         ansi_sql_name: str | None = None,
@@ -18045,7 +17509,7 @@ class MultiDimensionalDataFormat(CompositeDatatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alignment=alignment,
                 ansi_sql_name=ansi_sql_name,
@@ -18086,6 +17550,7 @@ _P_MultiModalEnumeration_aural_cue_enumeration = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/auralCueEnumeration',
     kind='object',
     label='aural cue enumeration',
+    sources=('http://qudt.org/schema/qudt/MultiModalEnumeration-auralCueEnumeration',),
     max_count=1,
 )
 
@@ -18094,6 +17559,7 @@ _P_MultiModalEnumeration_iconic_cue_enumeration = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/iconicCueEnumeration',
     kind='object',
     label='iconic cue enumeration',
+    sources=('http://qudt.org/schema/qudt/MultiModalEnumeration-iconicCueEnumeration',),
     max_count=1,
 )
 
@@ -18102,6 +17568,7 @@ _P_MultiModalEnumeration_kinesthetic_cue_enumeration = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/kinestheticCueEnumeration',
     kind='object',
     label='kinesthetic cue enumeration',
+    sources=('http://qudt.org/schema/qudt/MultiModalEnumeration-kinestheticCueEnumeration',),
     max_count=1,
 )
 
@@ -18111,6 +17578,8 @@ _P_MultiModalEnumeration_modal_cue_enumeration = _PropertySpec(
     kind='object',
     label='modal cue enumeration',
     ranges=('ModalEnumeration',),
+    range_groups=(('http://qudt.org/schema/qudt/ModalEnumeration',),),
+    sources=('http://qudt.org/schema/qudt/MultiModalEnumeration-modalCueEnumeration',),
 )
 
 _P_MultiModalEnumeration_visual_cue_enumeration = _PropertySpec(
@@ -18118,12 +17587,13 @@ _P_MultiModalEnumeration_visual_cue_enumeration = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/visualCueEnumeration',
     kind='object',
     label='visual cue enumeration',
+    sources=('http://qudt.org/schema/qudt/MultiModalEnumeration-visualCueEnumeration',),
     max_count=1,
 )
 
 class MultiModalEnumeration(Enumeration):
     """Multi modal enumeration
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/MultiModalEnumeration
     """
 
@@ -18158,7 +17628,7 @@ class MultiModalEnumeration(Enumeration):
         name: str | None = None,
         *,
         element: _Iterable[EnumeratedValue],
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         aural_cue_enumeration: _EntityBase | None = None,
@@ -18195,7 +17665,7 @@ class MultiModalEnumeration(Enumeration):
         plain_text_description: _Iterable[_EntityBase] = (),
         protocol_buffers_name: str | None = None,
         python_name: str | None = None,
-        value: _Iterable[EnumeratedValue] = (),
+        value_2: _Iterable[EnumeratedValue] = (),
         vb_name: str | None = None,
         visual_cue_enumeration: _EntityBase | None = None,
         label: str | None = None,
@@ -18212,7 +17682,7 @@ class MultiModalEnumeration(Enumeration):
             model=model,
             **_provided(
                 element=element,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 aural_cue_enumeration=aural_cue_enumeration,
@@ -18249,7 +17719,7 @@ class MultiModalEnumeration(Enumeration):
                 plain_text_description=plain_text_description,
                 protocol_buffers_name=protocol_buffers_name,
                 python_name=python_name,
-                value=value,
+                value_2=value_2,
                 vb_name=vb_name,
                 visual_cue_enumeration=visual_cue_enumeration,
             ),
@@ -18260,6 +17730,7 @@ _P_MultiModalType_aural_cue = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/auralCue',
     kind='object',
     label='aural cue',
+    sources=('http://qudt.org/schema/qudt/MultiModalType-auralCue',),
     max_count=1,
 )
 
@@ -18268,6 +17739,7 @@ _P_MultiModalType_iconic_cue = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/iconicCue',
     kind='object',
     label='iconic cue',
+    sources=('http://qudt.org/schema/qudt/MultiModalType-iconicCue',),
     max_count=1,
 )
 
@@ -18276,6 +17748,7 @@ _P_MultiModalType_kinesthetic_cue = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/kinestheticCue',
     kind='object',
     label='kinesthetic cue',
+    sources=('http://qudt.org/schema/qudt/MultiModalType-kinestheticCue',),
     max_count=1,
 )
 
@@ -18285,6 +17758,8 @@ _P_MultiModalType_modal_cue = _PropertySpec(
     kind='object',
     label='modal cue',
     ranges=('ModalCue',),
+    range_groups=(('http://qudt.org/schema/qudt/ModalCue',),),
+    sources=('http://qudt.org/schema/qudt/MultiModalType-modalCue',),
 )
 
 _P_MultiModalType_visual_cue = _PropertySpec(
@@ -18292,12 +17767,13 @@ _P_MultiModalType_visual_cue = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/visualCue',
     kind='object',
     label='visual cue',
+    sources=('http://qudt.org/schema/qudt/MultiModalType-visualCue',),
     max_count=1,
 )
 
 class MultiModalType(EnumeratedValue):
     """Multi Modal Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/MultiModalType
     """
 
@@ -18377,7 +17853,7 @@ class MultiModalType(EnumeratedValue):
 
 class MultiSet(Collection):
     """Bag
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/MultiSet
     """
 
@@ -18393,7 +17869,7 @@ class MultiSet(Collection):
 
 class MultifunctionalMembrane(Filter):
     """A membrane integrating multiple processes (e.g., reduction, adsorption, filtration) for selective removal and recovery of contaminants.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#MultifunctionalMembrane
     """
 
@@ -18409,7 +17885,7 @@ class MultifunctionalMembrane(Filter):
 
 class NIST_SP811_Comment(Comment):
     """NIST SP~811 Comment
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/NIST_SP811_Comment
     """
 
@@ -18423,18 +17899,9 @@ class NIST_SP811_Comment(Comment):
         ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Comment', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_N_TupleType_element_datatype = _PropertySpec(
-    name='element_datatype',
-    predicate='http://qudt.org/schema/qudt/elementDatatype',
-    kind='object',
-    label='element datatype',
-    ranges=('Datatype', 'TupleMember'),
-    max_count=1,
-)
-
 class N_TupleType(Tuple):
     """N-Tuple Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/N-TupleType
     """
 
@@ -18446,103 +17913,11 @@ class N_TupleType(Tuple):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/Tuple',),
         ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_N_TupleType_element_datatype,),
     )
-
-    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_N_TupleType_element_datatype)
-    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        type_: _Iterable[_EntityBase],
-        abbreviation: str | None = None,
-        alignment: _Iterable[AlignmentType] = (),
-        ansi_sql_name: str | None = None,
-        basis: Datatype | None = None,
-        bounded: bool | None = None,
-        c_name: str | None = None,
-        cardinality: CardinalityType | None = None,
-        code: _Iterable[_EntityBase] = (),
-        deprecated: bool | None = None,
-        deprecated_in_version: str | None = None,
-        description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | TupleMember | None = None,
-        element_type_count: int | None = None,
-        exact_match: _Iterable[Concept_2] = (),
-        guidance: str | None = None,
-        has_rule: _Iterable[Rule] = (),
-        id: str | None = None,
-        is_replaced_by: _EntityBase | None = None,
-        java_name: str | None = None,
-        js_name: str | None = None,
-        length: int | None = None,
-        matlab_name: str | None = None,
-        microsoft_sql_server_name: str | None = None,
-        my_sql_name: str | None = None,
-        odbc_name: str | None = None,
-        ole_db_name: str | None = None,
-        oracle_sql_name: str | None = None,
-        ordered_type: OrderedType | None = None,
-        padding: PaddingType | None = None,
-        plain_text_description: _Iterable[_EntityBase] = (),
-        protocol_buffers_name: str | None = None,
-        python_name: str | None = None,
-        vb_name: str | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                type_=type_,
-                abbreviation=abbreviation,
-                alignment=alignment,
-                ansi_sql_name=ansi_sql_name,
-                basis=basis,
-                bounded=bounded,
-                c_name=c_name,
-                cardinality=cardinality,
-                code=code,
-                deprecated=deprecated,
-                deprecated_in_version=deprecated_in_version,
-                description=description,
-                element_datatype=element_datatype,
-                element_type_count=element_type_count,
-                exact_match=exact_match,
-                guidance=guidance,
-                has_rule=has_rule,
-                id=id,
-                is_replaced_by=is_replaced_by,
-                java_name=java_name,
-                js_name=js_name,
-                length=length,
-                matlab_name=matlab_name,
-                microsoft_sql_server_name=microsoft_sql_server_name,
-                my_sql_name=my_sql_name,
-                odbc_name=odbc_name,
-                ole_db_name=ole_db_name,
-                oracle_sql_name=oracle_sql_name,
-                ordered_type=ordered_type,
-                padding=padding,
-                plain_text_description=plain_text_description,
-                protocol_buffers_name=protocol_buffers_name,
-                python_name=python_name,
-                vb_name=vb_name,
-            ),
-        )
 
 class NanofiltrationUnit(Filter):
     """A membrane filter with a pore size between ultrafiltration and reverse osmosis, which rejects divalent ions and larger organic molecules while passing most monovalent salts
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#NanofiltrationUnit
     """
 
@@ -18558,7 +17933,7 @@ class NanofiltrationUnit(Filter):
 
 class NonRotatingInertialFrame(InertialReferenceFrame):
     """Non Rotating Coordinate Frame
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/NonRotatingInertialFrame
     """
 
@@ -18572,21 +17947,23 @@ class NonRotatingInertialFrame(InertialReferenceFrame):
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/InertialReferenceFrame', 'http://qudt.org/schema/qudt/ReferenceFrame', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_NumericListShape_rest = _PropertySpec(
-    name='rest',
-    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#rest',
-    kind='object',
-)
-
 _P_NumericListShape_first = _PropertySpec(
     name='first',
     predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#first',
     kind='object',
+    sources=('b7bce94f445b6c207102d0ac2',),
+)
+
+_P_NumericListShape_rest = _PropertySpec(
+    name='rest',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#rest',
+    kind='object',
+    sources=('b00543012908a5f23a9625095',),
 )
 
 class NumericListShape(_EntityBase):
     """NumericListShape
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/NumericListShape
     """
 
@@ -18598,14 +17975,14 @@ class NumericListShape(_EntityBase):
         definition=None,
         parent_iris=('http://www.w3.org/1999/02/22-rdf-syntax-ns#List',),
         ancestor_iris=('http://www.w3.org/1999/02/22-rdf-syntax-ns#List',),
-        properties=(_P_NumericListShape_rest, _P_NumericListShape_first,),
+        properties=(_P_NumericListShape_first, _P_NumericListShape_rest,),
     )
-
-    rest: _Rel[_EntityBase] = _Rel(_P_NumericListShape_rest)
-    """rest (http://www.w3.org/1999/02/22-rdf-syntax-ns#rest)"""
 
     first: _Rel[_EntityBase] = _Rel(_P_NumericListShape_first)
     """first (http://www.w3.org/1999/02/22-rdf-syntax-ns#first)"""
+
+    rest: _Rel[_EntityBase] = _Rel(_P_NumericListShape_rest)
+    """rest (http://www.w3.org/1999/02/22-rdf-syntax-ns#rest)"""
 
     def __init__(
         self,
@@ -18633,7 +18010,7 @@ class NumericListShape(_EntityBase):
 
 class OccupancySensor(Sensor):
     """A `Sensor` that `observes` an `ObservableProperty` that represents an attribute of occupancy in a space.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#OccupancySensor
     """
 
@@ -18654,6 +18031,9 @@ _P_OccupantCountSensor_observes = _PropertySpec(
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
     ranges=('QuantifiableObservableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
+    sources=('ba25a7d80394b4c33a438406c', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -18661,7 +18041,7 @@ _P_OccupantCountSensor_observes = _PropertySpec(
 class OccupantCountSensor(OccupancySensor):
     """An `OccupancySensor` that `observes` a `QuantifiableObservableProperty` that represents a population, usually of humans, within
       a sensing region.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#OccupantCountSensor
     """
 
@@ -18694,7 +18074,7 @@ class OccupantCountSensor(OccupancySensor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -18751,13 +18131,16 @@ _P_OccupantMotionSensor_observes = _PropertySpec(
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
     ranges=('EnumeratedObservableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#EnumeratedObservableProperty',),),
+    sources=('bd08797a7c86eae8c1d79a47f', 'bd5a51094841e3cbea54021f0', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class OccupantMotionSensor(OccupancySensor):
     """An `OccupancySensor` that `observes` an `EnumeratedObservableProperty` that represents motion within a sensing region.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#OccupantMotionSensor
     """
 
@@ -18790,7 +18173,7 @@ class OccupantMotionSensor(OccupancySensor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -18847,13 +18230,16 @@ _P_OccupantPresenceSensor_observes = _PropertySpec(
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
     ranges=('EnumeratedObservableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#EnumeratedObservableProperty',),),
+    sources=('bd08797a7c86eae8c1d79a47f', 'bd69289dbadd77dd6a8abbeec', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class OccupantPresenceSensor(OccupancySensor):
     """An `OccupancySensor` that `observes` an `EnumeratedObservableProperty` that represents presence within a sensing region.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#OccupantPresenceSensor
     """
 
@@ -18886,7 +18272,7 @@ class OccupantPresenceSensor(OccupancySensor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -18936,18 +18322,9 @@ class OccupantPresenceSensor(OccupancySensor):
             ),
         )
 
-_P_UnsignedType_signedness = _PropertySpec(
-    name='signedness',
-    predicate='http://qudt.org/schema/qudt/signedness',
-    kind='object',
-    label='signedness',
-    ranges=('SignednessType',),
-    max_count=1,
-)
-
 class UnsignedType(NumericType):
     """Unsigned Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/UnsignedType
     """
 
@@ -18959,119 +18336,11 @@ class UnsignedType(NumericType):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/NumericType',),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_UnsignedType_signedness,),
     )
-
-    signedness: _RelOne[SignednessType] = _RelOne(_P_UnsignedType_signedness)
-    """signedness (http://qudt.org/schema/qudt/signedness)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        type_: _Iterable[_EntityBase],
-        abbreviation: str | None = None,
-        accuracy: int | None = None,
-        ansi_sql_name: str | None = None,
-        basis: Datatype | None = None,
-        bit_order: EndianType | None = None,
-        bits: int | None = None,
-        bounded: bool | None = None,
-        byte_order: EndianType | None = None,
-        bytes: int | None = None,
-        c_name: str | None = None,
-        cardinality: CardinalityType | None = None,
-        code: _Iterable[_EntityBase] = (),
-        deprecated: bool | None = None,
-        deprecated_in_version: str | None = None,
-        description: _Iterable[_EntityBase] = (),
-        encoding: Encoding | None = None,
-        exact_match: _Iterable[Concept_2] = (),
-        guidance: str | None = None,
-        has_rule: _Iterable[Rule] = (),
-        id: str | None = None,
-        is_replaced_by: _EntityBase | None = None,
-        java_name: str | None = None,
-        js_name: str | None = None,
-        length: int | None = None,
-        matlab_name: str | None = None,
-        max_exclusive: str | None = None,
-        max_inclusive: _EntityBase | None = None,
-        microsoft_sql_server_name: str | None = None,
-        min_exclusive: _EntityBase | None = None,
-        min_inclusive: _EntityBase | None = None,
-        my_sql_name: str | None = None,
-        odbc_name: str | None = None,
-        ole_db_name: str | None = None,
-        oracle_sql_name: str | None = None,
-        ordered_type: OrderedType | None = None,
-        plain_text_description: _Iterable[_EntityBase] = (),
-        protocol_buffers_name: str | None = None,
-        python_name: str | None = None,
-        rdfs_datatype: _EntityBase | None = None,
-        signedness: SignednessType | None = None,
-        vb_name: str | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                type_=type_,
-                abbreviation=abbreviation,
-                accuracy=accuracy,
-                ansi_sql_name=ansi_sql_name,
-                basis=basis,
-                bit_order=bit_order,
-                bits=bits,
-                bounded=bounded,
-                byte_order=byte_order,
-                bytes=bytes,
-                c_name=c_name,
-                cardinality=cardinality,
-                code=code,
-                deprecated=deprecated,
-                deprecated_in_version=deprecated_in_version,
-                description=description,
-                encoding=encoding,
-                exact_match=exact_match,
-                guidance=guidance,
-                has_rule=has_rule,
-                id=id,
-                is_replaced_by=is_replaced_by,
-                java_name=java_name,
-                js_name=js_name,
-                length=length,
-                matlab_name=matlab_name,
-                max_exclusive=max_exclusive,
-                max_inclusive=max_inclusive,
-                microsoft_sql_server_name=microsoft_sql_server_name,
-                min_exclusive=min_exclusive,
-                min_inclusive=min_inclusive,
-                my_sql_name=my_sql_name,
-                odbc_name=odbc_name,
-                ole_db_name=ole_db_name,
-                oracle_sql_name=oracle_sql_name,
-                ordered_type=ordered_type,
-                plain_text_description=plain_text_description,
-                protocol_buffers_name=protocol_buffers_name,
-                python_name=python_name,
-                rdfs_datatype=rdfs_datatype,
-                signedness=signedness,
-                vb_name=vb_name,
-            ),
-        )
 
 class UnsignedIntegerType(IntegerDatatype, UnsignedType):
     """Unsigned Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/UnsignedIntegerType
     """
 
@@ -19087,7 +18356,7 @@ class UnsignedIntegerType(IntegerDatatype, UnsignedType):
 
 class OctetType(UnsignedIntegerType):
     """Octet Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/OctetType
     """
 
@@ -19103,7 +18372,7 @@ class OctetType(UnsignedIntegerType):
 
 class OffOnStateTypeEnumeration(Enumeration):
     """OffOnStateTypeEnumeration
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/OffOnStateTypeEnumeration
     """
 
@@ -19119,7 +18388,7 @@ class OffOnStateTypeEnumeration(Enumeration):
 
 class OnOffStateType(DiscreteState):
     """On off state type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/OnOffStateType
     """
 
@@ -19135,7 +18404,7 @@ class OnOffStateType(DiscreteState):
 
 class OnOffStateTypeEnumeration(Enumeration):
     """OnOffStateTypeEnumeration
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/OnOffStateTypeEnumeration
     """
 
@@ -19155,13 +18424,14 @@ _P_OrderedType_literal = _PropertySpec(
     kind='literal',
     label='literal',
     definition='',
+    sources=('http://qudt.org/schema/qudt/OrderedType-literal',),
     datatype=str,
     max_count=1,
 )
 
 class OrderedType(EnumeratedValue):
     """Ordered type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/OrderedType
     """
 
@@ -19224,6 +18494,8 @@ _P_OrdinalScale_order = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/order',
     kind='literal',
     label='order',
+    sources=('http://qudt.org/schema/qudt/OrdinalScale-order',),
+    min_count=1,
     datatype=int,
     required=True,
     max_count=1,
@@ -19231,7 +18503,7 @@ _P_OrdinalScale_order = _PropertySpec(
 
 class OrdinalScale(Scale):
     """Ordinal scale
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/OrdinalScale
     """
 
@@ -19254,7 +18526,7 @@ class OrdinalScale(Scale):
         name: str | None = None,
         *,
         order: int | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         data_structure: str | None = None,
@@ -19289,7 +18561,7 @@ class OrdinalScale(Scale):
             model=model,
             **_provided(
                 order=order,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 data_structure=data_structure,
@@ -19318,12 +18590,13 @@ _P_Organization_url = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/url',
     kind='literal',
     label='url',
+    sources=('http://qudt.org/schema/qudt/Organization-url',),
     datatype=str,
 )
 
 class Organization(Concept_2):
     """Organization
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Organization
     """
 
@@ -19345,7 +18618,7 @@ class Organization(Concept_2):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -19371,7 +18644,7 @@ class Organization(Concept_2):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -19387,15 +18660,6 @@ class Organization(Concept_2):
             ),
         )
 
-_P_PhysicalSpace_encloses = _PropertySpec(
-    name='encloses',
-    predicate='http://data.ashrae.org/standard223#encloses',
-    kind='object',
-    label='encloses',
-    definition='A `Relation` that associates a `PhysicalSpace` with one or more `DomainSpace`s.',
-    ranges=('DomainSpace',),
-)
-
 _P_PhysicalSpace_contains_ = _PropertySpec(
     name='contains_',
     predicate='http://data.ashrae.org/standard223#contains',
@@ -19403,11 +18667,24 @@ _P_PhysicalSpace_contains_ = _PropertySpec(
     label='contains',
     definition='A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s.',
     ranges=('PhysicalSpace',),
+    range_groups=(('http://data.ashrae.org/standard223#PhysicalSpace',),),
+    sources=('b148703f78a1ded802228a6b4',),
+)
+
+_P_PhysicalSpace_encloses = _PropertySpec(
+    name='encloses',
+    predicate='http://data.ashrae.org/standard223#encloses',
+    kind='object',
+    label='encloses',
+    definition='A `Relation` that associates a `PhysicalSpace` with one or more `DomainSpace`s.',
+    ranges=('DomainSpace',),
+    range_groups=(('http://data.ashrae.org/standard223#DomainSpace',),),
+    sources=('b0338d09325a602bd7ef41e2c',),
 )
 
 class PhysicalSpace(Concept):
     """An architectural concept representing a room, a part of a room, a collection of rooms, or any other physical region in a building. PhysicalSpaces may be grouped to define larger `PhysicalSpace`s using the relation `contains` (see {s223:contains}).
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#PhysicalSpace
     """
 
@@ -19419,14 +18696,14 @@ class PhysicalSpace(Concept):
         definition='An architectural concept representing a room, a part of a room, a collection of rooms, or any other physical region in a building. PhysicalSpaces may be grouped to define larger `PhysicalSpace`s using the relation `contains` (see {s223:contains}).',
         parent_iris=('http://data.ashrae.org/standard223#Concept',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_PhysicalSpace_encloses, _P_PhysicalSpace_contains_,),
+        properties=(_P_PhysicalSpace_contains_, _P_PhysicalSpace_encloses,),
     )
-
-    encloses: _Rel[DomainSpace] = _Rel(_P_PhysicalSpace_encloses)
-    """A `Relation` that associates a `PhysicalSpace` with one or more `DomainSpace`s. (http://data.ashrae.org/standard223#encloses)"""
 
     contains_: _Rel[PhysicalSpace] = _Rel(_P_PhysicalSpace_contains_)
     """A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s. (http://data.ashrae.org/standard223#contains)"""
+
+    encloses: _Rel[DomainSpace] = _Rel(_P_PhysicalSpace_encloses)
+    """A `Relation` that associates a `PhysicalSpace` with one or more `DomainSpace`s. (http://data.ashrae.org/standard223#encloses)"""
 
     def __init__(
         self,
@@ -19458,7 +18735,7 @@ class PhysicalSpace(Concept):
 
 class OutdoorPhysicalSpace(PhysicalSpace):
     """A `PhysicalSpace` that is outside of the building where, for example, outdoor ambient properties might be measured, within a suitably defined `DomainSpace`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#OutdoorPhysicalSpace
     """
 
@@ -19472,30 +18749,22 @@ class OutdoorPhysicalSpace(PhysicalSpace):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#PhysicalSpace', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_OutletConnectionPoint_paired_with = _PropertySpec(
-    name='paired_with',
-    predicate='http://data.ashrae.org/standard223#pairedConnectionPoint',
-    kind='object',
-    label='paired connection point',
-    definition='A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`.',
-    ranges=('ConnectionPoint',),
-    max_count=1,
-)
-
 _P_OutletConnectionPoint_maps_to = _PropertySpec(
     name='maps_to',
     predicate='http://data.ashrae.org/standard223#mapsTo',
     kind='object',
     label='maps to',
     definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
-    ranges=('ConnectionPoint', 'OutletConnectionPoint'),
+    ranges=('OutletConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',), ('http://data.ashrae.org/standard223#OutletConnectionPoint',)),
+    sources=('b0d13994dfb2300c9e5295e50', 'b33487dbc91b59884232238e0', 'b398e8ae8d13bd06b4e8e26ce', 'bb034c0077500f468d0b8a00c', 'bcd0844fd5cbcd23016dbbec4', 'be1d4db06086f9ad97cf53289'),
     max_count=1,
     deferred=True,
 )
 
 class OutletConnectionPoint(ConnectionPoint):
     """An `OutletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow out of the associated `Connectable`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#OutletConnectionPoint
     """
 
@@ -19507,13 +18776,10 @@ class OutletConnectionPoint(ConnectionPoint):
         definition='An `OutletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow out of the associated `Connectable`.',
         parent_iris=('http://data.ashrae.org/standard223#ConnectionPoint',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ConnectionPoint', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_OutletConnectionPoint_paired_with, _P_OutletConnectionPoint_maps_to,),
+        properties=(_P_OutletConnectionPoint_maps_to,),
     )
 
-    paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_OutletConnectionPoint_paired_with)
-    """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
-
-    maps_to: _RelOne[ConnectionPoint | OutletConnectionPoint | _DeferredEndpoint] = _RelOne(_P_OutletConnectionPoint_maps_to)
+    maps_to: _RelOne[OutletConnectionPoint | _DeferredEndpoint] = _RelOne(_P_OutletConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
     def __init__(
@@ -19526,7 +18792,7 @@ class OutletConnectionPoint(ConnectionPoint):
         has_electrical_phase: _EnumValue | None = None,
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
-        maps_to: ConnectionPoint | OutletConnectionPoint | _DeferredEndpoint | None = None,
+        maps_to: OutletConnectionPoint | _DeferredEndpoint | None = None,
         paired_with: ConnectionPoint | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -19554,7 +18820,7 @@ class OutletConnectionPoint(ConnectionPoint):
 
 class OxidationDitch(Reactor):
     """Modified activated sludge process that uses a ring-shaped channel to biologically remove pollutants
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#OxidationDitch
     """
 
@@ -19579,7 +18845,7 @@ class OxidationDitch(Reactor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -19623,7 +18889,7 @@ class OxidationDitch(Reactor):
 
 class OxygenDemandSensor(Sensor):
     """A sensor used to measure Chemical Oxygen Demand (COD) and Biological Oxygen Demand (BOD)
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#OxygenDemandSensor
     """
 
@@ -19639,7 +18905,7 @@ class OxygenDemandSensor(Sensor):
 
 class OxygenMeter(ConcentrationSensor_2):
     """A sensor used to measure the concentration of oxygen
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#OxygenMeter
     """
 
@@ -19655,7 +18921,7 @@ class OxygenMeter(ConcentrationSensor_2):
 
 class OzonationUnit(UnitProcess):
     """A unit that uses ozone for water treatment.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#OzonationUnit
     """
 
@@ -19680,7 +18946,7 @@ class OzonationUnit(UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -19724,7 +18990,7 @@ class OzonationUnit(UnitProcess):
 
 class PaddingType(EnumeratedValue):
     """Padding type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/PaddingType
     """
 
@@ -19740,7 +19006,7 @@ class PaddingType(EnumeratedValue):
 
 class ParameterModifiabilityType(EnumeratedValue):
     """Parameter modifiability type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ParameterModifiabilityType
     """
 
@@ -19756,7 +19022,7 @@ class ParameterModifiabilityType(EnumeratedValue):
 
 class PartialArray(Array):
     """Partial Array
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/PartialArray
     """
 
@@ -19770,15 +19036,6 @@ class PartialArray(Array):
         ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_ParticulateSensor_of_substance = _PropertySpec(
-    name='of_substance',
-    predicate='http://data.ashrae.org/standard223#ofSubstance',
-    kind='enum',
-    label='of substance',
-    definition='A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix.',
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Particulate',),
-)
-
 _P_ParticulateSensor_observes = _PropertySpec(
     name='observes',
     predicate='http://data.ashrae.org/standard223#observes',
@@ -19786,22 +19043,36 @@ _P_ParticulateSensor_observes = _PropertySpec(
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
     ranges=('QuantifiableObservableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
+    sources=('b5fb805ffd07c4c73ab7d8316', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
+    min_count=1,
     required=True,
     max_count=1,
+)
+
+_P_ParticulateSensor_of_substance = _PropertySpec(
+    name='of_substance',
+    predicate='http://data.ashrae.org/standard223#ofSubstance',
+    kind='enum',
+    label='of substance',
+    definition='A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix.',
+    range_groups=(('http://data.ashrae.org/standard223#Substance-Particulate',),),
+    sources=('b4e9ca7782b94f6a025928dec',),
+    enum_ranges=('http://data.ashrae.org/standard223#Substance-Particulate',),
 )
 
 class ParticulateSensor(Sensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents an amount of a particulate in a medium, in contrast
     to a `ConcentrationSensor` that `observes` a `QuantifiableObservableProperty` that represents a concentration of a miscible constituent in a medium
     (see {s223:ConcentrationSensor}).
-    
+
     The 223 standard does not constrain the `Unit` or `QuantityKind` reported by a `ParticulateSensor`, but possible
     `QuantityKind`s include `Density` (mass per volume), `ParticleNumberDensity` (count per volume), and `DimensionlessRatio` (with units such as `PPM` or
     `PPB`). Some particulate sensors may claim to report a raw count of particles, for which a `QuantityKind` of `Count` could be used, but the required
     context for such a measurement should be provided in the sensor's documentation to specify if it in fact measures a count per volume (e.g., `ParticleNumberDensity`),
     time (e.g., `CountRate` or `ParticleCurrent`), or some
     other combination. Explicitly declaring the `QuantityKind` of a sensor's output is preferable to relying on implicit assumptions.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ParticulateSensor
     """
 
@@ -19813,17 +19084,17 @@ class ParticulateSensor(Sensor):
         definition="A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents an amount of a particulate in a medium, in contrast\nto a `ConcentrationSensor` that `observes` a `QuantifiableObservableProperty` that represents a concentration of a miscible constituent in a medium\n(see {s223:ConcentrationSensor}).\n\nThe 223 standard does not constrain the `Unit` or `QuantityKind` reported by a `ParticulateSensor`, but possible\n`QuantityKind`s include `Density` (mass per volume), `ParticleNumberDensity` (count per volume), and `DimensionlessRatio` (with units such as `PPM` or\n`PPB`). Some particulate sensors may claim to report a raw count of particles, for which a `QuantityKind` of `Count` could be used, but the required\ncontext for such a measurement should be provided in the sensor's documentation to specify if it in fact measures a count per volume (e.g., `ParticleNumberDensity`),\ntime (e.g., `CountRate` or `ParticleCurrent`), or some\nother combination. Explicitly declaring the `QuantityKind` of a sensor's output is preferable to relying on implicit assumptions.",
         parent_iris=('http://data.ashrae.org/standard223#Sensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_ParticulateSensor_of_substance, _P_ParticulateSensor_observes,),
+        properties=(_P_ParticulateSensor_observes, _P_ParticulateSensor_of_substance,),
     )
-
-    of_substance: _EnumSet[_EnumValue] = _EnumSet(_P_ParticulateSensor_of_substance)
-    """A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix. (http://data.ashrae.org/standard223#ofSubstance)"""
 
     observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_ParticulateSensor_observes)
     """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+
+    of_substance: _EnumSet[_EnumValue] = _EnumSet(_P_ParticulateSensor_of_substance)
+    """A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix. (http://data.ashrae.org/standard223#ofSubstance)"""
 
     def __init__(
         self,
@@ -19837,7 +19108,7 @@ class ParticulateSensor(Sensor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -19891,7 +19162,7 @@ class ParticulateSensor(Sensor):
 
 class Party(_EntityBase):
     """Party
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/vaem#Party
     """
 
@@ -19907,7 +19178,7 @@ class Party(_EntityBase):
 
 class PersonalComputer(Computer):
     """A `Computer` designed primarily for use by a single person.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#PersonalComputer
     """
 
@@ -19926,7 +19197,7 @@ class PersonalComputer(Computer):
 
 class PhotovoltaicModule(Equipment):
     """A piece of `Equipment` that converts sunlight into electricity.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#PhotovoltaicModule
     """
 
@@ -19946,7 +19217,7 @@ class PhotovoltaicModule(Equipment):
 
 class PhysicalAddress(CompositeDatatype):
     """Physical Address Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/PhysicalAddress
     """
 
@@ -19967,6 +19238,8 @@ _P_Quantity_has_quantity_kind = _PropertySpec(
     label='has quantity kind',
     definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/Quantity-hasQuantityKind',),
 )
 
 _P_Quantity_is_delta_quantity = _PropertySpec(
@@ -19974,6 +19247,7 @@ _P_Quantity_is_delta_quantity = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/isDeltaQuantity',
     kind='literal',
     label='is Delta Quantity',
+    sources=('http://qudt.org/schema/qudt/Quantity-isDeltaQuantity',),
     datatype=bool,
 )
 
@@ -19983,12 +19257,13 @@ _P_Quantity_quantity_value = _PropertySpec(
     kind='object',
     label='quantity value',
     ranges=('QuantityValue',),
-    inverse='value_quantity',
+    range_groups=(('http://qudt.org/schema/qudt/QuantityValue',),),
+    sources=('http://qudt.org/schema/qudt/Quantity-quantityValue',),
 )
 
 class Quantity(Concept_2, Quantifiable, Verifiable):
     """Quantity
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Quantity
     """
 
@@ -20016,11 +19291,11 @@ class Quantity(Concept_2, Quantifiable, Verifiable):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         data_encoding: DataEncoding | None = None,
-        datatype: _EntityBase | None = None,
+        datatype: Datatype | EnumeratedValue | None = None,
         dbpedia_match: str | None = None,
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
@@ -20057,7 +19332,7 @@ class Quantity(Concept_2, Quantifiable, Verifiable):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 data_encoding=data_encoding,
@@ -20093,6 +19368,7 @@ _P_PhysicalConstant_alt_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/altSymbol',
     kind='object',
     label='alt symbol',
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-altSymbol',),
 )
 
 _P_PhysicalConstant_applicable_system = _PropertySpec(
@@ -20101,6 +19377,8 @@ _P_PhysicalConstant_applicable_system = _PropertySpec(
     kind='object',
     label='applicable system',
     ranges=('SystemOfUnits',),
+    range_groups=(('http://qudt.org/schema/qudt/SystemOfUnits',),),
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-applicableSystem',),
 )
 
 _P_PhysicalConstant_applicable_unit = _PropertySpec(
@@ -20109,14 +19387,8 @@ _P_PhysicalConstant_applicable_unit = _PropertySpec(
     kind='object',
     label='applicable unit',
     ranges=('Unit',),
-)
-
-_P_PhysicalConstant_dbpedia_match = _PropertySpec(
-    name='dbpedia_match',
-    predicate='http://qudt.org/schema/qudt/dbpediaMatch',
-    kind='literal',
-    label='dbpedia match',
-    datatype=str,
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-applicableUnit',),
 )
 
 _P_PhysicalConstant_eclass_code = _PropertySpec(
@@ -20124,6 +19396,7 @@ _P_PhysicalConstant_eclass_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/eclassCode',
     kind='literal',
     label='ECLASS code',
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-eclassCode',),
     datatype=str,
 )
 
@@ -20132,6 +19405,7 @@ _P_PhysicalConstant_exact_constant = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/exactConstant',
     kind='literal',
     label='exact constant',
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-exactConstant',),
     datatype=bool,
 )
 
@@ -20141,6 +19415,8 @@ _P_PhysicalConstant_has_dimension_vector = _PropertySpec(
     kind='object',
     label='has dimension vector',
     ranges=('QuantityKindDimensionVector',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKindDimensionVector',),),
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-hasDimensionVector',),
 )
 
 _P_PhysicalConstant_iec61360_code = _PropertySpec(
@@ -20148,14 +19424,7 @@ _P_PhysicalConstant_iec61360_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/iec61360Code',
     kind='literal',
     label='IEC 61360 code',
-    datatype=str,
-)
-
-_P_PhysicalConstant_iso_normative_reference = _PropertySpec(
-    name='iso_normative_reference',
-    predicate='http://qudt.org/schema/qudt/isoNormativeReference',
-    kind='literal',
-    label='normative reference (ISO)',
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-iec61360Code',),
     datatype=str,
 )
 
@@ -20164,6 +19433,7 @@ _P_PhysicalConstant_latex_definition = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/latexDefinition',
     kind='literal',
     label='latex definition',
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-latexDefinition',),
     datatype=str,
     max_count=1,
 )
@@ -20173,6 +19443,7 @@ _P_PhysicalConstant_latex_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/latexSymbol',
     kind='literal',
     label='latex symbol',
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-latexSymbol',),
     datatype=str,
 )
 
@@ -20181,16 +19452,9 @@ _P_PhysicalConstant_math_m_ldefinition = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/mathMLdefinition',
     kind='literal',
     label='mathML definition',
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-mathMLdefinition',),
     datatype=str,
     max_count=1,
-)
-
-_P_PhysicalConstant_normative_reference = _PropertySpec(
-    name='normative_reference',
-    predicate='http://qudt.org/schema/qudt/normativeReference',
-    kind='literal',
-    label='normative reference',
-    datatype=str,
 )
 
 _P_PhysicalConstant_si_exact_match = _PropertySpec(
@@ -20198,6 +19462,7 @@ _P_PhysicalConstant_si_exact_match = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/siExactMatch',
     kind='object',
     label='Individual from SI Reference Point',
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-siExactMatch',),
     max_count=1,
 )
 
@@ -20206,6 +19471,7 @@ _P_PhysicalConstant_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/symbol',
     kind='object',
     label='symbol',
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-symbol',),
     max_count=1,
 )
 
@@ -20214,12 +19480,13 @@ _P_PhysicalConstant_ucum_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/ucumCode',
     kind='literal',
     label='ucum code',
+    sources=('http://qudt.org/schema/qudt/PhysicalConstant-ucumCode',),
     datatype=str,
 )
 
 class PhysicalConstant(Quantity):
     """Physical Constant
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/PhysicalConstant
     """
 
@@ -20231,7 +19498,7 @@ class PhysicalConstant(Quantity):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/Quantity',),
         ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Quantifiable', 'http://qudt.org/schema/qudt/Quantity', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_PhysicalConstant_alt_symbol, _P_PhysicalConstant_applicable_system, _P_PhysicalConstant_applicable_unit, _P_PhysicalConstant_dbpedia_match, _P_PhysicalConstant_eclass_code, _P_PhysicalConstant_exact_constant, _P_PhysicalConstant_has_dimension_vector, _P_PhysicalConstant_iec61360_code, _P_PhysicalConstant_iso_normative_reference, _P_PhysicalConstant_latex_definition, _P_PhysicalConstant_latex_symbol, _P_PhysicalConstant_math_m_ldefinition, _P_PhysicalConstant_normative_reference, _P_PhysicalConstant_si_exact_match, _P_PhysicalConstant_symbol, _P_PhysicalConstant_ucum_code,),
+        properties=(_P_PhysicalConstant_alt_symbol, _P_PhysicalConstant_applicable_system, _P_PhysicalConstant_applicable_unit, _P_PhysicalConstant_eclass_code, _P_PhysicalConstant_exact_constant, _P_PhysicalConstant_has_dimension_vector, _P_PhysicalConstant_iec61360_code, _P_PhysicalConstant_latex_definition, _P_PhysicalConstant_latex_symbol, _P_PhysicalConstant_math_m_ldefinition, _P_PhysicalConstant_si_exact_match, _P_PhysicalConstant_symbol, _P_PhysicalConstant_ucum_code,),
     )
 
     alt_symbol: _Rel[_EntityBase] = _Rel(_P_PhysicalConstant_alt_symbol)
@@ -20242,9 +19509,6 @@ class PhysicalConstant(Quantity):
 
     applicable_unit: _Rel[Unit] = _Rel(_P_PhysicalConstant_applicable_unit)
     """applicable unit (http://qudt.org/schema/qudt/applicableUnit)"""
-
-    dbpedia_match: _Lit[str] = _Lit(_P_PhysicalConstant_dbpedia_match)
-    """dbpedia match (http://qudt.org/schema/qudt/dbpediaMatch)"""
 
     eclass_code: _Lit[str] = _Lit(_P_PhysicalConstant_eclass_code)
     """ECLASS code (http://qudt.org/schema/qudt/eclassCode)"""
@@ -20258,9 +19522,6 @@ class PhysicalConstant(Quantity):
     iec61360_code: _Lit[str] = _Lit(_P_PhysicalConstant_iec61360_code)
     """IEC 61360 code (http://qudt.org/schema/qudt/iec61360Code)"""
 
-    iso_normative_reference: _Lit[str] = _Lit(_P_PhysicalConstant_iso_normative_reference)
-    """normative reference (ISO) (http://qudt.org/schema/qudt/isoNormativeReference)"""
-
     latex_definition: _Lit[str] = _Lit(_P_PhysicalConstant_latex_definition)
     """latex definition (http://qudt.org/schema/qudt/latexDefinition)"""
 
@@ -20269,9 +19530,6 @@ class PhysicalConstant(Quantity):
 
     math_m_ldefinition: _Lit[str] = _Lit(_P_PhysicalConstant_math_m_ldefinition)
     """mathML definition (http://qudt.org/schema/qudt/mathMLdefinition)"""
-
-    normative_reference: _Lit[str] = _Lit(_P_PhysicalConstant_normative_reference)
-    """normative reference (http://qudt.org/schema/qudt/normativeReference)"""
 
     si_exact_match: _RelOne[_EntityBase] = _RelOne(_P_PhysicalConstant_si_exact_match)
     """Individual from SI Reference Point (http://qudt.org/schema/qudt/siExactMatch)"""
@@ -20286,14 +19544,14 @@ class PhysicalConstant(Quantity):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alt_symbol: _Iterable[_EntityBase] = (),
         applicable_system: _Iterable[SystemOfUnits] = (),
         applicable_unit: _Iterable[Unit] = (),
         code: _Iterable[_EntityBase] = (),
         data_encoding: DataEncoding | None = None,
-        datatype: _EntityBase | None = None,
+        datatype: Datatype | EnumeratedValue | None = None,
         dbpedia_match: str | None = None,
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
@@ -20340,7 +19598,7 @@ class PhysicalConstant(Quantity):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alt_symbol=alt_symbol,
                 applicable_system=applicable_system,
@@ -20386,7 +19644,7 @@ class PhysicalConstant(Quantity):
 
 class Pipe(Connection):
     """A `Connection` that is used primarily to transport liquids and gases such as water, sewage, natural gas, and compressed air.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Pipe
     """
 
@@ -20402,7 +19660,7 @@ class Pipe(Connection):
 
 class PlaneAngleUnit(AngleUnit):
     """Plane Angle Unit
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/PlaneAngleUnit
     """
 
@@ -20418,7 +19676,7 @@ class PlaneAngleUnit(AngleUnit):
 
 class PlugFlowReactor(Reactor):
     """A type of reactor where the fluid flows in one direction through the tube
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#PlugFlowReactor
     """
 
@@ -20438,7 +19696,7 @@ class PlugFlowReactor(Reactor):
 
 class PlugValve(Valve_2):
     """A valve with cylindrical or conically tapered plugs which can be rotated inside the valve body to control flow through the valve
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#PlugValve
     """
 
@@ -20454,7 +19712,7 @@ class PlugValve(Valve_2):
 
 class PolarCoordinates(Coordinates):
     """Polar Coordinate System
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/PolarCoordinates
     """
 
@@ -20470,7 +19728,7 @@ class PolarCoordinates(Coordinates):
 
 class PolarCoordinatesType(CoordinateSystem):
     """Polar Coordinate System Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/PolarCoordinatesType
     """
 
@@ -20486,7 +19744,7 @@ class PolarCoordinatesType(CoordinateSystem):
 
 class Polarity(EnumeratedValue):
     """Polarity
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Polarity
     """
 
@@ -20502,7 +19760,7 @@ class Polarity(EnumeratedValue):
 
 class Pond(Equipment):
     """A body of still water smaller than a lake, used for treatment or storage.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Pond
     """
 
@@ -20518,7 +19776,7 @@ class Pond(Equipment):
 
 class PositiveBigIntegerType(IntegerDatatype, UnsignedType):
     """Positive Big Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/PositiveBigIntegerType
     """
 
@@ -20534,7 +19792,7 @@ class PositiveBigIntegerType(IntegerDatatype, UnsignedType):
 
 class PositiveIntegerType(IntegerDatatype, UnsignedType):
     """Positive Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/PositiveIntegerType
     """
 
@@ -20550,7 +19808,7 @@ class PositiveIntegerType(IntegerDatatype, UnsignedType):
 
 class PowerOverEthernetPort(Equipment):
     """A piece of `Equipment` that connects and is capable of powering one instance of electrical equipment, such as computers and Wi-Fi access points, as well as connect it to an Ethernet network so it can communicate with other equipment and, optionally, with the Internet.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#PowerOverEthernetPort
     """
 
@@ -20570,7 +19828,7 @@ class PowerOverEthernetPort(Equipment):
 
 class PowerOverEthernetSwitch(Equipment):
     """A piece of `Equipment` that connects and is capable of powering one or more instances of electrical equipment, such as computers and Wi-Fi access points, as well as connect the equipment to an Ethernet network so they can communicate with each other and, optionally, to the Internet.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#PowerOverEthernetSwitch
     """
 
@@ -20590,7 +19848,7 @@ class PowerOverEthernetSwitch(Equipment):
 
 class PressureExchanger(Equipment):
     """A device used to transfer pressure energy from one fluid to another
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#PressureExchanger
     """
 
@@ -20606,7 +19864,7 @@ class PressureExchanger(Equipment):
 
 class PressureSensor(PressureSensor_2):
     """A sensor used to measure pressure
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#PressureSensor
     """
 
@@ -20622,7 +19880,7 @@ class PressureSensor(PressureSensor_2):
 
 class Process(_EntityBase):
     """A physical, chemical, or biological activity performed by a piece of equipment or by a system.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process
     """
 
@@ -20638,7 +19896,7 @@ class Process(_EntityBase):
 
 class Process_BiologicalProcess(Process):
     """A unit process that utilizes biological activity for water treatment.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-BiologicalProcess
     """
 
@@ -20654,7 +19912,7 @@ class Process_BiologicalProcess(Process):
 
 class Process_ActivatedSludge(Process_BiologicalProcess):
     """Suspended-growth biological treatment in which biomass is aerated and subsequently separated from the treated water.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ActivatedSludge
     """
 
@@ -20670,7 +19928,7 @@ class Process_ActivatedSludge(Process_BiologicalProcess):
 
 class Process_A2O(Process_ActivatedSludge):
     """Anaerobic-anoxic-aerobic process for simultaneous biological nitrogen and phosphorus removal.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-A2O
     """
 
@@ -20686,7 +19944,7 @@ class Process_A2O(Process_ActivatedSludge):
 
 class Process_AO(Process_ActivatedSludge):
     """Two-stage process with anoxic zone followed by aerobic zone for biological nitrogen removal.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-AO
     """
 
@@ -20702,7 +19960,7 @@ class Process_AO(Process_ActivatedSludge):
 
 class Process_PhysicalProcess(Process):
     """A unit process that relies on physical forces to separate or treat water.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-PhysicalProcess
     """
 
@@ -20718,7 +19976,7 @@ class Process_PhysicalProcess(Process):
 
 class Process_Adsorption(Process_PhysicalProcess):
     """A process by which substances bind to a surface.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Adsorption
     """
 
@@ -20734,7 +19992,7 @@ class Process_Adsorption(Process_PhysicalProcess):
 
 class Process_ChemicalProcess(Process):
     """A unit process that uses chemical reaction, chemical addition, or both to achieve a desired effect.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ChemicalProcess
     """
 
@@ -20750,7 +20008,7 @@ class Process_ChemicalProcess(Process):
 
 class Process_Oxidation(Process_ChemicalProcess):
     """A unit process that adds oxidizing agents to water to remove contaminants or improve water quality.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Oxidation
     """
 
@@ -20766,7 +20024,7 @@ class Process_Oxidation(Process_ChemicalProcess):
 
 class Process_AdvancedOxidation(Process_Oxidation):
     """Processes combining UV light with oxidants (e.g., UV-AOP) to destroy contaminants.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-AdvancedOxidation
     """
 
@@ -20782,7 +20040,7 @@ class Process_AdvancedOxidation(Process_Oxidation):
 
 class Process_GasTransfer(Process_PhysicalProcess):
     """A unit process that transfers gases, such as oxygen or carbon dioxide, into or out of water.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-GasTransfer
     """
 
@@ -20798,7 +20056,7 @@ class Process_GasTransfer(Process_PhysicalProcess):
 
 class Process_Aeration(Process_GasTransfer):
     """A unit process that aerates (i.e., transfers oxygen into water).
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Aeration
     """
 
@@ -20814,7 +20072,7 @@ class Process_Aeration(Process_GasTransfer):
 
 class Process_Digestion(Process_BiologicalProcess):
     """A biological process that breaks down organic matter over a long duration in a tank.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Digestion
     """
 
@@ -20830,7 +20088,7 @@ class Process_Digestion(Process_BiologicalProcess):
 
 class Process_AerobicDigestion(Process_Digestion):
     """A biological process that breaks down organic matter in the presence of oxygen.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-AerobicDigestion
     """
 
@@ -20846,7 +20104,7 @@ class Process_AerobicDigestion(Process_Digestion):
 
 class Process_Cleaning(Process_PhysicalProcess):
     """A maintenance-oriented process that removes accumulated solids, foulants, or residual materials from water treatment equipment.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Cleaning
     """
 
@@ -20862,7 +20120,7 @@ class Process_Cleaning(Process_PhysicalProcess):
 
 class Process_AirScouring(Process_Cleaning):
     """A cleaning process that uses injected air to dislodge accumulated foulants or solids from filter media or membrane surfaces.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-AirScouring
     """
 
@@ -20878,7 +20136,7 @@ class Process_AirScouring(Process_Cleaning):
 
 class Process_AnaerobicDigestion(Process_Digestion):
     """A biological process that breaks down organic matter in the absence of oxygen.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-AnaerobicDigestion
     """
 
@@ -20894,7 +20152,7 @@ class Process_AnaerobicDigestion(Process_Digestion):
 
 class Process_Backwashing(Process_Cleaning):
     """A cleaning process in which water, and sometimes air, is driven backward through a filter or membrane system to remove accumulated solids.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Backwashing
     """
 
@@ -20910,7 +20168,7 @@ class Process_Backwashing(Process_Cleaning):
 
 class Process_Separation(Process_PhysicalProcess):
     """The most generic process for separation of any two constituents.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Separation
     """
 
@@ -20926,7 +20184,7 @@ class Process_Separation(Process_PhysicalProcess):
 
 class Process_Filtration(Process_Separation):
     """Separation of constituents by passing liquid water through a filter or membrane. Includes media filtration and membrane filtration such as microfiltration, ultrafiltration and reverse osmosis; membrane use alone does not imply filtration.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Filtration
     """
 
@@ -20942,7 +20200,7 @@ class Process_Filtration(Process_Separation):
 
 class Process_Biofiltration(Process_BiologicalProcess, Process_Filtration):
     """A filtration method that uses biological processes to remove contaminants.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Biofiltration
     """
 
@@ -20958,7 +20216,7 @@ class Process_Biofiltration(Process_BiologicalProcess, Process_Filtration):
 
 class Process_BiologicallyActiveFiltration(Process_Biofiltration):
     """A biologically activated filtration column.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-BiologicallyActiveFiltration
     """
 
@@ -20974,7 +20232,7 @@ class Process_BiologicallyActiveFiltration(Process_Biofiltration):
 
 class Process_BiosolidsDisposal(_EntityBase):
     """Deprecated designation; use TreatmentObjective-BiosolidsDisposal. The replacement distinguishes treatment mechanism from objective.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-BiosolidsDisposal
     """
 
@@ -20990,7 +20248,7 @@ class Process_BiosolidsDisposal(_EntityBase):
 
 class Process_SolidLiquidSeparation(Process_Separation):
     """Separation of suspended solids from the liquid carrying them, by settling, flotation, filtration or centrifugal force. Distinguished from separations that act on dissolved or gaseous constituents.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation
     """
 
@@ -21006,7 +20264,7 @@ class Process_SolidLiquidSeparation(Process_Separation):
 
 class Process_Centrifugation(Process_SolidLiquidSeparation):
     """A process that uses centrifugal force to separate substances of different densities.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Centrifugation
     """
 
@@ -21022,7 +20280,7 @@ class Process_Centrifugation(Process_SolidLiquidSeparation):
 
 class Process_Dosing(Process_ChemicalProcess):
     """Metered addition of a reagent to water, such as chlorine, coagulant, polymer, acid, base, or sulfite.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Dosing
     """
 
@@ -21038,7 +20296,7 @@ class Process_Dosing(Process_ChemicalProcess):
 
 class Process_ChemicalAddition(Process_Dosing):
     """Deprecated process designation; use Process-Dosing.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ChemicalAddition
     """
 
@@ -21054,7 +20312,7 @@ class Process_ChemicalAddition(Process_Dosing):
 
 class Process_ChemicalPrecipitation(Process_ChemicalProcess):
     """Addition of a reagent that converts a dissolved constituent into an insoluble solid, so that it can be separated from the water. This process implies general constituent removal. Which constituent it targets depends on the reagent, so the modeler states the specific removal objective on the equipment.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ChemicalPrecipitation
     """
 
@@ -21070,7 +20328,7 @@ class Process_ChemicalPrecipitation(Process_ChemicalProcess):
 
 class Process_Chlorination(Process_Dosing):
     """Dosing chlorine or a chlorine compound into water with contact time designed for disinfection. The intended objective is disinfection; actual performance depends on dose, contact time and water quality.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Chlorination
     """
 
@@ -21086,7 +20344,7 @@ class Process_Chlorination(Process_Dosing):
 
 class Process_ChlorineDosing(_EntityBase):
     """Deprecated designation; use Process-Chlorination. The replacement distinguishes treatment mechanism from objective.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ChlorineDosing
     """
 
@@ -21102,7 +20360,7 @@ class Process_ChlorineDosing(_EntityBase):
 
 class Process_MembraneProcess(Process_Separation):
     """A separation process that uses a membrane. Includes membrane filtration, membrane distillation and electrodialysis; transport may be driven by pressure, a vapour-pressure difference or an electric potential.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-MembraneProcess
     """
 
@@ -21118,7 +20376,7 @@ class Process_MembraneProcess(Process_Separation):
 
 class Process_ReverseOsmosis(Process_Filtration, Process_MembraneProcess):
     """Separation across a semi-permeable membrane under an applied pressure greater than the osmotic pressure of the feed, so that water passes and dissolved salts are retained.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ReverseOsmosis
     """
 
@@ -21134,7 +20392,7 @@ class Process_ReverseOsmosis(Process_Filtration, Process_MembraneProcess):
 
 class Process_ClosedCircuitReverseOsmosis(Process_ReverseOsmosis):
     """Reverse osmosis operated as a batch, with the concentrate recirculated to the feed side of the same module until a target recovery is reached and then displaced, rather than run as a once-through stage.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ClosedCircuitReverseOsmosis
     """
 
@@ -21150,7 +20408,7 @@ class Process_ClosedCircuitReverseOsmosis(Process_ReverseOsmosis):
 
 class Process_Coagulation(Process_Dosing):
     """A unit process that adds chemicals to water to cause small particles to clump together.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Coagulation
     """
 
@@ -21166,7 +20424,7 @@ class Process_Coagulation(Process_Dosing):
 
 class Process_Combustion(Process_ChemicalProcess, Process_PhysicalProcess):
     """A process that combusts biosolids or biogas.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Combustion
     """
 
@@ -21182,7 +20440,7 @@ class Process_Combustion(Process_ChemicalProcess, Process_PhysicalProcess):
 
 class Process_Cogeneration(Process_Combustion):
     """A process that combusts biosolids or biogas to produce electricity and heat simultaneously.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Cogeneration
     """
 
@@ -21198,7 +20456,7 @@ class Process_Cogeneration(Process_Combustion):
 
 class Process_Comminution(Process_PhysicalProcess):
     """Process of reducing solid materials into smaller particles through mechanical forces such as crushing, grinding, impact, shear, or compression.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Comminution
     """
 
@@ -21214,7 +20472,7 @@ class Process_Comminution(Process_PhysicalProcess):
 
 class Process_Composting(Process_BiologicalProcess):
     """Biological degradation of organic materials under controlled aerobic conditions.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Composting
     """
 
@@ -21230,7 +20488,7 @@ class Process_Composting(Process_BiologicalProcess):
 
 class Process_Condensation(Process_PhysicalProcess):
     """A process of turning a vapor into a liquid.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Condensation
     """
 
@@ -21246,7 +20504,7 @@ class Process_Condensation(Process_PhysicalProcess):
 
 class Process_Solidification(Process_PhysicalProcess):
     """A process of turning a liquid into a solid (e.g., freezing).
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Solidification
     """
 
@@ -21262,7 +20520,7 @@ class Process_Solidification(Process_PhysicalProcess):
 
 class Process_Crystallization(Process_Solidification):
     """A process of forming solid crystals from a solution.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Crystallization
     """
 
@@ -21278,7 +20536,7 @@ class Process_Crystallization(Process_Solidification):
 
 class Process_Dechlorination(_EntityBase):
     """Deprecated designation; use TreatmentObjective-ChlorineResidualRemoval. The replacement distinguishes treatment mechanism from objective.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Dechlorination
     """
 
@@ -21294,7 +20552,7 @@ class Process_Dechlorination(_EntityBase):
 
 class Process_Denitrification(Process_BiologicalProcess):
     """Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Denitrification
     """
 
@@ -21310,7 +20568,7 @@ class Process_Denitrification(Process_BiologicalProcess):
 
 class Process_Dewatering(_EntityBase):
     """Deprecated designation; use TreatmentObjective-Dewatering. The replacement distinguishes treatment mechanism from objective.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Dewatering
     """
 
@@ -21326,7 +20584,7 @@ class Process_Dewatering(_EntityBase):
 
 class Process_Disinfection(_EntityBase):
     """Deprecated designation; use TreatmentObjective-Disinfection. The replacement distinguishes treatment mechanism from objective.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Disinfection
     """
 
@@ -21342,7 +20600,7 @@ class Process_Disinfection(_EntityBase):
 
 class Process_Drying(_EntityBase):
     """Deprecated designation; use TreatmentObjective-Drying. The replacement distinguishes treatment mechanism from objective.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Drying
     """
 
@@ -21358,7 +20616,7 @@ class Process_Drying(_EntityBase):
 
 class Process_Electrodialysis(Process_ChemicalProcess, Process_MembraneProcess):
     """A process that uses ion-exchange membranes and an electric potential to separate ions from water.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Electrodialysis
     """
 
@@ -21374,7 +20632,7 @@ class Process_Electrodialysis(Process_ChemicalProcess, Process_MembraneProcess):
 
 class Process_ElectroDialyticCrystallization(Process_Crystallization, Process_Electrodialysis):
     """A novel integrated process combining electrodialysis and crystallization for energy-efficient Zero-Liquid Discharge (ZLD) by maintaining a saturated brine stream.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ElectroDialyticCrystallization
     """
 
@@ -21390,7 +20648,7 @@ class Process_ElectroDialyticCrystallization(Process_Crystallization, Process_El
 
 class Process_Electrocoagulation(Process_Coagulation, Process_PhysicalProcess):
     """An electrified pretreatment technology using sacrificial anodes to release coagulant precursors for contaminant removal.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Electrocoagulation
     """
 
@@ -21406,7 +20664,7 @@ class Process_Electrocoagulation(Process_Coagulation, Process_PhysicalProcess):
 
 class Process_Electrolysis(Process_ChemicalProcess):
     """A process that uses a direct electric current to drive an otherwise non-spontaneous chemical reaction.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Electrolysis
     """
 
@@ -21422,7 +20680,7 @@ class Process_Electrolysis(Process_ChemicalProcess):
 
 class Process_Electrooxidation(Process_Oxidation, Process_PhysicalProcess):
     """Oxidation of contaminants at the surface of an anode, and by oxidants generated there, under an applied electric current rather than by a dosed reagent.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Electrooxidation
     """
 
@@ -21438,7 +20696,7 @@ class Process_Electrooxidation(Process_Oxidation, Process_PhysicalProcess):
 
 class Process_Elutriation(Process_Separation):
     """A process that uses a stream of fluid flowing upward to separate a mixture of particles based on their size, shape, and density.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Elutriation
     """
 
@@ -21454,7 +20712,7 @@ class Process_Elutriation(Process_Separation):
 
 class Process_EnhancedBiologicalPhosphorusRemoval(Process_BiologicalProcess):
     """Uptake of phosphorus into biomass beyond ordinary metabolic requirements, achieved by cycling the biomass through anaerobic and aerobic conditions.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-EnhancedBiologicalPhosphorusRemoval
     """
 
@@ -21470,7 +20728,7 @@ class Process_EnhancedBiologicalPhosphorusRemoval(Process_BiologicalProcess):
 
 class Process_Evaporation(Process_PhysicalProcess):
     """A process of turning a liquid into a vapor.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Evaporation
     """
 
@@ -21486,7 +20744,7 @@ class Process_Evaporation(Process_PhysicalProcess):
 
 class Process_FeedReversalReverseOsmosis(Process_ReverseOsmosis):
     """Reverse osmosis in which the direction of feed flow through the train is periodically reversed, so that the elements which saw the most concentrated water see the feed next and scale that has begun to form is redissolved.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-FeedReversalReverseOsmosis
     """
 
@@ -21502,7 +20760,7 @@ class Process_FeedReversalReverseOsmosis(Process_ReverseOsmosis):
 
 class Process_FiveStageBardenpho(Process_ActivatedSludge):
     """A five-stage biological nutrient removal process specifically designed for nitrogen and phosphorus.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-FiveStageBardenpho
     """
 
@@ -21518,7 +20776,7 @@ class Process_FiveStageBardenpho(Process_ActivatedSludge):
 
 class Process_Mixing(Process_PhysicalProcess):
     """A unit process that mixes water with chemicals or other substances to achieve a desired effect.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Mixing
     """
 
@@ -21534,7 +20792,7 @@ class Process_Mixing(Process_PhysicalProcess):
 
 class Process_Flocculation(Process_ChemicalProcess, Process_Mixing):
     """A unit process that gently mixes water to allow coagulated particles to form larger clumps.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Flocculation
     """
 
@@ -21550,7 +20808,7 @@ class Process_Flocculation(Process_ChemicalProcess, Process_Mixing):
 
 class Process_Flotation(Process_SolidLiquidSeparation):
     """A unit process that uses buoyancy to separate solids from water, often using air bubbles.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Flotation
     """
 
@@ -21566,7 +20824,7 @@ class Process_Flotation(Process_SolidLiquidSeparation):
 
 class Process_FluidizedBedIncineration(Process_Combustion):
     """A process that combusts a constantly moving bed of biosolids.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-FluidizedBedIncineration
     """
 
@@ -21582,7 +20840,7 @@ class Process_FluidizedBedIncineration(Process_Combustion):
 
 class Process_FourStageBardenpho(Process_ActivatedSludge):
     """A four-stage biological nutrient removal process with two anoxic and two aerobic zones.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-FourStageBardenpho
     """
 
@@ -21598,7 +20856,7 @@ class Process_FourStageBardenpho(Process_ActivatedSludge):
 
 class Process_MediaFiltration(Process_Filtration, Process_SolidLiquidSeparation):
     """A filtration process that uses a bed of media (as opposed to a membrane-based process).
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-MediaFiltration
     """
 
@@ -21614,7 +20872,7 @@ class Process_MediaFiltration(Process_Filtration, Process_SolidLiquidSeparation)
 
 class Process_GACFiltration(Process_Adsorption, Process_MediaFiltration):
     """Filtration through a bed of granular activated carbon, which retains particles as any granular medium does and adsorbs dissolved constituents onto the carbon's surface.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-GACFiltration
     """
 
@@ -21630,7 +20888,7 @@ class Process_GACFiltration(Process_Adsorption, Process_MediaFiltration):
 
 class Process_GranularActivatedCarbon(Process_GACFiltration):
     """Deprecated process designation; use Process-GACFiltration.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-GranularActivatedCarbon
     """
 
@@ -21646,7 +20904,7 @@ class Process_GranularActivatedCarbon(Process_GACFiltration):
 
 class Process_HighDensitySludge(Process_ChemicalProcess, Process_PhysicalProcess):
     """Lime neutralization of an acidic stream, typically acid mine drainage, in which previously formed sludge is recycled into the reaction so that metal hydroxides precipitate onto existing particles and settle as a denser sludge.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-HighDensitySludge
     """
 
@@ -21662,7 +20920,7 @@ class Process_HighDensitySludge(Process_ChemicalProcess, Process_PhysicalProcess
 
 class Process_Hydrolysis(Process_ChemicalProcess):
     """A process reaction in which a water molecule is consumed to split a larger molecule into smaller fragments.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Hydrolysis
     """
 
@@ -21678,7 +20936,7 @@ class Process_Hydrolysis(Process_ChemicalProcess):
 
 class Process_IonExchange(Process_ChemicalProcess, Process_PhysicalProcess):
     """A process in which ions are exchanged between a solution and an ion-exchange resin or membrane.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-IonExchange
     """
 
@@ -21694,7 +20952,7 @@ class Process_IonExchange(Process_ChemicalProcess, Process_PhysicalProcess):
 
 class Process_LandApplication(Process_PhysicalProcess):
     """Spreading treated biosolids on agricultural or reclamation land, where they serve as a soil amendment.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-LandApplication
     """
 
@@ -21710,7 +20968,7 @@ class Process_LandApplication(Process_PhysicalProcess):
 
 class Process_Landfill(_EntityBase):
     """Deprecated designation; use Process-Landfilling. The replacement distinguishes treatment mechanism from objective.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Landfill
     """
 
@@ -21726,7 +20984,7 @@ class Process_Landfill(_EntityBase):
 
 class Process_Landfilling(Process_PhysicalProcess):
     """Placing treated biosolids in a landfill, whether in a dedicated cell or with municipal solid waste.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Landfilling
     """
 
@@ -21742,7 +21000,7 @@ class Process_Landfilling(Process_PhysicalProcess):
 
 class Process_MLE(Process_AO):
     """Modification of AO with an internal recycle returning nitrate to the anoxic zone.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-MLE
     """
 
@@ -21758,7 +21016,7 @@ class Process_MLE(Process_AO):
 
 class Process_MembraneDistillation(Process_MembraneProcess):
     """Separation driven by a vapour pressure difference across a hydrophobic membrane: water evaporates on the warm feed side, crosses the membrane as vapour, and condenses on the cool permeate side, while the liquid feed is held back.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-MembraneDistillation
     """
 
@@ -21774,7 +21032,7 @@ class Process_MembraneDistillation(Process_MembraneProcess):
 
 class Process_Microfiltration(Process_Filtration, Process_MembraneProcess, Process_SolidLiquidSeparation):
     """Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids. The pore-size range characterizes the method; a model states its intended treatment objective separately.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Microfiltration
     """
 
@@ -21790,7 +21048,7 @@ class Process_Microfiltration(Process_Filtration, Process_MembraneProcess, Proce
 
 class Process_MultipleHearthIncineration(Process_Combustion):
     """A process that combusts biosolids as they move through a series of stacked hearths with controlled air flow.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-MultipleHearthIncineration
     """
 
@@ -21806,7 +21064,7 @@ class Process_MultipleHearthIncineration(Process_Combustion):
 
 class Process_Neutralization(_EntityBase):
     """Deprecated designation; use TreatmentObjective-Neutralization. The replacement distinguishes treatment mechanism from objective.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Neutralization
     """
 
@@ -21822,7 +21080,7 @@ class Process_Neutralization(_EntityBase):
 
 class Process_Nitrification(Process_BiologicalProcess):
     """Process by which ammonia is oxidized to nitrite and subsequently nitrate.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Nitrification
     """
 
@@ -21838,7 +21096,7 @@ class Process_Nitrification(Process_BiologicalProcess):
 
 class Process_OsmoticallyAssistedReverseOsmosis(Process_ReverseOsmosis):
     """Reverse osmosis in which a saline sweep stream on the permeate side lowers the osmotic pressure difference across the membrane, so that a hypersaline feed can be concentrated further than the applied pressure would otherwise allow.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-OsmoticallyAssistedReverseOsmosis
     """
 
@@ -21854,7 +21112,7 @@ class Process_OsmoticallyAssistedReverseOsmosis(Process_ReverseOsmosis):
 
 class Process_Ozonation(Process_Oxidation):
     """A water treatment process that uses ozone as an oxidant. The process alone does not establish whether the intended treatment objective is disinfection, oxidation of a contaminant, or taste-and-odour control.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Ozonation
     """
 
@@ -21870,7 +21128,7 @@ class Process_Ozonation(Process_Oxidation):
 
 class Process_Purging(Process_Cleaning):
     """A process that flushes retained liquid, solids, or gas from equipment or piping to restore operating conditions or prepare for another cycle.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Purging
     """
 
@@ -21886,7 +21144,7 @@ class Process_Purging(Process_Cleaning):
 
 class Process_RapidSandFiltration(Process_MediaFiltration):
     """A filtration process that uses a bed of sand to remove impurities at high flow rates.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-RapidSandFiltration
     """
 
@@ -21902,7 +21160,7 @@ class Process_RapidSandFiltration(Process_MediaFiltration):
 
 class Process_Recirculation(Process_PhysicalProcess):
     """A process that returns a portion of a treated or intermediate flow back upstream to maintain hydraulic, solids, or biological performance.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Recirculation
     """
 
@@ -21918,7 +21176,7 @@ class Process_Recirculation(Process_PhysicalProcess):
 
 class Process_Reduction(Process_ChemicalProcess):
     """Mechanism by which contaminants are transformed through the gain of electrons.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Reduction
     """
 
@@ -21934,7 +21192,7 @@ class Process_Reduction(Process_ChemicalProcess):
 
 class Process_Screening(Process_Separation):
     """A unit process that removes large solids from water, such as leaves, branches, and other debris.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Screening
     """
 
@@ -21950,7 +21208,7 @@ class Process_Screening(Process_Separation):
 
 class Process_Settling(Process_SolidLiquidSeparation):
     """A unit process that allows solids to settle out of water by gravity.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Settling
     """
 
@@ -21966,7 +21224,7 @@ class Process_Settling(Process_SolidLiquidSeparation):
 
 class Process_Sedimentation(Process_Settling):
     """Deprecated process designation; use Process-Settling.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Sedimentation
     """
 
@@ -21982,7 +21240,7 @@ class Process_Sedimentation(Process_Settling):
 
 class Process_SlowSandFiltration(Process_MediaFiltration):
     """A filtration process that uses a bed of sand to remove impurities at low flow rates.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-SlowSandFiltration
     """
 
@@ -21998,7 +21256,7 @@ class Process_SlowSandFiltration(Process_MediaFiltration):
 
 class Process_Softening(_EntityBase):
     """Deprecated designation; use TreatmentObjective-Softening. The replacement distinguishes treatment mechanism from objective.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Softening
     """
 
@@ -22014,7 +21272,7 @@ class Process_Softening(_EntityBase):
 
 class Process_SolventExtraction(Process_ChemicalProcess, Process_Separation):
     """A non-membrane, non-thermal method using a solvent to selectively extract water from highly saline brines.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-SolventExtraction
     """
 
@@ -22030,7 +21288,7 @@ class Process_SolventExtraction(Process_ChemicalProcess, Process_Separation):
 
 class Process_Stripping(Process_Separation):
     """Gas stripping for removal of dissolved gases such as ammonia and volatile organic compounds.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Stripping
     """
 
@@ -22046,7 +21304,7 @@ class Process_Stripping(Process_Separation):
 
 class Process_SulfiteDosing(Process_Dosing):
     """Metered addition of sulfur dioxide, sodium sulfite, bisulfite or metabisulfite, which reduces free and combined chlorine to chloride.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-SulfiteDosing
     """
 
@@ -22062,7 +21320,7 @@ class Process_SulfiteDosing(Process_Dosing):
 
 class Process_ThermalDisinfection(_EntityBase):
     """Deprecated designation; use Process-ThermalTreatment. The replacement distinguishes treatment mechanism from objective.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ThermalDisinfection
     """
 
@@ -22078,7 +21336,7 @@ class Process_ThermalDisinfection(_EntityBase):
 
 class Process_ThermalTreatment(Process_PhysicalProcess):
     """Heating of water or biosolids, as in pasteurization. The process alone does not establish whether the intended treatment objective is disinfection, drying, hydrolysis, or another thermal result.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ThermalTreatment
     """
 
@@ -22094,7 +21352,7 @@ class Process_ThermalTreatment(Process_PhysicalProcess):
 
 class Process_ThermalHydrolysis(Process_Hydrolysis, Process_ThermalTreatment):
     """A process that breaks down complex organic matter into soluble compounds using heat and pressure.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ThermalHydrolysis
     """
 
@@ -22110,7 +21368,7 @@ class Process_ThermalHydrolysis(Process_Hydrolysis, Process_ThermalTreatment):
 
 class Process_Thickening(_EntityBase):
     """Deprecated designation; use TreatmentObjective-Thickening. The replacement distinguishes treatment mechanism from objective.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Thickening
     """
 
@@ -22126,7 +21384,7 @@ class Process_Thickening(_EntityBase):
 
 class Process_TricklingFiltration(Process_Biofiltration):
     """Trickling filter using any media (e.g., plastic, sand, gravel, etc.)
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-TricklingFiltration
     """
 
@@ -22142,7 +21400,7 @@ class Process_TricklingFiltration(Process_Biofiltration):
 
 class Process_UCT(Process_A2O):
     """Variant of A2O with modified recycle streams for phosphorus removal.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-UCT
     """
 
@@ -22158,7 +21416,7 @@ class Process_UCT(Process_A2O):
 
 class Process_UVIrradiation(Process_PhysicalProcess):
     """Exposure of water to ultraviolet light. Named for what it does rather than what it is for: the same irradiation serves disinfection and, combined with an oxidant, advanced oxidation.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-UVIrradiation
     """
 
@@ -22174,7 +21432,7 @@ class Process_UVIrradiation(Process_PhysicalProcess):
 
 class Process_UVDisinfection(Process_UVIrradiation):
     """Deprecated process designation; use Process-UVIrradiation.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-UVDisinfection
     """
 
@@ -22190,7 +21448,7 @@ class Process_UVDisinfection(Process_UVIrradiation):
 
 class Process_Ultrafiltration(Process_Filtration, Process_MembraneProcess, Process_SolidLiquidSeparation):
     """Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains. The pore-size range characterizes the method; a model states its intended treatment objective separately.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Ultrafiltration
     """
 
@@ -22206,7 +21464,7 @@ class Process_Ultrafiltration(Process_Filtration, Process_MembraneProcess, Proce
 
 class Process_pHAdjustment(_EntityBase):
     """Deprecated designation; use TreatmentObjective-pHControl. The replacement distinguishes treatment mechanism from objective.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-pHAdjustment
     """
 
@@ -22222,7 +21480,7 @@ class Process_pHAdjustment(_EntityBase):
 
 class Pump(Equipment):
     """A device used to move fluids by mechanical action. Unlike s223:Pump, which asks for water, oil or refrigerant, it accepts any s223:Mix-Fluid, so it covers sludge and other slurries.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Pump
     """
 
@@ -22242,7 +21500,7 @@ class Pump(Equipment):
 
 class Pump_2(Pump):
     """A piece of `Equipment` that imparts energy to a fluid, drawing a fluid into itself through an inlet port, and forcing the fluid out through an outlet port.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Pump
     """
 
@@ -22260,24 +21518,15 @@ class Pump_2(Pump):
         ),
     )
 
-_P_QuantifiableProperty_has_unit = _PropertySpec(
-    name='has_unit',
-    predicate='http://qudt.org/schema/qudt/hasUnit',
+_P_QuantifiableProperty_has_accuracy = _PropertySpec(
+    name='has_accuracy',
+    predicate='https://watermetadata.org/ontology/watr#hasAccuracy',
     kind='object',
-    label='has unit',
-    definition='A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.',
-    ranges=('Unit',),
-    max_count=1,
-    inverse='unit_for',
-)
-
-_P_QuantifiableProperty_has_deadband = _PropertySpec(
-    name='has_deadband',
-    predicate='http://data.ashrae.org/standard223#hasDeadband',
-    kind='object',
-    label='has deadband',
-    definition='This relation binds a control setpoint to the `QuantifiableProperty` indicating the range of values within which a sensed variable can vary without indicating a condition has changed.',
+    label='has accuracy',
+    definition='The `hasAccuracy` relation is used to link to a numerical `Property` whose value indicates the maximum expected deviation between the measured value and the true value in engineering units.',
     ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('bfe41830b1d8e815157c9e6c6',),
 )
 
 _P_QuantifiableProperty_has_aggregation = _PropertySpec(
@@ -22286,99 +21535,10 @@ _P_QuantifiableProperty_has_aggregation = _PropertySpec(
     kind='enum',
     label='has aggregation',
     definition='The `hasAggregation` relation associates a property with water-specific aggregation semantics such as total, mean, maximum, or minimum.',
+    range_groups=(('https://watermetadata.org/ontology/watr#EnumerationKind-Aggregation',),),
+    sources=('b1fea6dfb1a500281186ecd42',),
     enum_ranges=('https://watermetadata.org/ontology/watr#EnumerationKind-Aggregation',),
     max_count=1,
-)
-
-_P_QuantifiableProperty_has_processed_data = _PropertySpec(
-    name='has_processed_data',
-    predicate='https://watermetadata.org/ontology/watr#hasProcessedData',
-    kind='object',
-    label='has processed data',
-    definition='The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values.',
-    ranges=('QuantifiableProperty',),
-)
-
-_P_QuantifiableProperty_has_measurement_range = _PropertySpec(
-    name='has_measurement_range',
-    predicate='https://watermetadata.org/ontology/watr#hasMeasurementRange',
-    kind='object',
-    label='has measurement range',
-    definition='The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor.',
-    ranges=('QuantifiableProperty',),
-)
-
-_P_QuantifiableProperty_has_drop_rate = _PropertySpec(
-    name='has_drop_rate',
-    predicate='https://watermetadata.org/ontology/watr#hasDropRate',
-    kind='object',
-    label='has drop rate',
-    definition='The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors.',
-    ranges=('QuantifiableProperty',),
-)
-
-_P_QuantifiableProperty_has_response_time = _PropertySpec(
-    name='has_response_time',
-    predicate='https://watermetadata.org/ontology/watr#hasResponseTime',
-    kind='object',
-    label='has response time',
-    definition='The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable.',
-    ranges=('QuantifiableProperty',),
-)
-
-_P_QuantifiableProperty_has_threshold = _PropertySpec(
-    name='has_threshold',
-    predicate='http://data.ashrae.org/standard223#hasThreshold',
-    kind='object',
-    label='has threshold',
-    definition='A `Relation` that associates a threshold with the `QuantifiableProperty` indicating a specific value at which an action may be taken, distinguished from an offset or a range.',
-    ranges=('QuantifiableProperty',),
-)
-
-_P_QuantifiableProperty_value = _PropertySpec(
-    name='value',
-    predicate='http://qudt.org/schema/qudt/value',
-    kind='object',
-    label='value',
-    max_count=0,
-)
-
-_P_QuantifiableProperty_has_calibration_curve = _PropertySpec(
-    name='has_calibration_curve',
-    predicate='https://watermetadata.org/ontology/watr#hasCalibrationCurve',
-    kind='object',
-    label='has calibration curve',
-    definition='The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units.',
-    ranges=('QuantifiableProperty',),
-)
-
-_P_QuantifiableProperty_has_quantity_kind = _PropertySpec(
-    name='has_quantity_kind',
-    predicate='http://qudt.org/schema/qudt/hasQuantityKind',
-    kind='object',
-    label='has quantity kind',
-    definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
-    ranges=('QuantityKind',),
-    required=True,
-    max_count=1,
-)
-
-_P_QuantifiableProperty_has_bias = _PropertySpec(
-    name='has_bias',
-    predicate='https://watermetadata.org/ontology/watr#hasBias',
-    kind='object',
-    label='has bias',
-    definition='The `hasBias` relation is used to link to a numerical `Property` whose value indicates the systematic offset or drift in measurements relative to the true value.',
-    ranges=('QuantifiableProperty',),
-)
-
-_P_QuantifiableProperty_has_setpoint = _PropertySpec(
-    name='has_setpoint',
-    predicate='http://data.ashrae.org/standard223#hasSetpoint',
-    kind='object',
-    label='has setpoint',
-    definition='A `Relation` that associates a control setpoint with the `QuantifiableProperty` indicating the desired value which the control process is trying to maintain.',
-    ranges=('QuantifiableProperty',),
 )
 
 _P_QuantifiableProperty_has_alarm_status = _PropertySpec(
@@ -22388,33 +21548,63 @@ _P_QuantifiableProperty_has_alarm_status = _PropertySpec(
     label='has alarm status',
     definition='A `Relation` that associates an `EnumerableProperty` that describes an Alarm or Status with a `QuantifiableProperty`.',
     ranges=('EnumerableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#EnumerableProperty',),),
+    sources=('b7caed860597ca70be010aa4d',),
 )
 
-_P_QuantifiableProperty_has_temporal_range = _PropertySpec(
-    name='has_temporal_range',
-    predicate='https://watermetadata.org/ontology/watr#hasTemporalRange',
+_P_QuantifiableProperty_has_bias = _PropertySpec(
+    name='has_bias',
+    predicate='https://watermetadata.org/ontology/watr#hasBias',
     kind='object',
-    label='has temporal range',
-    definition='The `hasTemporalRange` relation is used to link to a numerical `Property` whose value indicates the start and end times for which data has been recorded.',
+    label='has bias',
+    definition='The `hasBias` relation is used to link to a numerical `Property` whose value indicates the systematic offset or drift in measurements relative to the true value.',
     ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('b6fcc36c69f5ef06bef8e078a',),
 )
 
-_P_QuantifiableProperty_has_variable_range = _PropertySpec(
-    name='has_variable_range',
-    predicate='https://watermetadata.org/ontology/watr#hasVariableRange',
+_P_QuantifiableProperty_has_calibration_curve = _PropertySpec(
+    name='has_calibration_curve',
+    predicate='https://watermetadata.org/ontology/watr#hasCalibrationCurve',
     kind='object',
-    label='has variable range',
-    definition='The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions.',
+    label='has calibration curve',
+    definition='The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units.',
     ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('b65a4c43828a57106014bc859',),
 )
 
-_P_QuantifiableProperty_has_precision = _PropertySpec(
-    name='has_precision',
-    predicate='https://watermetadata.org/ontology/watr#hasPrecision',
+_P_QuantifiableProperty_has_deadband = _PropertySpec(
+    name='has_deadband',
+    predicate='http://data.ashrae.org/standard223#hasDeadband',
     kind='object',
-    label='has precision',
-    definition='The `hasPrecision` relation is used to link to a numerical `Property` whose value indicates the repeatability or reproducibility of measurements under identical conditions.',
+    label='has deadband',
+    definition='This relation binds a control setpoint to the `QuantifiableProperty` indicating the range of values within which a sensed variable can vary without indicating a condition has changed.',
     ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('b1dba9e9705092adb170a0b94',),
+)
+
+_P_QuantifiableProperty_has_drop_rate = _PropertySpec(
+    name='has_drop_rate',
+    predicate='https://watermetadata.org/ontology/watr#hasDropRate',
+    kind='object',
+    label='has drop rate',
+    definition='The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors.',
+    ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('b564323ce8963d046037ac54f',),
+)
+
+_P_QuantifiableProperty_has_measurement_range = _PropertySpec(
+    name='has_measurement_range',
+    predicate='https://watermetadata.org/ontology/watr#hasMeasurementRange',
+    kind='object',
+    label='has measurement range',
+    definition='The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor.',
+    ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('b3ed3496eca705a83f7da1507',),
 )
 
 _P_QuantifiableProperty_has_numeric_range = _PropertySpec(
@@ -22424,6 +21614,8 @@ _P_QuantifiableProperty_has_numeric_range = _PropertySpec(
     label='has numeric range',
     definition='The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measurable values in engineering units.',
     ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('ba3703d8923587181cbfb3053',),
 )
 
 _P_QuantifiableProperty_has_numeric_resolution = _PropertySpec(
@@ -22433,15 +21625,77 @@ _P_QuantifiableProperty_has_numeric_resolution = _PropertySpec(
     label='has numeric resolution',
     definition='The `hasNumericResolution` relation is used to link to a numerical `Property` whose value indicates the smallest distinguishable difference between two measured values in engineering units.',
     ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('bd391cc4da50225a1e54b13a8',),
 )
 
-_P_QuantifiableProperty_quantity_value = _PropertySpec(
-    name='quantity_value',
-    predicate='http://qudt.org/schema/qudt/quantityValue',
+_P_QuantifiableProperty_has_precision = _PropertySpec(
+    name='has_precision',
+    predicate='https://watermetadata.org/ontology/watr#hasPrecision',
     kind='object',
-    label='quantity value',
-    ranges=('QuantityValue',),
-    inverse='value_quantity',
+    label='has precision',
+    definition='The `hasPrecision` relation is used to link to a numerical `Property` whose value indicates the repeatability or reproducibility of measurements under identical conditions.',
+    ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('ba290875657eb536eec462a70',),
+)
+
+_P_QuantifiableProperty_has_processed_data = _PropertySpec(
+    name='has_processed_data',
+    predicate='https://watermetadata.org/ontology/watr#hasProcessedData',
+    kind='object',
+    label='has processed data',
+    definition='The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values.',
+    ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('b343f892b7a4681c65ea66b11',),
+)
+
+_P_QuantifiableProperty_has_quantity_kind = _PropertySpec(
+    name='has_quantity_kind',
+    predicate='http://qudt.org/schema/qudt/hasQuantityKind',
+    kind='object',
+    label='has quantity kind',
+    definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
+    ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('b6b3083fdc249c756a0564b36', 'b702d66f8c2dfad4ecf14d7e2', 'bc33a11cbee837eadd4a95eb9', 'bf89b287cc123ad89dce05a4b'),
+    min_count=1,
+    required=True,
+    max_count=1,
+)
+
+_P_QuantifiableProperty_has_response_time = _PropertySpec(
+    name='has_response_time',
+    predicate='https://watermetadata.org/ontology/watr#hasResponseTime',
+    kind='object',
+    label='has response time',
+    definition='The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable.',
+    ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('b56521785e50d65d8aefbebb7',),
+)
+
+_P_QuantifiableProperty_has_setpoint = _PropertySpec(
+    name='has_setpoint',
+    predicate='http://data.ashrae.org/standard223#hasSetpoint',
+    kind='object',
+    label='has setpoint',
+    definition='A `Relation` that associates a control setpoint with the `QuantifiableProperty` indicating the desired value which the control process is trying to maintain.',
+    ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('b7156bf5d4cf54f79d6f330eb',),
+)
+
+_P_QuantifiableProperty_has_temporal_range = _PropertySpec(
+    name='has_temporal_range',
+    predicate='https://watermetadata.org/ontology/watr#hasTemporalRange',
+    kind='object',
+    label='has temporal range',
+    definition='The `hasTemporalRange` relation is used to link to a numerical `Property` whose value indicates the start and end times for which data has been recorded.',
+    ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('b8e734a3609990bc8d42b7e4c',),
 )
 
 _P_QuantifiableProperty_has_temporal_resolution = _PropertySpec(
@@ -22451,6 +21705,43 @@ _P_QuantifiableProperty_has_temporal_resolution = _PropertySpec(
     label='has temporal resolution',
     definition='The `hasTemporalResolution` relation is used to link to a numerical `Property` whose value indicates the minimum time interval between successive measurements or data points.',
     ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('bd8446a7831e5415a7600d424',),
+)
+
+_P_QuantifiableProperty_has_threshold = _PropertySpec(
+    name='has_threshold',
+    predicate='http://data.ashrae.org/standard223#hasThreshold',
+    kind='object',
+    label='has threshold',
+    definition='A `Relation` that associates a threshold with the `QuantifiableProperty` indicating a specific value at which an action may be taken, distinguished from an offset or a range.',
+    ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('b5a03d41737cc945ed90dbb5b',),
+)
+
+_P_QuantifiableProperty_has_unit = _PropertySpec(
+    name='has_unit',
+    predicate='http://qudt.org/schema/qudt/hasUnit',
+    kind='object',
+    label='has unit',
+    definition='A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.',
+    ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('b113b7e7d74cbf65edb5b9cdf', 'b1cbc00008d28685ff9117c76', 'b5566e9aac45a8100eb72d3c0', 'b67a52970026f1b098f4b7208', 'be09a3e71425b58ab35e748de', 'bf7c07e374b1de89f6352e8d0', 'bfc940f5247f3e1d2a7acb132'),
+    max_count=1,
+    inverse='unit_for',
+)
+
+_P_QuantifiableProperty_has_variable_range = _PropertySpec(
+    name='has_variable_range',
+    predicate='https://watermetadata.org/ontology/watr#hasVariableRange',
+    kind='object',
+    label='has variable range',
+    definition='The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions.',
+    ranges=('QuantifiableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
+    sources=('b95e14df552f943bf95c7f6cf',),
 )
 
 _P_QuantifiableProperty_is_delta_quantity = _PropertySpec(
@@ -22458,22 +21749,33 @@ _P_QuantifiableProperty_is_delta_quantity = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/isDeltaQuantity',
     kind='literal',
     label='is Delta Quantity',
+    sources=('be248f5eac5f95ea50748c45f',),
     datatype=bool,
     max_count=1,
 )
 
-_P_QuantifiableProperty_has_accuracy = _PropertySpec(
-    name='has_accuracy',
-    predicate='https://watermetadata.org/ontology/watr#hasAccuracy',
+_P_QuantifiableProperty_quantity_value = _PropertySpec(
+    name='quantity_value',
+    predicate='http://qudt.org/schema/qudt/quantityValue',
     kind='object',
-    label='has accuracy',
-    definition='The `hasAccuracy` relation is used to link to a numerical `Property` whose value indicates the maximum expected deviation between the measured value and the true value in engineering units.',
-    ranges=('QuantifiableProperty',),
+    label='quantity value',
+    ranges=('QuantityValue',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityValue',),),
+    sources=('bd77c9e9d4d33b5efd8072a0d',),
+)
+
+_P_QuantifiableProperty_value = _PropertySpec(
+    name='value',
+    predicate='http://qudt.org/schema/qudt/value',
+    kind='object',
+    label='value',
+    sources=('b61fd8f37714fab39b3996515',),
+    max_count=0,
 )
 
 class QuantifiableProperty(Property):
     """This class is for quantifiable values that describe an object (`System`, `Equipment`, etc.) that are typically static (`hasValue`). That is, they are neither measured nor specified in the course of operations.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#QuantifiableProperty
     """
 
@@ -22485,59 +21787,32 @@ class QuantifiableProperty(Property):
         definition='This class is for quantifiable values that describe an object (`System`, `Equipment`, etc.) that are typically static (`hasValue`). That is, they are neither measured nor specified in the course of operations.',
         parent_iris=('http://data.ashrae.org/standard223#Property',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_QuantifiableProperty_has_unit, _P_QuantifiableProperty_has_deadband, _P_QuantifiableProperty_has_aggregation, _P_QuantifiableProperty_has_processed_data, _P_QuantifiableProperty_has_measurement_range, _P_QuantifiableProperty_has_drop_rate, _P_QuantifiableProperty_has_response_time, _P_QuantifiableProperty_has_threshold, _P_QuantifiableProperty_value, _P_QuantifiableProperty_has_calibration_curve, _P_QuantifiableProperty_has_quantity_kind, _P_QuantifiableProperty_has_bias, _P_QuantifiableProperty_has_setpoint, _P_QuantifiableProperty_has_alarm_status, _P_QuantifiableProperty_has_temporal_range, _P_QuantifiableProperty_has_variable_range, _P_QuantifiableProperty_has_precision, _P_QuantifiableProperty_has_numeric_range, _P_QuantifiableProperty_has_numeric_resolution, _P_QuantifiableProperty_quantity_value, _P_QuantifiableProperty_has_temporal_resolution, _P_QuantifiableProperty_is_delta_quantity, _P_QuantifiableProperty_has_accuracy,),
+        properties=(_P_QuantifiableProperty_has_accuracy, _P_QuantifiableProperty_has_aggregation, _P_QuantifiableProperty_has_alarm_status, _P_QuantifiableProperty_has_bias, _P_QuantifiableProperty_has_calibration_curve, _P_QuantifiableProperty_has_deadband, _P_QuantifiableProperty_has_drop_rate, _P_QuantifiableProperty_has_measurement_range, _P_QuantifiableProperty_has_numeric_range, _P_QuantifiableProperty_has_numeric_resolution, _P_QuantifiableProperty_has_precision, _P_QuantifiableProperty_has_processed_data, _P_QuantifiableProperty_has_quantity_kind, _P_QuantifiableProperty_has_response_time, _P_QuantifiableProperty_has_setpoint, _P_QuantifiableProperty_has_temporal_range, _P_QuantifiableProperty_has_temporal_resolution, _P_QuantifiableProperty_has_threshold, _P_QuantifiableProperty_has_unit, _P_QuantifiableProperty_has_variable_range, _P_QuantifiableProperty_is_delta_quantity, _P_QuantifiableProperty_quantity_value, _P_QuantifiableProperty_value,),
     )
 
-    has_unit: _RelOne[Unit | _TermValue] = _RelOne(_P_QuantifiableProperty_has_unit)
-    """A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`. (http://qudt.org/schema/qudt/hasUnit)"""
-
-    has_deadband: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_deadband)
-    """This relation binds a control setpoint to the `QuantifiableProperty` indicating the range of values within which a sensed variable can vary without indicating a condition has changed. (http://data.ashrae.org/standard223#hasDeadband)"""
+    has_accuracy: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_accuracy)
+    """The `hasAccuracy` relation is used to link to a numerical `Property` whose value indicates the maximum expected deviation between the measured value and the true value in engineering units. (https://watermetadata.org/ontology/watr#hasAccuracy)"""
 
     has_aggregation: _EnumOne[_EnumValue] = _EnumOne(_P_QuantifiableProperty_has_aggregation)
     """The `hasAggregation` relation associates a property with water-specific aggregation semantics such as total, mean, maximum, or minimum. (https://watermetadata.org/ontology/watr#hasAggregation)"""
 
-    has_processed_data: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_processed_data)
-    """The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values. (https://watermetadata.org/ontology/watr#hasProcessedData)"""
-
-    has_measurement_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_measurement_range)
-    """The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor. (https://watermetadata.org/ontology/watr#hasMeasurementRange)"""
-
-    has_drop_rate: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_drop_rate)
-    """The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors. (https://watermetadata.org/ontology/watr#hasDropRate)"""
-
-    has_response_time: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_response_time)
-    """The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable. (https://watermetadata.org/ontology/watr#hasResponseTime)"""
-
-    has_threshold: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_threshold)
-    """A `Relation` that associates a threshold with the `QuantifiableProperty` indicating a specific value at which an action may be taken, distinguished from an offset or a range. (http://data.ashrae.org/standard223#hasThreshold)"""
-
-    value: _Rel[_EntityBase] = _Rel(_P_QuantifiableProperty_value)
-    """value (http://qudt.org/schema/qudt/value)"""
-
-    has_calibration_curve: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_calibration_curve)
-    """The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units. (https://watermetadata.org/ontology/watr#hasCalibrationCurve)"""
-
-    has_quantity_kind: _RelOne[QuantityKind | _TermValue] = _RelOne(_P_QuantifiableProperty_has_quantity_kind)
-    """A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`. (http://qudt.org/schema/qudt/hasQuantityKind)"""
+    has_alarm_status: _Rel[EnumerableProperty] = _Rel(_P_QuantifiableProperty_has_alarm_status)
+    """A `Relation` that associates an `EnumerableProperty` that describes an Alarm or Status with a `QuantifiableProperty`. (http://data.ashrae.org/standard223#hasAlarmStatus)"""
 
     has_bias: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_bias)
     """The `hasBias` relation is used to link to a numerical `Property` whose value indicates the systematic offset or drift in measurements relative to the true value. (https://watermetadata.org/ontology/watr#hasBias)"""
 
-    has_setpoint: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_setpoint)
-    """A `Relation` that associates a control setpoint with the `QuantifiableProperty` indicating the desired value which the control process is trying to maintain. (http://data.ashrae.org/standard223#hasSetpoint)"""
+    has_calibration_curve: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_calibration_curve)
+    """The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units. (https://watermetadata.org/ontology/watr#hasCalibrationCurve)"""
 
-    has_alarm_status: _Rel[EnumerableProperty] = _Rel(_P_QuantifiableProperty_has_alarm_status)
-    """A `Relation` that associates an `EnumerableProperty` that describes an Alarm or Status with a `QuantifiableProperty`. (http://data.ashrae.org/standard223#hasAlarmStatus)"""
+    has_deadband: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_deadband)
+    """This relation binds a control setpoint to the `QuantifiableProperty` indicating the range of values within which a sensed variable can vary without indicating a condition has changed. (http://data.ashrae.org/standard223#hasDeadband)"""
 
-    has_temporal_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_temporal_range)
-    """The `hasTemporalRange` relation is used to link to a numerical `Property` whose value indicates the start and end times for which data has been recorded. (https://watermetadata.org/ontology/watr#hasTemporalRange)"""
+    has_drop_rate: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_drop_rate)
+    """The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors. (https://watermetadata.org/ontology/watr#hasDropRate)"""
 
-    has_variable_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_variable_range)
-    """The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions. (https://watermetadata.org/ontology/watr#hasVariableRange)"""
-
-    has_precision: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_precision)
-    """The `hasPrecision` relation is used to link to a numerical `Property` whose value indicates the repeatability or reproducibility of measurements under identical conditions. (https://watermetadata.org/ontology/watr#hasPrecision)"""
+    has_measurement_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_measurement_range)
+    """The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor. (https://watermetadata.org/ontology/watr#hasMeasurementRange)"""
 
     has_numeric_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_numeric_range)
     """The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measurable values in engineering units. (https://watermetadata.org/ontology/watr#hasNumericRange)"""
@@ -22545,17 +21820,44 @@ class QuantifiableProperty(Property):
     has_numeric_resolution: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_numeric_resolution)
     """The `hasNumericResolution` relation is used to link to a numerical `Property` whose value indicates the smallest distinguishable difference between two measured values in engineering units. (https://watermetadata.org/ontology/watr#hasNumericResolution)"""
 
-    quantity_value: _Rel[QuantityValue] = _Rel(_P_QuantifiableProperty_quantity_value)
-    """quantity value (http://qudt.org/schema/qudt/quantityValue)"""
+    has_precision: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_precision)
+    """The `hasPrecision` relation is used to link to a numerical `Property` whose value indicates the repeatability or reproducibility of measurements under identical conditions. (https://watermetadata.org/ontology/watr#hasPrecision)"""
+
+    has_processed_data: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_processed_data)
+    """The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values. (https://watermetadata.org/ontology/watr#hasProcessedData)"""
+
+    has_quantity_kind: _RelOne[QuantityKind | _TermValue] = _RelOne(_P_QuantifiableProperty_has_quantity_kind)
+    """A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`. (http://qudt.org/schema/qudt/hasQuantityKind)"""
+
+    has_response_time: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_response_time)
+    """The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable. (https://watermetadata.org/ontology/watr#hasResponseTime)"""
+
+    has_setpoint: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_setpoint)
+    """A `Relation` that associates a control setpoint with the `QuantifiableProperty` indicating the desired value which the control process is trying to maintain. (http://data.ashrae.org/standard223#hasSetpoint)"""
+
+    has_temporal_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_temporal_range)
+    """The `hasTemporalRange` relation is used to link to a numerical `Property` whose value indicates the start and end times for which data has been recorded. (https://watermetadata.org/ontology/watr#hasTemporalRange)"""
 
     has_temporal_resolution: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_temporal_resolution)
     """The `hasTemporalResolution` relation is used to link to a numerical `Property` whose value indicates the minimum time interval between successive measurements or data points. (https://watermetadata.org/ontology/watr#hasTemporalResolution)"""
 
+    has_threshold: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_threshold)
+    """A `Relation` that associates a threshold with the `QuantifiableProperty` indicating a specific value at which an action may be taken, distinguished from an offset or a range. (http://data.ashrae.org/standard223#hasThreshold)"""
+
+    has_unit: _RelOne[Unit | _TermValue] = _RelOne(_P_QuantifiableProperty_has_unit)
+    """A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`. (http://qudt.org/schema/qudt/hasUnit)"""
+
+    has_variable_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_variable_range)
+    """The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions. (https://watermetadata.org/ontology/watr#hasVariableRange)"""
+
     is_delta_quantity: _Lit[bool] = _Lit(_P_QuantifiableProperty_is_delta_quantity)
     """is Delta Quantity (http://qudt.org/schema/qudt/isDeltaQuantity)"""
 
-    has_accuracy: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_accuracy)
-    """The `hasAccuracy` relation is used to link to a numerical `Property` whose value indicates the maximum expected deviation between the measured value and the true value in engineering units. (https://watermetadata.org/ontology/watr#hasAccuracy)"""
+    quantity_value: _Rel[QuantityValue] = _Rel(_P_QuantifiableProperty_quantity_value)
+    """quantity value (http://qudt.org/schema/qudt/quantityValue)"""
+
+    value: _Rel[_EntityBase] = _Rel(_P_QuantifiableProperty_value)
+    """value (http://qudt.org/schema/qudt/value)"""
 
     def __init__(
         self,
@@ -22645,7 +21947,7 @@ class QuantifiableProperty(Property):
 
 class QuantifiableActuatableProperty(ActuatableProperty, QuantifiableProperty):
     """This class is for instances of `QuantifiableProperty` for which numerical values are specified to be modifiable by a user or a machine outside of the model, like a setpoint.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#QuantifiableActuatableProperty
     """
 
@@ -22661,7 +21963,7 @@ class QuantifiableActuatableProperty(ActuatableProperty, QuantifiableProperty):
 
 class QuantifiableObservableProperty(ObservableProperty, QuantifiableProperty):
     """This class is for instances of `QuantifiableProperty` for which numerical values are observed, like a temperature reading or a voltage measure.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#QuantifiableObservableProperty
     """
 
@@ -22681,14 +21983,8 @@ _P_QuantityKind_applicable_cgs_unit = _PropertySpec(
     kind='object',
     label='applicable CGS unit',
     ranges=('Unit',),
-)
-
-_P_QuantityKind_applicable_iso_unit = _PropertySpec(
-    name='applicable_iso_unit',
-    predicate='http://qudt.org/schema/qudt/applicableISOUnit',
-    kind='object',
-    label='applicable ISO unit',
-    ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/QuantityKind-applicableCGSUnit',),
 )
 
 _P_QuantityKind_applicable_imperial_unit = _PropertySpec(
@@ -22697,6 +21993,18 @@ _P_QuantityKind_applicable_imperial_unit = _PropertySpec(
     kind='object',
     label='applicable Imperial unit',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/QuantityKind-applicableImperialUnit',),
+)
+
+_P_QuantityKind_applicable_iso_unit = _PropertySpec(
+    name='applicable_iso_unit',
+    predicate='http://qudt.org/schema/qudt/applicableISOUnit',
+    kind='object',
+    label='applicable ISO unit',
+    ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/QuantityKind-applicableISOUnit',),
 )
 
 _P_QuantityKind_applicable_si_unit = _PropertySpec(
@@ -22705,14 +22013,8 @@ _P_QuantityKind_applicable_si_unit = _PropertySpec(
     kind='object',
     label='applicable SI unit',
     ranges=('Unit',),
-)
-
-_P_QuantityKind_applicable_us_customary_unit = _PropertySpec(
-    name='applicable_us_customary_unit',
-    predicate='http://qudt.org/schema/qudt/applicableUSCustomaryUnit',
-    kind='object',
-    label='applicable US Customary unit',
-    ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/QuantityKind-applicableSIUnit',),
 )
 
 _P_QuantityKind_applicable_unit = _PropertySpec(
@@ -22721,6 +22023,18 @@ _P_QuantityKind_applicable_unit = _PropertySpec(
     kind='object',
     label='applicable unit',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/QuantityKind-applicableUnit',),
+)
+
+_P_QuantityKind_applicable_us_customary_unit = _PropertySpec(
+    name='applicable_us_customary_unit',
+    predicate='http://qudt.org/schema/qudt/applicableUSCustomaryUnit',
+    kind='object',
+    label='applicable US Customary unit',
+    ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/QuantityKind-applicableUSCustomaryUnit',),
 )
 
 _P_QuantityKind_base_cgs_unit_dimensions = _PropertySpec(
@@ -22728,14 +22042,7 @@ _P_QuantityKind_base_cgs_unit_dimensions = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/baseCGSUnitDimensions',
     kind='object',
     label='base CGS unit dimensions',
-    max_count=1,
-)
-
-_P_QuantityKind_base_iso_unit_dimensions = _PropertySpec(
-    name='base_iso_unit_dimensions',
-    predicate='http://qudt.org/schema/qudt/baseISOUnitDimensions',
-    kind='object',
-    label='base ISO unit dimensions',
+    sources=('http://qudt.org/schema/qudt/QuantityKind-baseCGSUnitDimensions',),
     max_count=1,
 )
 
@@ -22744,6 +22051,16 @@ _P_QuantityKind_base_imperial_unit_dimensions = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/baseImperialUnitDimensions',
     kind='object',
     label='base imperial unit dimensions',
+    sources=('http://qudt.org/schema/qudt/QuantityKind-baseImperialUnitDimensions',),
+    max_count=1,
+)
+
+_P_QuantityKind_base_iso_unit_dimensions = _PropertySpec(
+    name='base_iso_unit_dimensions',
+    predicate='http://qudt.org/schema/qudt/baseISOUnitDimensions',
+    kind='object',
+    label='base ISO unit dimensions',
+    sources=('http://qudt.org/schema/qudt/QuantityKind-baseISOUnitDimensions',),
     max_count=1,
 )
 
@@ -22752,6 +22069,7 @@ _P_QuantityKind_base_si_unit_dimensions = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/baseSIUnitDimensions',
     kind='object',
     label='base SI unit dimensions',
+    sources=('http://qudt.org/schema/qudt/QuantityKind-baseSIUnitDimensions',),
     max_count=1,
 )
 
@@ -22760,6 +22078,7 @@ _P_QuantityKind_base_us_customary_unit_dimensions = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/baseUSCustomaryUnitDimensions',
     kind='object',
     label='base US customary unit dimensions',
+    sources=('http://qudt.org/schema/qudt/QuantityKind-baseUSCustomaryUnitDimensions',),
     max_count=1,
 )
 
@@ -22769,6 +22088,8 @@ _P_QuantityKind_belongs_to_system_of_quantities = _PropertySpec(
     kind='object',
     label='belongs to system of quantities',
     ranges=('SystemOfQuantityKinds',),
+    range_groups=(('http://qudt.org/schema/qudt/SystemOfQuantityKinds',),),
+    sources=('http://qudt.org/schema/qudt/QuantityKind-belongsToSystemOfQuantities',),
 )
 
 _P_QuantityKind_dimension_vector_for_si = _PropertySpec(
@@ -22777,6 +22098,8 @@ _P_QuantityKind_dimension_vector_for_si = _PropertySpec(
     kind='object',
     label='dimension vector for SI',
     ranges=('QuantityKindDimensionVector_SI',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKindDimensionVector_SI',),),
+    sources=('http://qudt.org/schema/qudt/QuantityKind-dimensionVectorForSI',),
     max_count=1,
 )
 
@@ -22785,6 +22108,7 @@ _P_QuantityKind_eclass_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/eclassCode',
     kind='literal',
     label='ECLASS code',
+    sources=('http://qudt.org/schema/qudt/QuantityKind-eclassCode',),
     datatype=str,
 )
 
@@ -22793,6 +22117,7 @@ _P_QuantityKind_expression = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/expression',
     kind='object',
     label='expression',
+    sources=('http://qudt.org/schema/qudt/QuantityKind-expression',),
 )
 
 _P_QuantityKind_has_dimension_vector = _PropertySpec(
@@ -22801,6 +22126,9 @@ _P_QuantityKind_has_dimension_vector = _PropertySpec(
     kind='object',
     label='has dimension vector',
     ranges=('QuantityKindDimensionVector',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKindDimensionVector',),),
+    sources=('http://qudt.org/schema/qudt/QuantityKind-hasDimensionVector',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -22810,6 +22138,7 @@ _P_QuantityKind_iec61360_code = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/iec61360Code',
     kind='literal',
     label='IEC 61360 code',
+    sources=('http://qudt.org/schema/qudt/QuantityKind-iec61360Code',),
     datatype=str,
 )
 
@@ -22818,6 +22147,7 @@ _P_QuantityKind_latex_definition = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/latexDefinition',
     kind='literal',
     label='latex definition',
+    sources=('http://qudt.org/schema/qudt/QuantityKind-latexDefinition',),
     datatype=str,
     max_count=1,
 )
@@ -22827,6 +22157,7 @@ _P_QuantityKind_math_m_ldefinition = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/mathMLdefinition',
     kind='literal',
     label='mathML definition',
+    sources=('http://qudt.org/schema/qudt/QuantityKind-mathMLdefinition',),
     datatype=str,
     max_count=1,
 )
@@ -22837,6 +22168,8 @@ _P_QuantityKind_qkdv_denominator = _PropertySpec(
     kind='object',
     label='denominator dimension vector',
     ranges=('QuantityKindDimensionVector',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKindDimensionVector',),),
+    sources=('http://qudt.org/schema/qudt/QuantityKind-qkdvDenominator',),
     max_count=1,
 )
 
@@ -22846,6 +22179,8 @@ _P_QuantityKind_qkdv_numerator = _PropertySpec(
     kind='object',
     label='numerator dimension vector',
     ranges=('QuantityKindDimensionVector',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKindDimensionVector',),),
+    sources=('http://qudt.org/schema/qudt/QuantityKind-qkdvNumerator',),
     max_count=1,
 )
 
@@ -22854,12 +22189,13 @@ _P_QuantityKind_si_exact_match = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/siExactMatch',
     kind='object',
     label='Individual from SI Reference Point',
+    sources=('http://qudt.org/schema/qudt/QuantityKind-siExactMatch',),
     max_count=1,
 )
 
 class QuantityKind(AbstractQuantityKind, Verifiable):
     """Quantity Kind
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityKind
     """
 
@@ -22871,35 +22207,35 @@ class QuantityKind(AbstractQuantityKind, Verifiable):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/AbstractQuantityKind', 'http://qudt.org/schema/qudt/Verifiable'),
         ancestor_iris=('http://qudt.org/schema/qudt/AbstractQuantityKind', 'http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_QuantityKind_applicable_cgs_unit, _P_QuantityKind_applicable_iso_unit, _P_QuantityKind_applicable_imperial_unit, _P_QuantityKind_applicable_si_unit, _P_QuantityKind_applicable_us_customary_unit, _P_QuantityKind_applicable_unit, _P_QuantityKind_base_cgs_unit_dimensions, _P_QuantityKind_base_iso_unit_dimensions, _P_QuantityKind_base_imperial_unit_dimensions, _P_QuantityKind_base_si_unit_dimensions, _P_QuantityKind_base_us_customary_unit_dimensions, _P_QuantityKind_belongs_to_system_of_quantities, _P_QuantityKind_dimension_vector_for_si, _P_QuantityKind_eclass_code, _P_QuantityKind_expression, _P_QuantityKind_has_dimension_vector, _P_QuantityKind_iec61360_code, _P_QuantityKind_latex_definition, _P_QuantityKind_math_m_ldefinition, _P_QuantityKind_qkdv_denominator, _P_QuantityKind_qkdv_numerator, _P_QuantityKind_si_exact_match,),
+        properties=(_P_QuantityKind_applicable_cgs_unit, _P_QuantityKind_applicable_imperial_unit, _P_QuantityKind_applicable_iso_unit, _P_QuantityKind_applicable_si_unit, _P_QuantityKind_applicable_unit, _P_QuantityKind_applicable_us_customary_unit, _P_QuantityKind_base_cgs_unit_dimensions, _P_QuantityKind_base_imperial_unit_dimensions, _P_QuantityKind_base_iso_unit_dimensions, _P_QuantityKind_base_si_unit_dimensions, _P_QuantityKind_base_us_customary_unit_dimensions, _P_QuantityKind_belongs_to_system_of_quantities, _P_QuantityKind_dimension_vector_for_si, _P_QuantityKind_eclass_code, _P_QuantityKind_expression, _P_QuantityKind_has_dimension_vector, _P_QuantityKind_iec61360_code, _P_QuantityKind_latex_definition, _P_QuantityKind_math_m_ldefinition, _P_QuantityKind_qkdv_denominator, _P_QuantityKind_qkdv_numerator, _P_QuantityKind_si_exact_match,),
     )
 
     applicable_cgs_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_cgs_unit)
     """applicable CGS unit (http://qudt.org/schema/qudt/applicableCGSUnit)"""
 
-    applicable_iso_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_iso_unit)
-    """applicable ISO unit (http://qudt.org/schema/qudt/applicableISOUnit)"""
-
     applicable_imperial_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_imperial_unit)
     """applicable Imperial unit (http://qudt.org/schema/qudt/applicableImperialUnit)"""
+
+    applicable_iso_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_iso_unit)
+    """applicable ISO unit (http://qudt.org/schema/qudt/applicableISOUnit)"""
 
     applicable_si_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_si_unit)
     """applicable SI unit (http://qudt.org/schema/qudt/applicableSIUnit)"""
 
-    applicable_us_customary_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_us_customary_unit)
-    """applicable US Customary unit (http://qudt.org/schema/qudt/applicableUSCustomaryUnit)"""
-
     applicable_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_unit)
     """applicable unit (http://qudt.org/schema/qudt/applicableUnit)"""
+
+    applicable_us_customary_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_us_customary_unit)
+    """applicable US Customary unit (http://qudt.org/schema/qudt/applicableUSCustomaryUnit)"""
 
     base_cgs_unit_dimensions: _RelOne[_EntityBase] = _RelOne(_P_QuantityKind_base_cgs_unit_dimensions)
     """base CGS unit dimensions (http://qudt.org/schema/qudt/baseCGSUnitDimensions)"""
 
-    base_iso_unit_dimensions: _RelOne[_EntityBase] = _RelOne(_P_QuantityKind_base_iso_unit_dimensions)
-    """base ISO unit dimensions (http://qudt.org/schema/qudt/baseISOUnitDimensions)"""
-
     base_imperial_unit_dimensions: _RelOne[_EntityBase] = _RelOne(_P_QuantityKind_base_imperial_unit_dimensions)
     """base imperial unit dimensions (http://qudt.org/schema/qudt/baseImperialUnitDimensions)"""
+
+    base_iso_unit_dimensions: _RelOne[_EntityBase] = _RelOne(_P_QuantityKind_base_iso_unit_dimensions)
+    """base ISO unit dimensions (http://qudt.org/schema/qudt/baseISOUnitDimensions)"""
 
     base_si_unit_dimensions: _RelOne[_EntityBase] = _RelOne(_P_QuantityKind_base_si_unit_dimensions)
     """base SI unit dimensions (http://qudt.org/schema/qudt/baseSIUnitDimensions)"""
@@ -22945,7 +22281,7 @@ class QuantityKind(AbstractQuantityKind, Verifiable):
         name: str | None = None,
         *,
         has_dimension_vector: QuantityKindDimensionVector | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alt_symbol: _Iterable[_EntityBase] = (),
         applicable_cgs_unit: _Iterable[Unit] = (),
@@ -23003,7 +22339,7 @@ class QuantityKind(AbstractQuantityKind, Verifiable):
             model=model,
             **_provided(
                 has_dimension_vector=has_dimension_vector,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alt_symbol=alt_symbol,
                 applicable_cgs_unit=applicable_cgs_unit,
@@ -23055,6 +22391,8 @@ _P_QuantityKindDimensionVector_dimension_exponent_for_amount_of_substance = _Pro
     predicate='http://qudt.org/schema/qudt/dimensionExponentForAmountOfSubstance',
     kind='object',
     label='dimension exponent for amount of substance',
+    sources=('http://qudt.org/schema/qudt/QuantityKindDimensionVector-dimensionExponentForAmountOfSubstance',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -23064,6 +22402,8 @@ _P_QuantityKindDimensionVector_dimension_exponent_for_electric_current = _Proper
     predicate='http://qudt.org/schema/qudt/dimensionExponentForElectricCurrent',
     kind='literal',
     label='dimension exponent for electric current',
+    sources=('http://qudt.org/schema/qudt/QuantityKindDimensionVector-dimensionExponentForElectricCurrent',),
+    min_count=1,
     datatype=int,
     required=True,
     max_count=1,
@@ -23074,6 +22414,8 @@ _P_QuantityKindDimensionVector_dimension_exponent_for_length = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/dimensionExponentForLength',
     kind='object',
     label='dimension exponent for length',
+    sources=('http://qudt.org/schema/qudt/QuantityKindDimensionVector-dimensionExponentForLength',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -23083,6 +22425,8 @@ _P_QuantityKindDimensionVector_dimension_exponent_for_luminous_intensity = _Prop
     predicate='http://qudt.org/schema/qudt/dimensionExponentForLuminousIntensity',
     kind='object',
     label='dimension exponent for luminous intensity',
+    sources=('http://qudt.org/schema/qudt/QuantityKindDimensionVector-dimensionExponentForLuminousIntensity',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -23092,6 +22436,8 @@ _P_QuantityKindDimensionVector_dimension_exponent_for_mass = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/dimensionExponentForMass',
     kind='object',
     label='dimension exponent for mass',
+    sources=('http://qudt.org/schema/qudt/QuantityKindDimensionVector-dimensionExponentForMass',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -23101,6 +22447,8 @@ _P_QuantityKindDimensionVector_dimension_exponent_for_thermodynamic_temperature 
     predicate='http://qudt.org/schema/qudt/dimensionExponentForThermodynamicTemperature',
     kind='object',
     label='dimension exponent for thermodynamic temperature',
+    sources=('http://qudt.org/schema/qudt/QuantityKindDimensionVector-dimensionExponentForThermodynamicTemperature',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -23110,6 +22458,8 @@ _P_QuantityKindDimensionVector_dimension_exponent_for_time = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/dimensionExponentForTime',
     kind='object',
     label='dimension exponent for time',
+    sources=('http://qudt.org/schema/qudt/QuantityKindDimensionVector-dimensionExponentForTime',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -23119,6 +22469,8 @@ _P_QuantityKindDimensionVector_dimensionless_exponent = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/dimensionlessExponent',
     kind='object',
     label='dimensionless exponent',
+    sources=('http://qudt.org/schema/qudt/QuantityKindDimensionVector-dimensionlessExponent',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -23129,6 +22481,8 @@ _P_QuantityKindDimensionVector_has_reference_quantity_kind = _PropertySpec(
     kind='object',
     label='has reference quantity kind',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/QuantityKindDimensionVector-hasReferenceQuantityKind',),
 )
 
 _P_QuantityKindDimensionVector_latex_definition = _PropertySpec(
@@ -23136,6 +22490,7 @@ _P_QuantityKindDimensionVector_latex_definition = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/latexDefinition',
     kind='literal',
     label='latex definition',
+    sources=('http://qudt.org/schema/qudt/QuantityKindDimensionVector-latexDefinition',),
     datatype=str,
     max_count=1,
 )
@@ -23145,12 +22500,13 @@ _P_QuantityKindDimensionVector_latex_symbol = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/latexSymbol',
     kind='literal',
     label='latex symbol',
+    sources=('http://qudt.org/schema/qudt/QuantityKindDimensionVector-latexSymbol',),
     datatype=str,
 )
 
 class QuantityKindDimensionVector(Concept_2):
     """Quantity Kind Dimension Vector
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityKindDimensionVector
     """
 
@@ -23210,7 +22566,7 @@ class QuantityKindDimensionVector(Concept_2):
         dimension_exponent_for_thermodynamic_temperature: _EntityBase | None,
         dimension_exponent_for_time: _EntityBase | None,
         dimensionless_exponent: _EntityBase | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -23246,7 +22602,7 @@ class QuantityKindDimensionVector(Concept_2):
                 dimension_exponent_for_thermodynamic_temperature=dimension_exponent_for_thermodynamic_temperature,
                 dimension_exponent_for_time=dimension_exponent_for_time,
                 dimensionless_exponent=dimensionless_exponent,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -23266,7 +22622,7 @@ class QuantityKindDimensionVector(Concept_2):
 
 class QuantityKindDimensionVector_CGS(QuantityKindDimensionVector):
     """CGS Dimension vector
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS
     """
 
@@ -23282,7 +22638,7 @@ class QuantityKindDimensionVector_CGS(QuantityKindDimensionVector):
 
 class QuantityKindDimensionVector_CGS_EMU(QuantityKindDimensionVector_CGS):
     """CGS EMU Dimension vector
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS-EMU
     """
 
@@ -23298,7 +22654,7 @@ class QuantityKindDimensionVector_CGS_EMU(QuantityKindDimensionVector_CGS):
 
 class QuantityKindDimensionVector_CGS_ESU(QuantityKindDimensionVector_CGS):
     """CGS ESU Dimension vector
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS-ESU
     """
 
@@ -23314,7 +22670,7 @@ class QuantityKindDimensionVector_CGS_ESU(QuantityKindDimensionVector_CGS):
 
 class QuantityKindDimensionVector_CGS_GAUSS(QuantityKindDimensionVector_CGS):
     """CGS GAUSS Dimension vector
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS-GAUSS
     """
 
@@ -23330,7 +22686,7 @@ class QuantityKindDimensionVector_CGS_GAUSS(QuantityKindDimensionVector_CGS):
 
 class QuantityKindDimensionVector_CGS_LH(QuantityKindDimensionVector_CGS):
     """CGS LH Dimension vector
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityKindDimensionVector_CGS-LH
     """
 
@@ -23346,7 +22702,7 @@ class QuantityKindDimensionVector_CGS_LH(QuantityKindDimensionVector_CGS):
 
 class QuantityKindDimensionVector_ISO(QuantityKindDimensionVector):
     """ISO Dimension vector
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityKindDimensionVector_ISO
     """
 
@@ -23362,7 +22718,7 @@ class QuantityKindDimensionVector_ISO(QuantityKindDimensionVector):
 
 class QuantityKindDimensionVector_Imperial(QuantityKindDimensionVector):
     """Imperial dimension vector
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityKindDimensionVector_Imperial
     """
 
@@ -23378,7 +22734,7 @@ class QuantityKindDimensionVector_Imperial(QuantityKindDimensionVector):
 
 class QuantityKindDimensionVector_SI(QuantityKindDimensionVector):
     """Quantity Kind Dimension vector (SI)
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityKindDimensionVector_SI
     """
 
@@ -23392,22 +22748,25 @@ class QuantityKindDimensionVector_SI(QuantityKindDimensionVector):
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/QuantityKindDimensionVector', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_QuantityKindList_rest = _PropertySpec(
-    name='rest',
-    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#rest',
-    kind='object',
-)
-
 _P_QuantityKindList_first = _PropertySpec(
     name='first',
     predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#first',
     kind='object',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('b719edc1d6fe0652deef6b368',),
+)
+
+_P_QuantityKindList_rest = _PropertySpec(
+    name='rest',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#rest',
+    kind='object',
+    sources=('b565c6d8725707178fd5d2d32',),
 )
 
 class QuantityKindList(List):
     """Quantity kind List
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityKindList
     """
 
@@ -23419,21 +22778,21 @@ class QuantityKindList(List):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/List',),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/List', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_QuantityKindList_rest, _P_QuantityKindList_first,),
+        properties=(_P_QuantityKindList_first, _P_QuantityKindList_rest,),
     )
-
-    rest: _Rel[_EntityBase] = _Rel(_P_QuantityKindList_rest)
-    """rest (http://www.w3.org/1999/02/22-rdf-syntax-ns#rest)"""
 
     first: _Rel[QuantityKind] = _Rel(_P_QuantityKindList_first)
     """first (http://www.w3.org/1999/02/22-rdf-syntax-ns#first)"""
+
+    rest: _Rel[_EntityBase] = _Rel(_P_QuantityKindList_rest)
+    """rest (http://www.w3.org/1999/02/22-rdf-syntax-ns#rest)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
         datatype: Datatype | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -23464,7 +22823,7 @@ class QuantityKindList(List):
             model=model,
             **_provided(
                 datatype=datatype,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -23484,17 +22843,19 @@ class QuantityKindList(List):
             ),
         )
 
-_P_QuantityType_value = _PropertySpec(
-    name='value',
+_P_QuantityType_value_2 = _PropertySpec(
+    name='value_2',
     predicate='http://www.linkedmodel.org/schema/dtype#value',
     kind='object',
     label='value',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/QuantityType-value',),
 )
 
 class QuantityType(EnumeratedValue):
     """Quantity type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityType
     """
 
@@ -23506,10 +22867,10 @@ class QuantityType(EnumeratedValue):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/EnumeratedValue',),
         ancestor_iris=('http://qudt.org/schema/qudt/Aspect', 'http://qudt.org/schema/qudt/EnumeratedValue', 'http://qudt.org/schema/qudt/Verifiable', 'http://www.linkedmodel.org/schema/dtype#EnumeratedValue', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
-        properties=(_P_QuantityType_value,),
+        properties=(_P_QuantityType_value_2,),
     )
 
-    value: _Rel[QuantityKind] = _Rel(_P_QuantityType_value)
+    value_2: _Rel[QuantityKind] = _Rel(_P_QuantityType_value_2)
     """value (http://www.linkedmodel.org/schema/dtype#value)"""
 
     def __init__(
@@ -23524,7 +22885,7 @@ class QuantityType(EnumeratedValue):
         iso_normative_reference: str | None = None,
         normative_reference: str | None = None,
         symbol: _EntityBase | None = None,
-        value: _Iterable[QuantityKind] = (),
+        value_2: _Iterable[QuantityKind] = (),
         wikidata_match: _EntityBase | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -23547,7 +22908,7 @@ class QuantityType(EnumeratedValue):
                 iso_normative_reference=iso_normative_reference,
                 normative_reference=normative_reference,
                 symbol=symbol,
-                value=value,
+                value_2=value_2,
                 wikidata_match=wikidata_match,
             ),
         )
@@ -23557,7 +22918,9 @@ _P_QuantityValueType_basis = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/basis',
     kind='object',
     label='basis',
-    ranges=('Datatype', 'QuantityType'),
+    ranges=('Datatype',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',), ('http://qudt.org/schema/qudt/QuantityType',)),
+    sources=('http://qudt.org/schema/qudt/Datatype-basis', 'http://qudt.org/schema/qudt/QuantityValueType-basis'),
     max_count=1,
 )
 
@@ -23566,7 +22929,9 @@ _P_QuantityValueType_element_datatype = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/elementDatatype',
     kind='object',
     label='element datatype',
-    ranges=('Datatype', 'NumericType'),
+    ranges=('NumericType',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',), ('http://qudt.org/schema/qudt/NumericType',)),
+    sources=('http://qudt.org/schema/qudt/QuantityValueType-elementType', 'http://qudt.org/schema/qudt/StructuredDatatype-elementType'),
     max_count=1,
 )
 
@@ -23576,12 +22941,14 @@ _P_QuantityValueType_element_unit = _PropertySpec(
     kind='object',
     label='element unit',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/QuantityValueType-elementUnit',),
     max_count=1,
 )
 
 class QuantityValueType(DimensionalDatatype):
     """Quantity value type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/QuantityValueType
     """
 
@@ -23596,10 +22963,10 @@ class QuantityValueType(DimensionalDatatype):
         properties=(_P_QuantityValueType_basis, _P_QuantityValueType_element_datatype, _P_QuantityValueType_element_unit,),
     )
 
-    basis: _RelOne[Datatype | QuantityType] = _RelOne(_P_QuantityValueType_basis)
+    basis: _RelOne[Datatype] = _RelOne(_P_QuantityValueType_basis)
     """basis (http://qudt.org/schema/qudt/basis)"""
 
-    element_datatype: _RelOne[Datatype | NumericType] = _RelOne(_P_QuantityValueType_element_datatype)
+    element_datatype: _RelOne[NumericType] = _RelOne(_P_QuantityValueType_element_datatype)
     """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
 
     element_unit: _RelOne[Unit] = _RelOne(_P_QuantityValueType_element_unit)
@@ -23609,10 +22976,10 @@ class QuantityValueType(DimensionalDatatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
-        basis: Datatype | QuantityType | None = None,
+        basis: Datatype | None = None,
         bounded: bool | None = None,
         c_name: str | None = None,
         cardinality: CardinalityType | None = None,
@@ -23620,7 +22987,7 @@ class QuantityValueType(DimensionalDatatype):
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
         description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | NumericType | None = None,
+        element_datatype: NumericType | None = None,
         element_unit: Unit | None = None,
         exact_match: _Iterable[Concept_2] = (),
         guidance: str | None = None,
@@ -23653,7 +23020,7 @@ class QuantityValueType(DimensionalDatatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -23689,7 +23056,7 @@ class QuantityValueType(DimensionalDatatype):
 
 class RFOutlet(Equipment):
     """A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a radio frequency (RF) communication network, via, for example, a coaxial cable.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#RFOutlet
     """
 
@@ -23711,19 +23078,19 @@ class RadiantHeater(Equipment):
     """
     A piece of `Equipment` with heating or cooling surface that delivers 50% or more of its heat transfer by radiation.
     A `RadiantHeater` shall:
-    
+
     - Have the role `Role-Heating`.
-    
+
     - Have at least one outlet connection point using the medium `Light-Infrared`.
-    
+
     - Conform to exactly one of the following patterns:
       - **Pattern 1:**
         - Exactly one inlet connection point using the medium `Constituent-Electricity` or `Fluid-NaturalGas`.
       - **Pattern 2:**
         - Exactly one inlet connection point using the medium `Fluid-Water`.
         - Exactly one outlet connection point using the medium `Fluid-Water`.
-    
-    
+
+
     Ontology: WATR — http://data.ashrae.org/standard223#RadiantHeater
     """
 
@@ -23752,7 +23119,7 @@ class RadiantHeater(Equipment):
 class Radiator(Equipment):
     """A piece of `Equipment` that provides primarily convective heating to a room using electricity, steam, or water
     (e.g., electric baseboard heaters, heated floors, or traditional radiators).
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Radiator
     """
 
@@ -23780,7 +23147,7 @@ class Radiator(Equipment):
 
 class RapidSandFilter(MediaFiltrationUnit):
     """A type of media filter that uses sand as the filter medium and operates at high filtration rates.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#RapidSandFilter
     """
 
@@ -23797,7 +23164,7 @@ class RapidSandFilter(MediaFiltrationUnit):
 
 class RatioScale(Scale):
     """Ratio scale
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/RatioScale
     """
 
@@ -23816,13 +23183,15 @@ _P_RawValueTupleMember_element_datatype = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/elementDatatype',
     kind='object',
     label='element datatype',
-    ranges=('Datatype', 'ScalarDatatype', 'UnsignedIntegerType'),
+    ranges=('UnsignedIntegerType',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',), ('http://qudt.org/schema/qudt/ScalarDatatype',), ('http://qudt.org/schema/qudt/UnsignedIntegerType',)),
+    sources=('http://qudt.org/schema/qudt/RawValueTupleMember-elementType', 'http://qudt.org/schema/qudt/StructuredDatatype-elementType', 'http://qudt.org/schema/qudt/TupleMember-elementType'),
     max_count=1,
 )
 
 class RawValueTupleMember(TupleMember):
     """Raw value tuple member
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/RawValueTupleMember
     """
 
@@ -23837,7 +23206,7 @@ class RawValueTupleMember(TupleMember):
         properties=(_P_RawValueTupleMember_element_datatype,),
     )
 
-    element_datatype: _RelOne[Datatype | ScalarDatatype | UnsignedIntegerType] = _RelOne(_P_RawValueTupleMember_element_datatype)
+    element_datatype: _RelOne[UnsignedIntegerType] = _RelOne(_P_RawValueTupleMember_element_datatype)
     """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
 
     def __init__(
@@ -23845,7 +23214,7 @@ class RawValueTupleMember(TupleMember):
         name: str | None = None,
         *,
         order_in_structure: _EntityBase | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alignment: _Iterable[AlignmentType] = (),
         ansi_sql_name: str | None = None,
@@ -23857,7 +23226,7 @@ class RawValueTupleMember(TupleMember):
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
         description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | ScalarDatatype | UnsignedIntegerType | None = None,
+        element_datatype: UnsignedIntegerType | None = None,
         exact_match: _Iterable[Concept_2] = (),
         guidance: str | None = None,
         has_rule: _Iterable[Rule] = (),
@@ -23891,7 +23260,7 @@ class RawValueTupleMember(TupleMember):
             model=model,
             **_provided(
                 order_in_structure=order_in_structure,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alignment=alignment,
                 ansi_sql_name=ansi_sql_name,
@@ -23931,13 +23300,15 @@ _P_RawValueTupleMemberType_element_datatype = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/elementDatatype',
     kind='object',
     label='element datatype',
-    ranges=('Datatype', 'ScalarDatatype', 'UnsignedIntegerType'),
+    ranges=('UnsignedIntegerType',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',), ('http://qudt.org/schema/qudt/ScalarDatatype',), ('http://qudt.org/schema/qudt/UnsignedIntegerType',)),
+    sources=('http://qudt.org/schema/qudt/RawValueTupleMember-elementType', 'http://qudt.org/schema/qudt/StructuredDatatype-elementType', 'http://qudt.org/schema/qudt/TupleMember-elementType'),
     max_count=1,
 )
 
 class RawValueTupleMemberType(TupleMember):
     """Raw value tuple member type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/RawValueTupleMemberType
     """
 
@@ -23952,7 +23323,7 @@ class RawValueTupleMemberType(TupleMember):
         properties=(_P_RawValueTupleMemberType_element_datatype,),
     )
 
-    element_datatype: _RelOne[Datatype | ScalarDatatype | UnsignedIntegerType] = _RelOne(_P_RawValueTupleMemberType_element_datatype)
+    element_datatype: _RelOne[UnsignedIntegerType] = _RelOne(_P_RawValueTupleMemberType_element_datatype)
     """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
 
     def __init__(
@@ -23960,7 +23331,7 @@ class RawValueTupleMemberType(TupleMember):
         name: str | None = None,
         *,
         order_in_structure: _EntityBase | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alignment: _Iterable[AlignmentType] = (),
         ansi_sql_name: str | None = None,
@@ -23972,7 +23343,7 @@ class RawValueTupleMemberType(TupleMember):
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
         description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | ScalarDatatype | UnsignedIntegerType | None = None,
+        element_datatype: UnsignedIntegerType | None = None,
         exact_match: _Iterable[Concept_2] = (),
         guidance: str | None = None,
         has_rule: _Iterable[Rule] = (),
@@ -24006,7 +23377,7 @@ class RawValueTupleMemberType(TupleMember):
             model=model,
             **_provided(
                 order_in_structure=order_in_structure,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alignment=alignment,
                 ansi_sql_name=ansi_sql_name,
@@ -24046,6 +23417,7 @@ _P_RealDatatype_base = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/base',
     kind='literal',
     label='base',
+    sources=('http://qudt.org/schema/qudt/RealDatatype-base',),
     datatype=int,
     max_count=1,
 )
@@ -24055,6 +23427,7 @@ _P_RealDatatype_max_exponent = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/maxExponent',
     kind='literal',
     label='max exponent',
+    sources=('http://qudt.org/schema/qudt/RealDatatype-maxExponent',),
     datatype=int,
     max_count=1,
 )
@@ -24064,6 +23437,7 @@ _P_RealDatatype_max_mantissa = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/maxMantissa',
     kind='object',
     label='max mantissa',
+    sources=('http://qudt.org/schema/qudt/RealDatatype-maxMantissa',),
     max_count=1,
 )
 
@@ -24072,6 +23446,7 @@ _P_RealDatatype_min_mantissa = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/minMantissa',
     kind='object',
     label='min mantissa',
+    sources=('http://qudt.org/schema/qudt/RealDatatype-minMantissa',),
     max_count=1,
 )
 
@@ -24080,13 +23455,14 @@ _P_RealDatatype_precision = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/precision',
     kind='literal',
     label='precision',
+    sources=('http://qudt.org/schema/qudt/RealDatatype-precision',),
     datatype=int,
     max_count=1,
 )
 
 class RealDatatype(NumericType):
     """Real Datatype
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/RealDatatype
     """
 
@@ -24120,7 +23496,7 @@ class RealDatatype(NumericType):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         accuracy: int | None = None,
         ansi_sql_name: str | None = None,
@@ -24180,7 +23556,7 @@ class RealDatatype(NumericType):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 accuracy=accuracy,
                 ansi_sql_name=ansi_sql_name,
@@ -24232,7 +23608,7 @@ class RealDatatype(NumericType):
 
 class RealDoublePrecisionType(DoublePrecisionType, RealDatatype):
     """Real Double Precision Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/RealDoublePrecisionType
     """
 
@@ -24248,7 +23624,7 @@ class RealDoublePrecisionType(DoublePrecisionType, RealDatatype):
 
 class RealNumberType(RealDatatype):
     """Real number type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/RealNumberType
     """
 
@@ -24264,7 +23640,7 @@ class RealNumberType(RealDatatype):
 
 class SinglePrecisionType(NumericType):
     """Single Precision Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SinglePrecisionType
     """
 
@@ -24280,7 +23656,7 @@ class SinglePrecisionType(NumericType):
 
 class RealSinglePrecisionType(RealDatatype, SinglePrecisionType):
     """Real Single Precision Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/RealSinglePrecisionType
     """
 
@@ -24296,7 +23672,7 @@ class RealSinglePrecisionType(RealDatatype, SinglePrecisionType):
 
 class Record(CompositeDatatype):
     """Record Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Record
     """
 
@@ -24312,7 +23688,7 @@ class Record(CompositeDatatype):
 
 class ReferenceDatatype(StructuredDatatype):
     """Reference Data Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ReferenceDatatype
     """
 
@@ -24328,7 +23704,7 @@ class ReferenceDatatype(StructuredDatatype):
 
 class Refrigerator(Equipment):
     """A piece of `Equipment` that maintains an internal temperature below the surrounding ambient temperature but above the freezing point of water.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Refrigerator
     """
 
@@ -24347,7 +23723,7 @@ class Refrigerator(Equipment):
 
 class Relation(Concept):
     """A `Relation` associates the subject and the object in an RDF triple, the *predicate* portion of a *(subject, predicate, object)* triple.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Relation
     """
 
@@ -24368,6 +23744,9 @@ _P_RelationWithInverse_inverse_of = _PropertySpec(
     label='inverse of',
     definition='A `Relation` that associates `Relation`s that are inverses of one another, such as `connectedTo` and `connectedFrom`.',
     ranges=('RelationWithInverse',),
+    range_groups=(('http://data.ashrae.org/standard223#RelationWithInverse',),),
+    sources=('b9a0a3ac284ed8ba313c7f70f',),
+    min_count=1,
     required=True,
     max_count=1,
 )
@@ -24375,7 +23754,7 @@ _P_RelationWithInverse_inverse_of = _PropertySpec(
 class RelationWithInverse(Relation):
     """An `RelationWithInverse` is modeling construct used to define symmetric behavior
     for certain relations in the standard such as `connectedTo` and `connectedFrom`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#RelationWithInverse
     """
 
@@ -24421,7 +23800,7 @@ class RelationWithInverse(Relation):
 
 class Reservoir(Equipment):
     """A large natural or artificial body of water used for water supply
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Reservoir
     """
 
@@ -24437,7 +23816,7 @@ class Reservoir(Equipment):
 
 class ReverseOsmosisMembrane(Filter):
     """A membrane used for reverse osmosis
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ReverseOsmosisMembrane
     """
 
@@ -24454,7 +23833,7 @@ class ReverseOsmosisMembrane(Filter):
 
 class Role_NitrogenRemoval(_EntityBase):
     """Deprecated objective designation formerly modeled as a role; use TreatmentObjective-NitrogenRemoval.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Role-NitrogenRemoval
     """
 
@@ -24470,7 +23849,7 @@ class Role_NitrogenRemoval(_EntityBase):
 
 class Role_NutrientRemoval(_EntityBase):
     """Deprecated objective designation formerly modeled as a role; use TreatmentObjective-NutrientRemoval.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Role-NutrientRemoval
     """
 
@@ -24486,7 +23865,7 @@ class Role_NutrientRemoval(_EntityBase):
 
 class Role_PhosphorusRemoval(_EntityBase):
     """Deprecated objective designation formerly modeled as a role; use TreatmentObjective-PhosphorusRemoval.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Role-PhosphorusRemoval
     """
 
@@ -24502,7 +23881,7 @@ class Role_PhosphorusRemoval(_EntityBase):
 
 class Role_SolidsHandling(_EntityBase):
     """Deprecated objective designation formerly modeled as a role; use TreatmentObjective-VolumeReduction.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Role-SolidsHandling
     """
 
@@ -24518,7 +23897,7 @@ class Role_SolidsHandling(_EntityBase):
 
 class Role_Stabilization(_EntityBase):
     """Deprecated objective designation formerly modeled as a role; use TreatmentObjective-Stabilization.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Role-Stabilization
     """
 
@@ -24534,7 +23913,7 @@ class Role_Stabilization(_EntityBase):
 
 class RotaryDrumThickener(Thickener):
     """A thickener that uses a rotating drum to separate solids from liquids
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#RotaryDrumThickener
     """
 
@@ -24559,7 +23938,7 @@ class RotaryDrumThickener(Thickener):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -24603,7 +23982,7 @@ class RotaryDrumThickener(Thickener):
 
 class RotatingBiologicalContactor(Filter, Reactor):
     """Fixed-film process using a slowly rotating discs partially submerged in a tank
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#RotatingBiologicalContactor
     """
 
@@ -24620,7 +23999,7 @@ class RotatingBiologicalContactor(Filter, Reactor):
 
 class RotatingReferenceFrame(ReferenceFrame):
     """Rotating reference frame
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/RotatingReferenceFrame
     """
 
@@ -24636,7 +24015,7 @@ class RotatingReferenceFrame(ReferenceFrame):
 
 class RotationSensor(Sensor):
     """A sensor used to measure the rotational speed or position of an object
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#RotationSensor
     """
 
@@ -24655,6 +24034,7 @@ _P_Rule_example = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/example',
     kind='object',
     label='example',
+    sources=('http://qudt.org/schema/qudt/Rule-example',),
 )
 
 _P_Rule_rationale = _PropertySpec(
@@ -24662,6 +24042,7 @@ _P_Rule_rationale = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/rationale',
     kind='literal',
     label='rationale',
+    sources=('http://qudt.org/schema/qudt/Rule-rationale',),
     datatype=str,
 )
 
@@ -24671,11 +24052,13 @@ _P_Rule_rule_type = _PropertySpec(
     kind='object',
     label='rule type',
     ranges=('RuleType',),
+    range_groups=(('http://qudt.org/schema/qudt/RuleType',),),
+    sources=('http://qudt.org/schema/qudt/Rule-ruleType',),
 )
 
 class Rule(Concept_2, Verifiable):
     """Rule
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Rule
     """
 
@@ -24703,7 +24086,7 @@ class Rule(Concept_2, Verifiable):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         dbpedia_match: str | None = None,
@@ -24736,7 +24119,7 @@ class Rule(Concept_2, Verifiable):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 dbpedia_match=dbpedia_match,
@@ -24761,7 +24144,7 @@ class Rule(Concept_2, Verifiable):
 
 class RuleType(EnumeratedValue):
     """Rule Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/RuleType
     """
 
@@ -24781,6 +24164,8 @@ _P_ScalarDataItem_datatype = _PropertySpec(
     kind='object',
     label='datatype',
     ranges=('ScalarDatatype',),
+    range_groups=(('http://qudt.org/schema/qudt/ScalarDatatype',),),
+    sources=('http://qudt.org/schema/qudt/ScalarDataItem-datatype',),
     max_count=1,
 )
 
@@ -24789,12 +24174,13 @@ _P_ScalarDataItem_value = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/value',
     kind='object',
     label='value',
+    sources=('http://qudt.org/schema/qudt/ScalarDataItem-value',),
     max_count=1,
 )
 
 class ScalarDataItem(Concept_2):
     """Scalar Data Item
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ScalarDataItem
     """
 
@@ -24819,7 +24205,7 @@ class ScalarDataItem(Concept_2):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         datatype: ScalarDatatype | None = None,
@@ -24846,7 +24232,7 @@ class ScalarDataItem(Concept_2):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 datatype=datatype,
@@ -24863,21 +24249,23 @@ class ScalarDataItem(Concept_2):
             ),
         )
 
-_P_ScalarListShape_rest = _PropertySpec(
-    name='rest',
-    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#rest',
-    kind='object',
-)
-
 _P_ScalarListShape_first = _PropertySpec(
     name='first',
     predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#first',
     kind='object',
+    sources=('bdf5c5e57a420a5024abac170',),
+)
+
+_P_ScalarListShape_rest = _PropertySpec(
+    name='rest',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#rest',
+    kind='object',
+    sources=('b4fa637d97f1a2ac7504c1721',),
 )
 
 class ScalarListShape(List):
     """ScalarListShape
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ScalarListShape
     """
 
@@ -24889,21 +24277,21 @@ class ScalarListShape(List):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/List',),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/DataItem', 'http://qudt.org/schema/qudt/List', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_ScalarListShape_rest, _P_ScalarListShape_first,),
+        properties=(_P_ScalarListShape_first, _P_ScalarListShape_rest,),
     )
-
-    rest: _Rel[_EntityBase] = _Rel(_P_ScalarListShape_rest)
-    """rest (http://www.w3.org/1999/02/22-rdf-syntax-ns#rest)"""
 
     first: _Rel[_EntityBase] = _Rel(_P_ScalarListShape_first)
     """first (http://www.w3.org/1999/02/22-rdf-syntax-ns#first)"""
+
+    rest: _Rel[_EntityBase] = _Rel(_P_ScalarListShape_rest)
+    """rest (http://www.w3.org/1999/02/22-rdf-syntax-ns#rest)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
         datatype: Datatype | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -24934,7 +24322,7 @@ class ScalarListShape(List):
             model=model,
             **_provided(
                 datatype=datatype,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -24959,6 +24347,7 @@ _P_ScaleType_data_structure = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/dataStructure',
     kind='literal',
     label='data structure',
+    sources=('http://qudt.org/schema/qudt/ScaleType-dataStructure',),
     datatype=str,
     max_count=1,
 )
@@ -24969,6 +24358,8 @@ _P_ScaleType_permissible_maths = _PropertySpec(
     kind='object',
     label='permissible maths',
     ranges=('MathsFunctionType',),
+    range_groups=(('http://qudt.org/schema/qudt/MathsFunctionType',),),
+    sources=('http://qudt.org/schema/qudt/ScaleType-permissibleMaths',),
 )
 
 _P_ScaleType_permissible_transformation = _PropertySpec(
@@ -24977,11 +24368,13 @@ _P_ScaleType_permissible_transformation = _PropertySpec(
     kind='object',
     label='permissible transformation',
     ranges=('TransformType',),
+    range_groups=(('http://qudt.org/schema/qudt/TransformType',),),
+    sources=('http://qudt.org/schema/qudt/ScaleType-permissibleTransformation',),
 )
 
 class ScaleType(EnumeratedValue):
     """Scale type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ScaleType
     """
 
@@ -25051,7 +24444,7 @@ class ScaleType(EnumeratedValue):
 
 class Screen(UnitProcess):
     """An equipment used for separation
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Screen
     """
 
@@ -25076,7 +24469,7 @@ class Screen(UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -25120,7 +24513,7 @@ class Screen(UnitProcess):
 
 class Sequence(Collection):
     """Sequence
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Sequence
     """
 
@@ -25136,7 +24529,7 @@ class Sequence(Collection):
 
 class SequencingBatchReactor(Reactor, SeparationTank):
     """A type of activated sludge process for wastewater treatment
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#SequencingBatchReactor
     """
 
@@ -25156,7 +24549,7 @@ class SequencingBatchReactor(Reactor, SeparationTank):
 
 class ServerComputer(Computer):
     """A `Computer` that is primarily for use by multiple people, or for the execution of tasks not directly coupled to human interaction.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ServerComputer
     """
 
@@ -25175,7 +24568,7 @@ class ServerComputer(Computer):
 
 class Set(Collection):
     """Set Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Set
     """
 
@@ -25191,7 +24584,7 @@ class Set(Collection):
 
 class ShortIntegerType(IntegerDatatype):
     """Short Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ShortIntegerType
     """
 
@@ -25207,7 +24600,7 @@ class ShortIntegerType(IntegerDatatype):
 
 class Shower(Equipment):
     """A piece of `Equipment` for showering that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Shower
     """
 
@@ -25227,7 +24620,7 @@ class Shower(Equipment):
 
 class SignedType(NumericType):
     """Signed Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SignedType
     """
 
@@ -25243,7 +24636,7 @@ class SignedType(NumericType):
 
 class SignedIntegerType(IntegerDatatype, SignedType):
     """Signed Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SignedIntegerType
     """
 
@@ -25263,12 +24656,13 @@ _P_SignedBigIntegerType_literal = _PropertySpec(
     kind='literal',
     label='literal',
     definition='',
+    sources=('http://qudt.org/schema/qudt/SignedBigIntegerType-literal',),
     datatype=str,
 )
 
 class SignedBigIntegerType(BigIntegerType, SignedIntegerType):
     """Signed Big Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SignedBigIntegerType
     """
 
@@ -25290,7 +24684,7 @@ class SignedBigIntegerType(BigIntegerType, SignedIntegerType):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         accuracy: int | None = None,
         ansi_sql_name: str | None = None,
@@ -25346,7 +24740,7 @@ class SignedBigIntegerType(BigIntegerType, SignedIntegerType):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 accuracy=accuracy,
                 ansi_sql_name=ansi_sql_name,
@@ -25392,18 +24786,9 @@ class SignedBigIntegerType(BigIntegerType, SignedIntegerType):
             ),
         )
 
-_P_SignedLongIntegerType_abbreviation = _PropertySpec(
-    name='abbreviation',
-    predicate='http://qudt.org/schema/qudt/abbreviation',
-    kind='literal',
-    label='abbreviation',
-    datatype=str,
-    max_count=1,
-)
-
 class SignedLongIntegerType(LongIntegerType, SignedIntegerType):
     """Signed Long Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SignedLongIntegerType
     """
 
@@ -25415,119 +24800,11 @@ class SignedLongIntegerType(LongIntegerType, SignedIntegerType):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/LongIntegerType', 'http://qudt.org/schema/qudt/SignedIntegerType'),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/IntegerDatatype', 'http://qudt.org/schema/qudt/LongIntegerType', 'http://qudt.org/schema/qudt/NumericType', 'http://qudt.org/schema/qudt/OrdinalType', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/SignedIntegerType', 'http://qudt.org/schema/qudt/SignedType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_SignedLongIntegerType_abbreviation,),
     )
-
-    abbreviation: _Lit[str] = _Lit(_P_SignedLongIntegerType_abbreviation)
-    """abbreviation (http://qudt.org/schema/qudt/abbreviation)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        type_: _Iterable[_EntityBase],
-        abbreviation: str | None = None,
-        accuracy: int | None = None,
-        ansi_sql_name: str | None = None,
-        basis: Datatype | None = None,
-        bit_order: EndianType | None = None,
-        bits: int | None = None,
-        bounded: bool | None = None,
-        byte_order: EndianType | None = None,
-        bytes: int | None = None,
-        c_name: str | None = None,
-        cardinality: CardinalityType | None = None,
-        code: _Iterable[_EntityBase] = (),
-        deprecated: bool | None = None,
-        deprecated_in_version: str | None = None,
-        description: _Iterable[_EntityBase] = (),
-        encoding: Encoding | None = None,
-        exact_match: _Iterable[Concept_2] = (),
-        guidance: str | None = None,
-        has_rule: _Iterable[Rule] = (),
-        id: str | None = None,
-        is_replaced_by: _EntityBase | None = None,
-        java_name: str | None = None,
-        js_name: str | None = None,
-        length: int | None = None,
-        matlab_name: str | None = None,
-        max_exclusive: str | None = None,
-        max_inclusive: _EntityBase | None = None,
-        microsoft_sql_server_name: str | None = None,
-        min_exclusive: _EntityBase | None = None,
-        min_inclusive: _EntityBase | None = None,
-        my_sql_name: str | None = None,
-        odbc_name: str | None = None,
-        ole_db_name: str | None = None,
-        oracle_sql_name: str | None = None,
-        ordered_type: OrderedType | None = None,
-        plain_text_description: _Iterable[_EntityBase] = (),
-        protocol_buffers_name: str | None = None,
-        python_name: str | None = None,
-        rdfs_datatype: _EntityBase | None = None,
-        signedness: SignednessType | None = None,
-        vb_name: str | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                type_=type_,
-                abbreviation=abbreviation,
-                accuracy=accuracy,
-                ansi_sql_name=ansi_sql_name,
-                basis=basis,
-                bit_order=bit_order,
-                bits=bits,
-                bounded=bounded,
-                byte_order=byte_order,
-                bytes=bytes,
-                c_name=c_name,
-                cardinality=cardinality,
-                code=code,
-                deprecated=deprecated,
-                deprecated_in_version=deprecated_in_version,
-                description=description,
-                encoding=encoding,
-                exact_match=exact_match,
-                guidance=guidance,
-                has_rule=has_rule,
-                id=id,
-                is_replaced_by=is_replaced_by,
-                java_name=java_name,
-                js_name=js_name,
-                length=length,
-                matlab_name=matlab_name,
-                max_exclusive=max_exclusive,
-                max_inclusive=max_inclusive,
-                microsoft_sql_server_name=microsoft_sql_server_name,
-                min_exclusive=min_exclusive,
-                min_inclusive=min_inclusive,
-                my_sql_name=my_sql_name,
-                odbc_name=odbc_name,
-                ole_db_name=ole_db_name,
-                oracle_sql_name=oracle_sql_name,
-                ordered_type=ordered_type,
-                plain_text_description=plain_text_description,
-                protocol_buffers_name=protocol_buffers_name,
-                python_name=python_name,
-                rdfs_datatype=rdfs_datatype,
-                signedness=signedness,
-                vb_name=vb_name,
-            ),
-        )
 
 class SignedMediumIntegerType(SignedIntegerType):
     """Signed Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SignedMediumIntegerType
     """
 
@@ -25543,7 +24820,7 @@ class SignedMediumIntegerType(SignedIntegerType):
 
 class SignedShortIntegerType(ShortIntegerType, SignedIntegerType):
     """Signed Short Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SignedShortIntegerType
     """
 
@@ -25562,6 +24839,7 @@ _P_VariableLengthIntegerType_max_bits = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/maxBits',
     kind='literal',
     label='maximum bits',
+    sources=('http://qudt.org/schema/qudt/VariableLengthIntegerType-maxBits',),
     datatype=int,
 )
 
@@ -25570,12 +24848,13 @@ _P_VariableLengthIntegerType_min_bits = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/minBits',
     kind='literal',
     label='minimum bits',
+    sources=('http://qudt.org/schema/qudt/VariableLengthIntegerType-minBits',),
     datatype=int,
 )
 
 class VariableLengthIntegerType(IntegerDatatype):
     """Variable Length Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/VariableLengthIntegerType
     """
 
@@ -25600,7 +24879,7 @@ class VariableLengthIntegerType(IntegerDatatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         accuracy: int | None = None,
         ansi_sql_name: str | None = None,
@@ -25657,7 +24936,7 @@ class VariableLengthIntegerType(IntegerDatatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 accuracy=accuracy,
                 ansi_sql_name=ansi_sql_name,
@@ -25706,7 +24985,7 @@ class VariableLengthIntegerType(IntegerDatatype):
 
 class SignedVariableLengthIntegerType(SignedIntegerType, VariableLengthIntegerType):
     """Signed Variable Length Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SignedVariableLengthIntegerType
     """
 
@@ -25722,7 +25001,7 @@ class SignedVariableLengthIntegerType(SignedIntegerType, VariableLengthIntegerTy
 
 class SignednessType(EnumeratedValue):
     """Signedness type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SignednessType
     """
 
@@ -25738,7 +25017,7 @@ class SignednessType(EnumeratedValue):
 
 class SimpleCodeList(CodeList):
     """Simple Code List
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/dtype#SimpleCodeList
     """
 
@@ -25754,7 +25033,7 @@ class SimpleCodeList(CodeList):
 
 class SingleDuctTerminal(TerminalUnit):
     """A `TerminalUnit` unit that has one ducted air inlet and a damper for regulating the flow of air.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#SingleDuctTerminal
     """
 
@@ -25770,7 +25049,7 @@ class SingleDuctTerminal(TerminalUnit):
 
 class Sink(Equipment):
     """A piece of `Equipment` for manually washing hands, dishes, or other items that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Sink
     """
 
@@ -25790,7 +25069,7 @@ class Sink(Equipment):
 
 class SluiceGate(Gate):
     """Large gate that slide vertically to control flow in channels, reservoirs, or treatment basins
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#SluiceGate
     """
 
@@ -25806,7 +25085,7 @@ class SluiceGate(Gate):
 
 class SolarThermalCollector(Equipment):
     """A piece of `Equipment` that converts sunlight into thermal energy.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#SolarThermalCollector
     """
 
@@ -25826,7 +25105,7 @@ class SolarThermalCollector(Equipment):
 
 class SolidAngleUnit(AngleUnit):
     """Solid Angle Unit
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SolidAngleUnit
     """
 
@@ -25842,7 +25121,7 @@ class SolidAngleUnit(AngleUnit):
 
 class SolventExtractionSystem(UnitProcess):
     """A system that uses a solvent to selectively extract water from highly saline brines.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#SolventExtractionSystem
     """
 
@@ -25867,7 +25146,7 @@ class SolventExtractionSystem(UnitProcess):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -25911,7 +25190,7 @@ class SolventExtractionSystem(UnitProcess):
 
 class SpeedSensor(Sensor):
     """A sensor used to measure the speed of an object or fluid
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#SpeedSensor
     """
 
@@ -25927,7 +25206,7 @@ class SpeedSensor(Sensor):
 
 class SplineCalibrator(Map):
     """Spline calibrator
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SplineCalibrator
     """
 
@@ -25943,7 +25222,7 @@ class SplineCalibrator(Map):
 
 class SplinePoint(Tuple):
     """Spline point
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SplinePoint
     """
 
@@ -25959,7 +25238,7 @@ class SplinePoint(Tuple):
 
 class StandardizedFlowCell(Equipment):
     """An experimental apparatus developed for research experiments, for example in Electrocoagulation (EC), in continuous flow mode.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#StandardizedFlowCell
     """
 
@@ -25975,7 +25254,7 @@ class StandardizedFlowCell(Equipment):
 
 class StateOfChargeSensor(Sensor):
     """A sensor used to measure the remaining charge in a battery or energy storage system
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#StateOfChargeSensor
     """
 
@@ -25991,7 +25270,7 @@ class StateOfChargeSensor(Sensor):
 
 class StateSpaceMatrix(Matrix):
     """State Space Matrix Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/StateSpaceMatrix
     """
 
@@ -26005,25 +25284,28 @@ class StateSpaceMatrix(Matrix):
         ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Matrix', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
+_P_Vector_has_quantity_kinds_list = _PropertySpec(
+    name='has_quantity_kinds_list',
+    predicate='http://qudt.org/schema/qudt/hasQuantityKindsList',
+    kind='object',
+    label='quantity kinds',
+    sources=('http://qudt.org/schema/qudt/QuantityKindsPropertyShape',),
+)
+
 _P_Vector_quantity_ = _PropertySpec(
     name='quantity_',
     predicate='http://qudt.org/schema/qudt/quantity',
     kind='object',
     label='quantity',
     ranges=('Quantity',),
+    range_groups=(('http://qudt.org/schema/qudt/Quantity',),),
+    sources=('http://qudt.org/schema/qudt/MaybeQuantityPropertyShape',),
     max_count=1,
-)
-
-_P_Vector_has_quantity_kinds_list = _PropertySpec(
-    name='has_quantity_kinds_list',
-    predicate='http://qudt.org/schema/qudt/hasQuantityKindsList',
-    kind='object',
-    label='quantity kinds',
 )
 
 class Vector(Array):
     """Vector
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Vector
     """
 
@@ -26035,21 +25317,21 @@ class Vector(Array):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/Array',),
         ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Vector_quantity_, _P_Vector_has_quantity_kinds_list,),
+        properties=(_P_Vector_has_quantity_kinds_list, _P_Vector_quantity_,),
     )
-
-    quantity_: _RelOne[Quantity] = _RelOne(_P_Vector_quantity_)
-    """quantity (http://qudt.org/schema/qudt/quantity)"""
 
     has_quantity_kinds_list: _Rel[_EntityBase] = _Rel(_P_Vector_has_quantity_kinds_list)
     """quantity kinds (http://qudt.org/schema/qudt/hasQuantityKindsList)"""
+
+    quantity_: _RelOne[Quantity] = _RelOne(_P_Vector_quantity_)
+    """quantity (http://qudt.org/schema/qudt/quantity)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
         datatype: Datatype | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -26099,7 +25381,7 @@ class Vector(Array):
             model=model,
             **_provided(
                 datatype=datatype,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -26140,7 +25422,7 @@ class Vector(Array):
 
 class StateSpaceVector(Vector):
     """State Space Vector Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/StateSpaceVector
     """
 
@@ -26156,7 +25438,7 @@ class StateSpaceVector(Vector):
 
 class Statement(_EntityBase):
     """Statement
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Statement
     """
 
@@ -26172,7 +25454,7 @@ class Statement(_EntityBase):
 
 class StaticMixer(Reactor):
     """A device for mixing liquids without moving components
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#StaticMixer
     """
 
@@ -26197,7 +25479,7 @@ class StaticMixer(Reactor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -26241,7 +25523,7 @@ class StaticMixer(Reactor):
 
 class SteamInjector(Equipment):
     """A piece of `Equipment` for increasing the humidity of an air stream by injecting steam into the air stream.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#SteamInjector
     """
 
@@ -26260,17 +25542,9 @@ class SteamInjector(Equipment):
         ),
     )
 
-_P_StringUTF16_member_datatype = _PropertySpec(
-    name='member_datatype',
-    predicate='http://qudt.org/schema/qudt/memberDatatype',
-    kind='object',
-    label='member datatype',
-    ranges=('CharacterType',),
-)
-
 class StringUTF16(TextStringType):
     """String UTF16
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/StringUTF16
     """
 
@@ -26282,131 +25556,11 @@ class StringUTF16(TextStringType):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/StringType', 'http://qudt.org/schema/qudt/TextStringType'),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StringType', 'http://qudt.org/schema/qudt/TextStringType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_StringUTF16_member_datatype,),
     )
-
-    member_datatype: _Rel[CharacterType] = _Rel(_P_StringUTF16_member_datatype)
-    """member datatype (http://qudt.org/schema/qudt/memberDatatype)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        type_: _Iterable[_EntityBase],
-        abbreviation: str | None = None,
-        ansi_sql_name: str | None = None,
-        basis: Datatype | None = None,
-        bit_order: EndianType | None = None,
-        bits: int | None = None,
-        bounded: bool | None = None,
-        byte_order: EndianType | None = None,
-        bytes: int | None = None,
-        c_name: str | None = None,
-        cardinality: CardinalityType | None = None,
-        code: _Iterable[_EntityBase] = (),
-        deprecated: bool | None = None,
-        deprecated_in_version: str | None = None,
-        description: _Iterable[_EntityBase] = (),
-        dimensionality: _Iterable[_EntityBase] = (),
-        encoding: Encoding | None = None,
-        exact_match: _Iterable[Concept_2] = (),
-        guidance: str | None = None,
-        has_rule: _Iterable[Rule] = (),
-        id: str | None = None,
-        is_byte_string: bool | None = None,
-        is_replaced_by: _EntityBase | None = None,
-        java_name: str | None = None,
-        js_name: str | None = None,
-        length: int | None = None,
-        matlab_name: str | None = None,
-        max_exclusive: str | None = None,
-        max_inclusive: _EntityBase | None = None,
-        max_length: int | None = None,
-        member_datatype: _Iterable[CharacterType] = (),
-        microsoft_sql_server_name: str | None = None,
-        min_exclusive: _EntityBase | None = None,
-        min_inclusive: _EntityBase | None = None,
-        my_sql_name: str | None = None,
-        odbc_name: str | None = None,
-        ole_db_name: str | None = None,
-        oracle_sql_name: str | None = None,
-        ordered_type: OrderedType | None = None,
-        plain_text_description: _Iterable[_EntityBase] = (),
-        protocol_buffers_name: str | None = None,
-        python_name: str | None = None,
-        rdfs_datatype: _EntityBase | None = None,
-        vb_name: str | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                type_=type_,
-                abbreviation=abbreviation,
-                ansi_sql_name=ansi_sql_name,
-                basis=basis,
-                bit_order=bit_order,
-                bits=bits,
-                bounded=bounded,
-                byte_order=byte_order,
-                bytes=bytes,
-                c_name=c_name,
-                cardinality=cardinality,
-                code=code,
-                deprecated=deprecated,
-                deprecated_in_version=deprecated_in_version,
-                description=description,
-                dimensionality=dimensionality,
-                encoding=encoding,
-                exact_match=exact_match,
-                guidance=guidance,
-                has_rule=has_rule,
-                id=id,
-                is_byte_string=is_byte_string,
-                is_replaced_by=is_replaced_by,
-                java_name=java_name,
-                js_name=js_name,
-                length=length,
-                matlab_name=matlab_name,
-                max_exclusive=max_exclusive,
-                max_inclusive=max_inclusive,
-                max_length=max_length,
-                member_datatype=member_datatype,
-                microsoft_sql_server_name=microsoft_sql_server_name,
-                min_exclusive=min_exclusive,
-                min_inclusive=min_inclusive,
-                my_sql_name=my_sql_name,
-                odbc_name=odbc_name,
-                ole_db_name=ole_db_name,
-                oracle_sql_name=oracle_sql_name,
-                ordered_type=ordered_type,
-                plain_text_description=plain_text_description,
-                protocol_buffers_name=protocol_buffers_name,
-                python_name=python_name,
-                rdfs_datatype=rdfs_datatype,
-                vb_name=vb_name,
-            ),
-        )
-
-_P_StringUTF8_member_datatype = _PropertySpec(
-    name='member_datatype',
-    predicate='http://qudt.org/schema/qudt/memberDatatype',
-    kind='object',
-    label='member datatype',
-    ranges=('CharacterType',),
-)
 
 class StringUTF8(TextStringType):
     """String UTF8 Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/StringUTF8
     """
 
@@ -26418,123 +25572,11 @@ class StringUTF8(TextStringType):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/StringType', 'http://qudt.org/schema/qudt/TextStringType'),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StringType', 'http://qudt.org/schema/qudt/TextStringType', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_StringUTF8_member_datatype,),
     )
-
-    member_datatype: _Rel[CharacterType] = _Rel(_P_StringUTF8_member_datatype)
-    """member datatype (http://qudt.org/schema/qudt/memberDatatype)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        type_: _Iterable[_EntityBase],
-        abbreviation: str | None = None,
-        ansi_sql_name: str | None = None,
-        basis: Datatype | None = None,
-        bit_order: EndianType | None = None,
-        bits: int | None = None,
-        bounded: bool | None = None,
-        byte_order: EndianType | None = None,
-        bytes: int | None = None,
-        c_name: str | None = None,
-        cardinality: CardinalityType | None = None,
-        code: _Iterable[_EntityBase] = (),
-        deprecated: bool | None = None,
-        deprecated_in_version: str | None = None,
-        description: _Iterable[_EntityBase] = (),
-        dimensionality: _Iterable[_EntityBase] = (),
-        encoding: Encoding | None = None,
-        exact_match: _Iterable[Concept_2] = (),
-        guidance: str | None = None,
-        has_rule: _Iterable[Rule] = (),
-        id: str | None = None,
-        is_byte_string: bool | None = None,
-        is_replaced_by: _EntityBase | None = None,
-        java_name: str | None = None,
-        js_name: str | None = None,
-        length: int | None = None,
-        matlab_name: str | None = None,
-        max_exclusive: str | None = None,
-        max_inclusive: _EntityBase | None = None,
-        max_length: int | None = None,
-        member_datatype: _Iterable[CharacterType] = (),
-        microsoft_sql_server_name: str | None = None,
-        min_exclusive: _EntityBase | None = None,
-        min_inclusive: _EntityBase | None = None,
-        my_sql_name: str | None = None,
-        odbc_name: str | None = None,
-        ole_db_name: str | None = None,
-        oracle_sql_name: str | None = None,
-        ordered_type: OrderedType | None = None,
-        plain_text_description: _Iterable[_EntityBase] = (),
-        protocol_buffers_name: str | None = None,
-        python_name: str | None = None,
-        rdfs_datatype: _EntityBase | None = None,
-        vb_name: str | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                type_=type_,
-                abbreviation=abbreviation,
-                ansi_sql_name=ansi_sql_name,
-                basis=basis,
-                bit_order=bit_order,
-                bits=bits,
-                bounded=bounded,
-                byte_order=byte_order,
-                bytes=bytes,
-                c_name=c_name,
-                cardinality=cardinality,
-                code=code,
-                deprecated=deprecated,
-                deprecated_in_version=deprecated_in_version,
-                description=description,
-                dimensionality=dimensionality,
-                encoding=encoding,
-                exact_match=exact_match,
-                guidance=guidance,
-                has_rule=has_rule,
-                id=id,
-                is_byte_string=is_byte_string,
-                is_replaced_by=is_replaced_by,
-                java_name=java_name,
-                js_name=js_name,
-                length=length,
-                matlab_name=matlab_name,
-                max_exclusive=max_exclusive,
-                max_inclusive=max_inclusive,
-                max_length=max_length,
-                member_datatype=member_datatype,
-                microsoft_sql_server_name=microsoft_sql_server_name,
-                min_exclusive=min_exclusive,
-                min_inclusive=min_inclusive,
-                my_sql_name=my_sql_name,
-                odbc_name=odbc_name,
-                ole_db_name=ole_db_name,
-                oracle_sql_name=oracle_sql_name,
-                ordered_type=ordered_type,
-                plain_text_description=plain_text_description,
-                protocol_buffers_name=protocol_buffers_name,
-                python_name=python_name,
-                rdfs_datatype=rdfs_datatype,
-                vb_name=vb_name,
-            ),
-        )
 
 class Symbol(Concept_2):
     """Symbol
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Symbol
     """
 
@@ -26551,7 +25593,7 @@ class Symbol(Concept_2):
 class SymmetricRelation(Relation):
     """A modeling construct used to define symmetric behavior
     for certain relations in the standard such as `cnx`, `connected`, and `pairedConnectionPoint`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#SymmetricRelation
     """
 
@@ -26567,7 +25609,7 @@ class SymmetricRelation(Relation):
 
 class SymmetricRelation_2(_EntityBase):
     """A `SymmetricRelation` is modeling construct used to define symmetric behavior for appropriate relations.
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SymmetricRelation
     """
 
@@ -26581,22 +25623,15 @@ class SymmetricRelation_2(_EntityBase):
         ancestor_iris=('http://www.w3.org/1999/02/22-rdf-syntax-ns#Property',),
     )
 
-_P_System_has_process = _PropertySpec(
-    name='has_process',
-    predicate='https://watermetadata.org/ontology/watr#hasProcess',
-    kind='class',
-    label='has process',
-    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-    ranges=('Process',),
-)
-
-_P_System_has_treatment_objective = _PropertySpec(
-    name='has_treatment_objective',
-    predicate='https://watermetadata.org/ontology/watr#hasTreatmentObjective',
-    kind='class',
-    label='has treatment objective',
-    definition='Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess.',
-    ranges=('TreatmentObjective',),
+_P_System_has_boundary_connection_point = _PropertySpec(
+    name='has_boundary_connection_point',
+    predicate='http://data.ashrae.org/standard223#hasBoundaryConnectionPoint',
+    kind='object',
+    label='has boundary connection point',
+    definition='The `hasBoundaryConnectionPoint` relation means the `ConnectionPoint` represents the boundary of a `System` (see {s223:System}) defined by the modeler, such as a model fragment provided by the vendor of a collection of equipment intended for integration with another model. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in a non-integrated context but should generate an error in an integrated context.',
+    ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('b40694b1c54af785de198f4f1',),
 )
 
 _P_System_has_member = _PropertySpec(
@@ -26605,16 +25640,11 @@ _P_System_has_member = _PropertySpec(
     kind='object',
     label='has member',
     definition='A `Relation` that associates a `System` with its component `Equipment` and/or `System`s.',
+    ranges=('Equipment', 'Junction', 'System'),
+    range_groups=(('http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Junction', 'http://data.ashrae.org/standard223#System'),),
+    sources=('b2c9296fcc86520151daa281a',),
+    min_count=1,
     required=True,
-)
-
-_P_System_has_boundary_connection_point = _PropertySpec(
-    name='has_boundary_connection_point',
-    predicate='http://data.ashrae.org/standard223#hasBoundaryConnectionPoint',
-    kind='object',
-    label='has boundary connection point',
-    definition='The `hasBoundaryConnectionPoint` relation means the `ConnectionPoint` represents the boundary of a `System` (see {s223:System}) defined by the modeler, such as a model fragment provided by the vendor of a collection of equipment intended for integration with another model. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in a non-integrated context but should generate an error in an integrated context.',
-    ranges=('ConnectionPoint',),
 )
 
 _P_System_has_optional_connection_point = _PropertySpec(
@@ -26624,6 +25654,19 @@ _P_System_has_optional_connection_point = _PropertySpec(
     label='has optional connection point',
     definition='The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context.',
     ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('b8c8a17a584f004ecade507f5',),
+)
+
+_P_System_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('https://watermetadata.org/ontology/watr#hasProcess',),
 )
 
 _P_System_has_role = _PropertySpec(
@@ -26632,12 +25675,25 @@ _P_System_has_role = _PropertySpec(
     kind='enum',
     label='has role',
     definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
+    sources=('bf91022481d8768d7ebb0fb13',),
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
+)
+
+_P_System_has_treatment_objective = _PropertySpec(
+    name='has_treatment_objective',
+    predicate='https://watermetadata.org/ontology/watr#hasTreatmentObjective',
+    kind='class',
+    label='has treatment objective',
+    definition='Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess.',
+    ranges=('TreatmentObjective',),
+    range_groups=(('https://watermetadata.org/ontology/watr#TreatmentObjective',),),
+    sources=('https://watermetadata.org/ontology/watr#hasTreatmentObjective',),
 )
 
 class System(Concept):
     """A logical grouping of one or more pieces of `Equipment`, `Junction`s, or other `System`s for some functional purpose.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#System
     """
 
@@ -26649,32 +25705,32 @@ class System(Concept):
         definition='A logical grouping of one or more pieces of `Equipment`, `Junction`s, or other `System`s for some functional purpose.',
         parent_iris=('http://data.ashrae.org/standard223#Concept',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_System_has_process, _P_System_has_treatment_objective, _P_System_has_member, _P_System_has_boundary_connection_point, _P_System_has_optional_connection_point, _P_System_has_role,),
+        properties=(_P_System_has_boundary_connection_point, _P_System_has_member, _P_System_has_optional_connection_point, _P_System_has_process, _P_System_has_role, _P_System_has_treatment_objective,),
     )
-
-    has_process: _Rel[type[Process]] = _Rel(_P_System_has_process)
-    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
-
-    has_treatment_objective: _Rel[type[TreatmentObjective]] = _Rel(_P_System_has_treatment_objective)
-    """Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess. (https://watermetadata.org/ontology/watr#hasTreatmentObjective)"""
-
-    has_member: _Rel[_EntityBase] = _Rel(_P_System_has_member)
-    """A `Relation` that associates a `System` with its component `Equipment` and/or `System`s. (http://data.ashrae.org/standard223#hasMember)"""
 
     has_boundary_connection_point: _Rel[ConnectionPoint] = _Rel(_P_System_has_boundary_connection_point)
     """The `hasBoundaryConnectionPoint` relation means the `ConnectionPoint` represents the boundary of a `System` (see {s223:System}) defined by the modeler, such as a model fragment provided by the vendor of a collection of equipment intended for integration with another model. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in a non-integrated context but should generate an error in an integrated context. (http://data.ashrae.org/standard223#hasBoundaryConnectionPoint)"""
 
+    has_member: _Rel[Equipment | Junction | System] = _Rel(_P_System_has_member)
+    """A `Relation` that associates a `System` with its component `Equipment` and/or `System`s. (http://data.ashrae.org/standard223#hasMember)"""
+
     has_optional_connection_point: _Rel[ConnectionPoint] = _Rel(_P_System_has_optional_connection_point)
     """The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context. (http://data.ashrae.org/standard223#hasOptionalConnectionPoint)"""
 
+    has_process: _Rel[type[Process]] = _Rel(_P_System_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
+
     has_role: _EnumSet[_EnumValue] = _EnumSet(_P_System_has_role)
     """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
+
+    has_treatment_objective: _Rel[type[TreatmentObjective]] = _Rel(_P_System_has_treatment_objective)
+    """Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess. (https://watermetadata.org/ontology/watr#hasTreatmentObjective)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
-        has_member: _Iterable[_EntityBase],
+        has_member: _Iterable[Equipment | Junction | System],
         has_boundary_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_process: _Iterable[type[Process]] = (),
@@ -26712,6 +25768,8 @@ _P_SystemOfQuantityKinds_base_dimension_enumeration = _PropertySpec(
     kind='object',
     label='base dimension enumeration',
     ranges=('Enumeration',),
+    range_groups=(('http://qudt.org/schema/qudt/Enumeration',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfQuantityKinds-baseDimensionEnumeration',),
     max_count=1,
 )
 
@@ -26721,6 +25779,8 @@ _P_SystemOfQuantityKinds_has_base_quantity_kind = _PropertySpec(
     kind='object',
     label='has base quantity kind',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfQuantityKinds-hasBaseQuantityKind',),
 )
 
 _P_SystemOfQuantityKinds_has_quantity_kind = _PropertySpec(
@@ -26730,6 +25790,8 @@ _P_SystemOfQuantityKinds_has_quantity_kind = _PropertySpec(
     label='has quantity kind',
     definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfQuantityKinds-hasQuantityKind',),
 )
 
 _P_SystemOfQuantityKinds_has_unit_system = _PropertySpec(
@@ -26738,6 +25800,8 @@ _P_SystemOfQuantityKinds_has_unit_system = _PropertySpec(
     kind='object',
     label='has unit system',
     ranges=('SystemOfUnits',),
+    range_groups=(('http://qudt.org/schema/qudt/SystemOfUnits',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfQuantityKinds-hasUnitSystem',),
     max_count=1,
 )
 
@@ -26747,11 +25811,13 @@ _P_SystemOfQuantityKinds_system_derived_quantity_kind = _PropertySpec(
     kind='object',
     label='system derived quantity kind',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfQuantityKinds-systemDerivedQuantityKind',),
 )
 
 class SystemOfQuantityKinds(Concept_2, Verifiable):
     """System of Quantity Kinds
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SystemOfQuantityKinds
     """
 
@@ -26785,7 +25851,7 @@ class SystemOfQuantityKinds(Concept_2, Verifiable):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         base_dimension_enumeration: Enumeration | None = None,
         code: _Iterable[_EntityBase] = (),
@@ -26820,7 +25886,7 @@ class SystemOfQuantityKinds(Concept_2, Verifiable):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 base_dimension_enumeration=base_dimension_enumeration,
                 code=code,
@@ -26851,6 +25917,8 @@ _P_SystemOfUnits_applicable_physical_constant = _PropertySpec(
     kind='object',
     label='applicable physical constant',
     ranges=('PhysicalConstant',),
+    range_groups=(('http://qudt.org/schema/qudt/PhysicalConstant',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfUnits-applicablePhysicalConstant',),
 )
 
 _P_SystemOfUnits_has_allowed_unit = _PropertySpec(
@@ -26859,6 +25927,8 @@ _P_SystemOfUnits_has_allowed_unit = _PropertySpec(
     kind='object',
     label='allowed unit',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfUnits-hasAllowedUnit',),
 )
 
 _P_SystemOfUnits_has_base_unit = _PropertySpec(
@@ -26867,7 +25937,8 @@ _P_SystemOfUnits_has_base_unit = _PropertySpec(
     kind='object',
     label='base unit',
     ranges=('Unit',),
-    inverse='base_unit_of_system',
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfUnits-hasBaseUnit',),
 )
 
 _P_SystemOfUnits_has_coherent_unit = _PropertySpec(
@@ -26876,6 +25947,8 @@ _P_SystemOfUnits_has_coherent_unit = _PropertySpec(
     kind='object',
     label='coherent unit',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfUnits-hasCoherentUnit',),
 )
 
 _P_SystemOfUnits_has_defined_unit = _PropertySpec(
@@ -26884,6 +25957,8 @@ _P_SystemOfUnits_has_defined_unit = _PropertySpec(
     kind='object',
     label='defined unit',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfUnits-hasDefinedUnit',),
     inverse='defined_unit_of_system',
 )
 
@@ -26893,6 +25968,8 @@ _P_SystemOfUnits_has_derived_coherent_unit = _PropertySpec(
     kind='object',
     label='derived coherent unit',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfUnits-hasDerivedCoherentUnit',),
     inverse='derived_coherent_unit_of_system',
 )
 
@@ -26902,6 +25979,8 @@ _P_SystemOfUnits_has_derived_unit = _PropertySpec(
     kind='object',
     label='derived unit',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfUnits-hasDerivedUnit',),
     inverse='derived_unit_of_system',
 )
 
@@ -26912,6 +25991,8 @@ _P_SystemOfUnits_has_unit = _PropertySpec(
     label='has unit',
     definition='A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.',
     ranges=('Unit',),
+    range_groups=(('http://qudt.org/schema/qudt/Unit',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfUnits-hasUnit',),
     inverse='unit_for',
 )
 
@@ -26921,11 +26002,13 @@ _P_SystemOfUnits_prefix = _PropertySpec(
     kind='object',
     label='prefix',
     ranges=('Prefix',),
+    range_groups=(('http://qudt.org/schema/qudt/Prefix',),),
+    sources=('http://qudt.org/schema/qudt/SystemOfUnits-prefix',),
 )
 
 class SystemOfUnits(Concept_2, Verifiable):
     """System of Units
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/SystemOfUnits
     """
 
@@ -26971,7 +26054,7 @@ class SystemOfUnits(Concept_2, Verifiable):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         applicable_physical_constant: _Iterable[PhysicalConstant] = (),
         code: _Iterable[_EntityBase] = (),
@@ -27010,7 +26093,7 @@ class SystemOfUnits(Concept_2, Verifiable):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 applicable_physical_constant=applicable_physical_constant,
                 code=code,
@@ -27045,13 +26128,15 @@ _P_TaggedEnumeration_code = _PropertySpec(
     kind='object',
     label='code',
     definition='A unique value that is assigned to an enumeration member.',
+    sources=('http://qudt.org/schema/qudt/Concept-code', 'http://qudt.org/schema/qudt/TaggedEnumeration-code'),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class TaggedEnumeration(Enumeration):
     """Tagged Enumeration
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TaggedEnumeration
     """
 
@@ -27075,7 +26160,7 @@ class TaggedEnumeration(Enumeration):
         *,
         code: _EntityBase | None,
         element: _Iterable[EnumeratedValue],
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -27107,7 +26192,7 @@ class TaggedEnumeration(Enumeration):
         plain_text_description: _Iterable[_EntityBase] = (),
         protocol_buffers_name: str | None = None,
         python_name: str | None = None,
-        value: _Iterable[EnumeratedValue] = (),
+        value_2: _Iterable[EnumeratedValue] = (),
         vb_name: str | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -27124,7 +26209,7 @@ class TaggedEnumeration(Enumeration):
             **_provided(
                 code=code,
                 element=element,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -27156,14 +26241,14 @@ class TaggedEnumeration(Enumeration):
                 plain_text_description=plain_text_description,
                 protocol_buffers_name=protocol_buffers_name,
                 python_name=python_name,
-                value=value,
+                value_2=value_2,
                 vb_name=vb_name,
             ),
         )
 
 class Television(ElectronicDisplay):
     """An `ElectronicDisplay` that is designed primarily for the output of visual information supplied by a media broadcaster, and that typically has an integral tuner that is capable of selecting a single channel for display from the available input channel range.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Television
     """
 
@@ -27184,13 +26269,16 @@ _P_TemperatureSensor_2_observes = _PropertySpec(
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
     ranges=('QuantifiableObservableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
+    sources=('b53c6512873aa6502e79da13c', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class TemperatureSensor_2(Sensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of temperature.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#TemperatureSensor
     """
 
@@ -27223,7 +26311,7 @@ class TemperatureSensor_2(Sensor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -27275,7 +26363,7 @@ class TemperatureSensor_2(Sensor):
 
 class TemperatureSensor(TemperatureSensor_2):
     """A sensor used to measure temperature
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TemperatureSensor
     """
 
@@ -27296,12 +26384,15 @@ _P_ThermalEnergyStorageUnit_has_connection_point = _PropertySpec(
     label='has connection point',
     definition='One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).',
     ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('bbb2761f6fb9b3e8ae6caad14', 'be2099568566b78227dcced58'),
+    min_count=2,
     inverse='owner',
 )
 
 class ThermalEnergyStorageUnit(Equipment):
     """A piece of `Equipment` that stores thermal energy.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ThermalEnergyStorageUnit
     """
 
@@ -27329,7 +26420,7 @@ class ThermalEnergyStorageUnit(Equipment):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -27373,7 +26464,7 @@ class ThermalEnergyStorageUnit(Equipment):
 
 class Thermostat(Equipment):
     """A piece of `Equipment` that maintains temperature at a fixed or adjustable setpoint.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Thermostat
     """
 
@@ -27389,7 +26480,7 @@ class Thermostat(Equipment):
 
 class ThreeBodyRotatingCoordinateSystem(AerospaceCoordinateSystem):
     """Three Body Rotating Coordinate System Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/ThreeBodyRotatingCoordinateSystem
     """
 
@@ -27405,7 +26496,7 @@ class ThreeBodyRotatingCoordinateSystem(AerospaceCoordinateSystem):
 
 class ThreeWayValve(Valve_2):
     """A valve that features three ports (connections)
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#ThreeWayValve
     """
 
@@ -27426,12 +26517,15 @@ _P_ThreeWayValve_2_has_connection_point = _PropertySpec(
     label='has connection point',
     definition='One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).',
     ranges=('ConnectionPoint',),
+    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
+    sources=('b9cc2897cb59d5170cbce70a8', 'be2099568566b78227dcced58'),
+    min_count=3,
     inverse='owner',
 )
 
 class ThreeWayValve_2(Valve_2):
     """A `Valve` that can divert a fluid in one of three directions.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#ThreeWayValve
     """
 
@@ -27459,7 +26553,7 @@ class ThreeWayValve_2(Valve_2):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -27503,15 +26597,17 @@ class ThreeWayValve_2(Valve_2):
 
 _P_Time_type_ = _PropertySpec(
     name='type_',
-    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+    predicate='http://qudt.org/schema/qudt/type',
     kind='object',
+    label='type',
     ranges=('TimeStringType',),
-    required=True,
+    range_groups=(('http://qudt.org/schema/qudt/TimeStringType',),),
+    sources=('http://qudt.org/schema/qudt/Time-type',),
 )
 
 class Time(ScalarDatatype):
     """Time
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Time
     """
 
@@ -27527,13 +26623,13 @@ class Time(ScalarDatatype):
     )
 
     type_: _Rel[TimeStringType] = _Rel(_P_Time_type_)
-    """type_ (http://www.w3.org/1999/02/22-rdf-syntax-ns#type)"""
+    """type (http://qudt.org/schema/qudt/type)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[TimeStringType],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -27572,6 +26668,7 @@ class Time(ScalarDatatype):
         protocol_buffers_name: str | None = None,
         python_name: str | None = None,
         rdfs_datatype: _EntityBase | None = None,
+        type_: _Iterable[TimeStringType] = (),
         vb_name: str | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -27586,7 +26683,7 @@ class Time(ScalarDatatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -27625,13 +26722,25 @@ class Time(ScalarDatatype):
                 protocol_buffers_name=protocol_buffers_name,
                 python_name=python_name,
                 rdfs_datatype=rdfs_datatype,
+                type_=type_,
                 vb_name=vb_name,
             ),
         )
 
+_P_TimeDataType_encoding = _PropertySpec(
+    name='encoding',
+    predicate='http://qudt.org/schema/qudt/encoding',
+    kind='object',
+    label='encoding',
+    ranges=('Encoding',),
+    range_groups=(('http://qudt.org/schema/qudt/Encoding',),),
+    sources=('http://qudt.org/schema/qudt/Enumeration-encoding', 'http://qudt.org/schema/qudt/ScalarDatatype-encoding'),
+    max_count=1,
+)
+
 class TimeDataType(Enumeration, ScalarDatatype):
     """Time data type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TimeDataType
     """
 
@@ -27643,14 +26752,18 @@ class TimeDataType(Enumeration, ScalarDatatype):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/Enumeration', 'http://qudt.org/schema/qudt/ScalarDatatype'),
         ancestor_iris=('http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Enumeration', 'http://qudt.org/schema/qudt/ScalarDatatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2000/01/rdf-schema#Datatype', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'http://www.w3.org/2002/07/owl#Thing'),
+        properties=(_P_TimeDataType_encoding,),
     )
+
+    encoding: _RelOne[Encoding] = _RelOne(_P_TimeDataType_encoding)
+    """encoding (http://qudt.org/schema/qudt/encoding)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
         element: _Iterable[EnumeratedValue],
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         ansi_sql_name: str | None = None,
         basis: Datatype | None = None,
@@ -27692,7 +26805,7 @@ class TimeDataType(Enumeration, ScalarDatatype):
         protocol_buffers_name: str | None = None,
         python_name: str | None = None,
         rdfs_datatype: _EntityBase | None = None,
-        value: _Iterable[EnumeratedValue] = (),
+        value_2: _Iterable[EnumeratedValue] = (),
         vb_name: str | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -27708,7 +26821,7 @@ class TimeDataType(Enumeration, ScalarDatatype):
             model=model,
             **_provided(
                 element=element,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 ansi_sql_name=ansi_sql_name,
                 basis=basis,
@@ -27750,22 +26863,24 @@ class TimeDataType(Enumeration, ScalarDatatype):
                 protocol_buffers_name=protocol_buffers_name,
                 python_name=python_name,
                 rdfs_datatype=rdfs_datatype,
-                value=value,
+                value_2=value_2,
                 vb_name=vb_name,
             ),
         )
 
 _P_TimeInterval_type_ = _PropertySpec(
     name='type_',
-    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+    predicate='http://qudt.org/schema/qudt/type',
     kind='object',
+    label='type',
     ranges=('TimeStringType',),
-    required=True,
+    range_groups=(('http://qudt.org/schema/qudt/TimeStringType',),),
+    sources=('http://qudt.org/schema/qudt/TimeInterval-type',),
 )
 
 class TimeInterval(Concept_2):
     """Time interval
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TimeInterval
     """
 
@@ -27781,13 +26896,13 @@ class TimeInterval(Concept_2):
     )
 
     type_: _Rel[TimeStringType] = _Rel(_P_TimeInterval_type_)
-    """type_ (http://www.w3.org/1999/02/22-rdf-syntax-ns#type)"""
+    """type (http://qudt.org/schema/qudt/type)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[TimeStringType],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         code: _Iterable[_EntityBase] = (),
         deprecated: bool | None = None,
@@ -27799,6 +26914,7 @@ class TimeInterval(Concept_2):
         id: str | None = None,
         is_replaced_by: _EntityBase | None = None,
         plain_text_description: _Iterable[_EntityBase] = (),
+        type_: _Iterable[TimeStringType] = (),
         label: str | None = None,
         comment: str | None = None,
         model: _Model | None = None,
@@ -27812,7 +26928,7 @@ class TimeInterval(Concept_2):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 code=code,
                 deprecated=deprecated,
@@ -27824,12 +26940,13 @@ class TimeInterval(Concept_2):
                 id=id,
                 is_replaced_by=is_replaced_by,
                 plain_text_description=plain_text_description,
+                type_=type_,
             ),
         )
 
 class TimeStringType(DateTimeStringType, TextStringType):
     """Time Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TimeStringType
     """
 
@@ -27845,7 +26962,7 @@ class TimeStringType(DateTimeStringType, TextStringType):
 
 class TotalOrganicCompoundConcentrationSensor(ConcentrationSensor):
     """A sensor used to measure the total organic compound concentration
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TotalOrganicCompoundConcentrationSensor
     """
 
@@ -27861,7 +26978,7 @@ class TotalOrganicCompoundConcentrationSensor(ConcentrationSensor):
 
 class TransformType(EnumeratedValue):
     """Transform type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TransformType
     """
 
@@ -27877,7 +26994,7 @@ class TransformType(EnumeratedValue):
 
 class TreatmentObjective(_EntityBase):
     """An objective that a piece of equipment or a system is intended to achieve.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective
     """
 
@@ -27893,7 +27010,7 @@ class TreatmentObjective(_EntityBase):
 
 class TreatmentObjective_ConstituentRemoval(TreatmentObjective):
     """Net removal, conversion or control of a named constituent of the treated stream. The parent of the objectives that name what comes out of the water; the constituent each one is aimed at is stated with watr:targetsConstituent.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-ConstituentRemoval
     """
 
@@ -27909,7 +27026,7 @@ class TreatmentObjective_ConstituentRemoval(TreatmentObjective):
 
 class TreatmentObjective_AmmoniaControl(TreatmentObjective_ConstituentRemoval):
     """Reduction or conversion of ammonia in the treated stream, typically by nitrification. Distinct from nitrogen removal, which requires nitrogen to leave the water altogether; nitrification converts ammonia to nitrate and removes no nitrogen.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-AmmoniaControl
     """
 
@@ -27925,7 +27042,7 @@ class TreatmentObjective_AmmoniaControl(TreatmentObjective_ConstituentRemoval):
 
 class TreatmentObjective_DissolvedSolidsRemoval(TreatmentObjective_ConstituentRemoval):
     """Reduction of the dissolved solids content of the treated stream. The parent of the objectives aimed at a particular dissolved constituent.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-DissolvedSolidsRemoval
     """
 
@@ -27941,7 +27058,7 @@ class TreatmentObjective_DissolvedSolidsRemoval(TreatmentObjective_ConstituentRe
 
 class TreatmentObjective_ArsenicRemoval(TreatmentObjective_DissolvedSolidsRemoval):
     """Reduction of arsenic species in the treated stream.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-ArsenicRemoval
     """
 
@@ -27957,7 +27074,7 @@ class TreatmentObjective_ArsenicRemoval(TreatmentObjective_DissolvedSolidsRemova
 
 class TreatmentObjective_BiosolidsDisposal(TreatmentObjective):
     """Final disposition of biosolids, by land application, landfilling, incineration or another route.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-BiosolidsDisposal
     """
 
@@ -27973,7 +27090,7 @@ class TreatmentObjective_BiosolidsDisposal(TreatmentObjective):
 
 class TreatmentObjective_ChlorineResidualRemoval(TreatmentObjective_ConstituentRemoval):
     """Removal of the free and combined chlorine residual left by disinfection, before discharge or before a downstream process that the residual would damage.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-ChlorineResidualRemoval
     """
 
@@ -27989,7 +27106,7 @@ class TreatmentObjective_ChlorineResidualRemoval(TreatmentObjective_ConstituentR
 
 class TreatmentObjective_SuspendedSolidsRemoval(TreatmentObjective_ConstituentRemoval):
     """Removal of suspended solids, including settleable solids, from the treated stream.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-SuspendedSolidsRemoval
     """
 
@@ -28005,7 +27122,7 @@ class TreatmentObjective_SuspendedSolidsRemoval(TreatmentObjective_ConstituentRe
 
 class TreatmentObjective_Clarification(TreatmentObjective_SuspendedSolidsRemoval):
     """Production of a clarified liquid stream by removing suspended solids from it. The objective of every clarifier, whatever the stage it serves and whatever mechanism it separates by.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Clarification
     """
 
@@ -28021,7 +27138,7 @@ class TreatmentObjective_Clarification(TreatmentObjective_SuspendedSolidsRemoval
 
 class TreatmentObjective_Desalination(TreatmentObjective_DissolvedSolidsRemoval):
     """Reduction of the dissolved salt content of the treated stream, whether by a membrane, an electrical or a thermal process.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Desalination
     """
 
@@ -28037,7 +27154,7 @@ class TreatmentObjective_Desalination(TreatmentObjective_DissolvedSolidsRemoval)
 
 class TreatmentObjective_VolumeReduction(TreatmentObjective):
     """Reduction of the volume of a sludge or slurry by removing water from it. The parent of thickening, dewatering and drying, which differ in the state of the product.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-VolumeReduction
     """
 
@@ -28053,7 +27170,7 @@ class TreatmentObjective_VolumeReduction(TreatmentObjective):
 
 class TreatmentObjective_Dewatering(TreatmentObjective_VolumeReduction):
     """Removing water from a sludge or slurry to the point that the product is a handleable cake rather than a pumpable liquid.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Dewatering
     """
 
@@ -28069,7 +27186,7 @@ class TreatmentObjective_Dewatering(TreatmentObjective_VolumeReduction):
 
 class TreatmentObjective_Disinfection(TreatmentObjective):
     """Inactivation or removal of pathogenic organisms from the treated stream. Reached by chlorination, ozonation, ultraviolet irradiation or thermal treatment, none of which is the outcome itself.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Disinfection
     """
 
@@ -28085,7 +27202,7 @@ class TreatmentObjective_Disinfection(TreatmentObjective):
 
 class TreatmentObjective_Drying(TreatmentObjective_Dewatering):
     """Removing water from biosolids beyond the cake stage, to a dry product.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Drying
     """
 
@@ -28101,7 +27218,7 @@ class TreatmentObjective_Drying(TreatmentObjective_Dewatering):
 
 class TreatmentObjective_EquipmentCleaning(TreatmentObjective):
     """Removal of accumulated foulants or residual materials from equipment to maintain or restore operation. Distinct from removing a constituent from the treated product stream.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-EquipmentCleaning
     """
 
@@ -28117,7 +27234,7 @@ class TreatmentObjective_EquipmentCleaning(TreatmentObjective):
 
 class TreatmentObjective_MetalsRemoval(TreatmentObjective_DissolvedSolidsRemoval):
     """Removal of dissolved metals from the treated stream, typically by raising pH or dosing sulfide so that they precipitate as hydroxides or sulfides and are then separated out.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-MetalsRemoval
     """
 
@@ -28133,7 +27250,7 @@ class TreatmentObjective_MetalsRemoval(TreatmentObjective_DissolvedSolidsRemoval
 
 class TreatmentObjective_LeadRemoval(TreatmentObjective_MetalsRemoval):
     """Reduction of lead in the treated stream.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-LeadRemoval
     """
 
@@ -28149,7 +27266,7 @@ class TreatmentObjective_LeadRemoval(TreatmentObjective_MetalsRemoval):
 
 class TreatmentObjective_pHControl(TreatmentObjective):
     """Bringing the pH of the treated stream to a target value, or holding it there.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-pHControl
     """
 
@@ -28165,7 +27282,7 @@ class TreatmentObjective_pHControl(TreatmentObjective):
 
 class TreatmentObjective_Neutralization(TreatmentObjective_pHControl):
     """pH adjustment to neutral, typically with a base, as in high-density sludge treatment.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Neutralization
     """
 
@@ -28181,7 +27298,7 @@ class TreatmentObjective_Neutralization(TreatmentObjective_pHControl):
 
 class TreatmentObjective_NutrientRemoval(TreatmentObjective_ConstituentRemoval):
     """Net removal of nitrogen or phosphorus from the treated stream, as opposed to its conversion from one form to another.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-NutrientRemoval
     """
 
@@ -28197,7 +27314,7 @@ class TreatmentObjective_NutrientRemoval(TreatmentObjective_ConstituentRemoval):
 
 class TreatmentObjective_NitrogenRemoval(TreatmentObjective_NutrientRemoval):
     """Net removal of nitrogen from the treated stream, typically by converting nitrate to nitrogen gas so that it leaves as a gas.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-NitrogenRemoval
     """
 
@@ -28213,7 +27330,7 @@ class TreatmentObjective_NitrogenRemoval(TreatmentObjective_NutrientRemoval):
 
 class TreatmentObjective_OrganicsRemoval(TreatmentObjective_ConstituentRemoval):
     """Net removal of biodegradable or dissolved organic material, measured as BOD, COD or TOC.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-OrganicsRemoval
     """
 
@@ -28229,7 +27346,7 @@ class TreatmentObjective_OrganicsRemoval(TreatmentObjective_ConstituentRemoval):
 
 class TreatmentObjective_PhosphorusRemoval(TreatmentObjective_NutrientRemoval):
     """Net removal of phosphorus from the treated stream, by taking it into biomass or precipitating it into a solid that is then wasted.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-PhosphorusRemoval
     """
 
@@ -28245,7 +27362,7 @@ class TreatmentObjective_PhosphorusRemoval(TreatmentObjective_NutrientRemoval):
 
 class TreatmentObjective_ResourceRecovery(TreatmentObjective):
     """Recovery of a usable product -- water, energy or nutrients -- from a stream that would otherwise be discharged. A placeholder: the specific recovery objectives are not yet modeled.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-ResourceRecovery
     """
 
@@ -28261,7 +27378,7 @@ class TreatmentObjective_ResourceRecovery(TreatmentObjective):
 
 class TreatmentObjective_SilicaRemoval(TreatmentObjective_DissolvedSolidsRemoval):
     """Reduction of the dissolved silica content of the treated stream, generally to protect downstream membranes from silica scaling.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-SilicaRemoval
     """
 
@@ -28277,7 +27394,7 @@ class TreatmentObjective_SilicaRemoval(TreatmentObjective_DissolvedSolidsRemoval
 
 class TreatmentObjective_Softening(TreatmentObjective_DissolvedSolidsRemoval):
     """Reduction of hardness by removing calcium and magnesium from the treated stream.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Softening
     """
 
@@ -28293,7 +27410,7 @@ class TreatmentObjective_Softening(TreatmentObjective_DissolvedSolidsRemoval):
 
 class TreatmentObjective_SolidsRemoval(TreatmentObjective_SuspendedSolidsRemoval):
     """Deprecated. Use TreatmentObjective-SuspendedSolidsRemoval for removal of suspended or settleable solids. This legacy term does not include dissolved solids removal.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-SolidsRemoval
     """
 
@@ -28309,7 +27426,7 @@ class TreatmentObjective_SolidsRemoval(TreatmentObjective_SuspendedSolidsRemoval
 
 class TreatmentObjective_Stabilization(TreatmentObjective):
     """Reduction of the volatile solids, pathogen content and odour potential of biosolids so that they can be stored, used or disposed of.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Stabilization
     """
 
@@ -28325,7 +27442,7 @@ class TreatmentObjective_Stabilization(TreatmentObjective):
 
 class TreatmentObjective_SulfateRemoval(TreatmentObjective_DissolvedSolidsRemoval):
     """Reduction of the dissolved sulfate content of the treated stream, as in acid mine drainage treatment where it is precipitated as gypsum or ettringite.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-SulfateRemoval
     """
 
@@ -28341,7 +27458,7 @@ class TreatmentObjective_SulfateRemoval(TreatmentObjective_DissolvedSolidsRemova
 
 class TreatmentObjective_Thickening(TreatmentObjective_VolumeReduction):
     """Raising the solids concentration of a sludge or slurry while it remains pumpable. Distinguished from dewatering by the state of the product.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Thickening
     """
 
@@ -28357,7 +27474,7 @@ class TreatmentObjective_Thickening(TreatmentObjective_VolumeReduction):
 
 class TreatmentObjective_TurbidityRemoval(TreatmentObjective_SuspendedSolidsRemoval):
     """Reduction of the turbidity of the treated stream, the objective of polishing filtration.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-TurbidityRemoval
     """
 
@@ -28373,7 +27490,7 @@ class TreatmentObjective_TurbidityRemoval(TreatmentObjective_SuspendedSolidsRemo
 
 class TricklingFilter(Filter):
     """A filter system that treats wastewater by trickling it over a bed of rocks or plastic
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TricklingFilter
     """
 
@@ -28390,7 +27507,7 @@ class TricklingFilter(Filter):
 
 class Triplet(ThreeTuple):
     """Triplet
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/Triplet
     """
 
@@ -28409,7 +27526,9 @@ _P_TupleType_element_datatype = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/elementDatatype',
     kind='object',
     label='element datatype',
-    ranges=('Datatype', 'TupleMember'),
+    ranges=('TupleMember',),
+    range_groups=(('http://qudt.org/schema/qudt/Datatype',), ('http://qudt.org/schema/qudt/TupleMember',)),
+    sources=('http://qudt.org/schema/qudt/StructuredDatatype-elementType', 'http://qudt.org/schema/qudt/Tuple-elementType'),
     max_count=1,
 )
 
@@ -28418,6 +27537,7 @@ _P_TupleType_element_type_count = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/elementTypeCount',
     kind='literal',
     label='element type count',
+    sources=('http://qudt.org/schema/qudt/Tuple-elementTypeCount',),
     datatype=int,
 )
 
@@ -28426,13 +27546,14 @@ _P_TupleType_length = _PropertySpec(
     predicate='http://qudt.org/schema/qudt/length',
     kind='literal',
     label='length',
+    sources=('http://qudt.org/schema/qudt/Tuple-length',),
     datatype=int,
     max_count=1,
 )
 
 class TupleType(CompositeDatatype):
     """Tuple Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TupleType
     """
 
@@ -28447,7 +27568,7 @@ class TupleType(CompositeDatatype):
         properties=(_P_TupleType_element_datatype, _P_TupleType_element_type_count, _P_TupleType_length,),
     )
 
-    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_TupleType_element_datatype)
+    element_datatype: _RelOne[TupleMember] = _RelOne(_P_TupleType_element_datatype)
     """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
 
     element_type_count: _Lit[int] = _Lit(_P_TupleType_element_type_count)
@@ -28460,7 +27581,7 @@ class TupleType(CompositeDatatype):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alignment: _Iterable[AlignmentType] = (),
         ansi_sql_name: str | None = None,
@@ -28472,7 +27593,7 @@ class TupleType(CompositeDatatype):
         deprecated: bool | None = None,
         deprecated_in_version: str | None = None,
         description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | TupleMember | None = None,
+        element_datatype: TupleMember | None = None,
         element_type_count: int | None = None,
         exact_match: _Iterable[Concept_2] = (),
         guidance: str | None = None,
@@ -28507,7 +27628,7 @@ class TupleType(CompositeDatatype):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alignment=alignment,
                 ansi_sql_name=ansi_sql_name,
@@ -28546,7 +27667,7 @@ class TupleType(CompositeDatatype):
 
 class TurbidityMeter(Sensor):
     """A sensor used to measure the turbidity (clarity) of a fluid
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#TurbidityMeter
     """
 
@@ -28562,7 +27683,7 @@ class TurbidityMeter(Sensor):
 
 class Turbine(Equipment):
     """A piece of `Equipment` that converts mechanical energy into electric energy.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Turbine
     """
 
@@ -28581,7 +27702,7 @@ class Turbine(Equipment):
 
 class TwoPositionDamper(Damper):
     """A damper that can take two positions: fully open and fully closed.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#TwoPositionDamper
     """
 
@@ -28595,26 +27716,9 @@ class TwoPositionDamper(Damper):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Damper', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_TwoTupleType_element_datatype = _PropertySpec(
-    name='element_datatype',
-    predicate='http://qudt.org/schema/qudt/elementDatatype',
-    kind='object',
-    label='element datatype',
-    ranges=('Datatype', 'TupleMember'),
-    max_count=1,
-)
-
-_P_TwoTupleType_element_type_count = _PropertySpec(
-    name='element_type_count',
-    predicate='http://qudt.org/schema/qudt/elementTypeCount',
-    kind='literal',
-    label='element type count',
-    datatype=int,
-)
-
 class TwoTupleType(N_TupleType):
     """Two-Tuple Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TwoTupleType
     """
 
@@ -28626,106 +27730,11 @@ class TwoTupleType(N_TupleType):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/N-TupleType',),
         ancestor_iris=('http://qudt.org/schema/qudt/CompositeDatatype', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/N-TupleType', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Tuple', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_TwoTupleType_element_datatype, _P_TwoTupleType_element_type_count,),
     )
-
-    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_TwoTupleType_element_datatype)
-    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
-
-    element_type_count: _Lit[int] = _Lit(_P_TwoTupleType_element_type_count)
-    """element type count (http://qudt.org/schema/qudt/elementTypeCount)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        type_: _Iterable[_EntityBase],
-        abbreviation: str | None = None,
-        alignment: _Iterable[AlignmentType] = (),
-        ansi_sql_name: str | None = None,
-        basis: Datatype | None = None,
-        bounded: bool | None = None,
-        c_name: str | None = None,
-        cardinality: CardinalityType | None = None,
-        code: _Iterable[_EntityBase] = (),
-        deprecated: bool | None = None,
-        deprecated_in_version: str | None = None,
-        description: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | TupleMember | None = None,
-        element_type_count: int | None = None,
-        exact_match: _Iterable[Concept_2] = (),
-        guidance: str | None = None,
-        has_rule: _Iterable[Rule] = (),
-        id: str | None = None,
-        is_replaced_by: _EntityBase | None = None,
-        java_name: str | None = None,
-        js_name: str | None = None,
-        length: int | None = None,
-        matlab_name: str | None = None,
-        microsoft_sql_server_name: str | None = None,
-        my_sql_name: str | None = None,
-        odbc_name: str | None = None,
-        ole_db_name: str | None = None,
-        oracle_sql_name: str | None = None,
-        ordered_type: OrderedType | None = None,
-        padding: PaddingType | None = None,
-        plain_text_description: _Iterable[_EntityBase] = (),
-        protocol_buffers_name: str | None = None,
-        python_name: str | None = None,
-        vb_name: str | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                type_=type_,
-                abbreviation=abbreviation,
-                alignment=alignment,
-                ansi_sql_name=ansi_sql_name,
-                basis=basis,
-                bounded=bounded,
-                c_name=c_name,
-                cardinality=cardinality,
-                code=code,
-                deprecated=deprecated,
-                deprecated_in_version=deprecated_in_version,
-                description=description,
-                element_datatype=element_datatype,
-                element_type_count=element_type_count,
-                exact_match=exact_match,
-                guidance=guidance,
-                has_rule=has_rule,
-                id=id,
-                is_replaced_by=is_replaced_by,
-                java_name=java_name,
-                js_name=js_name,
-                length=length,
-                matlab_name=matlab_name,
-                microsoft_sql_server_name=microsoft_sql_server_name,
-                my_sql_name=my_sql_name,
-                odbc_name=odbc_name,
-                ole_db_name=ole_db_name,
-                oracle_sql_name=oracle_sql_name,
-                ordered_type=ordered_type,
-                padding=padding,
-                plain_text_description=plain_text_description,
-                protocol_buffers_name=protocol_buffers_name,
-                python_name=python_name,
-                vb_name=vb_name,
-            ),
-        )
 
 class TwoWayValve(Valve_2):
     """A `Valve` that can divert a fluid in one of two directions.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#TwoWayValve
     """
 
@@ -28745,7 +27754,7 @@ class TwoWayValve(Valve_2):
 
 class TypeList(Datatype):
     """Type list
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TypeList
     """
 
@@ -28761,7 +27770,7 @@ class TypeList(Datatype):
 
 class TypeMatrix(Matrix):
     """Type matrix
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TypeMatrix
     """
 
@@ -28775,19 +27784,9 @@ class TypeMatrix(Matrix):
         ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/Matrix', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_TypeVector_datatype = _PropertySpec(
-    name='datatype',
-    predicate='http://qudt.org/schema/qudt/datatype',
-    kind='object',
-    label='datatype',
-    ranges=('Datatype',),
-    required=True,
-    max_count=1,
-)
-
 class TypeVector(Vector):
     """Type vector
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/TypeVector
     """
 
@@ -28799,109 +27798,11 @@ class TypeVector(Vector):
         definition=None,
         parent_iris=('http://qudt.org/schema/qudt/Vector',),
         ancestor_iris=('http://qudt.org/schema/qudt/Array', 'http://qudt.org/schema/qudt/Concept', 'http://qudt.org/schema/qudt/Datatype', 'http://qudt.org/schema/qudt/StructuredDatatype', 'http://qudt.org/schema/qudt/Vector', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_TypeVector_datatype,),
     )
-
-    datatype: _RelOne[Datatype] = _RelOne(_P_TypeVector_datatype)
-    """datatype (http://qudt.org/schema/qudt/datatype)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        datatype: Datatype | None,
-        type_: _Iterable[_EntityBase],
-        abbreviation: str | None = None,
-        ansi_sql_name: str | None = None,
-        basis: Datatype | None = None,
-        bounded: bool | None = None,
-        c_name: str | None = None,
-        cardinality: CardinalityType | None = None,
-        code: _Iterable[_EntityBase] = (),
-        deprecated: bool | None = None,
-        deprecated_in_version: str | None = None,
-        description: _Iterable[_EntityBase] = (),
-        dimensionality: int | None = None,
-        dimensions: _Iterable[_EntityBase] = (),
-        element_datatype: Datatype | None = None,
-        exact_match: _Iterable[Concept_2] = (),
-        guidance: str | None = None,
-        has_quantity_kinds_list: _Iterable[_EntityBase] = (),
-        has_rule: _Iterable[Rule] = (),
-        id: str | None = None,
-        is_heterogeneous: bool | None = None,
-        is_replaced_by: _EntityBase | None = None,
-        java_name: str | None = None,
-        js_name: str | None = None,
-        matlab_name: str | None = None,
-        microsoft_sql_server_name: str | None = None,
-        my_sql_name: str | None = None,
-        odbc_name: str | None = None,
-        ole_db_name: str | None = None,
-        oracle_sql_name: str | None = None,
-        ordered_type: OrderedType | None = None,
-        plain_text_description: _Iterable[_EntityBase] = (),
-        protocol_buffers_name: str | None = None,
-        python_name: str | None = None,
-        quantity_: Quantity | None = None,
-        value: _Iterable[_EntityBase] = (),
-        vb_name: str | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                datatype=datatype,
-                type_=type_,
-                abbreviation=abbreviation,
-                ansi_sql_name=ansi_sql_name,
-                basis=basis,
-                bounded=bounded,
-                c_name=c_name,
-                cardinality=cardinality,
-                code=code,
-                deprecated=deprecated,
-                deprecated_in_version=deprecated_in_version,
-                description=description,
-                dimensionality=dimensionality,
-                dimensions=dimensions,
-                element_datatype=element_datatype,
-                exact_match=exact_match,
-                guidance=guidance,
-                has_quantity_kinds_list=has_quantity_kinds_list,
-                has_rule=has_rule,
-                id=id,
-                is_heterogeneous=is_heterogeneous,
-                is_replaced_by=is_replaced_by,
-                java_name=java_name,
-                js_name=js_name,
-                matlab_name=matlab_name,
-                microsoft_sql_server_name=microsoft_sql_server_name,
-                my_sql_name=my_sql_name,
-                odbc_name=odbc_name,
-                ole_db_name=ole_db_name,
-                oracle_sql_name=oracle_sql_name,
-                ordered_type=ordered_type,
-                plain_text_description=plain_text_description,
-                protocol_buffers_name=protocol_buffers_name,
-                python_name=python_name,
-                quantity_=quantity_,
-                value=value,
-                vb_name=vb_name,
-            ),
-        )
 
 class UCUMcs(_EntityBase):
     """case-sensitive UCUM code
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/UCUMcs
     """
 
@@ -28921,14 +27822,17 @@ _P_USBCable_medium = _PropertySpec(
     kind='enum',
     label='has medium',
     definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    enum_ranges=('http://data.ashrae.org/standard223#Constituent-Electricity', 'http://data.ashrae.org/standard223#Signal-USB', 'http://data.ashrae.org/standard223#Substance-Medium'),
+    range_groups=(('http://data.ashrae.org/standard223#Constituent-Electricity',), ('http://data.ashrae.org/standard223#Signal-USB',), ('http://data.ashrae.org/standard223#Substance-Medium',)),
+    sources=('b08ea5991a9d595339cdac23a', 'b12ca976aa7f6ff2f39104dba', 'b208da37448a026418d05c49c', 'b490b774633a41f304e59947b', 'b4dc0d1658287df40e921ad35', 'b59c7af6a2db2bd70f0dac26a', 'b5aecdad0a8f3f7f4ac11e130', 'b73706e6130865d1a05507c79', 'b779b3e6d70bca0b584bb320c', 'b9c3a652daf6472abbe15c7f2', 'ba0b040374feef1cc9f970b08', 'bb2dc6068ee4797c8be4b9372', 'be44de150b3c396415bd19166', 'bf23cebcd33cb5adb3d3b263d'),
+    min_count=1,
+    enum_ranges=('http://data.ashrae.org/standard223#Signal-USB',),
     required=True,
     max_count=1,
 )
 
 class USBCable(Conductor):
     """A type of `Conductor` that consists of 1 to 5 pairs of twisted wire and is used for `Signal-USB` communication.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#USBCable
     """
 
@@ -28986,7 +27890,7 @@ class USBCable(Conductor):
 
 class USBOutlet(Equipment):
     """A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a USB communication network, typically via a USB cable.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#USBOutlet
     """
 
@@ -29006,7 +27910,7 @@ class USBOutlet(Equipment):
 
 class UVH2O2Reactor(Reactor):
     """A specific reactor used in Advanced Oxidation Processes (AOPs) combining UV light with hydrogen peroxide.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#UVH2O2Reactor
     """
 
@@ -29031,7 +27935,7 @@ class UVH2O2Reactor(Reactor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -29075,7 +27979,7 @@ class UVH2O2Reactor(Reactor):
 
 class UltrafiltrationUnit(Filter):
     """A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#UltrafiltrationUnit
     """
 
@@ -29092,7 +27996,7 @@ class UltrafiltrationUnit(Filter):
 
 class UltravioletLightUnit(DisinfectionUnit):
     """A unit using ultraviolet light for disinfection
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#UltravioletLightUnit
     """
 
@@ -29117,7 +28021,7 @@ class UltravioletLightUnit(DisinfectionUnit):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -29161,7 +28065,7 @@ class UltravioletLightUnit(DisinfectionUnit):
 
 class UnsignedBigIntegerType(BigIntegerType, UnsignedIntegerType):
     """Unsigned Big Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/UnsignedBigIntegerType
     """
 
@@ -29181,12 +28085,13 @@ _P_UnsignedLongIntegerType_literal = _PropertySpec(
     kind='literal',
     label='literal',
     definition='',
+    sources=('http://qudt.org/schema/qudt/UnsignedLongIntegerType-literal',),
     datatype=str,
 )
 
 class UnsignedLongIntegerType(LongIntegerType, UnsignedIntegerType):
     """Unsigned Long Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/UnsignedLongIntegerType
     """
 
@@ -29208,7 +28113,7 @@ class UnsignedLongIntegerType(LongIntegerType, UnsignedIntegerType):
         self,
         name: str | None = None,
         *,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         accuracy: int | None = None,
         ansi_sql_name: str | None = None,
@@ -29264,7 +28169,7 @@ class UnsignedLongIntegerType(LongIntegerType, UnsignedIntegerType):
             comment=comment,
             model=model,
             **_provided(
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 accuracy=accuracy,
                 ansi_sql_name=ansi_sql_name,
@@ -29312,7 +28217,7 @@ class UnsignedLongIntegerType(LongIntegerType, UnsignedIntegerType):
 
 class UnsignedMediumIntegerType(UnsignedIntegerType):
     """Unsigned Medium Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/UnsignedMediumIntegerType
     """
 
@@ -29328,7 +28233,7 @@ class UnsignedMediumIntegerType(UnsignedIntegerType):
 
 class UnsignedShortIntegerType(ShortIntegerType, UnsignedIntegerType):
     """Unsigned Short Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/UnsignedShortIntegerType
     """
 
@@ -29344,7 +28249,7 @@ class UnsignedShortIntegerType(ShortIntegerType, UnsignedIntegerType):
 
 class UnsignedVariableLengthIntegerType(UnsignedIntegerType, VariableLengthIntegerType):
     """Unsigned Variable Length Integer Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/UnsignedVariableLengthIntegerType
     """
 
@@ -29365,13 +28270,16 @@ _P_UserQuantityKind_has_quantity_kind = _PropertySpec(
     label='has quantity kind',
     definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
     ranges=('QuantityKind',),
+    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
+    sources=('http://qudt.org/schema/qudt/UserQuantityKind-hasQuantityKind',),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class UserQuantityKind(AbstractQuantityKind):
     """User Quantity Kind
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/UserQuantityKind
     """
 
@@ -29394,7 +28302,7 @@ class UserQuantityKind(AbstractQuantityKind):
         name: str | None = None,
         *,
         has_quantity_kind: QuantityKind | _TermValue | None,
-        type_: _Iterable[_EntityBase],
+        type__2: _Iterable[_EntityBase],
         abbreviation: str | None = None,
         alt_symbol: _Iterable[_EntityBase] = (),
         broader: _Iterable[QuantityKind] = (),
@@ -29426,7 +28334,7 @@ class UserQuantityKind(AbstractQuantityKind):
             model=model,
             **_provided(
                 has_quantity_kind=has_quantity_kind,
-                type_=type_,
+                type__2=type__2,
                 abbreviation=abbreviation,
                 alt_symbol=alt_symbol,
                 broader=broader,
@@ -29449,7 +28357,7 @@ class UserQuantityKind(AbstractQuantityKind):
 
 class ValueReference(_EntityBase):
     """Value Reference
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/dtype#ValueReference
     """
 
@@ -29465,7 +28373,7 @@ class ValueReference(_EntityBase):
 
 class Valve(Valve_2):
     """A device that regulates, directs or controls the flow of a fluid (gases or liquids) by opening, closing, or partially obstructing various passageways.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Valve
     """
 
@@ -29485,13 +28393,15 @@ _P_VariableFrequencyDrive_2_connected_to = _PropertySpec(
     kind='object',
     label='connected to',
     definition='The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}).',
-    ranges=('Connectable', 'Equipment'),
+    ranges=('Equipment',),
+    range_groups=(('http://data.ashrae.org/standard223#Connectable',), ('http://data.ashrae.org/standard223#Equipment',)),
+    sources=('b9831b15fc9bd705787c7d0e2', 'ba8bd416e0aea9b22a4d0c786', 'bbee37e23a0e63de45b6ebc5a'),
     inverse='connected_from',
 )
 
 class VariableFrequencyDrive_2(Equipment):
     """A piece of `Equipment` that varies its output frequency to vary the rotating speed and torque of a motor, given a fixed input frequency. Used with fans or pumps to vary the flow in the system as a function of a maintained pressure.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#VariableFrequencyDrive
     """
 
@@ -29510,7 +28420,7 @@ class VariableFrequencyDrive_2(Equipment):
         ),
     )
 
-    connected_to: _Rel[Connectable | Equipment] = _Rel(_P_VariableFrequencyDrive_2_connected_to)
+    connected_to: _Rel[Equipment] = _Rel(_P_VariableFrequencyDrive_2_connected_to)
     """The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}). (http://data.ashrae.org/standard223#connectedTo)"""
 
     def __init__(
@@ -29522,8 +28432,8 @@ class VariableFrequencyDrive_2(Equipment):
         connected: _Iterable[Connectable] = (),
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable | Equipment] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        connected_to: _Iterable[Equipment] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -29567,7 +28477,7 @@ class VariableFrequencyDrive_2(Equipment):
 
 class VariableFrequencyDrive(VariableFrequencyDrive_2):
     """A type of AC motor drive that controls speed and torque by varying the frequency of the input electricity.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#VariableFrequencyDrive
     """
 
@@ -29583,7 +28493,7 @@ class VariableFrequencyDrive(VariableFrequencyDrive_2):
 
 class VariableIntervalTimeSeriesArray(TimeSeriesArray):
     """Variable Interval Time Series Array Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/VariableIntervalTimeSeriesArray
     """
 
@@ -29599,7 +28509,7 @@ class VariableIntervalTimeSeriesArray(TimeSeriesArray):
 
 class VariableIntervalTimeSeriesArrayType(TimeSeriesArrayType):
     """Variable Interval Time Series Array Type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/VariableIntervalTimeSeriesArrayType
     """
 
@@ -29615,7 +28525,7 @@ class VariableIntervalTimeSeriesArrayType(TimeSeriesArrayType):
 
 class VehicleCoordinateSystem(AerospaceCoordinateSystem):
     """Vehicle coordinate system
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/VehicleCoordinateSystem
     """
 
@@ -29631,7 +28541,7 @@ class VehicleCoordinateSystem(AerospaceCoordinateSystem):
 
 class Viewpoint(Dimension):
     """ViewpointDimension
-    
+
     Ontology: WATR — http://www.linkedmodel.org/schema/vaem#Viewpoint
     """
 
@@ -29652,13 +28562,16 @@ _P_VoltageSensor_observes = _PropertySpec(
     label='observes',
     definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
     ranges=('QuantifiableObservableProperty',),
+    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
+    sources=('b8441d6ef400bc61d0bcbb7a4', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
+    min_count=1,
     required=True,
     max_count=1,
 )
 
 class VoltageSensor(Sensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of voltage.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#VoltageSensor
     """
 
@@ -29691,7 +28604,7 @@ class VoltageSensor(Sensor):
         connected_from: _Iterable[Connectable] = (),
         connected_through: _Iterable[Connection] = (),
         connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
+        contains_: _Iterable[Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_measurement_range: _Iterable[QuantifiableProperty] = (),
@@ -29743,7 +28656,7 @@ class VoltageSensor(Sensor):
 
 class VolumeSensor(Sensor):
     """A sensor used to measure the volume of a substance
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#VolumeSensor
     """
 
@@ -29759,7 +28672,7 @@ class VolumeSensor(Sensor):
 
 class WaterOutlet(Equipment):
     """A piece of `Equipment` that contains one or more pipe fittings for connecting plumbing equipment (e.g., `Faucet`) to a plumbing system.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#WaterOutlet
     """
 
@@ -29779,7 +28692,7 @@ class WaterOutlet(Equipment):
 
 class WaterToAirHeatPump(HeatPump):
     """A `HeatPump` that transfers thermal energy between air and a body of water.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#WaterToAirHeatPump
     """
 
@@ -29801,7 +28714,7 @@ class WaterToAirHeatPump(HeatPump):
 
 class WaterToWaterHeatPump(HeatPump):
     """A `HeatPump` that transfers thermal energy between two flows of water.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#WaterToWaterHeatPump
     """
 
@@ -29821,7 +28734,7 @@ class WaterToWaterHeatPump(HeatPump):
 
 class WetDryStateType(DiscreteState):
     """Wet dry state type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/WetDryStateType
     """
 
@@ -29837,7 +28750,7 @@ class WetDryStateType(DiscreteState):
 
 class Wetland(Equipment):
     """A marsh or bog-like area that is permanently or seasonally saturated with water, used for pre- or post-treatment.
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#Wetland
     """
 
@@ -29853,7 +28766,7 @@ class Wetland(Equipment):
 
 class Window(Equipment):
     """A piece of `Equipment` that provides a pathway for `EM-Light` or `Fluid-Air` (or both) to flow from a room to another room or the building exterior through a vertical or nearly vertical area of the room envelope.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Window
     """
 
@@ -29873,7 +28786,7 @@ class Window(Equipment):
 
 class WindowShade(Equipment):
     """A piece of `Equipment` that can be adjusted to allow, regulate, or stop the flow of light through a `Window`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#WindowShade
     """
 
@@ -29889,7 +28802,7 @@ class WindowShade(Equipment):
 
 class WiredEthernetOutlet(Equipment):
     """A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a wired Ethernet communication network, typically via a wired Ethernet cable.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#WiredEthernetOutlet
     """
 
@@ -29909,7 +28822,7 @@ class WiredEthernetOutlet(Equipment):
 
 class YesNoType(EnumeratedValue):
     """Yes no type
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/YesNoType
     """
 
@@ -29929,6 +28842,9 @@ _P_Zone_has_domain = _PropertySpec(
     kind='enum',
     label='has domain',
     definition='A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`).',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Domain',),),
+    sources=('b2c26dcb2ddd4cbd1dafd2b84', 'bcb01f73894e511a4bbf3d167'),
+    min_count=1,
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Domain',),
     required=True,
     max_count=1,
@@ -29941,6 +28857,8 @@ _P_Zone_has_domain_space = _PropertySpec(
     label='has domain space',
     definition='A `Relation` that associates a `Zone` with its component `DomainSpace`s.',
     ranges=('DomainSpace',),
+    range_groups=(('http://data.ashrae.org/standard223#DomainSpace',),),
+    sources=('b66f6df5fc2f9d70fc401af60',),
 )
 
 _P_Zone_has_zone = _PropertySpec(
@@ -29950,11 +28868,13 @@ _P_Zone_has_zone = _PropertySpec(
     label='has zone',
     definition='A `Relation` that associates a `Zone` with component `Zone`s.',
     ranges=('Zone',),
+    range_groups=(('http://data.ashrae.org/standard223#Zone',),),
+    sources=('b32c09016618c84bbfaf1944b', 'bb66292ca6999016885a47b4e'),
 )
 
 class Zone(Concept):
     """A logical grouping of one or more `DomainSpace`s or other `Zone`s for some building service or control-related purpose. `Zone`s can have properties that are inputs or outputs to a `Function` (see {s223:Function}), which can be executed by `Controller`s (see {s223:Controller}) or other `Equipment`.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223#Zone
     """
 
@@ -30015,23 +28935,15 @@ _P_ZoneGroup_contains_ = _PropertySpec(
     label='contains',
     definition='A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s.',
     ranges=('Zone_2',),
+    range_groups=(('http://data.ashrae.org/standard223/1.0/extensions/g36#Zone',),),
+    sources=('b3b625cc4a73e7dea252d5a42',),
+    min_count=1,
     required=True,
-)
-
-_P_ZoneGroup_has_domain = _PropertySpec(
-    name='has_domain',
-    predicate='http://data.ashrae.org/standard223#hasDomain',
-    kind='enum',
-    label='has domain',
-    definition='A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`).',
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Domain',),
-    required=True,
-    max_count=1,
 )
 
 class ZoneGroup(Zone):
     """A ZoneGroup is a grouping of zones that may be scheduled together. Zone groupings must be assigned based on rules in Clause 3.1.3 of Guideline 36.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#ZoneGroup
     """
 
@@ -30043,14 +28955,11 @@ class ZoneGroup(Zone):
         definition='A ZoneGroup is a grouping of zones that may be scheduled together. Zone groupings must be assigned based on rules in Clause 3.1.3 of Guideline 36.',
         parent_iris=('http://data.ashrae.org/standard223#Zone',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Zone', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_ZoneGroup_contains_, _P_ZoneGroup_has_domain,),
+        properties=(_P_ZoneGroup_contains_,),
     )
 
     contains_: _Rel[Zone_2] = _Rel(_P_ZoneGroup_contains_)
     """A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s. (http://data.ashrae.org/standard223#contains)"""
-
-    has_domain: _EnumOne[_EnumValue] = _EnumOne(_P_ZoneGroup_has_domain)
-    """A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`). (http://data.ashrae.org/standard223#hasDomain)"""
 
     def __init__(
         self,
@@ -30084,20 +28993,9 @@ class ZoneGroup(Zone):
             ),
         )
 
-_P_Zone_2_has_domain = _PropertySpec(
-    name='has_domain',
-    predicate='http://data.ashrae.org/standard223#hasDomain',
-    kind='enum',
-    label='has domain',
-    definition='A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`).',
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Domain',),
-    required=True,
-    max_count=1,
-)
-
 class Zone_2(Zone):
     """A thermal zone with the points required for Guideline 36 control sequences. It is a collection of s223:DomainSpace instances.
-    
+
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#Zone
     """
 
@@ -30109,45 +29007,11 @@ class Zone_2(Zone):
         definition='A thermal zone with the points required for Guideline 36 control sequences. It is a collection of s223:DomainSpace instances.',
         parent_iris=('http://data.ashrae.org/standard223#Zone',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Zone', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Zone_2_has_domain,),
     )
-
-    has_domain: _EnumOne[_EnumValue] = _EnumOne(_P_Zone_2_has_domain)
-    """A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`). (http://data.ashrae.org/standard223#hasDomain)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_domain: _EnumValue | None,
-        has_domain_space: _Iterable[DomainSpace] = (),
-        has_property: _Iterable[Property] = (),
-        has_zone: _Iterable[Zone] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_domain=has_domain,
-                has_domain_space=has_domain_space,
-                has_property=has_property,
-                has_zone=has_zone,
-                medium=medium,
-            ),
-        )
 
 class hexbinary(_EntityBase):
     """hexbinary
-    
+
     Ontology: WATR — http://qudt.org/schema/qudt/hexbinary
     """
 
@@ -30163,7 +29027,7 @@ class hexbinary(_EntityBase):
 
 class pHSensor(ConcentrationSensor):
     """A sensor used to measure the pH of a solution
-    
+
     Ontology: WATR — https://watermetadata.org/ontology/watr#pHSensor
     """
 

@@ -56,7 +56,7 @@ class AirWaterCoolingCoil(_BASE.CoolingCoil):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -66,19 +66,19 @@ class AirWaterCoolingCoil(_BASE.CoolingCoil):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'cnx': cnx,
-            'connected_through': connected_through,
             'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'contains_': contains_,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
+            'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
             'has_role': has_role,
         })
 

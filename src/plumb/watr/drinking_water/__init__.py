@@ -39,7 +39,7 @@ class ChlorinationStage(_BASE.ChlorinationUnit):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='outlet', label='outlet'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'cb12af41702c1ba288b2ea584cf88da18317ab814bb3ccb2f4c0ac463cf27a6da02', required=(_BASE.Process_Chlorination,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'cb12af41702c1ba288b2ea584cf88da18317ab814bb3ccb2f4c0ac463cf27a6da02', required=(_BASE.Process_Chlorination,), defaults=(), choices=(), minimum=1, maximum=None),
         _ShapeValues('has_treatment_objective', 'cb137a260cbcfcac91ed1a981800f20aedbec4428d23987bd6d27e25414069ac49a', required=(_BASE.TreatmentObjective_Disinfection,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 2
@@ -56,7 +56,7 @@ class ChlorinationStage(_BASE.ChlorinationUnit):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -68,22 +68,22 @@ class ChlorinationStage(_BASE.ChlorinationUnit):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class ClarificationStage(_BASE.SedimentationTank):
@@ -98,7 +98,7 @@ class ClarificationStage(_BASE.SedimentationTank):
         cp_slots=(_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='clarified_water', label='clarified_water'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', min_count=1, max_count=1, name='sludge', label='sludge'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'cb13e81b1c87f466d28536cc9d6f11d9aad2144e9578de3d59e3c94c5defab8ced4', required=(_BASE.Process_Settling,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'cb13e81b1c87f466d28536cc9d6f11d9aad2144e9578de3d59e3c94c5defab8ced4', required=(_BASE.Process_Settling,), defaults=(), choices=(), minimum=1, maximum=None),
         _ShapeValues('has_treatment_objective', 'cb1556cb4a6cc4ab703282b9b374494717d39be8abc289956e40f483833734f7bf3', required=(_BASE.TreatmentObjective_Clarification,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 3
@@ -117,7 +117,7 @@ class ClarificationStage(_BASE.SedimentationTank):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -129,22 +129,22 @@ class ClarificationStage(_BASE.SedimentationTank):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class CoagulationStage(_BASE.CoagulationBasin):
@@ -159,7 +159,7 @@ class CoagulationStage(_BASE.CoagulationBasin):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='outlet', label='outlet'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'cb172c0e033255224fb32955471031954076a4e16527a4ede2a11cc4196e495ac8e', required=(_BASE.Process_Coagulation,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'cb172c0e033255224fb32955471031954076a4e16527a4ede2a11cc4196e495ac8e', required=(_BASE.Process_Coagulation,), defaults=(), choices=(), minimum=1, maximum=None),
         _ShapeValues('has_treatment_objective', 'cb14be08cca11b578ad72e53d419b982daa7fb5dce47d2ac407e95368bcd49d1610', required=(_BASE.TreatmentObjective_TurbidityRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 2
@@ -176,7 +176,7 @@ class CoagulationStage(_BASE.CoagulationBasin):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -188,22 +188,22 @@ class CoagulationStage(_BASE.CoagulationBasin):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class FlocculationStage(_BASE.FlocculationBasin):
@@ -218,7 +218,7 @@ class FlocculationStage(_BASE.FlocculationBasin):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='outlet', label='outlet'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'cb673a4698bea5cc55d6d1597ab783628d1e847b0697741aaeec137d798e5e948a', required=(_BASE.Process_Flocculation,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'cb673a4698bea5cc55d6d1597ab783628d1e847b0697741aaeec137d798e5e948a', required=(_BASE.Process_Flocculation,), defaults=(), choices=(), minimum=1, maximum=None),
         _ShapeValues('has_treatment_objective', 'cb1326af8ed69dab16e7cf90378ac3e8b121b45469b489e8fe9c5a35e71b23f77f3', required=(_BASE.TreatmentObjective_TurbidityRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 2
@@ -235,7 +235,7 @@ class FlocculationStage(_BASE.FlocculationBasin):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -247,22 +247,22 @@ class FlocculationStage(_BASE.FlocculationBasin):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class RapidSandFiltrationStage(_BASE.RapidSandFilter):
@@ -277,7 +277,7 @@ class RapidSandFiltrationStage(_BASE.RapidSandFilter):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='backwash_supply', label='backwash_supply'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='backwash_waste', label='backwash_waste'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='filtered_water', label='filtered_water'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'cb1646f6a6b21cab8cbfcf97528ad0560db127964549809ee2057975a54b4bff291', required=(_BASE.Process_RapidSandFiltration,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'cb1646f6a6b21cab8cbfcf97528ad0560db127964549809ee2057975a54b4bff291', required=(_BASE.Process_RapidSandFiltration,), defaults=(), choices=(), minimum=1, maximum=None),
         _ShapeValues('has_treatment_objective', 'cb1b45607b38c7a00dd4e618c308c6ce9f6a7b7c7f4f442f5efd3b0ad7e0b18c3f5', required=(_BASE.TreatmentObjective_TurbidityRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 4
@@ -298,7 +298,7 @@ class RapidSandFiltrationStage(_BASE.RapidSandFilter):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -310,22 +310,22 @@ class RapidSandFiltrationStage(_BASE.RapidSandFilter):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 __all__ = ['ONTOLOGY', 'REGISTRY', 'ChlorinationStage', 'ClarificationStage', 'CoagulationStage', 'FlocculationStage', 'RapidSandFiltrationStage']

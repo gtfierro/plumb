@@ -121,6 +121,8 @@ def disambiguate(
     for iri in sorted(assignments):
         by_name.setdefault(assignments[iri], []).append(iri)
     final: dict[str, str] = {}
+    reserved = set(assignments.values())
+    used: set[str] = set()
     for name, iris in by_name.items():
         ordered = sorted(
             iris,
@@ -134,5 +136,12 @@ def disambiguate(
             ),
         )
         for index, iri in enumerate(ordered):
-            final[iri] = name if index == 0 else f"{name}_{index + 1}"
+            candidate = name
+            suffix = index + 1
+            while candidate in used or (candidate != name and candidate in reserved):
+                suffix = max(2, suffix)
+                candidate = f"{name}_{suffix}"
+                suffix += 1
+            final[iri] = candidate
+            used.add(candidate)
     return final

@@ -976,25 +976,49 @@ class Entity:
         registry = self.meta.registry
         allowed = tuple(registry.resolve(rng) for rng in spec.ranges)
         allowed_iris = {cls.meta.iri for cls in allowed}
+        groups = spec.range_groups or (
+            (tuple(sorted(allowed_iris)),) if allowed else ()
+        )
+
+        def conforms(candidate: type[Entity] | TermValue) -> bool:
+            return all(
+                any(
+                    iri in candidate.types
+                    if isinstance(candidate, TermValue)
+                    else candidate.meta.is_a(iri)
+                    for iri in group
+                )
+                for group in groups
+            )
+
+        labels = [
+            " | ".join(
+                registry.by_iri[iri].__name__ if iri in registry.by_iri else iri
+                for iri in group
+            )
+            for group in groups
+        ]
+        expected = " & ".join(
+            f"({label})" if " | " in label and len(labels) > 1 else label
+            for label in labels
+        )
         if spec.kind == "class":
             if not isinstance(value, type) or not issubclass(value, Entity):
                 raise RangeError(
                     f"{type(self).__name__}.{spec.name} expects an ontology "
                     f"class, got {value!r}"
                 )
-            if not spec.ranges or any(value.meta.is_a(cls) for cls in allowed):
+            if conforms(value):
                 return
-            names = " | ".join(spec.ranges)
             raise RangeError(
                 f"{type(self).__name__}.{spec.name} expects a subclass of "
-                f"{names}, got {value.__name__}"
+                f"{expected}, got {value.__name__}"
             )
         if isinstance(value, TermValue):
-            if not spec.ranges or allowed_iris.intersection(value.types):
+            if conforms(value):
                 return
-            names = " | ".join(rng for rng in spec.ranges)
             raise RangeError(
-                f"{type(self).__name__}.{spec.name} expects {names}, got "
+                f"{type(self).__name__}.{spec.name} expects {expected}, got "
                 f"compiled term {value!r}"
             )
         if spec.deferred and self._check_deferred(spec, value):
@@ -1004,12 +1028,9 @@ class Entity:
                 f"{type(self).__name__}.{spec.name} links entities, got "
                 f"{type(value).__name__} ({value!r})"
             )
-        if not spec.ranges:
-            return
-        if not any(value.meta.is_a(cls) for cls in allowed):
-            names = " | ".join(rng for rng in spec.ranges)
+        if not conforms(type(value)):
             raise RangeError(
-                f"{type(self).__name__}.{spec.name} expects {names}, got "
+                f"{type(self).__name__}.{spec.name} expects {expected}, got "
                 f"{type(value).__name__} ({value.name!r})"
             )
 
@@ -1066,10 +1087,10 @@ class Entity:
             if not spec.required:
                 continue
             if spec.kind in {"object", "class"} and spec.max_count != 1:
-                if len(self._store_for(spec)) == 0:
+                if len(self._store_for(spec)) < max(1, spec.min_count):
                     missing.append(spec.name)
             elif spec.kind == "enum" and spec.max_count != 1:
-                if not self._data.get(spec.name):
+                if len(self._data.get(spec.name, ())) < max(1, spec.min_count):
                     missing.append(spec.name)
             elif self._data.get(spec.name) is None:
                 missing.append(spec.name)

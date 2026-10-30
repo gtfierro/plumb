@@ -19,6 +19,7 @@ from rdflib.namespace import SH
 from plumb.core import Entity, PropertySpec, Registry
 
 from . import naming
+from .constraints import cardinality, property_shapes
 
 CODEGEN = rdflib.Namespace("https://watermetadata.org/plumb/codegen#")
 S223 = rdflib.Namespace("http://data.ashrae.org/standard223#")
@@ -88,39 +89,11 @@ def _one(graph: rdflib.Graph, node: rdflib.term.Node, predicate: URIRef) -> Any:
     return values[0] if values else None
 
 
-def _properties(
-    graph: rdflib.Graph,
-    shape: rdflib.term.Node,
-    seen: frozenset[rdflib.term.Node] = frozenset(),
-) -> list[rdflib.term.Node]:
-    if shape in seen:
-        raise ValueError(f"recursive constructive shape: {shape}")
-    nested = seen | {shape}
-    result = list(graph.objects(shape, SH.property))
-    for referenced in graph.objects(shape, SH.node):
-        result.extend(_properties(graph, referenced, nested))
-    for members in graph.objects(shape, SH["and"]):
-        for referenced in graph.items(members):
-            result.extend(_properties(graph, referenced, nested))
-    if any(graph.objects(shape, SH["or"])) or any(graph.objects(shape, SH.xone)):
-        raise ValueError(
-            f"{shape}: disjunctive configuration needs explicit constructive selection"
-        )
-    return sorted(
-        set(result),
-        key=lambda node: (
-            float(str(graph.value(node, SH.order) or 0)),
-            str(graph.value(node, SH.name) or graph.value(node, SH.path) or node),
-            str(node),
-        ),
-    )
-
-
 def _fields(
     graph: rdflib.Graph, shape: rdflib.term.Node
 ) -> dict[str, list[rdflib.term.Node]]:
     result: dict[str, list[rdflib.term.Node]] = {}
-    for prop in _properties(graph, shape):
+    for prop in property_shapes(graph, shape, reject_disjunction=True):
         path = _one(graph, prop, SH.path)
         if not isinstance(path, URIRef):
             raise ValueError(f"{shape}: complex property paths are validation-only")
@@ -365,8 +338,9 @@ def _configuration(
         choices = list(graph.items(choices_node)) if choices_node is not None else []
         minima = _constants(graph, props, SH.minCount)
         maxima = _constants(graph, props, SH.maxCount)
-        minimum = max([int(str(value)) for value in minima], default=0)
-        maximum = min([int(str(value)) for value in maxima], default=spec.max_count)
+        minimum, maximum = cardinality(
+            graph, props, minimum=spec.min_count, maximum=spec.max_count
+        )
         if maximum is not None and (len(required) > maximum or minimum > maximum):
             raise ValueError(f"{iri}: contradictory cardinalities on {path}")
         if choices and any(value not in choices for value in [*required, *defaults]):
@@ -530,7 +504,7 @@ def compile_configurations(
             raise ValueError(f"{group}: generated name collision {group_name}")
         group_names.append(group_name)
         fields = []
-        for prop in _properties(graph, group):
+        for prop in property_shapes(graph, group, reject_disjunction=True):
             if graph.value(prop, SH.path) != S223.hasProperty:
                 raise ValueError(
                     f"{group}: property schema fields must follow s223:hasProperty"

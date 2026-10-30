@@ -42,7 +42,7 @@ class AerobicStage(_BASE.AerationBasin):
     )
     _shape_constraints = (
         _ShapeValues('has_role', 'https://watermetadata.org/plumb/asm2d#AerobicStageShape/hasRole/3', required=(_BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Role-Aerobic'], _BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Role-Secondary'],), defaults=(), choices=(), minimum=0, maximum=None),
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/asm2d#AerobicStageShape/hasProcess/0', required=(_BASE.Process_Aeration, _BASE.Process_Nitrification,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/asm2d#AerobicStageShape/hasProcess/0', required=(_BASE.Process_Aeration, _BASE.Process_Nitrification,), defaults=(), choices=(), minimum=1, maximum=None),
         _ShapeValues('has_treatment_objective', 'https://watermetadata.org/plumb/asm2d#AerobicStageShape/ammonia-objective', required=(_BASE.TreatmentObjective_AmmoniaControl, _BASE.TreatmentObjective_NitrogenRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 2
@@ -59,7 +59,7 @@ class AerobicStage(_BASE.AerationBasin):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -71,22 +71,22 @@ class AerobicStage(_BASE.AerationBasin):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class AnaerobicStage(_BASE.Reactor):
@@ -102,7 +102,7 @@ class AnaerobicStage(_BASE.Reactor):
     )
     _shape_constraints = (
         _ShapeValues('has_role', 'https://watermetadata.org/plumb/asm2d#AnaerobicStageShape/hasRole/2', required=(_BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Role-Anaerobic'], _BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Role-Secondary'],), defaults=(), choices=(), minimum=0, maximum=None),
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/asm2d#AnaerobicStageShape/hasProcess/0', required=(_BASE.Process_EnhancedBiologicalPhosphorusRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/asm2d#AnaerobicStageShape/hasProcess/0', required=(_BASE.Process_EnhancedBiologicalPhosphorusRemoval,), defaults=(), choices=(), minimum=1, maximum=None),
         _ShapeValues('has_treatment_objective', 'https://watermetadata.org/plumb/asm2d#AnaerobicStageShape/hasTreatmentObjective/1', required=(_BASE.TreatmentObjective_PhosphorusRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 2
@@ -119,7 +119,7 @@ class AnaerobicStage(_BASE.Reactor):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -131,22 +131,22 @@ class AnaerobicStage(_BASE.Reactor):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class AnoxicStage(_BASE.Reactor):
@@ -162,7 +162,7 @@ class AnoxicStage(_BASE.Reactor):
     )
     _shape_constraints = (
         _ShapeValues('has_role', 'https://watermetadata.org/plumb/asm2d#AnoxicStageShape/hasRole/2', required=(_BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Role-Anoxic'], _BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Role-Secondary'],), defaults=(), choices=(), minimum=0, maximum=None),
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/asm2d#AnoxicStageShape/hasProcess/0', required=(_BASE.Process_Denitrification,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/asm2d#AnoxicStageShape/hasProcess/0', required=(_BASE.Process_Denitrification,), defaults=(), choices=(), minimum=1, maximum=None),
         _ShapeValues('has_treatment_objective', 'https://watermetadata.org/plumb/asm2d#AnoxicStageShape/hasTreatmentObjective/1', required=(_BASE.TreatmentObjective_NitrogenRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 2
@@ -179,7 +179,7 @@ class AnoxicStage(_BASE.Reactor):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -191,22 +191,22 @@ class AnoxicStage(_BASE.Reactor):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class InfluentMixer(_BASE.StaticMixer):
@@ -221,7 +221,7 @@ class InfluentMixer(_BASE.StaticMixer):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='feed_water', label='feed_water'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='recycle', label='recycle'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='outlet', label='outlet'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/asm2d#InfluentMixerShape/hasProcess/0', required=(_BASE.Process_Mixing,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/asm2d#InfluentMixerShape/hasProcess/0', required=(_BASE.Process_Mixing,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     _shape_max_ports = 3
     feed_water = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='feed_water')
@@ -239,7 +239,7 @@ class InfluentMixer(_BASE.StaticMixer):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -251,22 +251,22 @@ class InfluentMixer(_BASE.StaticMixer):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class InternalRecycleSplitter(_BASE.Junction):
@@ -281,7 +281,7 @@ class InternalRecycleSplitter(_BASE.Junction):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='overflow', label='overflow'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='underflow', label='underflow'),),
     )
     _shape_constraints = (
-        _ShapeValues('medium', 'https://watermetadata.org/plumb/asm2d#InternalRecycleSplitterShape/hasMedium/0', required=(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'],), defaults=(), choices=(), minimum=0, maximum=1),
+        _ShapeValues('medium', 'https://watermetadata.org/plumb/asm2d#InternalRecycleSplitterShape/hasMedium/0', required=(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'],), defaults=(), choices=(), minimum=1, maximum=1),
     )
     _shape_max_ports = 3
     inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
@@ -304,15 +304,15 @@ class InternalRecycleSplitter(_BASE.Junction):
         medium: _EnumValue | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
+            'has_optional_connection_point': has_optional_connection_point,
         })
 
 class RecycleMixer(_BASE.StaticMixer):
@@ -327,7 +327,7 @@ class RecycleMixer(_BASE.StaticMixer):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='reactor', label='reactor'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='internal_recycle', label='internal_recycle'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='outlet', label='outlet'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/asm2d#RecycleMixerShape/hasProcess/0', required=(_BASE.Process_Mixing,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/asm2d#RecycleMixerShape/hasProcess/0', required=(_BASE.Process_Mixing,), defaults=(), choices=(), minimum=1, maximum=None),
     )
     _shape_max_ports = 3
     reactor = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='reactor')
@@ -345,7 +345,7 @@ class RecycleMixer(_BASE.StaticMixer):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -357,22 +357,22 @@ class RecycleMixer(_BASE.StaticMixer):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class RecyclePump(_BASE.Pump):
@@ -400,7 +400,7 @@ class RecyclePump(_BASE.Pump):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -412,22 +412,22 @@ class RecyclePump(_BASE.Pump):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class SecondaryClarifier(_BASE.SedimentationTank):
@@ -443,7 +443,7 @@ class SecondaryClarifier(_BASE.SedimentationTank):
     )
     _shape_constraints = (
         _ShapeValues('has_role', 'https://watermetadata.org/plumb/asm2d#SecondaryClarifierShape/hasRole/2', required=(_BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Role-Secondary'],), defaults=(), choices=(), minimum=0, maximum=None),
-        _ShapeValues('has_process', 'https://watermetadata.org/plumb/asm2d#SecondaryClarifierShape/hasProcess/0', required=(_BASE.Process_Settling,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'https://watermetadata.org/plumb/asm2d#SecondaryClarifierShape/hasProcess/0', required=(_BASE.Process_Settling,), defaults=(), choices=(), minimum=1, maximum=None),
         _ShapeValues('has_treatment_objective', 'https://watermetadata.org/plumb/asm2d#SecondaryClarifierShape/hasTreatmentObjective/1', required=(_BASE.TreatmentObjective_Clarification,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 3
@@ -462,7 +462,7 @@ class SecondaryClarifier(_BASE.SedimentationTank):
         connected_from: _Iterable[_BASE.Connectable] | None = None,
         connected_through: _Iterable[_BASE.Connection] | None = None,
         connected_to: _Iterable[_BASE.Connectable] | None = None,
-        contains_: _Iterable[_Entity] | None = None,
+        contains_: _Iterable[_BASE.Equipment | _BASE.Junction] | None = None,
         executes: _Iterable[_BASE.Function] | None = None,
         has_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
         has_optional_connection_point: _Iterable[_BASE.ConnectionPoint] | None = None,
@@ -474,22 +474,22 @@ class SecondaryClarifier(_BASE.SedimentationTank):
         medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
-            'has_process': has_process,
-            'has_treatment_objective': has_treatment_objective,
+            'has_optional_connection_point': has_optional_connection_point,
             'actuated_by_property': actuated_by_property,
-            'has_physical_location': has_physical_location,
             'contains_': contains_,
             'executes': executes,
+            'has_physical_location': has_physical_location,
+            'has_process': has_process,
             'has_role': has_role,
+            'has_treatment_objective': has_treatment_objective,
         })
 
 class SludgeSplitter(_BASE.Junction):
@@ -504,7 +504,7 @@ class SludgeSplitter(_BASE.Junction):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='recycle', label='recycle'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='waste', label='waste'),),
     )
     _shape_constraints = (
-        _ShapeValues('medium', 'https://watermetadata.org/plumb/asm2d#SludgeSplitterShape/hasMedium/0', required=(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'],), defaults=(), choices=(), minimum=0, maximum=1),
+        _ShapeValues('medium', 'https://watermetadata.org/plumb/asm2d#SludgeSplitterShape/hasMedium/0', required=(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'],), defaults=(), choices=(), minimum=1, maximum=1),
     )
     _shape_max_ports = 3
     inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
@@ -527,15 +527,15 @@ class SludgeSplitter(_BASE.Junction):
         medium: _EnumValue | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'connected_through': connected_through,
-            'connected': connected,
+            'medium': medium,
             'cnx': cnx,
+            'connected': connected,
             'connected_from': connected_from,
+            'connected_through': connected_through,
             'connected_to': connected_to,
-            'has_optional_connection_point': has_optional_connection_point,
             'has_connection_point': has_connection_point,
+            'has_optional_connection_point': has_optional_connection_point,
         })
 
 class SplitFraction(_BASE.QuantifiableProperty):
@@ -590,39 +590,39 @@ class SplitFraction(_BASE.QuantifiableProperty):
         value: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
-            'has_internal_reference': has_internal_reference,
+            'medium': medium,
             'has_aspect': has_aspect,
-            'is_internal_reference_of': is_internal_reference_of,
-            'of_medium': of_medium,
-            'has_value': has_value,
-            'of_substance': of_substance,
             'has_external_reference': has_external_reference,
+            'has_internal_reference': has_internal_reference,
+            'has_value': has_value,
+            'is_internal_reference_of': is_internal_reference_of,
             'of_constituent': of_constituent,
-            'has_unit': has_unit,
-            'has_deadband': has_deadband,
+            'of_medium': of_medium,
+            'of_substance': of_substance,
+            'has_accuracy': has_accuracy,
             'has_aggregation': has_aggregation,
-            'has_processed_data': has_processed_data,
-            'has_measurement_range': has_measurement_range,
-            'has_drop_rate': has_drop_rate,
-            'has_response_time': has_response_time,
-            'has_threshold': has_threshold,
-            'value': value,
-            'has_calibration_curve': has_calibration_curve,
-            'has_quantity_kind': has_quantity_kind,
-            'has_bias': has_bias,
-            'has_setpoint': has_setpoint,
             'has_alarm_status': has_alarm_status,
-            'has_temporal_range': has_temporal_range,
-            'has_variable_range': has_variable_range,
-            'has_precision': has_precision,
+            'has_bias': has_bias,
+            'has_calibration_curve': has_calibration_curve,
+            'has_deadband': has_deadband,
+            'has_drop_rate': has_drop_rate,
+            'has_measurement_range': has_measurement_range,
             'has_numeric_range': has_numeric_range,
             'has_numeric_resolution': has_numeric_resolution,
-            'quantity_value': quantity_value,
+            'has_precision': has_precision,
+            'has_processed_data': has_processed_data,
+            'has_quantity_kind': has_quantity_kind,
+            'has_response_time': has_response_time,
+            'has_setpoint': has_setpoint,
+            'has_temporal_range': has_temporal_range,
             'has_temporal_resolution': has_temporal_resolution,
+            'has_threshold': has_threshold,
+            'has_unit': has_unit,
+            'has_variable_range': has_variable_range,
             'is_delta_quantity': is_delta_quantity,
-            'has_accuracy': has_accuracy,
+            'quantity_value': quantity_value,
+            'value': value,
             'has_split_basis': has_split_basis,
         })
 

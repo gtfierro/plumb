@@ -69,11 +69,24 @@ class PropertySpec:
     An empty tuple means unconstrained.
     """
 
+    range_groups: tuple[tuple[str, ...], ...] = ()
+    """Conjunction of alternative class IRIs, authoritative for range checks.
+
+    ``ranges`` is the Python annotation projection; Python has no general
+    intersection type. An empty group list uses ``ranges`` for handwritten specs.
+    """
+
+    sources: tuple[str, ...] = ()
+    """Source declarations and shapes contributing to the effective constraint."""
+
     datatype: type | None = None
     """Python type of the value (literal properties only)."""
 
     required: bool = False
-    """True when SHACL declares ``minCount >= 1`` for this class."""
+    """Whether the constructor enforces a minimum (cyclic requirements defer)."""
+
+    min_count: int = 0
+    """Semantic SHACL minimum, including requirements deferred by constructors."""
 
     max_count: int | None = None
     """SHACL ``maxCount``; ``None`` means unbounded. ``1`` means scalar."""
