@@ -1,5 +1,14 @@
 # plumb — Design
 
+The current implementation and remaining architectural work are tracked in
+[architecture](docs/architecture.md) and the [hardening plan](docs/compiler-hardening-plan.md).
+This document also retains original product-design examples and future ideas.
+
+Favor deep modules with simple interfaces: the compiler owns its passes, the
+core owns model lifecycle, and domain adapters own vocabulary interpretation.
+Model authors should not coordinate registries, compilation stages, or backends.
+Breaking interface changes are authorized where they improve that design.
+
 An object-oriented authoring layer for RDF building/water models (Brick, ASHRAE 223P, WATR).
 Practitioners write plain Python against typed classes; RDF is produced behind the scenes.
 No IRIs, no triples, no namespaces in user code.
@@ -54,6 +63,11 @@ Consequences:
 - Abstract/organizational classes (e.g. Brick's `Class` roots, 223 `Connectable`) are
   generated but marked abstract where instantiation makes no sense.
 
+Semantic RDF ancestry is retained separately from Python bases. When C3
+linearization cannot represent every parent, the compiler materializes missing
+property and port constraints; runtime subtype checks still use the RDF graph.
+Inheritance cycles produce a source-identified compilation error.
+
 ### Properties from SHACL
 223 classes *are* node shapes; Brick 1.4 ships shapes as well. For each `sh:property`:
 
@@ -70,10 +84,17 @@ Consequences:
 | qualified shapes (223 connection-point counts) | consumed by the connection negotiator (§6), not surfaced as attributes |
 | qualified `sh:class` value on a class-valued property (WaTr process/objective) | class default added at construction unless the author supplies it or a subclass |
 
-Attribute names come from `rdfs:label`/`skos:prefLabel`, snake_cased, with a deterministic
-collision policy (suffix by property namespace prefix on conflict). Original IRI, label,
+Attribute names come from IRI local names, snake_cased, with explicit S223
+authoring aliases and deterministic numeric suffixes on collision. Original IRI, label,
 and definition live in metadata and in the generated docstring — so hover-docs in the
 editor show the ontology's own definitions.
+
+Repeated and inherited constraints compose conjunctively. Numeric counts remain
+in metadata even when cyclic authoring requires constructor deferral. Ranges
+preserve intersections and explicit alternatives separately. Python annotations
+approximate intersections where necessary; runtime metadata retains every
+supported constraint. Predicate IRIs are disambiguated before naming so unrelated
+same-named properties cannot overwrite one another.
 
 ### Required vs optional surface
 Two candidate UXs:
@@ -102,13 +123,13 @@ class Equipment(Entity):
 ```
 
 - `ahu.feeds.add(vav)` — `add` is typed `(Equipment) -> None`; passing a `Room` is a
-  static type error *and* a runtime `TypeError` (runtime double-checks via isinstance,
-  since not everyone runs a checker).
+  static type error and a runtime `RangeError`. Runtime checks use semantic
+  ontology ancestry, since not everyone runs a checker.
 - Constructor sugar: `AHU("ahu1", feeds=[vav1, vav2])`.
 - Where a subclass's shapes narrow a range (qualified constraints), the generated subclass
   re-declares the descriptor with the narrower parameter — checkers see the narrowing.
-- Inverse maintenance: `vav.fed_by` reflects automatically (both views over one edge store
-  owned by the Model).
+- Inverse maintenance: `vav.fed_by` reflects automatically; the complete update
+  is checked before either store changes.
 
 ## 4. The Model (session) object
 
@@ -240,13 +261,14 @@ AHU.meta.iri          # "https://brickschema.org/schema/Brick#AHU" (str)
 AHU.meta.label        # rdfs:label
 AHU.meta.definition   # skos:definition / rdfs:comment text
 AHU.meta.ontology     # OntologyInfo(name="Brick", version="1.4.2", iri=..., source=...)
-AHU.meta.parents      # direct ontology superclasses (as Python classes)
+AHU.meta.parents      # direct ontology superclasses, independent of Python bases
+AHU.meta.is_a(parent) # semantic subtype test, including links omitted by MRO repair
 AHU.meta.properties   # PropertySpec list: name, predicate IRI, cardinality, range, source shape
 AHU.meta.shape        # the SHACL shape(s) governing this class (as text/graph on demand)
 ```
 
 - `meta` is a class-level descriptor that also works on instances; instances add
-  `x.meta.cls`, `x.meta.iri` (the minted instance IRI), and `x.meta.model`.
+  `x.meta.cls`, `x.meta.instance_iri` (the minted instance IRI), and `x.meta.model`.
 - Instance conveniences stay top-level: `x.name` (local name), `x.label` (settable,
   defaults from name), `x.comment`.
 - `name`, `label`, `comment`, and `meta` are **reserved names**; ontology properties that
@@ -258,13 +280,15 @@ AHU.meta.shape        # the SHACL shape(s) governing this class (as text/graph o
 
 Both the generator and the runtime lean on two existing tools:
 
-**[ontoenv](https://ontoenv.gtf.fyi)** — ontology dependency resolution for the compiler.
-`plumb gen` takes ontology IRIs, not file paths; ontoenv resolves the `owl:imports`
-closure (Brick→ref schemas, 223→QUDT, extensions→base ontologies), caches it, and makes
-codegen reproducible. Generation output is byte-identical for an unchanged closure, and
-each generated package bundles the exact graph it was compiled from in `_shapes.ttl`.
-Pinning the closure itself (versions/hashes in a committed lockfile) is deferred; see
-[the roadmap](docs/roadmap.md). Wishlist: first-class lockfile support in ontoenv.
+**[ontoenv](https://ontoenv.gtf.fyi)** resolves ontology imports for explicit
+source acquisition and ad hoc generation by IRI. `plumb gen` also accepts local
+files. Committed S223, WaTr, QUDT, and example domains regenerate from hashed
+local inputs in `ontology/sources.lock.json`; ordinary regeneration never
+refreshes sources or resolves network imports. The first lock captures historical
+closure snapshots and a recovered QUDT vocabulary projection, with those
+provenance limits recorded explicitly. `make regen` stages the whole build;
+`make regen-check` compares owned file sets and bytes in CI. Each package carries
+its exact validation graph, input provenance, and generated-file ownership.
 
 **[shifty](https://shifty.gtf.fyi)** (via `pyshifty`) — SHACL validation *and* SHACL-AF
 inference. This is load-bearing for 223, where normative semantics live in `sh:rule`s
@@ -275,9 +299,10 @@ inference. This is load-bearing for 223, where normative semantics live in `sh:r
 - `m.infer()` (or automatically inside `validate()`) → run rules to fixed point; users
   author the minimal asserted graph, inference materializes the rest. `m.save()` gains
   `inferred=False|True` to control which graph is emitted.
-- At **codegen time**, shifty computes effective flattened shapes per class (inherited +
-  rule-implied constraints), so the negotiation tables and property specs come from the
-  post-inference view of the ontology rather than hand-rolled shape walking.
+- At **codegen time**, the shared compiler normalizes supported conjunctive
+  SHACL properties, intersects ranges and cardinalities over RDF ancestry, and
+  retains the complete source graph for authoritative validation. This is an
+  explicit compiler subset; shifty does not currently provide flattened IR.
 - The WASM build opens a later door: in-browser "Python you write / TTL you get" docs
   playground with live validation.
 
@@ -341,7 +366,7 @@ plumb/
 - **Chained `>>` with junctions/tees** (one outlet feeding two inlets) — chains cover the
   linear case; fan-out uses explicit `connect()` or `a >> (b, c)` later.
 
-## 13. Phasing
+## 13. Original product phases
 
 1. **Core + Brick** (simpler graph model, no connection negotiation): compiler (on
    ontoenv), Entity/Model/RelSet, flat attribute UX, containment contexts, `meta` hooks,

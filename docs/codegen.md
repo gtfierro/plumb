@@ -14,6 +14,20 @@ covers the compiler's internals and regenerating the committed packages.
 SHACL Core connection-point structure compiles directly to Z3. Constraints
 that exist only as SHACL-SPARQL remain validation-only.
 
+The internal `gen/s223.py` adapter recognizes connection semantics by exact
+vocabulary IRI and RDF ancestry. Custom point subclasses keep their direction
+through Python alias changes. Unrelated predicates named `hasConnectionPoint`,
+`hasMedium`, or `inverseOf` do not acquire S223 meaning. Expressions containing
+validation-only boolean branches are excluded from solver assertions and
+candidate restrictions; full SHACL validation remains authoritative.
+
+`_connection_support.json` records each connection projection's source,
+target, supported structure, and reason when it remains validation-only.
+This makes omitted qualifiers visible: for example, the paired-point qualifier
+on heat exchangers currently remains in SHACL validation rather than becoming
+an unconditional medium/count requirement. This report covers connection
+projections; constructor/default checks are separate compiler projections.
+
 Media likelihood comes from the ontology's permitted-media domains, not a
 class-specific preservation flag. For every pair of active ports on an entity,
 the optimizer adds an affinity preference only when their compiled domains

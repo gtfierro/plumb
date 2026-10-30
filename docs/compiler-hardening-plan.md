@@ -1,9 +1,17 @@
 # Compiler and runtime hardening plan
 
 Status: implementation in progress, 2026-10-30. Phase 1 has an offline build
-and CI gate; semantic hardening is underway. The user has explicitly authorized
+and CI gate. Effective property composition, semantic ancestry, numeric counts,
+predicate name disambiguation, and atomic relationship updates have landed.
+An initial S223 semantic adapter and connection support report have landed.
+The user has explicitly authorized
 breaking changes: prefer the coherent final interfaces over compatibility
 wrappers or preservation of the previous generated API.
+
+Still pending: complete front-end unification and support diagnostics; canonical
+import linking with explicit WaTr profile behavior; the core/backend lifecycle
+split; and semantic upgrade reports. The initial source lock intentionally
+captures historical closures rather than claiming recovered import boundaries.
 
 ## Objective
 
@@ -192,7 +200,7 @@ implementation choices, not additional steps for the caller.
 ### 4. Link imported class identities across S223 and WaTr
 
 Begin with a small prototype and a recorded design decision before migrating
-all generated packages. This is the highest compatibility-risk phase.
+all generated packages. This is the highest semantic integration-risk phase.
 
 Deliverables:
 
@@ -204,18 +212,19 @@ Deliverables:
 - Prototype a WaTr-specific restriction on an imported S223 term and mixed
   S223/WaTr hydration. Establish how those restrictions apply without mutating
   the shared S223 class or making behavior depend on import order.
-- Preserve existing public names through aliases where possible. If a
-  constrained Python view is needed, specify its semantic identity, typing,
-  registry selection, and validation behavior explicitly.
+- Choose a coherent public import surface without compatibility aliases for
+  their own sake. If a constrained Python view is needed, specify its semantic
+  identity, typing, registry selection, and validation behavior explicitly.
 - Reject incompatible dependency manifests. Remove duplicate imported
   definitions and related fallback logic only after the prototype proves
   linking and profile behavior.
 
 Acceptance: cross-package properties, containment, connections, class-valued
 terms, enums, and hydration work in both package import orders. Mixed models
-select the applicable shapes deterministically. Existing imports, examples,
-and positive/negative type-check fixtures continue to work or have explicit
-migration notes. The duplicated-class reproduction becomes a regression test.
+select the applicable shapes deterministically. Update imports, examples, and
+positive/negative type-check fixtures to the final interface. The duplicated-class
+reproduction becomes a regression test for canonical identity as well as runtime
+compatibility (the latter is now covered by semantic ancestry checks).
 
 Dependency: phases 1–3. Do not solve the identity problem merely by allowing
 all equal-IRI values through range checks; subtype and profile constraints

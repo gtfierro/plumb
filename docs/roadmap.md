@@ -2,7 +2,7 @@
 
 ## Next: compiler and runtime hardening
 
-The [compiler hardening plan](compiler-hardening-plan.md) defines the proposed
+The [compiler hardening plan](compiler-hardening-plan.md) defines the active
 sequence for making S223/223P and WaTr updates reproducible and predictable:
 
 1. Pin source documents and import closures; gate offline regeneration in CI.
@@ -12,9 +12,15 @@ sequence for making S223/223P and WaTr updates reproducible and predictable:
 5. Separate core model lifecycle from the S223 resolution backend.
 6. Add semantic upgrade reports and ontology-evolution tests.
 
-The plan includes acceptance checks, compatibility constraints, and a prototype
-gate for imported classes with package-specific shape restrictions. Import
+The plan includes acceptance checks and a prototype gate for imported classes
+with package-specific shape restrictions. Breaking changes are authorized;
+the target interfaces take priority over compatibility wrappers. Import
 closure pinning is part of this work, rather than deferred.
+
+Implemented so far: verified offline input snapshots and regeneration CI;
+effective property intersections and numeric counts; RDF ancestry independent
+of Python MRO; predicate name disambiguation; atomic collection updates; and
+an initial S223 semantic adapter using vocabulary IRIs and subclass ancestry.
 
 Design criterion: deep modules with simple interfaces. These phases assign
 ownership of complexity; they should reduce caller coordination and keep

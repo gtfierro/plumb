@@ -33,9 +33,9 @@ rdflib (serialization) · shifty (SHACL) · ontoenv (imports resolution)
   enumeration values, compiled vocabulary terms, and unconstrained scalar
   values. `ValueOne` implements predicates such as S223 `hasValue`, accepting
   either a Python literal or named RDF resource without forcing a wrapper
-  node. All descriptors range-check with the same semantics as the generated
-  annotations. Inverse edges are mirrored by writing directly into the
-  partner's store (no recursion).
+  node. Descriptors enforce semantic range intersections and counts even where
+  Python annotations can only approximate them. Collection updates preflight
+  the whole change, including inverse edges, before modifying either store.
 - **`containment.py`** — the ambient `with` stack (a `ContextVar`) plus the
   per-package `ContainmentTable`; `attach()` walks the stack innermost-first
   and applies the first matching rule, raising with guidance otherwise.
@@ -66,18 +66,40 @@ the exact code to write.
 
 ## Compiler (`src/plumb/gen/`)
 
-The compiler separates extraction, emission, and package policy:
+The compiler hides normalization, domain interpretation, and Python lowering
+behind `generate(...)` / `plumb gen`. These are internal responsibilities:
 
-1. **`schema.py`** — all RDF interpretation. Produces a plain-dataclass IR:
-   classes (topologically ordered, MRO-repaired), properties (domain- and
-   SHACL-derived, predicates canonicalized over `owl:equivalentProperty`).
-2. **`emit.py`** — a dumb renderer of the IR. Emits aliased runtime imports
+1. **`schema.py`** — collects classes and composes effective property constraints
+   over semantic RDF ancestry before selecting Python bases. Predicate identity
+   precedes Python naming. **`ir.py`** holds the private representation shared
+   by normalization, domain adapters, and rendering.
+2. **`constraints.py`** — common conjunctive property traversal and cardinality
+   normalization for ontology and configuration front ends. Range groups preserve
+   conjunctions separately from alternatives.
+3. **`s223.py`** — the internal S223 semantic adapter, also used by WaTr. Exact
+   predicate IRIs and ontology ancestry select connection slots and directions;
+   nested medium constraints compose by intersection. Unknown boolean branches
+   remain validation-only.
+4. **`emit.py`** — a renderer of the IR. Emits aliased runtime imports
    (so ontology names like RealEstateCore's `Entity` can't shadow the base),
    specs, classes with docstrings from the ontology text, and explicit typed
    `__init__` methods wherever a class changes the property set.
-3. **`overlays.py`** — per-ontology UX hints (rshift property, containment
+5. **`overlays.py`** — per-ontology UX hints (rshift property, containment
    rules), applied at the end of the module with unresolvable entries
    skipped-with-comment.
+
+`sources.py` verifies locked local inputs. `scripts/regenerate.py` stages an
+offline build of S223, WaTr, QUDT, and the example domains; configurations import
+freshly generated bases from that staged tree. Only a successful complete build
+is published. `artifacts.py` records file ownership and cleans stale generated
+files without touching nested packages or handwritten files. `make regen-check`
+checks output bytes and owned file sets in CI.
+
+The [hardening plan](compiler-hardening-plan.md) tracks remaining work: fully
+shared front-end constraint semantics and diagnostics, dependency symbol linking,
+canonical S223/WaTr identities with explicit profile restrictions, a core/backend
+lifecycle boundary, and semantic upgrade reports. The current runtime still
+delegates snapshot creation to the S223 solver for ordinary models.
 
 `tests/toy.py` is a hand-written module in exactly the emitter's shape; the
 core test suite runs against it so runtime and compiler stay independently
