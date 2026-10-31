@@ -72,6 +72,12 @@ parent.
 
 ## Effective property constraints
 
+Generated base packages export `_symbols.json`, a versioned description of
+ontology identity, semantic ancestry, effective properties, enums, and port
+constraints. The compiler can read this export without importing generated
+Python modules. Missing or incompatible exports identify the dependency and
+require regeneration rather than falling back to runtime registry inspection.
+
 The shared compiler composes property constraints over the RDF parent graph
 before selecting Python bases. Repeated declarations and inheritance intersect
 their counts (`max(minCount)`, `min(maxCount)`); contradictory bounds fail with

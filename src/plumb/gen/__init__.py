@@ -9,6 +9,7 @@ optional UX overlays (``overlays``).
 from __future__ import annotations
 
 from pathlib import Path
+import hashlib
 import json
 
 import rdflib
@@ -90,6 +91,11 @@ def compile_modules(
     # Keep validation reproducible: generated packages carry the exact graph
     # that their Python API and solver metadata were compiled from.
     modules["_shapes.ttl"] = str(graph.serialize(format="turtle"))
+    from .symbols import FILENAME, export_symbols
+
+    modules[FILENAME] = export_symbols(
+        ir, graph_digest=hashlib.sha256(modules["_shapes.ttl"].encode()).hexdigest()
+    )
     enums_source = emit_enums_module(ir)
     if enums_source:
         modules["enums.py"] = enums_source

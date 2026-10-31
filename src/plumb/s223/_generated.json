@@ -5,6 +5,7 @@
     "_build.json",
     "_connection_support.json",
     "_shapes.ttl",
+    "_symbols.json",
     "enums.py"
   ]
 }
