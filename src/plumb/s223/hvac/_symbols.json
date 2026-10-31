@@ -1,0 +1,558 @@
+{
+  "classes": [
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Coil",
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#CoolingCoil",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "air_inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "air_inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "air_outlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "air_outlet"
+        },
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "water_inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "water_inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "water_outlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "water_outlet"
+        }
+      ],
+      "definition": "A cooling coil with separate air and water inlets and outlets.",
+      "iri": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "label": "Air and water cooling coil",
+      "maximum_ports": 4,
+      "name": "AirWaterCoolingCoil",
+      "parent_iris": [
+        "http://data.ashrae.org/standard223#CoolingCoil"
+      ],
+      "parents": [
+        "CoolingCoil"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "air_inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+          "name": "air_inlet",
+          "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "air_outlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+          "name": "air_outlet",
+          "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1"
+        },
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "water_inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "water_inlet",
+          "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "water_outlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "water_outlet",
+          "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "1ef816c982b8418531c3f3a3d5557b8c44f36800f07f79c771b60f36e0d2e58b",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "557277f5ee6c2f38237a786c7eb06248a7d58c6e0bab1c23d5d8ec8c11aa6cf2",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "9e8ed6cb4b621cd06f37ea85a05f212c92238044f79055d803ea157c90551359",
+        "4ffc1273c6f4a69feeb31b626313e509a4d75749701ce2bec684a94e97bc2f1a",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "b996283728d9bfc281c4c15c38828db596ef26f3c4c45fb05cda39d2c33a0770"
+      ],
+      "python_module": null
+    }
+  ],
+  "dependencies": [
+    {
+      "module": "plumb.s223",
+      "ontology": {
+        "iri": "http://data.ashrae.org/standard223/1.0/model/all",
+        "name": "S223",
+        "source": "https://open223.info/223p.ttl",
+        "version": "git:master@6fdc11c60b930ccb042d775b66a9115547fd22a7 date:2026-10-06 20:01:58 UTC"
+      },
+      "sha256": "70a4312a6588e3aa4aec418aa7c31de7dc2feb6b1c6b457f07673faa678059e1"
+    }
+  ],
+  "enums": [],
+  "format": 2,
+  "graph_sha256": "5ca550eb6ad33d6f2d5765821a3d0239c9498e1dae5d2011c076dc8ed3cc6a8c",
+  "ontology": {
+    "iri": "https://watermetadata.org/plumb/hvac#",
+    "name": "HVAC",
+    "source": "ontology/hvac.ttl",
+    "version": null
+  },
+  "properties": {
+    "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a \"dangling connection point\" should not generate a validation error in an integrated or non-integrated context.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has optional connection point",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_optional_connection_point",
+      "predicate": "http://data.ashrae.org/standard223#hasOptionalConnectionPoint",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "bbf8aaab37aca192eece5eb71"
+      ],
+      "term_ranges": []
+    },
+    "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Concept` with a `Property`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_property",
+      "predicate": "http://data.ashrae.org/standard223#hasProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b894486338780f2f7730cd6ec"
+      ],
+      "term_ranges": []
+    },
+    "1ef816c982b8418531c3f3a3d5557b8c44f36800f07f79c771b60f36e0d2e58b": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "cnx",
+      "max_count": null,
+      "min_count": 0,
+      "name": "cnx",
+      "predicate": "http://data.ashrae.org/standard223#cnx",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b269337e680c70964a1933e9f",
+        "b7e07cff51177986b8f64bb06"
+      ],
+      "term_ranges": []
+    },
+    "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connected` indicates that two connectable things are `connected` without regard to the direction of flow.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "connected",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected",
+      "predicate": "http://data.ashrae.org/standard223#connected",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b4378a93760ff413779cb18db"
+      ],
+      "term_ranges": []
+    },
+    "4ffc1273c6f4a69feeb31b626313e509a4d75749701ce2bec684a94e97bc2f1a": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "contains",
+      "max_count": null,
+      "min_count": 0,
+      "name": "contains_",
+      "predicate": "http://data.ashrae.org/standard223#contains",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Equipment",
+          "http://data.ashrae.org/standard223#Junction"
+        ]
+      ],
+      "ranges": [
+        "Equipment",
+        "Junction"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b1f25b80989c57adad626ec8c",
+        "b69091e8dfe0a9f3725f14148"
+      ],
+      "term_ranges": []
+    },
+    "557277f5ee6c2f38237a786c7eb06248a7d58c6e0bab1c23d5d8ec8c11aa6cf2": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}).",
+      "enum_ranges": [],
+      "inverse": "connected_to",
+      "kind": "object",
+      "label": "connected from",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_from",
+      "predicate": "http://data.ashrae.org/standard223#connectedFrom",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b5fe5575d8ff2586af6168548",
+        "bdf71011e0caeb78c3c781f59"
+      ],
+      "term_ranges": []
+    },
+    "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-Role"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has role",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_role",
+      "predicate": "http://data.ashrae.org/standard223#hasRole",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-Role"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "be7260e57dcb51463c8fc48d4"
+      ],
+      "term_ranges": []
+    },
+    "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "executes",
+      "max_count": null,
+      "min_count": 0,
+      "name": "executes",
+      "predicate": "http://data.ashrae.org/standard223#executes",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Function"
+        ]
+      ],
+      "ranges": [
+        "Function"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "bc10aa2950c93e29291717e55"
+      ],
+      "term_ranges": []
+    },
+    "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`\nis an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of\n`Equipment` being actuated (see {s223:actuates}).",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "actuated by property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "actuated_by_property",
+      "predicate": "http://data.ashrae.org/standard223#actuatedByProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ActuatableProperty"
+        ]
+      ],
+      "ranges": [
+        "ActuatableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b244bc874756dd5dc97be3617"
+      ],
+      "term_ranges": []
+    },
+    "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a piece of `Equipment` with its physical location (i.e., in a `PhysicalSpace`). The physical location of a piece of `Equipment` is not necessarily the same as the location affected by the operation of the `Equipment`. For example, an air handler may physically be located on the roof, but its effect is to provide conditioned air to a `Zone` or `DomainSpace` within the building. By following the path of connections, it can be determined what other equipment or spaces are possibly impacted by the `Equipment`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has physical location",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_physical_location",
+      "predicate": "http://data.ashrae.org/standard223#hasPhysicalLocation",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#PhysicalSpace"
+        ]
+      ],
+      "ranges": [
+        "PhysicalSpace"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b67b0f96d7708f79624e4fe0b"
+      ],
+      "term_ranges": []
+    },
+    "9e8ed6cb4b621cd06f37ea85a05f212c92238044f79055d803ea157c90551359": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}).",
+      "enum_ranges": [],
+      "inverse": "connected_from",
+      "kind": "object",
+      "label": "connected to",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_to",
+      "predicate": "http://data.ashrae.org/standard223#connectedTo",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b9831b15fc9bd705787c7d0e2",
+        "bb00553121e8e574cbb8f1427"
+      ],
+      "term_ranges": []
+    },
+    "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Connectable` with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "connected through",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_through",
+      "predicate": "http://data.ashrae.org/standard223#connectedThrough",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connection"
+        ]
+      ],
+      "ranges": [
+        "Connection"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b283171481c48b41a4546dad9"
+      ],
+      "term_ranges": []
+    },
+    "b996283728d9bfc281c4c15c38828db596ef26f3c4c45fb05cda39d2c33a0770": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has medium",
+      "max_count": null,
+      "min_count": 0,
+      "name": "medium",
+      "predicate": "http://data.ashrae.org/standard223#hasMedium",
+      "range_groups": [],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b27687f66cec843f6f6442183",
+        "b7fcb9534d9769671e8d0b97b",
+        "b8f0b12dc85f638024437a859",
+        "bfa6b8152ca8e9eed314182a5"
+      ],
+      "term_ranges": []
+    },
+    "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).",
+      "enum_ranges": [],
+      "inverse": "owner",
+      "kind": "object",
+      "label": "has connection point",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_connection_point",
+      "predicate": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "be2099568566b78227dcced58"
+      ],
+      "term_ranges": []
+    }
+  },
+  "term_types": {}
+}

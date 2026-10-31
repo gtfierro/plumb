@@ -20,42 +20,45 @@ class ShapeValues:
     source_shape: str
     required: tuple[Any, ...] = ()
     defaults: tuple[Any, ...] = ()
-    choices: tuple[Any, ...] = ()
+    choices: tuple[Any, ...] | None = None
     minimum: int = 0
     maximum: int | None = None
 
 
 def constraints(cls: type[Entity]) -> tuple[ShapeValues, ...]:
-    return tuple(
-        item
-        for base in reversed(cls.__mro__)
-        for item in base.__dict__.get("_shape_constraints", ())
-    )
+    # The compiler emits effective constraints, including semantic parents
+    # omitted by Python's MRO. Runtime inheritance must not compose them again.
+    return cls._shape_constraints
 
 
 def initial_values(entity: Entity, supplied: dict[str, Any]) -> dict[str, Any]:
     values = dict(supplied)
     specs = entity._effective_specs()
-    inherited = constraints(type(entity))
-    for item in inherited:
-        if supplied.get(item.name) is None and item.defaults:
-            values[item.name] = item.defaults
-    for item in inherited:
+    for item in constraints(type(entity)):
         spec = specs[item.name]
-        many = spec.kind in {"object", "class", "enum"} and spec.max_count != 1
+        required = [_resolve(entity, spec.kind, value) for value in item.required]
         current = values.get(item.name)
+        if current is None and item.defaults:
+            current = tuple(
+                _resolve(entity, spec.kind, value) for value in item.defaults
+            )
+        if current is None and not required:
+            continue
+        many = spec.kind in {"object", "class", "enum"} and spec.max_count != 1
         if current is None:
             current = ()
         if many:
             current = _collection(entity, spec, current)
-            for required in item.required:
-                if required not in current:
-                    current.append(required)
+            keys = {_key(value) for value in current}
+            for value in required:
+                if _key(value) not in keys:
+                    current.append(value)
+                    keys.add(_key(value))
         else:
             if isinstance(current, tuple):
                 current = current[0] if current else None
-            if current is None and item.required:
-                current = item.required[0]
+            if current is None and required:
+                current = required[0]
         if current is not None:
             values[item.name] = current
     return values
@@ -73,17 +76,52 @@ def check_values(entity: Entity, name: str, value: object) -> None:
     for item in constraints(type(entity)):
         if item.name != name:
             continue
-        if any(required not in values for required in item.required):
+        keys = {_key(value) for value in values}
+        if any(_key(required) not in keys for required in item.required):
             raise ModelingError(
                 f"{entity.name}.{name}: missing sh:hasValue member ({item.source_shape})"
             )
-        if item.choices and any(value not in item.choices for value in values):
+        if item.choices is not None and any(
+            _key(value) not in {_key(choice) for choice in item.choices}
+            for value in values
+        ):
             raise ModelingError(
                 f"{entity.name}.{name}: value is outside sh:in ({item.source_shape})"
             )
-        if len(values) < item.minimum or (
-            item.maximum is not None and len(values) > item.maximum
-        ):
+        # Minima belong to constructor completion and graph validation. Edits
+        # may temporarily remove an endpoint while rerouting a connection.
+        if item.maximum is not None and len(values) > item.maximum:
             raise ModelingError(
                 f"{entity.name}.{name}: violates shape cardinality ({item.source_shape})"
             )
+
+
+def _resolve(entity: Entity, kind: str, value: Any) -> Any:
+    from .terms import TermValue
+
+    if isinstance(value, TermValue):
+        registry = entity.meta.registry
+        if kind == "class":
+            try:
+                return registry.by_iri[value.iri]
+            except KeyError:
+                raise ModelingError(
+                    f"{entity.name}: unlinked class default {value.iri}"
+                ) from None
+        if kind == "enum":
+            return registry.resolve_enum(value.iri)
+    return value
+
+
+def _key(value: Any) -> Any:
+    from .entity import Entity
+
+    if isinstance(value, type) and issubclass(value, Entity):
+        return ("iri", value.meta.iri)
+    if isinstance(value, Entity):
+        return ("iri", value.meta.instance_iri)
+    if hasattr(value, "iri"):
+        return ("iri", value.iri)
+    if isinstance(value, bool):
+        return ("bool", value)
+    return ("literal", value)

@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Literal
 
+from rdflib.term import Node
+
 
 @dataclass
 class PropIR:
@@ -25,6 +27,21 @@ class PropIR:
     inverse: str | None = None
     enum_ranges: tuple[str, ...] = ()  # enum member IRIs (enum props)
     deferred: bool = False  # value may be a deferred port or connection
+    term_ranges: tuple[str, ...] = ()
+    required_values: tuple[Node, ...] = ()
+    default_values: tuple[Node, ...] = ()
+    choices: tuple[Node, ...] | None = None
+
+
+@dataclass
+class PointIR:
+    name: str
+    source: str
+    direction: str
+    medium: str
+    label: str | None
+    count: int
+    cp_class: str
 
 
 @dataclass
@@ -37,6 +54,8 @@ class CPSlotIR:
     medium_options: tuple[str, ...] = ()  # sh:or alternatives
     min_count: int = 1
     max_count: int | None = None
+    name: str | None = None
+    label: str | None = None
 
 
 @dataclass
@@ -69,6 +88,9 @@ class ClassIR:
     # (property name, python class name): a value of that class (or a
     # subclass) the shapes require, filled in when the author gives none.
     class_defaults: list[tuple[str, str]] = field(default_factory=list)
+    points: list[PointIR] = field(default_factory=list)
+    maximum_ports: int | None = None
+    python_module: str | None = None  # None means defined by this package
 
 
 @dataclass
@@ -95,6 +117,8 @@ class SchemaIR:
     classes: list[ClassIR]  # topologically ordered, parents first
     enums: list[EnumIR] = field(default_factory=list)  # parents first
     connection_support: list[dict[str, object]] = field(default_factory=list)
+    dependencies: list[dict[str, object]] = field(default_factory=list)
+    term_types: dict[str, tuple[str, ...]] = field(default_factory=dict)
 
     def class_names(self) -> set[str]:
         return {c.name for c in self.classes}

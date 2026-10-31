@@ -426,10 +426,6 @@ class Entity:
     # -- identity ---------------------------------------------------------
 
     def __setattr__(self, name: str, value: Any) -> None:
-        if not name.startswith("_") and getattr(type(self), "_shape_constraints", ()):
-            from .shape_constraints import check_values
-
-            check_values(self, name, value)
         object.__setattr__(self, name, value)
 
     @property

@@ -132,11 +132,17 @@ is deterministic).
 
 ## Domain configurations and property schemas
 
-`gen/configurations.py` compiles RDF extensions linked to an installed base
-package. SHACL supplies required members, replaceable defaults, finite choices,
+`gen/configurations.py` compiles RDF extensions linked through versioned compiler
+symbols. It never executes the base package to discover its schema. SHACL supplies
+required members, replaceable defaults, finite choices,
 named ports, and quantity semantics. Generated constructors and frozen
 `PropertySchema` dataclasses expose those requirements to Python tooling.
 The exact source graph ships with each package for validation and hydration.
+`gen/constraints.py` owns effective property refinement for both front ends;
+`gen/symbols.py` owns dependency lookup, format checking, digest verification,
+and semantic symbol decoding. Python imports happen normally in the generated
+runtime package. Registry inclusion is one runtime operation and does not mutate
+the dependency's classes.
 
 `core/points.py` supplies descriptors and references for shape-defined ports.
 `core/shape_constraints.py` enforces constructive values on equipment.

@@ -1,0 +1,3276 @@
+{
+  "classes": [
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#AerationBasin",
+        "https://watermetadata.org/ontology/watr#Reactor",
+        "https://watermetadata.org/ontology/watr#Tank",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [
+        [
+          "has_process",
+          "Process_Aeration"
+        ]
+      ],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "outlet"
+        }
+      ],
+      "definition": null,
+      "iri": "https://watermetadata.org/plumb/asm2d#AerobicStage",
+      "label": "AerobicStage",
+      "maximum_ports": 2,
+      "name": "AerobicStage",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#AerationBasin"
+      ],
+      "parents": [
+        "AerationBasin"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "inlet",
+          "source": "https://watermetadata.org/plumb/asm2d#AerobicStageShape/hasConnectionPoint/6"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "outlet",
+          "source": "https://watermetadata.org/plumb/asm2d#AerobicStageShape/hasConnectionPoint/7"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "bc6490b8ce3188f8dbe90c4e6d90e5355f4593c6db1f718fde8ea889a5d40b3c",
+        "8105c4d82e6380b318a744ad5e74689461343388977e1c52341e6f6c660cbb2e",
+        "2d5c748e640366b603e66d5b8c25189161b1430116bc6158e45e81dd9cd83d0e",
+        "f5420e5e5881c7a6318e62a2b85784d67061336e9a742aa0bd8aca264f47be28",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Reactor",
+        "https://watermetadata.org/ontology/watr#Tank",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": null,
+          "max_count": null,
+          "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+          "medium_options": [],
+          "min_count": 1,
+          "name": null
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": null,
+          "max_count": null,
+          "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+          "medium_options": [],
+          "min_count": 1,
+          "name": null
+        },
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "outlet"
+        }
+      ],
+      "definition": null,
+      "iri": "https://watermetadata.org/plumb/asm2d#AnaerobicStage",
+      "label": "AnaerobicStage",
+      "maximum_ports": 2,
+      "name": "AnaerobicStage",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#Reactor"
+      ],
+      "parents": [
+        "Reactor"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "inlet",
+          "source": "https://watermetadata.org/plumb/asm2d#AnaerobicStageShape/hasConnectionPoint/5"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "outlet",
+          "source": "https://watermetadata.org/plumb/asm2d#AnaerobicStageShape/hasConnectionPoint/6"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "00f7f6605d26cc104595e6a1f36b810567ea738c79a1b9c92bcc9301f9fe9837",
+        "aad4a773eee0fdfdb1543077070368643062c7f61f1c3b15f6beedf0e8ae2d2f",
+        "5f61f26f9dc4754cb2deaf424f057a097235608dc120223fd9dac7f8678257b3",
+        "8c75ee3c2a820dc12579262fd4229b84763566a81dc856a05e38a9601490ac26",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Reactor",
+        "https://watermetadata.org/ontology/watr#Tank",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": null,
+          "max_count": null,
+          "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+          "medium_options": [],
+          "min_count": 1,
+          "name": null
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": null,
+          "max_count": null,
+          "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+          "medium_options": [],
+          "min_count": 1,
+          "name": null
+        },
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "outlet"
+        }
+      ],
+      "definition": null,
+      "iri": "https://watermetadata.org/plumb/asm2d#AnoxicStage",
+      "label": "AnoxicStage",
+      "maximum_ports": 2,
+      "name": "AnoxicStage",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#Reactor"
+      ],
+      "parents": [
+        "Reactor"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "inlet",
+          "source": "https://watermetadata.org/plumb/asm2d#AnoxicStageShape/hasConnectionPoint/5"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "outlet",
+          "source": "https://watermetadata.org/plumb/asm2d#AnoxicStageShape/hasConnectionPoint/6"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "d02becc7c7a48ab0101add13be91507ef1293f3c30b350422886f8e47bedcc66",
+        "aad4a773eee0fdfdb1543077070368643062c7f61f1c3b15f6beedf0e8ae2d2f",
+        "f33aba6272b056e836a160b11795a5f6ac0cb2b6dbcd2a8383c7c811a3431d2d",
+        "a97b6497c67c265d08b720a2ad47312ce27063b23dbdfe07468850d47ff3ec2a",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Reactor",
+        "https://watermetadata.org/ontology/watr#StaticMixer",
+        "https://watermetadata.org/ontology/watr#Tank",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [
+        [
+          "has_process",
+          "Process_Mixing"
+        ]
+      ],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "feed_water",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "feed_water"
+        },
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "recycle",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "recycle"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "outlet"
+        }
+      ],
+      "definition": null,
+      "iri": "https://watermetadata.org/plumb/asm2d#InfluentMixer",
+      "label": "InfluentMixer",
+      "maximum_ports": 3,
+      "name": "InfluentMixer",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#StaticMixer"
+      ],
+      "parents": [
+        "StaticMixer"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "feed_water",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "feed_water",
+          "source": "https://watermetadata.org/plumb/asm2d#InfluentMixerShape/hasConnectionPoint/2"
+        },
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "recycle",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "recycle",
+          "source": "https://watermetadata.org/plumb/asm2d#InfluentMixerShape/hasConnectionPoint/3"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "outlet",
+          "source": "https://watermetadata.org/plumb/asm2d#InfluentMixerShape/hasConnectionPoint/4"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "77de882f4877925762ada1d6d0b7025c1d1e67b4697b6b9cec710a8486ed63d7",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Junction",
+        "http://www.w3.org/2000/01/rdf-schema#Resource"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "operator": "slot",
+                  "reason": null,
+                  "slot": {
+                    "cp_class": "InletConnectionPoint",
+                    "direction": "in",
+                    "label": null,
+                    "max_count": null,
+                    "medium": null,
+                    "medium_options": [],
+                    "min_count": 1,
+                    "name": null
+                  },
+                  "source": null
+                },
+                {
+                  "children": [],
+                  "operator": "slot",
+                  "reason": null,
+                  "slot": {
+                    "cp_class": "OutletConnectionPoint",
+                    "direction": "out",
+                    "label": null,
+                    "max_count": null,
+                    "medium": null,
+                    "medium_options": [],
+                    "min_count": 1,
+                    "name": null
+                  },
+                  "source": null
+                }
+              ],
+              "operator": "and",
+              "reason": null,
+              "slot": null,
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "BidirectionalConnectionPoint",
+                "direction": "bi",
+                "label": null,
+                "max_count": null,
+                "medium": null,
+                "medium_options": [],
+                "min_count": 1,
+                "name": null
+              },
+              "source": null
+            }
+          ],
+          "operator": "or",
+          "reason": null,
+          "slot": null,
+          "source": null
+        }
+      ],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "overflow",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "overflow"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "underflow",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "underflow"
+        }
+      ],
+      "definition": null,
+      "iri": "https://watermetadata.org/plumb/asm2d#InternalRecycleSplitter",
+      "label": "InternalRecycleSplitter",
+      "maximum_ports": 3,
+      "name": "InternalRecycleSplitter",
+      "parent_iris": [
+        "http://data.ashrae.org/standard223#Junction"
+      ],
+      "parents": [
+        "Junction"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "inlet",
+          "source": "https://watermetadata.org/plumb/asm2d#InternalRecycleSplitterShape/hasConnectionPoint/2"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "overflow",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "overflow",
+          "source": "https://watermetadata.org/plumb/asm2d#InternalRecycleSplitterShape/hasConnectionPoint/3"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "underflow",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "underflow",
+          "source": "https://watermetadata.org/plumb/asm2d#InternalRecycleSplitterShape/hasConnectionPoint/4"
+        }
+      ],
+      "properties": [
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "23cc85eebcc09707813a90ff6b1d5ce0d2eaff65ff8299845362883a8e01b14f",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "e9d34b66df828a0a70289fdffc969528a4901a5960f73c46c9fbfafa0858e761",
+        "e0af2845e17c376cee0a0e8055d2fa4d9cd479ad3feab225c4f0e789a76d1ffe",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "21ac352af7eeb0d69ff552237421644d14c2b2f0166cca70667a4e58c1971a98"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Reactor",
+        "https://watermetadata.org/ontology/watr#StaticMixer",
+        "https://watermetadata.org/ontology/watr#Tank",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [
+        [
+          "has_process",
+          "Process_Mixing"
+        ]
+      ],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "reactor",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "reactor"
+        },
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "internal_recycle",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "internal_recycle"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "outlet"
+        }
+      ],
+      "definition": null,
+      "iri": "https://watermetadata.org/plumb/asm2d#RecycleMixer",
+      "label": "RecycleMixer",
+      "maximum_ports": 3,
+      "name": "RecycleMixer",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#StaticMixer"
+      ],
+      "parents": [
+        "StaticMixer"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "reactor",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "reactor",
+          "source": "https://watermetadata.org/plumb/asm2d#RecycleMixerShape/hasConnectionPoint/2"
+        },
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "internal_recycle",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "internal_recycle",
+          "source": "https://watermetadata.org/plumb/asm2d#RecycleMixerShape/hasConnectionPoint/3"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "outlet",
+          "source": "https://watermetadata.org/plumb/asm2d#RecycleMixerShape/hasConnectionPoint/4"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "abed517f27c504a823cf202ca4eba3718212aa9d551d1b34b673a1ced5997a7c",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Pump"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": null,
+          "max_count": null,
+          "medium": null,
+          "medium_options": [
+            "http://data.ashrae.org/standard223#Constituent-Refrigerant",
+            "http://data.ashrae.org/standard223#Mix-Fluid"
+          ],
+          "min_count": 1,
+          "name": null
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": null,
+          "max_count": null,
+          "medium": null,
+          "medium_options": [
+            "http://data.ashrae.org/standard223#Constituent-Refrigerant",
+            "http://data.ashrae.org/standard223#Mix-Fluid"
+          ],
+          "min_count": 1,
+          "name": null
+        },
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "outlet"
+        }
+      ],
+      "definition": null,
+      "iri": "https://watermetadata.org/plumb/asm2d#RecyclePump",
+      "label": "RecyclePump",
+      "maximum_ports": 2,
+      "name": "RecyclePump",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#Pump"
+      ],
+      "parents": [
+        "Pump"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "inlet",
+          "source": "https://watermetadata.org/plumb/asm2d#RecyclePumpShape/hasConnectionPoint/1"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "outlet",
+          "source": "https://watermetadata.org/plumb/asm2d#RecyclePumpShape/hasConnectionPoint/2"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "d07c4f2d22682892d62390f8bbea78676cfc76642da092e481a02f191eb39785",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "1b6a1f7f781290d7332f0342bb424402492b468e4c0e468599277c555f0363ff",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#SedimentationTank",
+        "https://watermetadata.org/ontology/watr#SeparationTank",
+        "https://watermetadata.org/ontology/watr#Tank",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [
+        [
+          "has_process",
+          "Process_Settling"
+        ]
+      ],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "effluent",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "effluent"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "underflow",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "underflow"
+        }
+      ],
+      "definition": null,
+      "iri": "https://watermetadata.org/plumb/asm2d#SecondaryClarifier",
+      "label": "SecondaryClarifier",
+      "maximum_ports": 3,
+      "name": "SecondaryClarifier",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#SedimentationTank"
+      ],
+      "parents": [
+        "SedimentationTank"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "inlet",
+          "source": "https://watermetadata.org/plumb/asm2d#SecondaryClarifierShape/hasConnectionPoint/4"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "effluent",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "effluent",
+          "source": "https://watermetadata.org/plumb/asm2d#SecondaryClarifierShape/hasConnectionPoint/5"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "underflow",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "underflow",
+          "source": "https://watermetadata.org/plumb/asm2d#SecondaryClarifierShape/hasConnectionPoint/6"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "1aebd3c8a7e57760d878c5cd5bae650a92cfa34f7840568fa65a8b1b13e18a3f",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "73576e317b36719983c36274267aeed39de9ec65108c6e0f04137a9d6e730834",
+        "58b0ec7ec2c7b9628950e4ce1f767dad6d3b3534961684a3bd7e873cb5389944",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Junction",
+        "http://www.w3.org/2000/01/rdf-schema#Resource"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "operator": "slot",
+                  "reason": null,
+                  "slot": {
+                    "cp_class": "InletConnectionPoint",
+                    "direction": "in",
+                    "label": null,
+                    "max_count": null,
+                    "medium": null,
+                    "medium_options": [],
+                    "min_count": 1,
+                    "name": null
+                  },
+                  "source": null
+                },
+                {
+                  "children": [],
+                  "operator": "slot",
+                  "reason": null,
+                  "slot": {
+                    "cp_class": "OutletConnectionPoint",
+                    "direction": "out",
+                    "label": null,
+                    "max_count": null,
+                    "medium": null,
+                    "medium_options": [],
+                    "min_count": 1,
+                    "name": null
+                  },
+                  "source": null
+                }
+              ],
+              "operator": "and",
+              "reason": null,
+              "slot": null,
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "BidirectionalConnectionPoint",
+                "direction": "bi",
+                "label": null,
+                "max_count": null,
+                "medium": null,
+                "medium_options": [],
+                "min_count": 1,
+                "name": null
+              },
+              "source": null
+            }
+          ],
+          "operator": "or",
+          "reason": null,
+          "slot": null,
+          "source": null
+        }
+      ],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "recycle",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "recycle"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "waste",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "waste"
+        }
+      ],
+      "definition": null,
+      "iri": "https://watermetadata.org/plumb/asm2d#SludgeSplitter",
+      "label": "SludgeSplitter",
+      "maximum_ports": 3,
+      "name": "SludgeSplitter",
+      "parent_iris": [
+        "http://data.ashrae.org/standard223#Junction"
+      ],
+      "parents": [
+        "Junction"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "inlet",
+          "source": "https://watermetadata.org/plumb/asm2d#SludgeSplitterShape/hasConnectionPoint/2"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "recycle",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "recycle",
+          "source": "https://watermetadata.org/plumb/asm2d#SludgeSplitterShape/hasConnectionPoint/3"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "waste",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "waste",
+          "source": "https://watermetadata.org/plumb/asm2d#SludgeSplitterShape/hasConnectionPoint/4"
+        }
+      ],
+      "properties": [
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "23cc85eebcc09707813a90ff6b1d5ce0d2eaff65ff8299845362883a8e01b14f",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "e9d34b66df828a0a70289fdffc969528a4901a5960f73c46c9fbfafa0858e761",
+        "e0af2845e17c376cee0a0e8055d2fa4d9cd479ad3feab225c4f0e789a76d1ffe",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "55b254b1e733e92cbb294eeb633ab51d32f7acc395eb3e0c14f13b378ae1b913"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Property",
+        "http://data.ashrae.org/standard223#QuantifiableProperty",
+        "http://www.w3.org/2000/01/rdf-schema#Resource"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [],
+      "definition": null,
+      "iri": "https://watermetadata.org/plumb/asm2d#SplitFraction",
+      "label": null,
+      "maximum_ports": null,
+      "name": "SplitFraction",
+      "parent_iris": [
+        "http://data.ashrae.org/standard223#QuantifiableProperty"
+      ],
+      "parents": [
+        "QuantifiableProperty"
+      ],
+      "points": [],
+      "properties": [
+        "71af2a8cf5d560d30fe98f90bbc2e5ebdf54debd8faf3141289a9af7738c502a",
+        "bee0135c20e01ca8c225e9da8e4197214cd560aa55d58d851da072fbffd97d45",
+        "a05dc0a6213ec6b675e99fb9a55b56fcb7d9aeecc2d4c1aa3b339253013e7dd2",
+        "64fd457ed6571e87b59a931ecbd4bdd88ae6aeff27955ed95bd0d1589f797088",
+        "8e9c7b71cbaa481c4ca8f6e136227574486cbfbfa930b785cfda877c04d0478a",
+        "abf6453c4c59c9ec0fc324411907880256830ad79428cde830a934108d684675",
+        "968561bafd0be9f40174179c3792ab37d8661ab254e2cd55e3123c485494b99c",
+        "0acfe4eec0b5dd3f0841894cbaa2016f8f1731d1b098f244b3368ebc4d0a8a9b",
+        "62fbf546c7f47073b55574a021220f9690ac4f1d2b91a895cc2b4fda041f92fe",
+        "1934a8ae53ec80a8ccbe236831d7386b37f22efc7dc97d9c5b153f2868af0b7c",
+        "2b2fd8673b442f66d7ad888fcdf8411eb16c2a67689c085cb292d0194edd92d3",
+        "afde5f944dfa666fea093999aef2593d8c108b43cb2bb011ca3892357f01e476",
+        "fb576b662e50284c18d40450bf9a7a3b53ef11156ec2f3c4ea600f2f3d6b8dd6",
+        "c7e0be1b0ba6a6e8cfb54a33b233d851cbe2c913010e584f8afd9e248ea58796",
+        "147f96b500333ecbd7e72481ca940df866d9c8dbdc9efa42f882e830d91b7a23",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "5abe99e9199e334cd5bfbe506969d2c532641d2c76cca581c7dccf568c2e2fa0",
+        "8451dabd9e2ded9147b8a2b2e3da3ce8b178f0864befb7affed69996213dd361",
+        "e5bd157b39bd24e315efd3f84847268768ce0f5be1ae7d44186a6583e9c183fa",
+        "75c99b3a671c86b65131ff9e85b4ed5cb886fee7956be9b5c7c1d6f844ce9212",
+        "fa3e78cdb027a741df9a1712314bec92abba399595f82fc11382fc11dc81d6bb",
+        "208b552721d490530a82b26fc541f4ee37e3f99a2ea93a6962fa4f79c84f0d40",
+        "3b7ae79864b03daffd22e3598f32d36fe9116b672f17225efbc68ee857645b32",
+        "048b9f8057ace3112bfb5d8d20a15a9f3f5ff55a10a146d9d56d9d2b588a8b2e",
+        "8b90b473899dd30c5724a4d456c068d635dc0350878e8a84fdacfe034f010fe6",
+        "6c18fc6e407f059edc2fcfdb97e39c8267b895a94d45ef729e7ed0cf56af8f7c",
+        "9acead091281d3b535748a1c54ad59d528291fedeaf3cf76751f39c52b764dfe",
+        "13eea6aaef38ef151d6d6f6268d70c6cabd356ff1a4db83b1e9de35d5dc2f0cb",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293",
+        "6003e2f31a5913b65e721fb0c84d295f6571a3127497f35d204048091ff6afcd",
+        "34186346ac0e1397814b859b059eddde174e2137d6cd2413be4a85345092dec0",
+        "09d1516989161c88147f0f11caa83779d1aade77155c5368cb0fa283c93b22fe",
+        "160a1440b1bce5e71349c842363129c5ec842951b079b8599680b474a1279428",
+        "95d1820d0e1321d7e72f0983898c859871f70e54b7575d24892b5a9c470df41c"
+      ],
+      "python_module": null
+    }
+  ],
+  "dependencies": [
+    {
+      "module": "plumb.watr",
+      "ontology": {
+        "iri": "https://watermetadata.org/ontology/watr",
+        "name": "WATR",
+        "source": "ontology/watr-0.3.0rc1.ttl",
+        "version": "0.3.rc1"
+      },
+      "sha256": "d49443dde2ed6cdc7202dc2d44dbb6f6b9c0ae982019b1c71cbd634358fa8598"
+    }
+  ],
+  "enums": [],
+  "format": 2,
+  "graph_sha256": "a3562f9d0cb81bcbf8218875ce16d0d20dc5d5f529ebf654a9e1d268406f4d97",
+  "ontology": {
+    "iri": "https://watermetadata.org/plumb/asm2d#",
+    "name": "ASM2d",
+    "source": "ontology/asm2d.ttl",
+    "version": null
+  },
+  "properties": {
+    "00f7f6605d26cc104595e6a1f36b810567ea738c79a1b9c92bcc9301f9fe9837": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-EnhancedBiologicalPhosphorusRemoval>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/asm2d#AnaerobicStageShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "048b9f8057ace3112bfb5d8d20a15a9f3f5ff55a10a146d9d56d9d2b588a8b2e": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.",
+      "enum_ranges": [],
+      "inverse": "unit_for",
+      "kind": "object",
+      "label": "has unit",
+      "max_count": 1,
+      "min_count": 0,
+      "name": "has_unit",
+      "predicate": "http://qudt.org/schema/qudt/hasUnit",
+      "range_groups": [
+        [
+          "http://qudt.org/schema/qudt/Unit"
+        ]
+      ],
+      "ranges": [
+        "Unit"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b113b7e7d74cbf65edb5b9cdf",
+        "b1cbc00008d28685ff9117c76",
+        "b5566e9aac45a8100eb72d3c0",
+        "b67a52970026f1b098f4b7208",
+        "be09a3e71425b58ab35e748de",
+        "bf7c07e374b1de89f6352e8d0",
+        "bfc940f5247f3e1d2a7acb132"
+      ],
+      "term_ranges": []
+    },
+    "09d1516989161c88147f0f11caa83779d1aade77155c5368cb0fa283c93b22fe": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix.",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-Substance"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "of substance",
+      "max_count": 1,
+      "min_count": 0,
+      "name": "of_substance",
+      "predicate": "http://data.ashrae.org/standard223#ofSubstance",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-Substance"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b9ea31a97ca9f035e9e7e247d",
+        "bebe08be113ec9d15cc2075b3"
+      ],
+      "term_ranges": []
+    },
+    "0acfe4eec0b5dd3f0841894cbaa2016f8f1731d1b098f244b3368ebc4d0a8a9b": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has drop rate",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_drop_rate",
+      "predicate": "https://watermetadata.org/ontology/watr#hasDropRate",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b564323ce8963d046037ac54f"
+      ],
+      "term_ranges": []
+    },
+    "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a \"dangling connection point\" should not generate a validation error in an integrated or non-integrated context.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has optional connection point",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_optional_connection_point",
+      "predicate": "http://data.ashrae.org/standard223#hasOptionalConnectionPoint",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "bbf8aaab37aca192eece5eb71"
+      ],
+      "term_ranges": []
+    },
+    "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Concept` with a `Property`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_property",
+      "predicate": "http://data.ashrae.org/standard223#hasProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b894486338780f2f7730cd6ec"
+      ],
+      "term_ranges": []
+    },
+    "13eea6aaef38ef151d6d6f6268d70c6cabd356ff1a4db83b1e9de35d5dc2f0cb": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The inverse of the relation `hasInternalReference` (see {s223:hasInternalReference}).",
+      "enum_ranges": [],
+      "inverse": "has_internal_reference",
+      "kind": "object",
+      "label": "is internal reference of",
+      "max_count": 1,
+      "min_count": 0,
+      "name": "is_internal_reference_of",
+      "predicate": "http://data.ashrae.org/standard223#isInternalReferenceOf",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b7bde08b9f16713c82265df9d"
+      ],
+      "term_ranges": []
+    },
+    "147f96b500333ecbd7e72481ca940df866d9c8dbdc9efa42f882e830d91b7a23": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has processed data",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_processed_data",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcessedData",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b343f892b7a4681c65ea66b11"
+      ],
+      "term_ranges": []
+    },
+    "160a1440b1bce5e71349c842363129c5ec842951b079b8599680b474a1279428": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": null,
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "quantity value",
+      "max_count": null,
+      "min_count": 0,
+      "name": "quantity_value",
+      "predicate": "http://qudt.org/schema/qudt/quantityValue",
+      "range_groups": [
+        [
+          "http://qudt.org/schema/qudt/QuantityValue"
+        ]
+      ],
+      "ranges": [
+        "QuantityValue"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "bd77c9e9d4d33b5efd8072a0d"
+      ],
+      "term_ranges": []
+    },
+    "1934a8ae53ec80a8ccbe236831d7386b37f22efc7dc97d9c5b153f2868af0b7c": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Property` with another equivalent `Property`. For example, a `Property` that represents a `Zone`\ntemperature could have one or more `hasInternalReference` relations to another `Property` that is a temperature measurement from one room in the zone (see Figure 11-2).\n\n![Zone Internal Reference.](figures/Figure_11-2_Zone_Internal_Reference.svg)\n\nAnother use of `hasInternalReference` is to make a `Property` of a piece of equipment\nvisible as a `Property` of a piece of containing equipment.\nThis is illustrated in Figure 11-3.\n\n![Equipment Containment.](figures/Figure_11-3_Equipment_Contains_3.svg)\n\nNote that the `hasInternalReference` relation is transitive.",
+      "enum_ranges": [],
+      "inverse": "is_internal_reference_of",
+      "kind": "object",
+      "label": "has internal reference",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_internal_reference",
+      "predicate": "http://data.ashrae.org/standard223#hasInternalReference",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b127c98e51ab3fa45a5828492",
+        "b33295a0378a77d0ada611a70",
+        "b6360bf2ea6267d753a772461"
+      ],
+      "term_ranges": []
+    },
+    "1aebd3c8a7e57760d878c5cd5bae650a92cfa34f7840568fa65a8b1b13e18a3f": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Settling>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/asm2d#SecondaryClarifierShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "1b6a1f7f781290d7332f0342bb424402492b468e4c0e468599277c555f0363ff": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "https://watermetadata.org/ontology/watr#hasProcess"
+      ],
+      "term_ranges": []
+    },
+    "208b552721d490530a82b26fc541f4ee37e3f99a2ea93a6962fa4f79c84f0d40": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasTemporalResolution` relation is used to link to a numerical `Property` whose value indicates the minimum time interval between successive measurements or data points.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has temporal resolution",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_temporal_resolution",
+      "predicate": "https://watermetadata.org/ontology/watr#hasTemporalResolution",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "bd8446a7831e5415a7600d424"
+      ],
+      "term_ranges": []
+    },
+    "21ac352af7eeb0d69ff552237421644d14c2b2f0166cca70667a4e58c1971a98": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#Substance-Medium"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has medium",
+      "max_count": 1,
+      "min_count": 1,
+      "name": "medium",
+      "predicate": "http://data.ashrae.org/standard223#hasMedium",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Substance-Medium"
+        ]
+      ],
+      "ranges": [],
+      "required": true,
+      "required_values": [
+        "<http://data.ashrae.org/standard223#Fluid-Water>"
+      ],
+      "sources": [
+        "b0070bb08b6715a4e7a32e88c",
+        "b08ea5991a9d595339cdac23a",
+        "b114c42d9256c0b70b09fad9c",
+        "b2b77f818aaa5e179e6cb3872",
+        "b490b774633a41f304e59947b",
+        "b5aecdad0a8f3f7f4ac11e130",
+        "b67b7bcfa9dd137bb3bc07a54",
+        "b7b6e8b6b692e00280f1836e8",
+        "b84423396b6605606439f6e08",
+        "b9c3a652daf6472abbe15c7f2",
+        "bb16c0d83de406776e044c163",
+        "bee798fa46491f095cadd03d0",
+        "https://watermetadata.org/plumb/asm2d#InternalRecycleSplitterShape/hasMedium/0"
+      ],
+      "term_ranges": []
+    },
+    "23cc85eebcc09707813a90ff6b1d5ce0d2eaff65ff8299845362883a8e01b14f": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}).",
+      "enum_ranges": [],
+      "inverse": "connected_to",
+      "kind": "object",
+      "label": "connected from",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_from",
+      "predicate": "http://data.ashrae.org/standard223#connectedFrom",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b5fe5575d8ff2586af6168548"
+      ],
+      "term_ranges": []
+    },
+    "2b2fd8673b442f66d7ad888fcdf8411eb16c2a67689c085cb292d0194edd92d3": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has measurement range",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_measurement_range",
+      "predicate": "https://watermetadata.org/ontology/watr#hasMeasurementRange",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b3ed3496eca705a83f7da1507"
+      ],
+      "term_ranges": []
+    },
+    "2d5c748e640366b603e66d5b8c25189161b1430116bc6158e45e81dd9cd83d0e": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-Role"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has role",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_role",
+      "predicate": "http://data.ashrae.org/standard223#hasRole",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-Role"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Role-Aerobic>",
+        "<https://watermetadata.org/ontology/watr#Role-Secondary>"
+      ],
+      "sources": [
+        "be7260e57dcb51463c8fc48d4",
+        "https://watermetadata.org/plumb/asm2d#AerobicStageShape/hasRole/3",
+        "https://watermetadata.org/plumb/asm2d#AerobicStageShape/hasRole/4"
+      ],
+      "term_ranges": []
+    },
+    "34186346ac0e1397814b859b059eddde174e2137d6cd2413be4a85345092dec0": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Property` with the specific Medium it describes. A `Property` corresponding to the temperature of a medium would be associated with this medium using the relation `ofMedium`.",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#Substance-Medium"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "of medium",
+      "max_count": 1,
+      "min_count": 0,
+      "name": "of_medium",
+      "predicate": "http://data.ashrae.org/standard223#ofMedium",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Substance-Medium"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b7f47b631f571b101f621e646"
+      ],
+      "term_ranges": []
+    },
+    "3b7ae79864b03daffd22e3598f32d36fe9116b672f17225efbc68ee857645b32": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a threshold with the `QuantifiableProperty` indicating a specific value at which an action may be taken, distinguished from an offset or a range.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has threshold",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_threshold",
+      "predicate": "http://data.ashrae.org/standard223#hasThreshold",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b5a03d41737cc945ed90dbb5b"
+      ],
+      "term_ranges": []
+    },
+    "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connected` indicates that two connectable things are `connected` without regard to the direction of flow.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "connected",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected",
+      "predicate": "http://data.ashrae.org/standard223#connected",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b4378a93760ff413779cb18db"
+      ],
+      "term_ranges": []
+    },
+    "55b254b1e733e92cbb294eeb633ab51d32f7acc395eb3e0c14f13b378ae1b913": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#Substance-Medium"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has medium",
+      "max_count": 1,
+      "min_count": 1,
+      "name": "medium",
+      "predicate": "http://data.ashrae.org/standard223#hasMedium",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Substance-Medium"
+        ]
+      ],
+      "ranges": [],
+      "required": true,
+      "required_values": [
+        "<http://data.ashrae.org/standard223#Fluid-Water>"
+      ],
+      "sources": [
+        "b0070bb08b6715a4e7a32e88c",
+        "b08ea5991a9d595339cdac23a",
+        "b114c42d9256c0b70b09fad9c",
+        "b2b77f818aaa5e179e6cb3872",
+        "b490b774633a41f304e59947b",
+        "b5aecdad0a8f3f7f4ac11e130",
+        "b67b7bcfa9dd137bb3bc07a54",
+        "b7b6e8b6b692e00280f1836e8",
+        "b84423396b6605606439f6e08",
+        "b9c3a652daf6472abbe15c7f2",
+        "bb16c0d83de406776e044c163",
+        "bee798fa46491f095cadd03d0",
+        "https://watermetadata.org/plumb/asm2d#SludgeSplitterShape/hasMedium/0"
+      ],
+      "term_ranges": []
+    },
+    "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has medium",
+      "max_count": null,
+      "min_count": 0,
+      "name": "medium",
+      "predicate": "http://data.ashrae.org/standard223#hasMedium",
+      "range_groups": [],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b08ea5991a9d595339cdac23a",
+        "b490b774633a41f304e59947b",
+        "b5aecdad0a8f3f7f4ac11e130",
+        "b9c3a652daf6472abbe15c7f2"
+      ],
+      "term_ranges": []
+    },
+    "58b0ec7ec2c7b9628950e4ce1f767dad6d3b3534961684a3bd7e873cb5389944": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has treatment objective",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_treatment_objective",
+      "predicate": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#TreatmentObjective"
+        ]
+      ],
+      "ranges": [
+        "TreatmentObjective"
+      ],
+      "required": false,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#TreatmentObjective-Clarification>"
+      ],
+      "sources": [
+        "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+        "https://watermetadata.org/plumb/asm2d#SecondaryClarifierShape/hasTreatmentObjective/1"
+      ],
+      "term_ranges": []
+    },
+    "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}).",
+      "enum_ranges": [],
+      "inverse": "connected_to",
+      "kind": "object",
+      "label": "connected from",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_from",
+      "predicate": "http://data.ashrae.org/standard223#connectedFrom",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b5fe5575d8ff2586af6168548",
+        "b69c2b6b8e6abbeaa380110ef"
+      ],
+      "term_ranges": []
+    },
+    "5abe99e9199e334cd5bfbe506969d2c532641d2c76cca581c7dccf568c2e2fa0": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has quantity kind",
+      "max_count": 1,
+      "min_count": 1,
+      "name": "has_quantity_kind",
+      "predicate": "http://qudt.org/schema/qudt/hasQuantityKind",
+      "range_groups": [
+        [
+          "http://qudt.org/schema/qudt/QuantityKind"
+        ]
+      ],
+      "ranges": [
+        "QuantityKind"
+      ],
+      "required": true,
+      "required_values": [],
+      "sources": [
+        "b6b3083fdc249c756a0564b36",
+        "b702d66f8c2dfad4ecf14d7e2",
+        "bc33a11cbee837eadd4a95eb9",
+        "bf89b287cc123ad89dce05a4b"
+      ],
+      "term_ranges": []
+    },
+    "5f61f26f9dc4754cb2deaf424f057a097235608dc120223fd9dac7f8678257b3": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-Role"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has role",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_role",
+      "predicate": "http://data.ashrae.org/standard223#hasRole",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-Role"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Role-Anaerobic>",
+        "<https://watermetadata.org/ontology/watr#Role-Secondary>"
+      ],
+      "sources": [
+        "be7260e57dcb51463c8fc48d4",
+        "https://watermetadata.org/plumb/asm2d#AnaerobicStageShape/hasRole/2",
+        "https://watermetadata.org/plumb/asm2d#AnaerobicStageShape/hasRole/3"
+      ],
+      "term_ranges": []
+    },
+    "6003e2f31a5913b65e721fb0c84d295f6571a3127497f35d204048091ff6afcd": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Property` that characterizes a `Medium-Mix` with one of the constituents of that mix (e.g., `Fluid-Water` `composedOf` `Property` `ofConstituent` `Constituent-H2O`).",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "of constituent",
+      "max_count": null,
+      "min_count": 0,
+      "name": "of_constituent",
+      "predicate": "http://data.ashrae.org/standard223#ofConstituent",
+      "range_groups": [],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "bf24db484d2f3f1f1fffcd2b0"
+      ],
+      "term_ranges": []
+    },
+    "62fbf546c7f47073b55574a021220f9690ac4f1d2b91a895cc2b4fda041f92fe": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Property` with an external telemetry source.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has external reference",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_external_reference",
+      "predicate": "http://data.ashrae.org/standard223#hasExternalReference",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ExternalReference"
+        ]
+      ],
+      "ranges": [
+        "ExternalReference"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "bb4a11af5339522c2de8f79ac"
+      ],
+      "term_ranges": []
+    },
+    "64fd457ed6571e87b59a931ecbd4bdd88ae6aeff27955ed95bd0d1589f797088": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "`hasAspect` is used to establish the context of a `Property`. The value must be an instance of `EnumerationKind`. For example, if a `Property` has a temperature value of 45.3, the `hasAspect` relation is used to state what that represents, such as a temperature limit during working hours, etc. A `Property` can have any number of `hasAspect` relations as needed to establish the context.",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has aspect",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_aspect",
+      "predicate": "http://data.ashrae.org/standard223#hasAspect",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b7aae26ef63bbb043e563d719"
+      ],
+      "term_ranges": []
+    },
+    "6c18fc6e407f059edc2fcfdb97e39c8267b895a94d45ef729e7ed0cf56af8f7c": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has variable range",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_variable_range",
+      "predicate": "https://watermetadata.org/ontology/watr#hasVariableRange",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b95e14df552f943bf95c7f6cf"
+      ],
+      "term_ranges": []
+    },
+    "71af2a8cf5d560d30fe98f90bbc2e5ebdf54debd8faf3141289a9af7738c502a": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasAccuracy` relation is used to link to a numerical `Property` whose value indicates the maximum expected deviation between the measured value and the true value in engineering units.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has accuracy",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_accuracy",
+      "predicate": "https://watermetadata.org/ontology/watr#hasAccuracy",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "bfe41830b1d8e815157c9e6c6"
+      ],
+      "term_ranges": []
+    },
+    "73576e317b36719983c36274267aeed39de9ec65108c6e0f04137a9d6e730834": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-Role"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has role",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_role",
+      "predicate": "http://data.ashrae.org/standard223#hasRole",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-Role"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Role-Secondary>"
+      ],
+      "sources": [
+        "be7260e57dcb51463c8fc48d4",
+        "https://watermetadata.org/plumb/asm2d#SecondaryClarifierShape/hasRole/2"
+      ],
+      "term_ranges": []
+    },
+    "75c99b3a671c86b65131ff9e85b4ed5cb886fee7956be9b5c7c1d6f844ce9212": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": null,
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "term",
+      "label": null,
+      "max_count": 1,
+      "min_count": 1,
+      "name": "has_split_basis",
+      "predicate": "https://watermetadata.org/plumb/asm2d#hasSplitBasis",
+      "range_groups": [
+        [
+          "https://watermetadata.org/plumb/asm2d#SplitBasis"
+        ]
+      ],
+      "ranges": [],
+      "required": true,
+      "required_values": [],
+      "sources": [
+        "https://watermetadata.org/plumb/asm2d#SplitFractionShape/hasSplitBasis/0"
+      ],
+      "term_ranges": []
+    },
+    "77de882f4877925762ada1d6d0b7025c1d1e67b4697b6b9cec710a8486ed63d7": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Mixing>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/asm2d#InfluentMixerShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "contains",
+      "max_count": null,
+      "min_count": 0,
+      "name": "contains_",
+      "predicate": "http://data.ashrae.org/standard223#contains",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Equipment",
+          "http://data.ashrae.org/standard223#Junction"
+        ]
+      ],
+      "ranges": [
+        "Equipment",
+        "Junction"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b69091e8dfe0a9f3725f14148",
+        "b834e4d184f741a712a18dabc"
+      ],
+      "term_ranges": []
+    },
+    "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-Role"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has role",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_role",
+      "predicate": "http://data.ashrae.org/standard223#hasRole",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-Role"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "be7260e57dcb51463c8fc48d4"
+      ],
+      "term_ranges": []
+    },
+    "8105c4d82e6380b318a744ad5e74689461343388977e1c52341e6f6c660cbb2e": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Concept` with a `Property`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_property",
+      "predicate": "http://data.ashrae.org/standard223#hasProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b894486338780f2f7730cd6ec",
+        "https://watermetadata.org/plumb/asm2d#AerobicDesignShape/hasProperty/0",
+        "https://watermetadata.org/plumb/asm2d#AerobicDesignShape/hasProperty/1"
+      ],
+      "term_ranges": []
+    },
+    "8451dabd9e2ded9147b8a2b2e3da3ce8b178f0864befb7affed69996213dd361": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has response time",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_response_time",
+      "predicate": "https://watermetadata.org/ontology/watr#hasResponseTime",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b56521785e50d65d8aefbebb7"
+      ],
+      "term_ranges": []
+    },
+    "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "executes",
+      "max_count": null,
+      "min_count": 0,
+      "name": "executes",
+      "predicate": "http://data.ashrae.org/standard223#executes",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Function"
+        ]
+      ],
+      "ranges": [
+        "Function"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "bc10aa2950c93e29291717e55"
+      ],
+      "term_ranges": []
+    },
+    "8b90b473899dd30c5724a4d456c068d635dc0350878e8a84fdacfe034f010fe6": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates something with a fixed value, as opposed to a computed, measured, or externally derived value.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "value",
+      "label": "has value",
+      "max_count": 1,
+      "min_count": 0,
+      "name": "has_value",
+      "predicate": "http://data.ashrae.org/standard223#hasValue",
+      "range_groups": [],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b94eb7c61639855466de28113",
+        "b9fd9756b93b51d453b68aca6",
+        "bc4f7ae22af7ed3730ac1bac4"
+      ],
+      "term_ranges": []
+    },
+    "8c75ee3c2a820dc12579262fd4229b84763566a81dc856a05e38a9601490ac26": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has treatment objective",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_treatment_objective",
+      "predicate": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#TreatmentObjective"
+        ]
+      ],
+      "ranges": [
+        "TreatmentObjective"
+      ],
+      "required": false,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#TreatmentObjective-PhosphorusRemoval>"
+      ],
+      "sources": [
+        "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+        "https://watermetadata.org/plumb/asm2d#AnaerobicStageShape/hasTreatmentObjective/1"
+      ],
+      "term_ranges": []
+    },
+    "8e9c7b71cbaa481c4ca8f6e136227574486cbfbfa930b785cfda877c04d0478a": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasBias` relation is used to link to a numerical `Property` whose value indicates the systematic offset or drift in measurements relative to the true value.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has bias",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_bias",
+      "predicate": "https://watermetadata.org/ontology/watr#hasBias",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b6fcc36c69f5ef06bef8e078a"
+      ],
+      "term_ranges": []
+    },
+    "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has treatment objective",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_treatment_objective",
+      "predicate": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#TreatmentObjective"
+        ]
+      ],
+      "ranges": [
+        "TreatmentObjective"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "https://watermetadata.org/ontology/watr#hasTreatmentObjective"
+      ],
+      "term_ranges": []
+    },
+    "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`\nis an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of\n`Equipment` being actuated (see {s223:actuates}).",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "actuated by property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "actuated_by_property",
+      "predicate": "http://data.ashrae.org/standard223#actuatedByProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ActuatableProperty"
+        ]
+      ],
+      "ranges": [
+        "ActuatableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b244bc874756dd5dc97be3617"
+      ],
+      "term_ranges": []
+    },
+    "95d1820d0e1321d7e72f0983898c859871f70e54b7575d24892b5a9c470df41c": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": null,
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "value",
+      "max_count": 0,
+      "min_count": 0,
+      "name": "value",
+      "predicate": "http://qudt.org/schema/qudt/value",
+      "range_groups": [],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b61fd8f37714fab39b3996515"
+      ],
+      "term_ranges": []
+    },
+    "968561bafd0be9f40174179c3792ab37d8661ab254e2cd55e3123c485494b99c": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "This relation binds a control setpoint to the `QuantifiableProperty` indicating the range of values within which a sensed variable can vary without indicating a condition has changed.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has deadband",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_deadband",
+      "predicate": "http://data.ashrae.org/standard223#hasDeadband",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b1dba9e9705092adb170a0b94"
+      ],
+      "term_ranges": []
+    },
+    "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a piece of `Equipment` with its physical location (i.e., in a `PhysicalSpace`). The physical location of a piece of `Equipment` is not necessarily the same as the location affected by the operation of the `Equipment`. For example, an air handler may physically be located on the roof, but its effect is to provide conditioned air to a `Zone` or `DomainSpace` within the building. By following the path of connections, it can be determined what other equipment or spaces are possibly impacted by the `Equipment`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has physical location",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_physical_location",
+      "predicate": "http://data.ashrae.org/standard223#hasPhysicalLocation",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#PhysicalSpace"
+        ]
+      ],
+      "ranges": [
+        "PhysicalSpace"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b67b0f96d7708f79624e4fe0b"
+      ],
+      "term_ranges": []
+    },
+    "9acead091281d3b535748a1c54ad59d528291fedeaf3cf76751f39c52b764dfe": {
+      "choices": null,
+      "datatype": "bool",
+      "default_values": [],
+      "deferred": false,
+      "definition": null,
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "literal",
+      "label": "is Delta Quantity",
+      "max_count": 1,
+      "min_count": 0,
+      "name": "is_delta_quantity",
+      "predicate": "http://qudt.org/schema/qudt/isDeltaQuantity",
+      "range_groups": [],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "be248f5eac5f95ea50748c45f"
+      ],
+      "term_ranges": []
+    },
+    "a05dc0a6213ec6b675e99fb9a55b56fcb7d9aeecc2d4c1aa3b339253013e7dd2": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates an `EnumerableProperty` that describes an Alarm or Status with a `QuantifiableProperty`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has alarm status",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_alarm_status",
+      "predicate": "http://data.ashrae.org/standard223#hasAlarmStatus",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerableProperty"
+        ]
+      ],
+      "ranges": [
+        "EnumerableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b7caed860597ca70be010aa4d"
+      ],
+      "term_ranges": []
+    },
+    "a97b6497c67c265d08b720a2ad47312ce27063b23dbdfe07468850d47ff3ec2a": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has treatment objective",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_treatment_objective",
+      "predicate": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#TreatmentObjective"
+        ]
+      ],
+      "ranges": [
+        "TreatmentObjective"
+      ],
+      "required": false,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#TreatmentObjective-NitrogenRemoval>"
+      ],
+      "sources": [
+        "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+        "https://watermetadata.org/plumb/asm2d#AnoxicStageShape/hasTreatmentObjective/1"
+      ],
+      "term_ranges": []
+    },
+    "aad4a773eee0fdfdb1543077070368643062c7f61f1c3b15f6beedf0e8ae2d2f": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Concept` with a `Property`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_property",
+      "predicate": "http://data.ashrae.org/standard223#hasProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b894486338780f2f7730cd6ec",
+        "https://watermetadata.org/plumb/asm2d#ReactorDesignShape/hasProperty/0"
+      ],
+      "term_ranges": []
+    },
+    "abed517f27c504a823cf202ca4eba3718212aa9d551d1b34b673a1ced5997a7c": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Mixing>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/asm2d#RecycleMixerShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "abf6453c4c59c9ec0fc324411907880256830ad79428cde830a934108d684675": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has calibration curve",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_calibration_curve",
+      "predicate": "https://watermetadata.org/ontology/watr#hasCalibrationCurve",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b65a4c43828a57106014bc859"
+      ],
+      "term_ranges": []
+    },
+    "afde5f944dfa666fea093999aef2593d8c108b43cb2bb011ca3892357f01e476": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measurable values in engineering units.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has numeric range",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_numeric_range",
+      "predicate": "https://watermetadata.org/ontology/watr#hasNumericRange",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "ba3703d8923587181cbfb3053"
+      ],
+      "term_ranges": []
+    },
+    "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Connectable` with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "connected through",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_through",
+      "predicate": "http://data.ashrae.org/standard223#connectedThrough",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connection"
+        ]
+      ],
+      "ranges": [
+        "Connection"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b283171481c48b41a4546dad9"
+      ],
+      "term_ranges": []
+    },
+    "bc6490b8ce3188f8dbe90c4e6d90e5355f4593c6db1f718fde8ea889a5d40b3c": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Aeration>",
+        "<https://watermetadata.org/ontology/watr#Process-Nitrification>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/asm2d#AerobicStageShape/hasProcess/0",
+        "https://watermetadata.org/plumb/asm2d#AerobicStageShape/hasProcess/1"
+      ],
+      "term_ranges": []
+    },
+    "bee0135c20e01ca8c225e9da8e4197214cd560aa55d58d851da072fbffd97d45": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasAggregation` relation associates a property with water-specific aggregation semantics such as total, mean, maximum, or minimum.",
+      "enum_ranges": [
+        "https://watermetadata.org/ontology/watr#EnumerationKind-Aggregation"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has aggregation",
+      "max_count": 1,
+      "min_count": 0,
+      "name": "has_aggregation",
+      "predicate": "https://watermetadata.org/ontology/watr#hasAggregation",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#EnumerationKind-Aggregation"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b1fea6dfb1a500281186ecd42"
+      ],
+      "term_ranges": []
+    },
+    "c7e0be1b0ba6a6e8cfb54a33b233d851cbe2c913010e584f8afd9e248ea58796": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasPrecision` relation is used to link to a numerical `Property` whose value indicates the repeatability or reproducibility of measurements under identical conditions.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has precision",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_precision",
+      "predicate": "https://watermetadata.org/ontology/watr#hasPrecision",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "ba290875657eb536eec462a70"
+      ],
+      "term_ranges": []
+    },
+    "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "cnx",
+      "max_count": null,
+      "min_count": 0,
+      "name": "cnx",
+      "predicate": "http://data.ashrae.org/standard223#cnx",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b5c7de35b6a913e84096a45d9",
+        "b7e07cff51177986b8f64bb06"
+      ],
+      "term_ranges": []
+    },
+    "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).",
+      "enum_ranges": [],
+      "inverse": "owner",
+      "kind": "object",
+      "label": "has connection point",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_connection_point",
+      "predicate": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "be2099568566b78227dcced58"
+      ],
+      "term_ranges": []
+    },
+    "d02becc7c7a48ab0101add13be91507ef1293f3c30b350422886f8e47bedcc66": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Denitrification>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/asm2d#AnoxicStageShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "d07c4f2d22682892d62390f8bbea78676cfc76642da092e481a02f191eb39785": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).",
+      "enum_ranges": [],
+      "inverse": "owner",
+      "kind": "object",
+      "label": "has connection point",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_connection_point",
+      "predicate": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b1fd774eb294ec9ea83ab88d9",
+        "b993177b13ddf835e5d4c0467",
+        "be2099568566b78227dcced58"
+      ],
+      "term_ranges": []
+    },
+    "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}).",
+      "enum_ranges": [],
+      "inverse": "connected_from",
+      "kind": "object",
+      "label": "connected to",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_to",
+      "predicate": "http://data.ashrae.org/standard223#connectedTo",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b9831b15fc9bd705787c7d0e2",
+        "ba8bd416e0aea9b22a4d0c786"
+      ],
+      "term_ranges": []
+    },
+    "e0af2845e17c376cee0a0e8055d2fa4d9cd479ad3feab225c4f0e789a76d1ffe": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).",
+      "enum_ranges": [],
+      "inverse": "owner",
+      "kind": "object",
+      "label": "has connection point",
+      "max_count": null,
+      "min_count": 2,
+      "name": "has_connection_point",
+      "predicate": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b8ad8d8b7d7a41f55c0bc4138",
+        "be2099568566b78227dcced58"
+      ],
+      "term_ranges": []
+    },
+    "e5bd157b39bd24e315efd3f84847268768ce0f5be1ae7d44186a6583e9c183fa": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a control setpoint with the `QuantifiableProperty` indicating the desired value which the control process is trying to maintain.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has setpoint",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_setpoint",
+      "predicate": "http://data.ashrae.org/standard223#hasSetpoint",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b7156bf5d4cf54f79d6f330eb"
+      ],
+      "term_ranges": []
+    },
+    "e9d34b66df828a0a70289fdffc969528a4901a5960f73c46c9fbfafa0858e761": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}).",
+      "enum_ranges": [],
+      "inverse": "connected_from",
+      "kind": "object",
+      "label": "connected to",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_to",
+      "predicate": "http://data.ashrae.org/standard223#connectedTo",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b9831b15fc9bd705787c7d0e2"
+      ],
+      "term_ranges": []
+    },
+    "f33aba6272b056e836a160b11795a5f6ac0cb2b6dbcd2a8383c7c811a3431d2d": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-Role"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has role",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_role",
+      "predicate": "http://data.ashrae.org/standard223#hasRole",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-Role"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Role-Anoxic>",
+        "<https://watermetadata.org/ontology/watr#Role-Secondary>"
+      ],
+      "sources": [
+        "be7260e57dcb51463c8fc48d4",
+        "https://watermetadata.org/plumb/asm2d#AnoxicStageShape/hasRole/2",
+        "https://watermetadata.org/plumb/asm2d#AnoxicStageShape/hasRole/3"
+      ],
+      "term_ranges": []
+    },
+    "f5420e5e5881c7a6318e62a2b85784d67061336e9a742aa0bd8aca264f47be28": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has treatment objective",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_treatment_objective",
+      "predicate": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#TreatmentObjective"
+        ]
+      ],
+      "ranges": [
+        "TreatmentObjective"
+      ],
+      "required": false,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#TreatmentObjective-AmmoniaControl>",
+        "<https://watermetadata.org/ontology/watr#TreatmentObjective-NitrogenRemoval>"
+      ],
+      "sources": [
+        "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+        "https://watermetadata.org/plumb/asm2d#AerobicStageShape/ammonia-objective",
+        "https://watermetadata.org/plumb/asm2d#AerobicStageShape/hasTreatmentObjective/2"
+      ],
+      "term_ranges": []
+    },
+    "fa3e78cdb027a741df9a1712314bec92abba399595f82fc11382fc11dc81d6bb": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasTemporalRange` relation is used to link to a numerical `Property` whose value indicates the start and end times for which data has been recorded.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has temporal range",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_temporal_range",
+      "predicate": "https://watermetadata.org/ontology/watr#hasTemporalRange",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b8e734a3609990bc8d42b7e4c"
+      ],
+      "term_ranges": []
+    },
+    "fb576b662e50284c18d40450bf9a7a3b53ef11156ec2f3c4ea600f2f3d6b8dd6": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasNumericResolution` relation is used to link to a numerical `Property` whose value indicates the smallest distinguishable difference between two measured values in engineering units.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has numeric resolution",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_numeric_resolution",
+      "predicate": "https://watermetadata.org/ontology/watr#hasNumericResolution",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#QuantifiableProperty"
+        ]
+      ],
+      "ranges": [
+        "QuantifiableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "bd391cc4da50225a1e54b13a8"
+      ],
+      "term_ranges": []
+    }
+  },
+  "term_types": {
+    "https://watermetadata.org/plumb/asm2d#ComponentMassFlow": [
+      "https://watermetadata.org/plumb/asm2d#SplitBasis"
+    ],
+    "https://watermetadata.org/plumb/asm2d#OverallFlow": [
+      "https://watermetadata.org/plumb/asm2d#SplitBasis"
+    ]
+  }
+}

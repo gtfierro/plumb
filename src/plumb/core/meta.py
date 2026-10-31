@@ -289,6 +289,22 @@ class Registry:
         self.by_name[cls.__name__] = cls
         self.by_iri[info.iri] = cls
 
+    def include(self, dependency: Registry) -> None:
+        """Include a dependency's symbols and policy without changing its classes."""
+        for iri, cls in dependency.by_iri.items():
+            if iri in self.by_iri and self.by_iri[iri] is not cls:
+                raise ValueError(f"incompatible imported class identity {iri}")
+        self.by_name.update(dependency.by_name)
+        self.by_iri.update(dependency.by_iri)
+        self.enums_by_iri.update(dependency.enums_by_iri)
+        self.terms_by_iri.update(dependency.terms_by_iri)
+        self.containment.rules.extend(
+            rule
+            for rule in dependency.containment.rules
+            if rule not in self.containment.rules
+        )
+        self.sensor_classes.update(dependency.sensor_classes)
+
     def resolve(self, name: str) -> type[Entity]:
         """Look up a class by its Python name (used for range checking)."""
         try:

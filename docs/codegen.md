@@ -72,11 +72,20 @@ parent.
 
 ## Effective property constraints
 
-Generated base packages export `_symbols.json`, a versioned description of
+Generated packages export `_symbols.json`, a versioned description of
 ontology identity, semantic ancestry, effective properties, enums, and port
 constraints. The compiler can read this export without importing generated
 Python modules. Missing or incompatible exports identify the dependency and
 require regeneration rather than falling back to runtime registry inspection.
+Configuration compilation consumes these symbols rather than installed Python
+classes. Exports record dependency digests and defining modules, including through
+chains of extensions; a stale dependency must be regenerated before reuse.
+
+Both front ends use the same property refinement and Python descriptor renderer.
+`sh:hasValue` members accumulate, `sh:in` lists intersect (an empty list permits
+no values), and a more specific `sh:defaultValue` replaces an inherited default.
+An inherited default that falls outside a narrowed choice set fails compilation.
+RDF constants retain their lexical/datatype form in dependency metadata.
 
 The shared compiler composes property constraints over the RDF parent graph
 before selecting Python bases. Repeated declarations and inheritance intersect
@@ -84,6 +93,9 @@ their counts (`max(minCount)`, `min(maxCount)`); contradictory bounds fail with
 the predicate and source shapes. Required constructor arguments enforce the
 numeric minimum. Cyclic object requirements can defer constructor enforcement
 while preserving their semantic minimum in metadata and bundled SHACL.
+Minimum counts are checked at constructor completion and during graph validation;
+edits may temporarily remove an endpoint while a connection is rerouted. Mutation
+checks enforce ranges, upper bounds, fixed members, and finite choices atomically.
 
 Ranges retain conjunctions separately from explicit `sh:or` alternatives.
 Runtime checks enforce every group. An annotation uses the known narrower

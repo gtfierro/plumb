@@ -7,17 +7,19 @@ format checking, and symbol decoding stay here.
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field, replace
 import hashlib
 from importlib.machinery import PathFinder
 import json
 from pathlib import Path
 from typing import Any
 
-from .ir import ClassIR, CPConstraintIR, CPSlotIR, EnumIR, PropIR, SchemaIR
+from rdflib.util import from_n3
+
+from .ir import ClassIR, CPConstraintIR, CPSlotIR, EnumIR, PointIR, PropIR, SchemaIR
 
 FILENAME = "_symbols.json"
-FORMAT = 1
+FORMAT = 2
 
 
 @dataclass
@@ -27,10 +29,21 @@ class Symbols:
     enums: dict[str, EnumIR]
     module: str
     digest: str
+    dependencies: list[dict[str, Any]] = field(default_factory=list)
+    term_types: dict[str, tuple[str, ...]] = field(default_factory=dict)
+
+    def imported_classes(self) -> dict[str, ClassIR]:
+        """Keep each symbol's defining module when another package re-exports it."""
+        return {
+            iri: replace(symbol, python_module=symbol.python_module or self.module)
+            for iri, symbol in self.classes.items()
+        }
 
     @classmethod
-    def load(cls, module: str) -> Symbols:
+    def load(cls, module: str, _active: frozenset[str] = frozenset()) -> Symbols:
         """Read a generated package's export without importing that package."""
+        if module in _active:
+            raise ValueError(f"{module}: cyclic compiler dependency")
         locations = None
         for part in _module_parts(module):
             spec = PathFinder.find_spec(part, locations)
@@ -46,7 +59,27 @@ class Symbols:
                 f"{module}: missing compiler dependency export {path}; "
                 "regenerate the base package"
             ) from None
-        return cls.decode(data, module=module, source=str(path))
+        symbols = cls.decode(data, module=module, source=str(path))
+        classes, enums, term_types = {}, {}, {}
+        for record in symbols.dependencies:
+            dependency = cls.load(record["module"], _active | {module})
+            if dependency.digest != record["sha256"]:
+                raise ValueError(
+                    f"{module}: compiler dependency {dependency.module} changed; "
+                    "regenerate the dependent package"
+                )
+            for iri, symbol in dependency.imported_classes().items():
+                if iri in classes and classes[iri] != symbol:
+                    raise ValueError(f"{module}: incompatible dependency symbol {iri}")
+                classes[iri] = symbol
+            enums.update(dependency.enums)
+            term_types.update(dependency.term_types)
+        if set(classes).intersection(symbols.classes):
+            raise ValueError(f"{module}: cannot redefine an imported class identity")
+        symbols.classes = classes | symbols.classes
+        symbols.enums = enums | symbols.enums
+        symbols.term_types = term_types | symbols.term_types
+        return symbols
 
     @classmethod
     def decode(cls, text: str, *, module: str, source: str = "dependency") -> Symbols:
@@ -76,6 +109,7 @@ class Symbols:
                 item["class_defaults"] = [
                     tuple(pair) for pair in item["class_defaults"]
                 ]
+                item["points"] = [PointIR(**point) for point in item.get("points", [])]
                 symbol = ClassIR(**item)
                 if symbol.iri in classes:
                     raise ValueError(f"duplicate class identity {symbol.iri}")
@@ -93,6 +127,11 @@ class Symbols:
                 enums,
                 module,
                 hashlib.sha256(text.encode()).hexdigest(),
+                data.get("dependencies", []),
+                {
+                    iri: tuple(types)
+                    for iri, types in data.get("term_types", {}).items()
+                },
             )
         except (KeyError, TypeError, ValueError) as error:
             raise ValueError(
@@ -111,6 +150,12 @@ def export_symbols(ir: SchemaIR, *, graph_digest: str) -> str:
         item["properties"] = []
         for name in sorted(symbol.effective_props):
             prop = asdict(symbol.effective_props[name])
+            for key in ("required_values", "default_values", "choices"):
+                prop[key] = (
+                    [value.n3() for value in prop[key]]
+                    if prop[key] is not None
+                    else None
+                )
             key = hashlib.sha256(json.dumps(prop, sort_keys=True).encode()).hexdigest()
             properties[key] = prop
             item["properties"].append(key)
@@ -126,6 +171,8 @@ def export_symbols(ir: SchemaIR, *, graph_digest: str) -> str:
                     "source": ir.source,
                 },
                 "graph_sha256": graph_digest,
+                "dependencies": ir.dependencies,
+                "term_types": ir.term_types,
                 "classes": classes,
                 "properties": properties,
                 "enums": [
@@ -149,8 +196,13 @@ def _module_parts(module: str) -> list[str]:
 
 def _property(item: dict[str, Any]) -> PropIR:
     item = dict(item)
-    for key in ("ranges", "sources", "enum_ranges"):
+    for key in ("ranges", "sources", "enum_ranges", "term_ranges"):
+        if key not in item:
+            continue
         item[key] = tuple(item[key])
+    for key in ("required_values", "default_values", "choices"):
+        if key in item and item[key] is not None:
+            item[key] = tuple(from_n3(value) for value in item[key])
     item["range_groups"] = tuple(tuple(group) for group in item["range_groups"])
     return PropIR(**item)
 

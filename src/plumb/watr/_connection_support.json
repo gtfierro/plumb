@@ -239,10 +239,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bab10602b991aa4aed3350ae7",
@@ -255,10 +257,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bab10602b991aa4aed3350ae7",
@@ -271,10 +275,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "ba3829e4ddb0b2ccd11a62088",
@@ -287,10 +293,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "ba3829e4ddb0b2ccd11a62088",
@@ -1041,10 +1049,12 @@
     "projection": {
       "cp_class": "BidirectionalConnectionPoint",
       "direction": "bi",
+      "label": null,
       "max_count": 0,
       "medium": null,
       "medium_options": [],
-      "min_count": 0
+      "min_count": 0,
+      "name": null
     },
     "reason": null,
     "source": "b4e3d17012bebd89e1091ae36",
@@ -1057,10 +1067,12 @@
     "projection": {
       "cp_class": "BidirectionalConnectionPoint",
       "direction": "bi",
+      "label": null,
       "max_count": 0,
       "medium": null,
       "medium_options": [],
-      "min_count": 0
+      "min_count": 0,
+      "name": null
     },
     "reason": null,
     "source": "beac0b9502a1d9513e65237ed",
@@ -1073,10 +1085,12 @@
     "projection": {
       "cp_class": "BidirectionalConnectionPoint",
       "direction": "bi",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b0665a57699edf4023ae19a57",
@@ -1089,10 +1103,12 @@
     "projection": {
       "cp_class": "BidirectionalConnectionPoint",
       "direction": "bi",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bd19829bb6f74569b9f10a6b4",
@@ -1105,10 +1121,12 @@
     "projection": {
       "cp_class": "BidirectionalConnectionPoint",
       "direction": "bi",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 2
+      "min_count": 2,
+      "name": null
     },
     "reason": null,
     "source": "b5fe22c35f1beb1f7a8f757ee",
@@ -1121,10 +1139,12 @@
     "projection": {
       "cp_class": "BidirectionalConnectionPoint",
       "direction": "bi",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Medium-ThermalContact",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b14000d85120057190617ec8c",
@@ -1137,10 +1157,12 @@
     "projection": {
       "cp_class": "BidirectionalConnectionPoint",
       "direction": "bi",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#PowerAndSignal-PoE",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b0ae865c40e2d8d11348585d7",
@@ -1153,10 +1175,12 @@
     "projection": {
       "cp_class": "BidirectionalConnectionPoint",
       "direction": "bi",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#PowerAndSignal-PoE",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b7bd6f00229bb5b4a6345671b",
@@ -1169,13 +1193,15 @@
     "projection": {
       "cp_class": "BidirectionalConnectionPoint",
       "direction": "bi",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [
         "http://data.ashrae.org/standard223#Signal-FiberEthernet",
         "http://data.ashrae.org/standard223#Signal-WiredEthernet"
       ],
-      "min_count": 2
+      "min_count": 2,
+      "name": null
     },
     "reason": null,
     "source": "b11179a79b33a040553af68a0",
@@ -1188,13 +1214,15 @@
     "projection": {
       "cp_class": "BidirectionalConnectionPoint",
       "direction": "bi",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [
         "http://data.ashrae.org/standard223#Signal-FiberEthernet",
         "http://data.ashrae.org/standard223#Signal-WiredEthernet"
       ],
-      "min_count": 2
+      "min_count": 2,
+      "name": null
     },
     "reason": null,
     "source": "b89bd64ca3b6155e2f5944b8d",
@@ -1207,10 +1235,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": 1,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bc1028ad464cdc236e80f8c68",
@@ -1223,10 +1253,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": 1,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b571ee6d191bbb55786092c8b",
@@ -1239,10 +1271,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": 1,
       "medium": "http://data.ashrae.org/standard223#RF-Signal",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b715f383d6d47581c8e27f7e0",
@@ -1255,10 +1289,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": 1,
       "medium": "http://data.ashrae.org/standard223#Signal-FiberEthernet",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b1309dd08f8ea5fc16f67d490",
@@ -1271,10 +1307,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": 1,
       "medium": "http://data.ashrae.org/standard223#Signal-USB",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bdc94ccb9c6cd0daf5337f5dd",
@@ -1287,10 +1325,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": 1,
       "medium": "http://data.ashrae.org/standard223#Signal-WiredEthernet",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bcdf7019f89356a871945024e",
@@ -1303,10 +1343,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b020a7d983310222833e389b0",
@@ -1319,10 +1361,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b11958b416e51f42c1d4c785d",
@@ -1335,10 +1379,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b16559a96bb034b6baf6f5994",
@@ -1351,10 +1397,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b365624502f5b7a5588166868",
@@ -1367,10 +1415,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b3cf09bb5c7c83680e80dec06",
@@ -1383,10 +1433,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b4c95cbbf065331c4a5945c9a",
@@ -1399,10 +1451,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b5d17f5f806c70fa05980d1f2",
@@ -1415,10 +1469,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b696045917088302aa8142855",
@@ -1431,10 +1487,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b71efb2f7fbbdc301218a42e6",
@@ -1447,10 +1505,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b81f6031f2c656741343ac940",
@@ -1463,10 +1523,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b9027ed1eaed797f3fb900e8c",
@@ -1479,10 +1541,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b908379279e71e5cf88269e25",
@@ -1495,10 +1559,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b91ddd89589a919927b0d1b62",
@@ -1511,10 +1577,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b9769bd82e703d970db92d522",
@@ -1527,10 +1595,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "ba5885270935262b5cd0be122",
@@ -1543,10 +1613,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "ba799c3eabcc21cf2b0d44ba8",
@@ -1559,10 +1631,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bacbcdad5bb2473e0c09e468b",
@@ -1575,10 +1649,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bad70bb21da1d26925119f8c9",
@@ -1591,10 +1667,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bb2bb86c2dd70829bdcefba38",
@@ -1607,10 +1685,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bbbe06d58ec81c34cc38cf9ec",
@@ -1623,10 +1703,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bbfa4577d9a8aa1f0155ccc58",
@@ -1639,10 +1721,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bcc9c0396e70103c8a3271c02",
@@ -1655,10 +1739,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bccb34699881d153947d16cee",
@@ -1671,10 +1757,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "be6f6b110ed2e35b379e4eae7",
@@ -1687,10 +1775,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bfc809d0bae9e563a92f7b777",
@@ -1703,10 +1793,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#EM-Light",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b0db8df1a6a4a8262ad6397ff",
@@ -1719,10 +1811,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#EM-Light",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b82f966db51d2fe242d10573b",
@@ -1735,10 +1829,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Electricity-DC",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b2906ba16efb0a0d46386d981",
@@ -1751,10 +1847,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Electricity-DC",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b3835af877c1dbfedf26e197d",
@@ -1767,10 +1865,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b0aa8735b67303a7316bd7544",
@@ -1783,10 +1883,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b137842fe408aa7532a648358",
@@ -1799,10 +1901,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b391b5c0a5f0189d9793f82f1",
@@ -1815,10 +1919,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b4d95b2465a77bdf17c76437f",
@@ -1831,10 +1937,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bb3750e08ef935ef09f3c6932",
@@ -1847,10 +1955,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bc260d42fa8f5e761300a8622",
@@ -1863,10 +1973,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bcc2881d54b398adaafc646c4",
@@ -1879,10 +1991,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "be50ac7e9d47fe81f1445945c",
@@ -1895,10 +2009,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bed09263301b026e5f9d2f822",
@@ -1911,10 +2027,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bfeafe8df1538bc4fab3d5aea",
@@ -1927,10 +2045,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 2
+      "min_count": 2,
+      "name": null
     },
     "reason": null,
     "source": "b9aa4330129e9bda779c14088",
@@ -1943,10 +2063,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 2
+      "min_count": 2,
+      "name": null
     },
     "reason": null,
     "source": "bcae0d0cc22f1fa3c035b9d3a",
@@ -1959,10 +2081,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b0617ea7244bd8f1ee67a4ec3",
@@ -1975,10 +2099,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b11903420b878efc8e05313aa",
@@ -1991,10 +2117,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b13ba1e2e62d2ab84622ccb52",
@@ -2007,10 +2135,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b371c0fc0f10608e7b68fc29e",
@@ -2023,10 +2153,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b451888e2b3c724cfff6f2792",
@@ -2039,10 +2171,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b4f986ee0774c72267ce8e51d",
@@ -2055,10 +2189,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b5b9b028fbb33c910a5007f0c",
@@ -2071,10 +2207,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b6d3d56924c7f42eaae3856e4",
@@ -2087,10 +2225,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b7c038aed8857edc4d6a3711c",
@@ -2103,10 +2243,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b96d428f0bc480caf684cc50a",
@@ -2119,10 +2261,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bb7a1b5965d9b589d01309477",
@@ -2135,10 +2279,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bbb4fa8f85dd4425b92682417",
@@ -2151,10 +2297,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bc2e618f11a36b7c11e85da77",
@@ -2167,10 +2315,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bd629e2211c71b43bc0dd8f34",
@@ -2183,10 +2333,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bf9e9f4d181387462cf6ff245",
@@ -2199,10 +2351,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 2
+      "min_count": 2,
+      "name": null
     },
     "reason": null,
     "source": "b67cd4d912509c2deded5f2bc",
@@ -2215,10 +2369,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bb5355e00ccd2041d6f15037b",
@@ -2231,10 +2387,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bd820d59519fd1ec08c3d489d",
@@ -2247,10 +2405,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Water-Steam",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bce4863fe29d018f3e52a012b",
@@ -2263,6 +2423,7 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [
@@ -2270,7 +2431,8 @@
         "http://data.ashrae.org/standard223#Fluid-Oil",
         "http://data.ashrae.org/standard223#Fluid-Water"
       ],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b1b4047d2fa6a2180edb4dd73",
@@ -2283,13 +2445,15 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [
         "http://data.ashrae.org/standard223#Constituent-Refrigerant",
         "http://data.ashrae.org/standard223#Mix-Fluid"
       ],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b58bb134434405e0b94f5d68a",
@@ -2302,13 +2466,15 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [
         "http://data.ashrae.org/standard223#EM-Light",
         "http://data.ashrae.org/standard223#Fluid-Air"
       ],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b71a54796dff37cbf07803ea2",
@@ -2321,13 +2487,15 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [
         "http://data.ashrae.org/standard223#EM-RF",
         "http://data.ashrae.org/standard223#Electricity-Signal"
       ],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b7e6bd6322efd8cd2b63dc9ff",
@@ -2340,10 +2508,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b2c4f64b797166add869a6c94",
@@ -2356,10 +2526,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b3538f12e0ff7c70e9022bad8",
@@ -2372,10 +2544,12 @@
     "projection": {
       "cp_class": "InletConnectionPoint",
       "direction": "in",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bcdb54a8432f114fe0adb2de9",
@@ -2388,10 +2562,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b23937942bf6257e964a2b330",
@@ -2404,10 +2580,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b259b0eef0fc8e26c3d3607af",
@@ -2420,10 +2598,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b382b95a52dbbaa655cdd083a",
@@ -2436,10 +2616,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b52613606415f8e6328cad1d0",
@@ -2452,10 +2634,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bc5d8afd818a4f4b866d896ed",
@@ -2468,10 +2652,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bdce0ddc923c5c06e14c72303",
@@ -2484,10 +2670,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#EM-Light",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "be524f7f46c033616c1fc9e18",
@@ -2500,10 +2688,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b1b464956b850d6778c5959bd",
@@ -2516,10 +2706,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b2767a69934790ab0b725d457",
@@ -2532,10 +2724,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b41ba6f3e8947fd90d00ab695",
@@ -2548,10 +2742,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b5e0548ce89519eb77bc1d0c3",
@@ -2564,10 +2760,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b62fbea77840810da23804f82",
@@ -2580,10 +2778,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bca9889915eaf03a69c1dee69",
@@ -2596,10 +2796,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bcd78de33eb45f2a7be40afe4",
@@ -2612,10 +2814,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bf0edcd5a3acea9ec5e1cb12d",
@@ -2628,10 +2832,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bf436f9141a829ca110d077e4",
@@ -2644,10 +2850,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bf8a1df71da0a1ed41693685e",
@@ -2660,10 +2868,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Air",
       "medium_options": [],
-      "min_count": 2
+      "min_count": 2,
+      "name": null
     },
     "reason": null,
     "source": "bd27aafd7218526d16b0f657c",
@@ -2676,10 +2886,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b0496803d7dbb6bc47b834ef7",
@@ -2692,10 +2904,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b35f26e6d48e09c31f1935158",
@@ -2708,10 +2922,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b36cd91d1a4df84118e4113f7",
@@ -2724,10 +2940,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b3cd6b1a6cd7c7a50850e7f5b",
@@ -2740,10 +2958,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b45894f6f145a1e68ff4acdb1",
@@ -2756,10 +2976,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b7e01aab1e8b0d8b798523da9",
@@ -2772,10 +2994,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b82b1e2a58fc5d30d0aca691c",
@@ -2788,10 +3012,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b9c9784a43caa1ff23121b921",
@@ -2804,10 +3030,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "ba27b0b634d1b7b9e7c15dc2c",
@@ -2820,10 +3048,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "ba9158484d780a13e33135f16",
@@ -2836,10 +3066,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bba1d495adf729ce1fc9965c5",
@@ -2852,10 +3084,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bccab436b990d198c56ebe104",
@@ -2868,10 +3102,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bd29ab37bd2d6579a35728a1b",
@@ -2884,10 +3120,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bde31d178e897b2a33a213b36",
@@ -2900,10 +3138,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bf7555e2cc5e2f582d07028b5",
@@ -2916,10 +3156,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Fluid-Water",
       "medium_options": [],
-      "min_count": 2
+      "min_count": 2,
+      "name": null
     },
     "reason": null,
     "source": "b5a1db34d8d79842f1ecd41e8",
@@ -2932,10 +3174,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Light-Infrared",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b9809e5d7229f59f77182a6c2",
@@ -2948,10 +3192,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bf0985be85034044bdabd5366",
@@ -2964,10 +3210,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bf8f1fca1feb17b8c3b35fd15",
@@ -2980,10 +3228,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
       "medium_options": [],
-      "min_count": 2
+      "min_count": 2,
+      "name": null
     },
     "reason": null,
     "source": "bcd14019d90d462575d775b2d",
@@ -2996,10 +3246,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#RF-Signal",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b7818270d2fb243f587ba4dc2",
@@ -3012,10 +3264,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Signal-FiberEthernet",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "badab9a2eb029b2e0b2e7d209",
@@ -3028,10 +3282,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Signal-USB",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b500989a85696f5737a1e9854",
@@ -3044,10 +3300,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "http://data.ashrae.org/standard223#Signal-WiredEthernet",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bcceab4ff71b7f88d38d78fdb",
@@ -3060,10 +3318,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "bc0edafa1c5e42e24e89956b8",
@@ -3076,6 +3336,7 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [
@@ -3083,7 +3344,8 @@
         "http://data.ashrae.org/standard223#Fluid-Oil",
         "http://data.ashrae.org/standard223#Fluid-Water"
       ],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b0eef140182047dbdf81e3cd1",
@@ -3096,13 +3358,15 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [
         "http://data.ashrae.org/standard223#Constituent-Refrigerant",
         "http://data.ashrae.org/standard223#Mix-Fluid"
       ],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "ba801c32249d5340b9a3700c8",
@@ -3115,13 +3379,15 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [
         "http://data.ashrae.org/standard223#EM-Light",
         "http://data.ashrae.org/standard223#Fluid-Air"
       ],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b2e1b8ae7e084985d35926566",
@@ -3134,10 +3400,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b6492125b6336392963b5ffdb",
@@ -3150,10 +3418,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "b7616e54950e36e43763d5809",
@@ -3166,10 +3436,12 @@
     "projection": {
       "cp_class": "OutletConnectionPoint",
       "direction": "out",
+      "label": null,
       "max_count": null,
       "medium": null,
       "medium_options": [],
-      "min_count": 1
+      "min_count": 1,
+      "name": null
     },
     "reason": null,
     "source": "baf3abd6feff77ae6a7345b04",
@@ -3306,10 +3578,12 @@
           "slot": {
             "cp_class": "BidirectionalConnectionPoint",
             "direction": "bi",
+            "label": null,
             "max_count": 1,
             "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
             "medium_options": [],
-            "min_count": 1
+            "min_count": 1,
+            "name": null
           },
           "source": null
         },
@@ -3322,10 +3596,12 @@
               "slot": {
                 "cp_class": "InletConnectionPoint",
                 "direction": "in",
+                "label": null,
                 "max_count": 1,
                 "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             },
@@ -3336,10 +3612,12 @@
               "slot": {
                 "cp_class": "OutletConnectionPoint",
                 "direction": "out",
+                "label": null,
                 "max_count": 1,
                 "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             }
@@ -3369,10 +3647,12 @@
           "slot": {
             "cp_class": "InletConnectionPoint",
             "direction": "in",
+            "label": null,
             "max_count": null,
             "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
             "medium_options": [],
-            "min_count": 1
+            "min_count": 1,
+            "name": null
           },
           "source": null
         },
@@ -3385,10 +3665,12 @@
               "slot": {
                 "cp_class": "OutletConnectionPoint",
                 "direction": "out",
+                "label": null,
                 "max_count": null,
                 "medium": "http://data.ashrae.org/standard223#Fluid-Water",
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             },
@@ -3399,10 +3681,12 @@
               "slot": {
                 "cp_class": "InletConnectionPoint",
                 "direction": "in",
+                "label": null,
                 "max_count": null,
                 "medium": "http://data.ashrae.org/standard223#Fluid-Water",
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             }
@@ -3432,13 +3716,15 @@
           "slot": {
             "cp_class": "InletConnectionPoint",
             "direction": "in",
+            "label": null,
             "max_count": null,
             "medium": null,
             "medium_options": [
               "http://data.ashrae.org/standard223#Constituent-Electricity",
               "http://data.ashrae.org/standard223#Fluid-NaturalGas"
             ],
-            "min_count": 1
+            "min_count": 1,
+            "name": null
           },
           "source": null
         },
@@ -3451,10 +3737,12 @@
               "slot": {
                 "cp_class": "OutletConnectionPoint",
                 "direction": "out",
+                "label": null,
                 "max_count": null,
                 "medium": "http://data.ashrae.org/standard223#Fluid-Water",
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             },
@@ -3465,10 +3753,12 @@
               "slot": {
                 "cp_class": "InletConnectionPoint",
                 "direction": "in",
+                "label": null,
                 "max_count": null,
                 "medium": "http://data.ashrae.org/standard223#Fluid-Water",
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             }
@@ -3498,10 +3788,12 @@
           "slot": {
             "cp_class": "OutletConnectionPoint",
             "direction": "out",
+            "label": null,
             "max_count": null,
             "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
             "medium_options": [],
-            "min_count": 1
+            "min_count": 1,
+            "name": null
           },
           "source": null
         },
@@ -3512,10 +3804,12 @@
           "slot": {
             "cp_class": "BidirectionalConnectionPoint",
             "direction": "bi",
+            "label": null,
             "max_count": null,
             "medium": "http://data.ashrae.org/standard223#Constituent-Electricity",
             "medium_options": [],
-            "min_count": 1
+            "min_count": 1,
+            "name": null
           },
           "source": null
         }
@@ -3539,10 +3833,12 @@
           "slot": {
             "cp_class": "OutletConnectionPoint",
             "direction": "out",
+            "label": null,
             "max_count": null,
             "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
             "medium_options": [],
-            "min_count": 1
+            "min_count": 1,
+            "name": null
           },
           "source": null
         },
@@ -3553,10 +3849,12 @@
           "slot": {
             "cp_class": "OutletConnectionPoint",
             "direction": "out",
+            "label": null,
             "max_count": null,
             "medium": "http://data.ashrae.org/standard223#Fluid-Water",
             "medium_options": [],
-            "min_count": 1
+            "min_count": 1,
+            "name": null
           },
           "source": null
         }
@@ -3580,10 +3878,12 @@
           "slot": {
             "cp_class": "OutletConnectionPoint",
             "direction": "out",
+            "label": null,
             "max_count": null,
             "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
             "medium_options": [],
-            "min_count": 1
+            "min_count": 1,
+            "name": null
           },
           "source": null
         },
@@ -3594,10 +3894,12 @@
           "slot": {
             "cp_class": "OutletConnectionPoint",
             "direction": "out",
+            "label": null,
             "max_count": null,
             "medium": "http://data.ashrae.org/standard223#Fluid-Water",
             "medium_options": [],
-            "min_count": 1
+            "min_count": 1,
+            "name": null
           },
           "source": null
         }
@@ -3665,10 +3967,12 @@
               "slot": {
                 "cp_class": "InletConnectionPoint",
                 "direction": "in",
+                "label": null,
                 "max_count": null,
                 "medium": null,
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             },
@@ -3679,10 +3983,12 @@
               "slot": {
                 "cp_class": "OutletConnectionPoint",
                 "direction": "out",
+                "label": null,
                 "max_count": null,
                 "medium": null,
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             }
@@ -3699,10 +4005,12 @@
           "slot": {
             "cp_class": "BidirectionalConnectionPoint",
             "direction": "bi",
+            "label": null,
             "max_count": null,
             "medium": null,
             "medium_options": [],
-            "min_count": 1
+            "min_count": 1,
+            "name": null
           },
           "source": null
         }
@@ -3728,10 +4036,12 @@
               "slot": {
                 "cp_class": "OutletConnectionPoint",
                 "direction": "out",
+                "label": null,
                 "max_count": 1,
                 "medium": "http://data.ashrae.org/standard223#Fluid-Air",
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             },
@@ -3742,10 +4052,12 @@
               "slot": {
                 "cp_class": "InletConnectionPoint",
                 "direction": "in",
+                "label": null,
                 "max_count": 1,
                 "medium": "http://data.ashrae.org/standard223#Fluid-Air",
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             },
@@ -3756,10 +4068,12 @@
               "slot": {
                 "cp_class": "InletConnectionPoint",
                 "direction": "in",
+                "label": null,
                 "max_count": 2,
                 "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
                 "medium_options": [],
-                "min_count": 2
+                "min_count": 2,
+                "name": null
               },
               "source": null
             },
@@ -3770,10 +4084,12 @@
               "slot": {
                 "cp_class": "OutletConnectionPoint",
                 "direction": "out",
+                "label": null,
                 "max_count": 2,
                 "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
                 "medium_options": [],
-                "min_count": 2
+                "min_count": 2,
+                "name": null
               },
               "source": null
             }
@@ -3792,13 +4108,15 @@
               "slot": {
                 "cp_class": "BidirectionalConnectionPoint",
                 "direction": "bi",
+                "label": null,
                 "max_count": 2,
                 "medium": null,
                 "medium_options": [
                   "http://data.ashrae.org/standard223#Medium-ThermalContact",
                   "http://data.ashrae.org/standard223#Mix-Fluid"
                 ],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             },
@@ -3809,10 +4127,12 @@
               "slot": {
                 "cp_class": "InletConnectionPoint",
                 "direction": "in",
+                "label": null,
                 "max_count": 1,
                 "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             },
@@ -3823,10 +4143,12 @@
               "slot": {
                 "cp_class": "OutletConnectionPoint",
                 "direction": "out",
+                "label": null,
                 "max_count": 1,
                 "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             }
@@ -3843,13 +4165,15 @@
           "slot": {
             "cp_class": "BidirectionalConnectionPoint",
             "direction": "bi",
+            "label": null,
             "max_count": 3,
             "medium": null,
             "medium_options": [
               "http://data.ashrae.org/standard223#Medium-ThermalContact",
               "http://data.ashrae.org/standard223#Mix-Fluid"
             ],
-            "min_count": 3
+            "min_count": 3,
+            "name": null
           },
           "source": null
         }
@@ -3875,10 +4199,12 @@
               "slot": {
                 "cp_class": "OutletConnectionPoint",
                 "direction": "out",
+                "label": null,
                 "max_count": null,
                 "medium": null,
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             },
@@ -3889,10 +4215,12 @@
               "slot": {
                 "cp_class": "InletConnectionPoint",
                 "direction": "in",
+                "label": null,
                 "max_count": null,
                 "medium": null,
                 "medium_options": [],
-                "min_count": 1
+                "min_count": 1,
+                "name": null
               },
               "source": null
             }
@@ -3909,10 +4237,12 @@
           "slot": {
             "cp_class": "BidirectionalConnectionPoint",
             "direction": "bi",
+            "label": null,
             "max_count": null,
             "medium": null,
             "medium_options": [],
-            "min_count": 2
+            "min_count": 2,
+            "name": null
           },
           "source": null
         }

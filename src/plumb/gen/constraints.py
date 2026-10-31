@@ -7,9 +7,172 @@ or repeated property shapes from turning restrictions into alternatives.
 
 from __future__ import annotations
 
-from rdflib import Graph, URIRef
+from collections.abc import Callable, Mapping, Set
+from dataclasses import replace
+
+from rdflib import Graph, URIRef, XSD
 from rdflib.namespace import SH
 from rdflib.term import Node
+
+from .ir import PropIR
+
+DATATYPES: dict[URIRef, str] = {
+    XSD.string: "str",
+    XSD.normalizedString: "str",
+    XSD.anyURI: "str",
+    XSD.float: "float",
+    XSD.double: "float",
+    XSD.decimal: "float",
+    XSD.integer: "int",
+    XSD.int: "int",
+    XSD.long: "int",
+    XSD.nonNegativeInteger: "int",
+    XSD.positiveInteger: "int",
+    XSD.boolean: "bool",
+}
+
+
+def refine_property(prop: PropIR, graph: Graph, shapes: list[Node]) -> PropIR:
+    """Intersect SHACL refinements with an effective inherited property."""
+    result = replace(prop)
+    result.min_count, result.max_count = cardinality(
+        graph, shapes, minimum=prop.min_count, maximum=prop.max_count
+    )
+    result.required = prop.required or any(
+        int(str(value)) > 0
+        for shape in shapes
+        for value in graph.objects(shape, SH.minCount)
+    )
+    result.sources = tuple(sorted(set(prop.sources) | {str(shape) for shape in shapes}))
+    result.range_groups = tuple(
+        sorted(
+            set(prop.range_groups)
+            | {group for shape in shapes for group in class_groups(graph, shape)}
+        )
+    )
+    datatypes = {
+        value for shape in shapes for value in graph.objects(shape, SH.datatype)
+    }
+    supported = {
+        DATATYPES[value]
+        for value in datatypes
+        if isinstance(value, URIRef) and value in DATATYPES
+    }
+    if len(supported) > 1:
+        raise ValueError(
+            f"{prop.predicate}: incompatible datatypes; sources: {result.sources}"
+        )
+    if supported:
+        datatype = supported.pop()
+        if prop.kind == "literal" and prop.datatype != datatype:
+            raise ValueError(f"{prop.predicate}: incompatible inherited datatype")
+        result.kind, result.datatype = "literal", datatype
+    result.required_values = _ordered(
+        {
+            *prop.required_values,
+            *(value for shape in shapes for value in graph.objects(shape, SH.hasValue)),
+        }
+    )
+    defaults = _ordered(
+        {value for shape in shapes for value in graph.objects(shape, SH.defaultValue)}
+    )
+    result.default_values = defaults if defaults else prop.default_values
+    choices = [set(prop.choices)] if prop.choices is not None else []
+    choices.extend(
+        set(graph.items(members))
+        for shape in shapes
+        for members in graph.objects(shape, SH["in"])
+    )
+    result.choices = _ordered(set.intersection(*choices)) if choices else None
+    _check_values(result)
+    return result
+
+
+def merge_properties(left: PropIR, right: PropIR) -> PropIR:
+    """Compose declarations by identity, preserving intersections and defaults."""
+    if left.predicate != right.predicate:
+        raise ValueError(
+            f"property name collision {left.name}: {left.predicate}, {right.predicate}"
+        )
+    maxima = [n for n in (left.max_count, right.max_count) if n is not None]
+    untyped = right.kind == "object" and not right.ranges and not right.range_groups
+    choices = [set(prop.choices) for prop in (left, right) if prop.choices is not None]
+    result = replace(
+        right,
+        kind=left.kind if untyped else right.kind,
+        datatype=left.datatype if untyped else right.datatype,
+        inverse=right.inverse or left.inverse,
+        label=right.label or left.label,
+        definition=right.definition or left.definition,
+        required=left.required or right.required,
+        min_count=max(left.min_count, right.min_count),
+        max_count=min(maxima) if maxima else None,
+        range_groups=tuple(sorted(set(left.range_groups) | set(right.range_groups))),
+        sources=tuple(sorted(set(left.sources) | set(right.sources))),
+        deferred=left.deferred or right.deferred,
+        required_values=_ordered(
+            set(left.required_values) | set(right.required_values)
+        ),
+        default_values=right.default_values or left.default_values,
+        choices=_ordered(set.intersection(*choices)) if choices else None,
+    )
+    _check_values(result)
+    return result
+
+
+def project_ranges(
+    prop: PropIR,
+    names: Mapping[str, str],
+    enum_iris: Set[str],
+    is_a: Callable[[str, str], bool],
+) -> PropIR:
+    """Derive annotation ranges without weakening semantic intersections."""
+    if not prop.range_groups:
+        return prop
+    candidates = {iri for group in prop.range_groups for iri in group}
+    narrowed = {
+        iri
+        for iri in candidates
+        if all(any(is_a(iri, root) for root in group) for group in prop.range_groups)
+    }
+    projection = narrowed or set(
+        sorted(prop.range_groups, key=lambda group: (len(group), group))[0]
+    )
+    kind = "enum" if candidates <= enum_iris else prop.kind
+    return replace(
+        prop,
+        kind=kind,
+        ranges=tuple(sorted(names[iri] for iri in projection if iri in names)),
+        enum_ranges=tuple(sorted(projection)) if kind == "enum" else (),
+    )
+
+
+def _ordered(values: Set[Node]) -> tuple[Node, ...]:
+    return tuple(sorted(values, key=lambda value: value.n3()))
+
+
+def _check_values(prop: PropIR) -> None:
+    if (
+        prop.max_count is not None
+        and max(prop.min_count, len(prop.required_values)) > prop.max_count
+    ):
+        raise ValueError(
+            f"{prop.predicate}: contradictory cardinalities; sources: {prop.sources}"
+        )
+    if prop.choices is not None and any(
+        value not in prop.choices
+        for value in (*prop.required_values, *prop.default_values)
+    ):
+        raise ValueError(
+            f"{prop.predicate}: required/default value is outside sh:in; sources: {prop.sources}"
+        )
+    if (
+        prop.max_count is not None
+        and len(set(prop.default_values) | set(prop.required_values)) > prop.max_count
+    ):
+        raise ValueError(
+            f"{prop.predicate}: defaults exceed cardinality; sources: {prop.sources}"
+        )
 
 
 def property_shapes(

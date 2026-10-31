@@ -156,7 +156,7 @@ class RelOne(Generic[T]):
         if value is not None:
             value = _link_value(self.spec, value)
             obj._check_range(self.spec, value)
-        _check_maximum(obj, self.spec, int(value is not None))
+        _check_scalar(obj, self.spec, value)
         if value is not None:
             _check_inverse(obj, self.spec, value)
         previous = obj._data.get(self.spec.name)
@@ -194,12 +194,14 @@ class TermOne(Generic[V]):
         from .terms import TermValue
 
         obj._model._assert_mutable()
-        _check_maximum(obj, self.spec, int(value is not None))
+        _check_scalar(obj, self.spec, value)
         if value is not None and not isinstance(value, TermValue):
             raise RangeError(
                 f"{type(obj).__name__}.{self.spec.name} expects a compiled "
                 f"vocabulary term, got {type(value).__name__} ({value!r})"
             )
+        if value is not None and self.spec.range_groups:
+            obj._check_range(self.spec, value)
         if (
             value is not None
             and self.spec.term_ranges
@@ -247,7 +249,7 @@ class ValueOne(Generic[V]):
 
     def __set__(self, obj: Entity, value: V | None) -> None:
         obj._model._assert_mutable()
-        _check_maximum(obj, self.spec, int(value is not None))
+        _check_scalar(obj, self.spec, value)
         obj._data[self.spec.name] = value
         obj._model._touch(obj)
 
@@ -281,7 +283,7 @@ class EnumOne(Generic[V]):
 
     def __set__(self, obj: Entity, value: V | None) -> None:
         obj._model._assert_mutable()
-        _check_maximum(obj, self.spec, int(value is not None))
+        _check_scalar(obj, self.spec, value)
         if value is not None:
             _check_enum(obj, self.spec, value)
         obj._data[self.spec.name] = value
@@ -446,6 +448,14 @@ def _check_enum(obj: Entity, spec: PropertySpec, value: object) -> None:
     )
 
 
+def _check_scalar(obj: Entity, spec: PropertySpec, value: object) -> None:
+    _check_maximum(obj, spec, int(value is not None))
+    if obj._shape_constraints:
+        from .shape_constraints import check_values
+
+        check_values(obj, spec.name, value)
+
+
 def _check_maximum(obj: Entity, spec: PropertySpec, count: int) -> None:
     if spec.max_count is not None and count > spec.max_count:
         raise RangeError(
@@ -477,7 +487,7 @@ class Lit(Generic[V]):
 
     def __set__(self, obj: Entity, value: V | None) -> None:
         obj._model._assert_mutable()
-        _check_maximum(obj, self.spec, int(value is not None))
+        _check_scalar(obj, self.spec, value)
         if value is not None and not _literal_ok(self.spec.datatype, value):
             raise RangeError(
                 f"{type(obj).__name__}.{self.spec.name} expects "

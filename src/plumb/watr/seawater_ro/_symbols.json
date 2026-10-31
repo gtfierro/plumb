@@ -1,0 +1,3098 @@
+{
+  "classes": [
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Reactor",
+        "https://watermetadata.org/ontology/watr#Tank",
+        "https://watermetadata.org/ontology/watr#UVH2O2Reactor",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [
+        [
+          "has_process",
+          "Process_AdvancedOxidation"
+        ],
+        [
+          "has_treatment_objective",
+          "TreatmentObjective_OrganicsRemoval"
+        ]
+      ],
+      "cp_constraints": [],
+      "cp_slots": [],
+      "definition": "Advanced Oxidation Stage configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#AdvancedOxidationStage",
+      "label": "Advanced Oxidation Stage",
+      "maximum_ports": null,
+      "name": "AdvancedOxidationStage",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#UVH2O2Reactor"
+      ],
+      "parents": [
+        "UVH2O2Reactor"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "6204f1024db92519e799b364b221312b700cefa0aaa6277d11968733e14230ba",
+        "70fc6c79a61c10b686ed6ece2b3a29ba20ea50f36658b6d0b4c87b5e35c375aa",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "byproduct",
+          "max_count": 1,
+          "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "byproduct"
+        },
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "treated",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "treated"
+        }
+      ],
+      "definition": "Backwash Separator configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#BackwashSeparator",
+      "label": "Backwash Separator",
+      "maximum_ports": 3,
+      "name": "BackwashSeparator",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "parents": [
+        "UnitProcess"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "byproduct",
+          "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
+          "name": "byproduct",
+          "source": "https://watermetadata.org/plumb/seawater-ro#BackwashSeparatorShape/hasConnectionPoint/3"
+        },
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "inlet",
+          "source": "https://watermetadata.org/plumb/seawater-ro#BackwashSeparatorShape/hasConnectionPoint/1"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "treated",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "treated",
+          "source": "https://watermetadata.org/plumb/seawater-ro#BackwashSeparatorShape/hasConnectionPoint/2"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "f11bdd29a0451e88c8ab84bdd6050aa047d323c08773767faae9b389fa1d67cd",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [],
+      "definition": "Backwash Stage configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#BackwashStage",
+      "label": "Backwash Stage",
+      "maximum_ports": null,
+      "name": "BackwashStage",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "parents": [
+        "UnitProcess"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "69e8d5187e48ac8fd1be11efd6694835d82cc5fc8cc7b3309dc59aea0ff44d69",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Pump"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": null,
+          "max_count": null,
+          "medium": null,
+          "medium_options": [
+            "http://data.ashrae.org/standard223#Constituent-Refrigerant",
+            "http://data.ashrae.org/standard223#Mix-Fluid"
+          ],
+          "min_count": 1,
+          "name": null
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": null,
+          "max_count": null,
+          "medium": null,
+          "medium_options": [
+            "http://data.ashrae.org/standard223#Constituent-Refrigerant",
+            "http://data.ashrae.org/standard223#Mix-Fluid"
+          ],
+          "min_count": 1,
+          "name": null
+        }
+      ],
+      "definition": "Booster Pump configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#BoosterPump",
+      "label": "Booster Pump",
+      "maximum_ports": null,
+      "name": "BoosterPump",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#Pump"
+      ],
+      "parents": [
+        "Pump"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "d07c4f2d22682892d62390f8bbea78676cfc76642da092e481a02f191eb39785",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "1b6a1f7f781290d7332f0342bb424402492b468e4c0e468599277c555f0363ff",
+        "242b3731a0ab5406137e1c3cb51a3b208f173f4e9c171b8ade1233c3aef0b5a1",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://data.ashrae.org/standard223#Filter",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#CartridgeFiltrationUnit",
+        "https://watermetadata.org/ontology/watr#Filter",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [],
+      "definition": "Cartridge Filtration Stage configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#CartridgeFiltrationStage",
+      "label": "Cartridge Filtration Stage",
+      "maximum_ports": null,
+      "name": "CartridgeFiltrationStage",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#CartridgeFiltrationUnit"
+      ],
+      "parents": [
+        "CartridgeFiltrationUnit"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "d215dd27f418c6f4c66198c9eb35b626b4d1513f514967b655acfb0a5ed61bb3",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "0114ecb0163dc051490830648dd45dd88046956a5358295af52c725b5073ef59",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#ChlorinationUnit",
+        "https://watermetadata.org/ontology/watr#DisinfectionUnit",
+        "https://watermetadata.org/ontology/watr#Reactor",
+        "https://watermetadata.org/ontology/watr#Tank",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [
+        [
+          "has_process",
+          "Process_Chlorination"
+        ]
+      ],
+      "cp_constraints": [],
+      "cp_slots": [],
+      "definition": "Chlorination Stage configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#ChlorinationStage",
+      "label": "Chlorination Stage",
+      "maximum_ports": null,
+      "name": "ChlorinationStage",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#ChlorinationUnit"
+      ],
+      "parents": [
+        "ChlorinationUnit"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "1b56df6f93a7d5f75f0c438987bbdbd89affbbfc73de76f010ac7d6c6dbb089c",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#CoagulationBasin",
+        "https://watermetadata.org/ontology/watr#Reactor",
+        "https://watermetadata.org/ontology/watr#Tank",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [
+        [
+          "has_process",
+          "Process_Coagulation"
+        ]
+      ],
+      "cp_constraints": [],
+      "cp_slots": [],
+      "definition": "Coagulation Stage configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#CoagulationStage",
+      "label": "Coagulation Stage",
+      "maximum_ports": null,
+      "name": "CoagulationStage",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#CoagulationBasin"
+      ],
+      "parents": [
+        "CoagulationBasin"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "6f599a90b43459688642c0e6d5c11bb82efd410f9ca92a82febbe211d40e217e",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Reactor",
+        "https://watermetadata.org/ontology/watr#Tank",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": null,
+          "max_count": null,
+          "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+          "medium_options": [],
+          "min_count": 1,
+          "name": null
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": null,
+          "max_count": null,
+          "medium": "http://data.ashrae.org/standard223#Mix-Fluid",
+          "medium_options": [],
+          "min_count": 1,
+          "name": null
+        }
+      ],
+      "definition": "Dosing Stage configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#DosingStage",
+      "label": "Dosing Stage",
+      "maximum_ports": null,
+      "name": "DosingStage",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#Reactor"
+      ],
+      "parents": [
+        "Reactor"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "ee36af112a1f97816d4e82c237c827bd0d74a023857165579726ccb978105f5a",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#PressureExchanger"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [],
+      "definition": "Energy Recovery Exchanger configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#EnergyRecoveryExchanger",
+      "label": "Energy Recovery Exchanger",
+      "maximum_ports": null,
+      "name": "EnergyRecoveryExchanger",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#PressureExchanger"
+      ],
+      "parents": [
+        "PressureExchanger"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "1b6a1f7f781290d7332f0342bb424402492b468e4c0e468599277c555f0363ff",
+        "f10596b8ad5a8fc1404ab465668e3933c3d33f299304efc60666b717575cd855",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Junction",
+        "http://www.w3.org/2000/01/rdf-schema#Resource"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "operator": "slot",
+                  "reason": null,
+                  "slot": {
+                    "cp_class": "InletConnectionPoint",
+                    "direction": "in",
+                    "label": null,
+                    "max_count": null,
+                    "medium": null,
+                    "medium_options": [],
+                    "min_count": 1,
+                    "name": null
+                  },
+                  "source": null
+                },
+                {
+                  "children": [],
+                  "operator": "slot",
+                  "reason": null,
+                  "slot": {
+                    "cp_class": "OutletConnectionPoint",
+                    "direction": "out",
+                    "label": null,
+                    "max_count": null,
+                    "medium": null,
+                    "medium_options": [],
+                    "min_count": 1,
+                    "name": null
+                  },
+                  "source": null
+                }
+              ],
+              "operator": "and",
+              "reason": null,
+              "slot": null,
+              "source": null
+            },
+            {
+              "children": [],
+              "operator": "slot",
+              "reason": null,
+              "slot": {
+                "cp_class": "BidirectionalConnectionPoint",
+                "direction": "bi",
+                "label": null,
+                "max_count": null,
+                "medium": null,
+                "medium_options": [],
+                "min_count": 1,
+                "name": null
+              },
+              "source": null
+            }
+          ],
+          "operator": "or",
+          "reason": null,
+          "slot": null,
+          "source": null
+        }
+      ],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "pressure_exchanger",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "pressure_exchanger"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "pump",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "pump"
+        }
+      ],
+      "definition": "Feed Splitter configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#FeedSplitter",
+      "label": "Feed Splitter",
+      "maximum_ports": 3,
+      "name": "FeedSplitter",
+      "parent_iris": [
+        "http://data.ashrae.org/standard223#Junction"
+      ],
+      "parents": [
+        "Junction"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "inlet",
+          "source": "https://watermetadata.org/plumb/seawater-ro#FeedSplitterShape/hasConnectionPoint/1"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "pressure_exchanger",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "pressure_exchanger",
+          "source": "https://watermetadata.org/plumb/seawater-ro#FeedSplitterShape/hasConnectionPoint/3"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "pump",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "pump",
+          "source": "https://watermetadata.org/plumb/seawater-ro#FeedSplitterShape/hasConnectionPoint/2"
+        }
+      ],
+      "properties": [
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "23cc85eebcc09707813a90ff6b1d5ce0d2eaff65ff8299845362883a8e01b14f",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "e9d34b66df828a0a70289fdffc969528a4901a5960f73c46c9fbfafa0858e761",
+        "e0af2845e17c376cee0a0e8055d2fa4d9cd479ad3feab225c4f0e789a76d1ffe",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "12e3557c1d0388c92c4ee92b880d880d316e8dbbb27980d0652da02a232d3d5b"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Pump"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": null,
+          "max_count": null,
+          "medium": null,
+          "medium_options": [
+            "http://data.ashrae.org/standard223#Constituent-Refrigerant",
+            "http://data.ashrae.org/standard223#Mix-Fluid"
+          ],
+          "min_count": 1,
+          "name": null
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": null,
+          "max_count": null,
+          "medium": null,
+          "medium_options": [
+            "http://data.ashrae.org/standard223#Constituent-Refrigerant",
+            "http://data.ashrae.org/standard223#Mix-Fluid"
+          ],
+          "min_count": 1,
+          "name": null
+        }
+      ],
+      "definition": "High Pressure Pump configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#HighPressurePump",
+      "label": "High Pressure Pump",
+      "maximum_ports": null,
+      "name": "HighPressurePump",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#Pump"
+      ],
+      "parents": [
+        "Pump"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "d07c4f2d22682892d62390f8bbea78676cfc76642da092e481a02f191eb39785",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "1b6a1f7f781290d7332f0342bb424402492b468e4c0e468599277c555f0363ff",
+        "ae41a1311ac46bc1b8b65706297e46139dc4500c8f4f15a4f973faa970d67da5",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Pump"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": null,
+          "max_count": null,
+          "medium": null,
+          "medium_options": [
+            "http://data.ashrae.org/standard223#Constituent-Refrigerant",
+            "http://data.ashrae.org/standard223#Mix-Fluid"
+          ],
+          "min_count": 1,
+          "name": null
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": null,
+          "max_count": null,
+          "medium": null,
+          "medium_options": [
+            "http://data.ashrae.org/standard223#Constituent-Refrigerant",
+            "http://data.ashrae.org/standard223#Mix-Fluid"
+          ],
+          "min_count": 1,
+          "name": null
+        }
+      ],
+      "definition": "Intake Pump configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#IntakePump",
+      "label": "Intake Pump",
+      "maximum_ports": null,
+      "name": "IntakePump",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#Pump"
+      ],
+      "parents": [
+        "Pump"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "d07c4f2d22682892d62390f8bbea78676cfc76642da092e481a02f191eb39785",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "1b6a1f7f781290d7332f0342bb424402492b468e4c0e468599277c555f0363ff",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "5110ab02ee4f5bfb0133e2b994454b353fc1d2f0fc7bf02239eb58c6b5a4f9de",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "max_count": 1,
+          "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "max_count": 1,
+          "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "outlet"
+        }
+      ],
+      "definition": "Landfill configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#Landfill",
+      "label": "Landfill",
+      "maximum_ports": 2,
+      "name": "Landfill",
+      "parent_iris": [
+        "http://data.ashrae.org/standard223#Equipment"
+      ],
+      "parents": [
+        "Equipment"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
+          "name": "inlet",
+          "source": "https://watermetadata.org/plumb/seawater-ro#LandfillShape/hasConnectionPoint/0"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "medium": "https://watermetadata.org/ontology/watr#Fluid-Sludge",
+          "name": "outlet",
+          "source": "https://watermetadata.org/plumb/seawater-ro#LandfillShape/hasConnectionPoint/1"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "1b6a1f7f781290d7332f0342bb424402492b468e4c0e468599277c555f0363ff",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "backwash",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "backwash"
+        },
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "product",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "product"
+        }
+      ],
+      "definition": "Media Filter configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#MediaFilter",
+      "label": "Media Filter",
+      "maximum_ports": 3,
+      "name": "MediaFilter",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "parents": [
+        "UnitProcess"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "backwash",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "backwash",
+          "source": "https://watermetadata.org/plumb/seawater-ro#MediaFilterShape/hasConnectionPoint/3"
+        },
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "inlet",
+          "source": "https://watermetadata.org/plumb/seawater-ro#MediaFilterShape/hasConnectionPoint/1"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "product",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "product",
+          "source": "https://watermetadata.org/plumb/seawater-ro#MediaFilterShape/hasConnectionPoint/2"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "99939a2b45a67082537382076114cd0b79158005a6d413680cfe3d4eb26bc6dd",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [],
+      "definition": "Media Filtration Stage configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#MediaFiltrationStage",
+      "label": "Media Filtration Stage",
+      "maximum_ports": null,
+      "name": "MediaFiltrationStage",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "parents": [
+        "UnitProcess"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "a9512e413a56fafd55589dfdd053239187fe19b6e305864098c729f90565eb39",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Reactor",
+        "https://watermetadata.org/ontology/watr#StaticMixer",
+        "https://watermetadata.org/ontology/watr#Tank",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [
+        [
+          "has_process",
+          "Process_Mixing"
+        ]
+      ],
+      "cp_constraints": [],
+      "cp_slots": [],
+      "definition": "Mixing Stage configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#MixingStage",
+      "label": "Mixing Stage",
+      "maximum_ports": null,
+      "name": "MixingStage",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#StaticMixer"
+      ],
+      "parents": [
+        "StaticMixer"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "ffc22ce134b504d5ca9b45b4ccd1621227d5ec16f2c3c591b3757b3fa32526fb",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connection",
+        "http://data.ashrae.org/standard223#Pipe",
+        "http://www.w3.org/2000/01/rdf-schema#Resource"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [],
+      "definition": "Permeate Connection configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#PermeateConnection",
+      "label": "Permeate Connection",
+      "maximum_ports": null,
+      "name": "PermeateConnection",
+      "parent_iris": [
+        "http://data.ashrae.org/standard223#Pipe"
+      ],
+      "parents": [
+        "Pipe"
+      ],
+      "points": [],
+      "properties": [
+        "7e65911bf6449ab832584bdc748903089cd3e663706794e04e83f4511cfa393f",
+        "981a14bf111a6e6b9b742800b6a28cddaa383efe9393d49f73076f67aecc7f64",
+        "309e5f05d98362099601840290b17237f6d7ce9b0bb206db6ce76d539bd7b7d4",
+        "7029e7f87f522ebc3e81670c2d82c244f9d0dd995c8c480af26be3df20435623",
+        "2b96385b3f74a9e7395864091dcc97a457b3ebbf43c79fcd27af981c72d0c746",
+        "862aa20950b063150edf6b0d67dd08d45ea07b50a665cebfb15c8e89ef009faa",
+        "a2a5274fb5f50d1fa9e2bf3d6d0fd20b3696998497c6ee71d0a089816fc94ac1",
+        "1bff9907715fe0f7b82700564ea316d3987b3fedd036f4c2aa3da76b7c8cc0b5"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Reactor",
+        "https://watermetadata.org/ontology/watr#StaticMixer",
+        "https://watermetadata.org/ontology/watr#Tank",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [
+        [
+          "has_process",
+          "Process_Mixing"
+        ]
+      ],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "booster",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "booster"
+        },
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "high_pressure",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "high_pressure"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "outlet"
+        }
+      ],
+      "definition": "ROFeed Mixer configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#ROFeedMixer",
+      "label": "ROFeed Mixer",
+      "maximum_ports": 3,
+      "name": "ROFeedMixer",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#StaticMixer"
+      ],
+      "parents": [
+        "StaticMixer"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "booster",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "booster",
+          "source": "https://watermetadata.org/plumb/seawater-ro#ROFeedMixerShape/hasConnectionPoint/2"
+        },
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "high_pressure",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "high_pressure",
+          "source": "https://watermetadata.org/plumb/seawater-ro#ROFeedMixerShape/hasConnectionPoint/1"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "outlet",
+          "source": "https://watermetadata.org/plumb/seawater-ro#ROFeedMixerShape/hasConnectionPoint/3"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "6af81c1027fa7815bbf5e487d18ec099063a8161e4d6cdd2b3e2703d9b09698f",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://data.ashrae.org/standard223#Filter",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Filter",
+        "https://watermetadata.org/ontology/watr#ReverseOsmosisMembrane",
+        "https://watermetadata.org/ontology/watr#UnitProcess"
+      ],
+      "class_defaults": [
+        [
+          "has_process",
+          "Process_ReverseOsmosis"
+        ]
+      ],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "concentrate",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "concentrate"
+        },
+        {
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "inlet"
+        },
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "permeate",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "permeate"
+        }
+      ],
+      "definition": "ROStage configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#ROStage",
+      "label": "ROStage",
+      "maximum_ports": 3,
+      "name": "ROStage",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#ReverseOsmosisMembrane"
+      ],
+      "parents": [
+        "ReverseOsmosisMembrane"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "concentrate",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "concentrate",
+          "source": "https://watermetadata.org/plumb/seawater-ro#ROStageShape/hasConnectionPoint/3"
+        },
+        {
+          "count": 1,
+          "cp_class": "InletConnectionPoint",
+          "direction": "in",
+          "label": "inlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "inlet",
+          "source": "https://watermetadata.org/plumb/seawater-ro#ROStageShape/hasConnectionPoint/1"
+        },
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "permeate",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "permeate",
+          "source": "https://watermetadata.org/plumb/seawater-ro#ROStageShape/hasConnectionPoint/2"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "d215dd27f418c6f4c66198c9eb35b626b4d1513f514967b655acfb0a5ed61bb3",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "d5a7cc264e07ed4140bfcf0e65fdf382c5ffacec08b5ad65eadb20abf78ea174",
+        "bd89bd9aaab197765b9ba4e0f61dde254e968817dc4d4d0fc893325fd1973586",
+        "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [
+        {
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "max_count": 1,
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "medium_options": [],
+          "min_count": 1,
+          "name": "outlet"
+        }
+      ],
+      "definition": "Seawater Feed configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#SeawaterFeed",
+      "label": "Seawater Feed",
+      "maximum_ports": 1,
+      "name": "SeawaterFeed",
+      "parent_iris": [
+        "http://data.ashrae.org/standard223#Equipment"
+      ],
+      "parents": [
+        "Equipment"
+      ],
+      "points": [
+        {
+          "count": 1,
+          "cp_class": "OutletConnectionPoint",
+          "direction": "out",
+          "label": "outlet",
+          "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+          "name": "outlet",
+          "source": "https://watermetadata.org/plumb/seawater-ro#SeawaterFeedShape/hasConnectionPoint/1"
+        }
+      ],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "1b6a1f7f781290d7332f0342bb424402492b468e4c0e468599277c555f0363ff",
+        "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
+        "cb168702f96df40779796d720d452dc3bb0358a60cc1bad67b20bf6883c2e90f",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    },
+    {
+      "abstract": false,
+      "ancestor_iris": [
+        "http://data.ashrae.org/standard223#Concept",
+        "http://data.ashrae.org/standard223#Connectable",
+        "http://data.ashrae.org/standard223#Equipment",
+        "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "https://watermetadata.org/ontology/watr#Tank"
+      ],
+      "class_defaults": [],
+      "cp_constraints": [],
+      "cp_slots": [],
+      "definition": "Storage Tank configuration defined by the seawater RO shapes.",
+      "iri": "https://watermetadata.org/plumb/seawater-ro#StorageTank",
+      "label": "Storage Tank",
+      "maximum_ports": null,
+      "name": "StorageTank",
+      "parent_iris": [
+        "https://watermetadata.org/ontology/watr#Tank"
+      ],
+      "parents": [
+        "Tank"
+      ],
+      "points": [],
+      "properties": [
+        "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc",
+        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
+        "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7",
+        "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
+        "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83",
+        "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5",
+        "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1",
+        "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca",
+        "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
+        "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f",
+        "1b6a1f7f781290d7332f0342bb424402492b468e4c0e468599277c555f0363ff",
+        "0781a694182331478f14b1acac97307cb93434fbe5f932fc7809587565efddbe",
+        "93666327bc76921ca34b39ff130025656bceb7c2660d4b4faa90c3ad447af876",
+        "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4",
+        "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293"
+      ],
+      "python_module": null
+    }
+  ],
+  "dependencies": [
+    {
+      "module": "plumb.watr",
+      "ontology": {
+        "iri": "https://watermetadata.org/ontology/watr",
+        "name": "WATR",
+        "source": "ontology/watr-0.3.0rc1.ttl",
+        "version": "0.3.rc1"
+      },
+      "sha256": "d49443dde2ed6cdc7202dc2d44dbb6f6b9c0ae982019b1c71cbd634358fa8598"
+    }
+  ],
+  "enums": [],
+  "format": 2,
+  "graph_sha256": "e4ca55dfe4e48f58d49cbbd001e280fb006e5da0db15a5509c0d1eeb75ccb1c1",
+  "ontology": {
+    "iri": "https://watermetadata.org/plumb/seawater-ro#",
+    "name": "SeawaterRO",
+    "source": "ontology/seawater-ro.ttl",
+    "version": null
+  },
+  "properties": {
+    "0114ecb0163dc051490830648dd45dd88046956a5358295af52c725b5073ef59": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Filtration>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/seawater-ro#CartridgeFiltrationStageShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "0781a694182331478f14b1acac97307cb93434fbe5f932fc7809587565efddbe": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Concept` with a `Property`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_property",
+      "predicate": "http://data.ashrae.org/standard223#hasProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b894486338780f2f7730cd6ec",
+        "https://watermetadata.org/plumb/seawater-ro#ResidenceTimeDesignShape/hasProperty/0"
+      ],
+      "term_ranges": []
+    },
+    "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a \"dangling connection point\" should not generate a validation error in an integrated or non-integrated context.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has optional connection point",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_optional_connection_point",
+      "predicate": "http://data.ashrae.org/standard223#hasOptionalConnectionPoint",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "bbf8aaab37aca192eece5eb71"
+      ],
+      "term_ranges": []
+    },
+    "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Concept` with a `Property`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_property",
+      "predicate": "http://data.ashrae.org/standard223#hasProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b894486338780f2f7730cd6ec"
+      ],
+      "term_ranges": []
+    },
+    "12e3557c1d0388c92c4ee92b880d880d316e8dbbb27980d0652da02a232d3d5b": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#Substance-Medium"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has medium",
+      "max_count": 1,
+      "min_count": 1,
+      "name": "medium",
+      "predicate": "http://data.ashrae.org/standard223#hasMedium",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Substance-Medium"
+        ]
+      ],
+      "ranges": [],
+      "required": true,
+      "required_values": [
+        "<http://data.ashrae.org/standard223#Fluid-Water>"
+      ],
+      "sources": [
+        "b0070bb08b6715a4e7a32e88c",
+        "b08ea5991a9d595339cdac23a",
+        "b114c42d9256c0b70b09fad9c",
+        "b2b77f818aaa5e179e6cb3872",
+        "b490b774633a41f304e59947b",
+        "b5aecdad0a8f3f7f4ac11e130",
+        "b67b7bcfa9dd137bb3bc07a54",
+        "b7b6e8b6b692e00280f1836e8",
+        "b84423396b6605606439f6e08",
+        "b9c3a652daf6472abbe15c7f2",
+        "bb16c0d83de406776e044c163",
+        "bee798fa46491f095cadd03d0",
+        "https://watermetadata.org/plumb/seawater-ro#FeedSplitterShape/hasMedium/0"
+      ],
+      "term_ranges": []
+    },
+    "1b56df6f93a7d5f75f0c438987bbdbd89affbbfc73de76f010ac7d6c6dbb089c": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Chlorination>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/seawater-ro#ChlorinationStageShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "1b6a1f7f781290d7332f0342bb424402492b468e4c0e468599277c555f0363ff": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "https://watermetadata.org/ontology/watr#hasProcess"
+      ],
+      "term_ranges": []
+    },
+    "1bff9907715fe0f7b82700564ea316d3987b3fedd036f4c2aa3da76b7c8cc0b5": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#Substance-Medium"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has medium",
+      "max_count": 1,
+      "min_count": 1,
+      "name": "medium",
+      "predicate": "http://data.ashrae.org/standard223#hasMedium",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Substance-Medium"
+        ]
+      ],
+      "ranges": [],
+      "required": true,
+      "required_values": [],
+      "sources": [
+        "b08ea5991a9d595339cdac23a",
+        "b12ca976aa7f6ff2f39104dba",
+        "b490b774633a41f304e59947b",
+        "b4dc0d1658287df40e921ad35",
+        "b59c7af6a2db2bd70f0dac26a",
+        "b5aecdad0a8f3f7f4ac11e130",
+        "b73706e6130865d1a05507c79",
+        "b779b3e6d70bca0b584bb320c",
+        "b9c3a652daf6472abbe15c7f2",
+        "ba0b040374feef1cc9f970b08",
+        "bb2dc6068ee4797c8be4b9372",
+        "be44de150b3c396415bd19166"
+      ],
+      "term_ranges": []
+    },
+    "23cc85eebcc09707813a90ff6b1d5ce0d2eaff65ff8299845362883a8e01b14f": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}).",
+      "enum_ranges": [],
+      "inverse": "connected_to",
+      "kind": "object",
+      "label": "connected from",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_from",
+      "predicate": "http://data.ashrae.org/standard223#connectedFrom",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b5fe5575d8ff2586af6168548"
+      ],
+      "term_ranges": []
+    },
+    "242b3731a0ab5406137e1c3cb51a3b208f173f4e9c171b8ade1233c3aef0b5a1": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Concept` with a `Property`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_property",
+      "predicate": "http://data.ashrae.org/standard223#hasProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b894486338780f2f7730cd6ec",
+        "https://watermetadata.org/plumb/seawater-ro#PumpDesignShape/hasProperty/0"
+      ],
+      "term_ranges": []
+    },
+    "2b96385b3f74a9e7395864091dcc97a457b3ebbf43c79fcd27af981c72d0c746": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Concept` with a `Property`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_property",
+      "predicate": "http://data.ashrae.org/standard223#hasProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b894486338780f2f7730cd6ec",
+        "https://watermetadata.org/plumb/seawater-ro#PermeateStateShape/hasProperty/0"
+      ],
+      "term_ranges": []
+    },
+    "309e5f05d98362099601840290b17237f6d7ce9b0bb206db6ce76d539bd7b7d4": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Connectable` with a `Connection`, with an implied direction of flow. B `connectsFrom` A indicates a flow from A to B.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "connects from",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connects_from",
+      "predicate": "http://data.ashrae.org/standard223#connectsFrom",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b0b1e21915d1f88d732ca9ea7"
+      ],
+      "term_ranges": []
+    },
+    "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connected` indicates that two connectable things are `connected` without regard to the direction of flow.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "connected",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected",
+      "predicate": "http://data.ashrae.org/standard223#connected",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b4378a93760ff413779cb18db"
+      ],
+      "term_ranges": []
+    },
+    "5110ab02ee4f5bfb0133e2b994454b353fc1d2f0fc7bf02239eb58c6b5a4f9de": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-Role"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has role",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_role",
+      "predicate": "http://data.ashrae.org/standard223#hasRole",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-Role"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Role-Feed>"
+      ],
+      "sources": [
+        "be7260e57dcb51463c8fc48d4",
+        "https://watermetadata.org/plumb/seawater-ro#IntakePumpShape/hasRole/0"
+      ],
+      "term_ranges": []
+    },
+    "5699d39e0d6d7a81566eaea594863d7118ffd27d33119425869cbb67f96a3293": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has medium",
+      "max_count": null,
+      "min_count": 0,
+      "name": "medium",
+      "predicate": "http://data.ashrae.org/standard223#hasMedium",
+      "range_groups": [],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b08ea5991a9d595339cdac23a",
+        "b490b774633a41f304e59947b",
+        "b5aecdad0a8f3f7f4ac11e130",
+        "b9c3a652daf6472abbe15c7f2"
+      ],
+      "term_ranges": []
+    },
+    "590c9346cf82540000ce7e3f9a2bfc2203cacc9412515fc1a8ac3970de9989a7": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}).",
+      "enum_ranges": [],
+      "inverse": "connected_to",
+      "kind": "object",
+      "label": "connected from",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_from",
+      "predicate": "http://data.ashrae.org/standard223#connectedFrom",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b5fe5575d8ff2586af6168548",
+        "b69c2b6b8e6abbeaa380110ef"
+      ],
+      "term_ranges": []
+    },
+    "6204f1024db92519e799b364b221312b700cefa0aaa6277d11968733e14230ba": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-AdvancedOxidation>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/seawater-ro#AdvancedOxidationStageShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "69e8d5187e48ac8fd1be11efd6694835d82cc5fc8cc7b3309dc59aea0ff44d69": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Backwashing>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/seawater-ro#BackwashStageShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "6af81c1027fa7815bbf5e487d18ec099063a8161e4d6cdd2b3e2703d9b09698f": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Mixing>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/seawater-ro#ROFeedMixerShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "6f599a90b43459688642c0e6d5c11bb82efd410f9ca92a82febbe211d40e217e": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Coagulation>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/seawater-ro#CoagulationStageShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "7029e7f87f522ebc3e81670c2d82c244f9d0dd995c8c480af26be3df20435623": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Connection` with a `Connectable`, with an implied direction of flow. A `connectsTo` B indicates a flow from A to B.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "connects to",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connects_to",
+      "predicate": "http://data.ashrae.org/standard223#connectsTo",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b53ad55b56d04aab26e0e0bf7"
+      ],
+      "term_ranges": []
+    },
+    "70fc6c79a61c10b686ed6ece2b3a29ba20ea50f36658b6d0b4c87b5e35c375aa": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Concept` with a `Property`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_property",
+      "predicate": "http://data.ashrae.org/standard223#hasProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b894486338780f2f7730cd6ec",
+        "https://watermetadata.org/plumb/seawater-ro#UVDesignShape/hasProperty/0",
+        "https://watermetadata.org/plumb/seawater-ro#UVDesignShape/hasProperty/1"
+      ],
+      "term_ranges": []
+    },
+    "7a5c240fa5adf9f31aaae8830c59347e400ab75ccfc1f49c1b12443beeffeef5": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "contains",
+      "max_count": null,
+      "min_count": 0,
+      "name": "contains_",
+      "predicate": "http://data.ashrae.org/standard223#contains",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Equipment",
+          "http://data.ashrae.org/standard223#Junction"
+        ]
+      ],
+      "ranges": [
+        "Equipment",
+        "Junction"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b69091e8dfe0a9f3725f14148",
+        "b834e4d184f741a712a18dabc"
+      ],
+      "term_ranges": []
+    },
+    "7bf48178bd1efa822698fb565698cacb4d21651f49eb5c0079920aecdb2382b1": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-Role"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has role",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_role",
+      "predicate": "http://data.ashrae.org/standard223#hasRole",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-Role"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "be7260e57dcb51463c8fc48d4"
+      ],
+      "term_ranges": []
+    },
+    "7e65911bf6449ab832584bdc748903089cd3e663706794e04e83f4511cfa393f": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "cnx",
+      "max_count": null,
+      "min_count": 0,
+      "name": "cnx",
+      "predicate": "http://data.ashrae.org/standard223#cnx",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b4479e0a22cb783423fa8fdf8",
+        "b454110a4c1b1cf380dd5154a"
+      ],
+      "term_ranges": []
+    },
+    "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "executes",
+      "max_count": null,
+      "min_count": 0,
+      "name": "executes",
+      "predicate": "http://data.ashrae.org/standard223#executes",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Function"
+        ]
+      ],
+      "ranges": [
+        "Function"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "bc10aa2950c93e29291717e55"
+      ],
+      "term_ranges": []
+    },
+    "862aa20950b063150edf6b0d67dd08d45ea07b50a665cebfb15c8e89ef009faa": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-Role"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has role",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_role",
+      "predicate": "http://data.ashrae.org/standard223#hasRole",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-Role"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b0c62568a80ac0452c05ed1db"
+      ],
+      "term_ranges": []
+    },
+    "8f8fa11ff746505b6453da0767199c69845c9dc81eb149165b6cbbfd87397bd4": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has treatment objective",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_treatment_objective",
+      "predicate": "https://watermetadata.org/ontology/watr#hasTreatmentObjective",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#TreatmentObjective"
+        ]
+      ],
+      "ranges": [
+        "TreatmentObjective"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "https://watermetadata.org/ontology/watr#hasTreatmentObjective"
+      ],
+      "term_ranges": []
+    },
+    "93666327bc76921ca34b39ff130025656bceb7c2660d4b4faa90c3ad447af876": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-Role"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has role",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_role",
+      "predicate": "http://data.ashrae.org/standard223#hasRole",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-Role"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Role-Storage>"
+      ],
+      "sources": [
+        "be7260e57dcb51463c8fc48d4",
+        "https://watermetadata.org/plumb/seawater-ro#StorageTankShape/hasRole/0"
+      ],
+      "term_ranges": []
+    },
+    "952325f51726e8072b27f9f01491ee84f54dbcf368512f76d8346f5ce757aefc": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`\nis an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of\n`Equipment` being actuated (see {s223:actuates}).",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "actuated by property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "actuated_by_property",
+      "predicate": "http://data.ashrae.org/standard223#actuatedByProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ActuatableProperty"
+        ]
+      ],
+      "ranges": [
+        "ActuatableProperty"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b244bc874756dd5dc97be3617"
+      ],
+      "term_ranges": []
+    },
+    "97712b59b02a5ed5602e65147865a0730bfb43ad15e8b4ffe080b45b34043b3f": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a piece of `Equipment` with its physical location (i.e., in a `PhysicalSpace`). The physical location of a piece of `Equipment` is not necessarily the same as the location affected by the operation of the `Equipment`. For example, an air handler may physically be located on the roof, but its effect is to provide conditioned air to a `Zone` or `DomainSpace` within the building. By following the path of connections, it can be determined what other equipment or spaces are possibly impacted by the `Equipment`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has physical location",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_physical_location",
+      "predicate": "http://data.ashrae.org/standard223#hasPhysicalLocation",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#PhysicalSpace"
+        ]
+      ],
+      "ranges": [
+        "PhysicalSpace"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b67b0f96d7708f79624e4fe0b"
+      ],
+      "term_ranges": []
+    },
+    "981a14bf111a6e6b9b742800b6a28cddaa383efe9393d49f73076f67aecc7f64": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Connection` with a specific `ConnectionPoint`.",
+      "enum_ranges": [],
+      "inverse": "connection",
+      "kind": "object",
+      "label": "connects at",
+      "max_count": null,
+      "min_count": 2,
+      "name": "connects_at",
+      "predicate": "http://data.ashrae.org/standard223#connectsAt",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": true,
+      "required_values": [],
+      "sources": [
+        "bcc0554fe27774b293d04f8f7"
+      ],
+      "term_ranges": []
+    },
+    "99939a2b45a67082537382076114cd0b79158005a6d413680cfe3d4eb26bc6dd": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-MediaFiltration>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/seawater-ro#MediaFilterShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "a2a5274fb5f50d1fa9e2bf3d6d0fd20b3696998497c6ee71d0a089816fc94ac1": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a Medium with its thermodynamic phases.",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-ThermodynamicPhase"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has thermodynamic phase",
+      "max_count": 1,
+      "min_count": 0,
+      "name": "has_thermodynamic_phase",
+      "predicate": "http://data.ashrae.org/standard223#hasThermodynamicPhase",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-ThermodynamicPhase"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "beb8f86d7a6cb7b66f442c436"
+      ],
+      "term_ranges": []
+    },
+    "a9512e413a56fafd55589dfdd053239187fe19b6e305864098c729f90565eb39": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-MediaFiltration>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/seawater-ro#MediaFiltrationStageShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "ae41a1311ac46bc1b8b65706297e46139dc4500c8f4f15a4f973faa970d67da5": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Concept` with a `Property`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_property",
+      "predicate": "http://data.ashrae.org/standard223#hasProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b894486338780f2f7730cd6ec",
+        "https://watermetadata.org/plumb/seawater-ro#HighPressurePumpDesignShape/hasProperty/0",
+        "https://watermetadata.org/plumb/seawater-ro#HighPressurePumpDesignShape/hasProperty/1"
+      ],
+      "term_ranges": []
+    },
+    "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Connectable` with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "connected through",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_through",
+      "predicate": "http://data.ashrae.org/standard223#connectedThrough",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connection"
+        ]
+      ],
+      "ranges": [
+        "Connection"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b283171481c48b41a4546dad9"
+      ],
+      "term_ranges": []
+    },
+    "bd89bd9aaab197765b9ba4e0f61dde254e968817dc4d4d0fc893325fd1973586": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Concept` with a `Property`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_property",
+      "predicate": "http://data.ashrae.org/standard223#hasProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b894486338780f2f7730cd6ec",
+        "https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/0",
+        "https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/1",
+        "https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/2",
+        "https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/3",
+        "https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/4"
+      ],
+      "term_ranges": []
+    },
+    "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "cnx",
+      "max_count": null,
+      "min_count": 0,
+      "name": "cnx",
+      "predicate": "http://data.ashrae.org/standard223#cnx",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b5c7de35b6a913e84096a45d9",
+        "b7e07cff51177986b8f64bb06"
+      ],
+      "term_ranges": []
+    },
+    "cb168702f96df40779796d720d452dc3bb0358a60cc1bad67b20bf6883c2e90f": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#EnumerationKind-Role"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has role",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_role",
+      "predicate": "http://data.ashrae.org/standard223#hasRole",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#EnumerationKind-Role"
+        ]
+      ],
+      "ranges": [],
+      "required": false,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Role-Feed>"
+      ],
+      "sources": [
+        "be7260e57dcb51463c8fc48d4",
+        "https://watermetadata.org/plumb/seawater-ro#SeawaterFeedShape/hasRole/0"
+      ],
+      "term_ranges": []
+    },
+    "cf374cdde37a64ea1e21f404e9b3598d6c2af27f99351b1c175b9619918243ca": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).",
+      "enum_ranges": [],
+      "inverse": "owner",
+      "kind": "object",
+      "label": "has connection point",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_connection_point",
+      "predicate": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "be2099568566b78227dcced58"
+      ],
+      "term_ranges": []
+    },
+    "d07c4f2d22682892d62390f8bbea78676cfc76642da092e481a02f191eb39785": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).",
+      "enum_ranges": [],
+      "inverse": "owner",
+      "kind": "object",
+      "label": "has connection point",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_connection_point",
+      "predicate": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b1fd774eb294ec9ea83ab88d9",
+        "b993177b13ddf835e5d4c0467",
+        "be2099568566b78227dcced58"
+      ],
+      "term_ranges": []
+    },
+    "d215dd27f418c6f4c66198c9eb35b626b4d1513f514967b655acfb0a5ed61bb3": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).",
+      "enum_ranges": [],
+      "inverse": "owner",
+      "kind": "object",
+      "label": "has connection point",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_connection_point",
+      "predicate": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b65d47bf08d18fe82282e1517",
+        "b9d6c72a8fbe31af23086e601",
+        "bba1b5a81ed0bc228b7aca5d9",
+        "be2099568566b78227dcced58"
+      ],
+      "term_ranges": []
+    },
+    "d5a7cc264e07ed4140bfcf0e65fdf382c5ffacec08b5ad65eadb20abf78ea174": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-ReverseOsmosis>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/seawater-ro#ROStageShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "d7d8f6f8c9109ab866f7bbd118eed120e32e2c74f4098de2282ae32d63244e83": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}).",
+      "enum_ranges": [],
+      "inverse": "connected_from",
+      "kind": "object",
+      "label": "connected to",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_to",
+      "predicate": "http://data.ashrae.org/standard223#connectedTo",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b9831b15fc9bd705787c7d0e2",
+        "ba8bd416e0aea9b22a4d0c786"
+      ],
+      "term_ranges": []
+    },
+    "e0af2845e17c376cee0a0e8055d2fa4d9cd479ad3feab225c4f0e789a76d1ffe": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).",
+      "enum_ranges": [],
+      "inverse": "owner",
+      "kind": "object",
+      "label": "has connection point",
+      "max_count": null,
+      "min_count": 2,
+      "name": "has_connection_point",
+      "predicate": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b8ad8d8b7d7a41f55c0bc4138",
+        "be2099568566b78227dcced58"
+      ],
+      "term_ranges": []
+    },
+    "e9d34b66df828a0a70289fdffc969528a4901a5960f73c46c9fbfafa0858e761": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}).",
+      "enum_ranges": [],
+      "inverse": "connected_from",
+      "kind": "object",
+      "label": "connected to",
+      "max_count": null,
+      "min_count": 0,
+      "name": "connected_to",
+      "predicate": "http://data.ashrae.org/standard223#connectedTo",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Connectable"
+        ]
+      ],
+      "ranges": [
+        "Connectable"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b9831b15fc9bd705787c7d0e2"
+      ],
+      "term_ranges": []
+    },
+    "ee36af112a1f97816d4e82c237c827bd0d74a023857165579726ccb978105f5a": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Dosing>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/seawater-ro#DosingStageShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "f10596b8ad5a8fc1404ab465668e3933c3d33f299304efc60666b717575cd855": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates a `Concept` with a `Property`.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "has property",
+      "max_count": null,
+      "min_count": 0,
+      "name": "has_property",
+      "predicate": "http://data.ashrae.org/standard223#hasProperty",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Property"
+        ]
+      ],
+      "ranges": [
+        "Property"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b894486338780f2f7730cd6ec",
+        "https://watermetadata.org/plumb/seawater-ro#PressureExchangerDesignShape/hasProperty/0"
+      ],
+      "term_ranges": []
+    },
+    "f11bdd29a0451e88c8ab84bdd6050aa047d323c08773767faae9b389fa1d67cd": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Separation>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/seawater-ro#BackwashSeparatorShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "ffc22ce134b504d5ca9b45b4ccd1621227d5ec16f2c3c591b3757b3fa32526fb": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "class",
+      "label": "has process",
+      "max_count": null,
+      "min_count": 1,
+      "name": "has_process",
+      "predicate": "https://watermetadata.org/ontology/watr#hasProcess",
+      "range_groups": [
+        [
+          "https://watermetadata.org/ontology/watr#Process"
+        ]
+      ],
+      "ranges": [
+        "Process"
+      ],
+      "required": true,
+      "required_values": [
+        "<https://watermetadata.org/ontology/watr#Process-Mixing>"
+      ],
+      "sources": [
+        "bc09fac0c70bc9398630ec2a2",
+        "https://watermetadata.org/ontology/watr#hasProcess",
+        "https://watermetadata.org/plumb/seawater-ro#MixingStageShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    }
+  },
+  "term_types": {}
+}

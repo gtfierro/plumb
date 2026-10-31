@@ -29,7 +29,14 @@ from rdflib.namespace import SH
 
 from . import naming, s223
 from .ir import ClassIR, CPConstraintIR, EnumIR, PropIR, SchemaIR
-from .constraints import cardinality, class_groups, property_shapes
+from .constraints import (
+    DATATYPES as _DATATYPES,
+    class_groups,
+    merge_properties,
+    project_ranges,
+    property_shapes,
+    refine_property,
+)
 
 _SCHEMA_DOMAIN = (
     URIRef("https://schema.org/domainIncludes"),
@@ -56,22 +63,6 @@ _EXCLUDED_NS = (
     "http://spinrdf.org/",
     "http://www.w3.org/2004/02/skos/",
 )
-
-#: XSD datatype -> Python type name for literal properties.
-_DATATYPES: dict[URIRef, str] = {
-    XSD.string: "str",
-    XSD.normalizedString: "str",
-    XSD.anyURI: "str",
-    XSD.float: "float",
-    XSD.double: "float",
-    XSD.decimal: "float",
-    XSD.integer: "int",
-    XSD.int: "int",
-    XSD.long: "int",
-    XSD.nonNegativeInteger: "int",
-    XSD.positiveInteger: "int",
-    XSD.boolean: "bool",
-}
 
 
 def extract(
@@ -149,13 +140,24 @@ def extract(
             if prop.predicate in deferred_properties and prop.kind == "object":
                 prop.deferred = True
     _attach_class_defaults(graph, classes, names, canonical, class_properties)
-    _type_untyped_enum_properties(classes)
+    _type_untyped_enum_properties(classes, enum_iris)
     _name_properties(classes, primary_ns)
 
     _compose_properties(ordered, graph, enum_iris)
     _resolve_mro(ordered)
     _demote_cyclic_required(ordered)
     _complete_properties(ordered)
+    constant_iris = {
+        str(value)
+        for cls in ordered
+        for prop in cls.effective_props.values()
+        for value in (
+            *prop.required_values,
+            *prop.default_values,
+            *(prop.choices or ()),
+        )
+        if isinstance(value, URIRef)
+    }
     return SchemaIR(
         ontology_name=name,
         ontology_iri=ontology_iri or "",
@@ -163,6 +165,12 @@ def extract(
         source=source,
         classes=ordered,
         connection_support=connection_support,
+        term_types={
+            iri: tuple(
+                sorted(str(value) for value in graph.objects(URIRef(iri), RDF.type))
+            )
+            for iri in sorted(constant_iris)
+        },
         enums=_enum_ir(
             graph,
             enum_iris,
@@ -573,49 +581,30 @@ def _attach_shape_properties(
                 )
                 continue  # qualified constraints are not plain attributes
 
-            min_count, max_count = cardinality(graph, [pshape])
-            sh_class = graph.value(pshape, SH["class"])
-            sh_datatype = graph.value(pshape, SH.datatype)
-
             cls = classes[class_iri]
             predicate = canonical.get(str(path), str(path))
-            prop_name = naming.property_name(predicate)
             existing = next(
                 (p for p in cls.own_props if p.predicate == predicate), None
             )
             if existing is None:
-                kind = "literal" if sh_datatype is not None else "object"
-                if predicate in _UNCONSTRAINED_VALUE_PREDICATES:
-                    kind = "value"
                 existing = PropIR(
-                    name=prop_name,
+                    name=naming.property_name(predicate),
                     predicate=predicate,
-                    kind=kind,
+                    kind="value"
+                    if predicate in _UNCONSTRAINED_VALUE_PREDICATES
+                    else "object",
                     label=_text(graph, path, RDFS.label),
                     definition=_definition(graph, path),
                     inverse=inverse_names.get(predicate),
                 )
                 cls.own_props.append(existing)
-            existing.min_count, existing.max_count = cardinality(
-                graph, [pshape], minimum=existing.min_count, maximum=existing.max_count
-            )
-            existing.sources = tuple(sorted(set(existing.sources) | {str(pshape)}))
-            existing.range_groups = tuple(
-                sorted(set(existing.range_groups) | set(class_groups(graph, pshape)))
-            )
-            if min_count >= 1:
-                existing.required = True
-            if isinstance(sh_class, URIRef) and str(sh_class) in enum_iris:
-                existing.kind = "enum"
-                existing.enum_ranges = (str(sh_class),)
-            elif isinstance(sh_class, URIRef) and str(sh_class) in names:
-                existing.ranges = (names[str(sh_class)],)
-            if isinstance(sh_datatype, URIRef) and sh_datatype in _DATATYPES:
-                existing.kind = "literal"
-                existing.datatype = _DATATYPES[sh_datatype]
+            refined = refine_property(existing, graph, [pshape])
+            cls.own_props[cls.own_props.index(existing)] = refined
 
 
-def _type_untyped_enum_properties(classes: dict[str, ClassIR]) -> None:
+def _type_untyped_enum_properties(
+    classes: dict[str, ClassIR], enum_iris: set[str]
+) -> None:
     """Give untyped declarations of enum-valued predicates the enum kind.
 
     A SPARQL-only shape declares a predicate without saying what it holds
@@ -626,9 +615,16 @@ def _type_untyped_enum_properties(classes: dict[str, ClassIR]) -> None:
     by_predicate: dict[str, list[PropIR]] = {}
     for cls in classes.values():
         for prop in cls.own_props:
+            candidates = {iri for group in prop.range_groups for iri in group}
+            if prop.kind == "object" and candidates and candidates <= enum_iris:
+                prop.kind = "enum"
             by_predicate.setdefault(prop.predicate, []).append(prop)
     for props in by_predicate.values():
-        untyped = [p for p in props if p.kind == "object" and not p.ranges]
+        untyped = [
+            p
+            for p in props
+            if p.kind == "object" and not p.ranges and not p.range_groups
+        ]
         typed = [p for p in props if p not in untyped]
         if untyped and typed and all(p.kind == "enum" for p in typed):
             for prop in untyped:
@@ -854,75 +850,26 @@ def _compose_properties(
             }
         return parent in ancestry[child]
 
-    def merge(left: PropIR, right: PropIR) -> PropIR:
-        if left.predicate != right.predicate:
-            raise ValueError(
-                f"property name collision {left.name}: {left.predicate}, {right.predicate}"
-            )
-        maxima = [n for n in (left.max_count, right.max_count) if n is not None]
-        untyped = right.kind == "object" and not right.ranges and not right.range_groups
-        result = replace(
-            right,
-            kind=left.kind if untyped else right.kind,
-            datatype=left.datatype if untyped else right.datatype,
-            inverse=right.inverse or left.inverse,
-            label=right.label or left.label,
-            definition=right.definition or left.definition,
-            required=left.required or right.required,
-            min_count=max(left.min_count, right.min_count),
-            max_count=min(maxima) if maxima else None,
-            range_groups=tuple(
-                sorted(set(left.range_groups) | set(right.range_groups))
-            ),
-            sources=tuple(sorted(set(left.sources) | set(right.sources))),
-            deferred=left.deferred or right.deferred,
-        )
-        if result.max_count is not None and result.min_count > result.max_count:
-            raise ValueError(
-                f"{result.predicate}: contradictory cardinalities "
-                f"({result.min_count}..{result.max_count}); sources: {result.sources}"
-            )
-        return result
-
     for cls in ordered:
         effective: dict[str, PropIR] = {}
         for parent in cls.parents:
             for prop in by_name[parent].effective_props.values():
                 effective[prop.name] = (
-                    merge(effective[prop.name], prop)
+                    merge_properties(effective[prop.name], prop)
                     if prop.name in effective
                     else prop
                 )
         own_names = {prop.name for prop in cls.own_props}
         for prop in cls.own_props:
             effective[prop.name] = (
-                merge(effective[prop.name], prop) if prop.name in effective else prop
+                merge_properties(effective[prop.name], prop)
+                if prop.name in effective
+                else prop
             )
-        for name, prop in effective.items():
-            if not prop.range_groups:
-                continue
-            candidates = {iri for group in prop.range_groups for iri in group}
-            narrowed = {
-                iri
-                for iri in candidates
-                if all(
-                    any(is_a(iri, root) for root in group)
-                    for group in prop.range_groups
-                )
-            }
-            # A named intersection may not exist. A single conjunct is a safe
-            # annotation approximation; runtime metadata retains every group.
-            projection = narrowed or set(
-                sorted(prop.range_groups, key=lambda g: (len(g), g))[0]
-            )
-            effective[name] = replace(
-                prop,
-                kind="enum" if candidates <= enum_iris else prop.kind,
-                ranges=tuple(sorted(names[iri] for iri in projection if iri in names)),
-                enum_ranges=tuple(sorted(projection))
-                if candidates <= enum_iris or prop.kind == "enum"
-                else (),
-            )
+        effective = {
+            name: project_ranges(prop, names, enum_iris, is_a)
+            for name, prop in effective.items()
+        }
         cls.effective_props = effective
         cls.own_props = [effective[name] for name in sorted(own_names)]
 

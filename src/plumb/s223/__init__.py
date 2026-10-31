@@ -30,6 +30,7 @@ from plumb.core import (
     RelOne as _RelOne,
     ValueOne as _ValueOne,
     provided as _provided,
+    TermOne as _TermOne,
 )
 
 ONTOLOGY = _OntologyInfo(
@@ -43,6 +44,8 @@ _REGISTRY = _Registry(ONTOLOGY)
 REGISTRY = _REGISTRY
 
 from plumb.core import DeferredEndpoint as _DeferredEndpoint
+
+from plumb.core.shape_constraints import ShapeValues as _ShapeValues
 
 from . import enums as enums
 
@@ -313,6 +316,12 @@ class Property(Concept):
 
     of_substance: _EnumOne[_EnumValue] = _EnumOne(_P_Property_of_substance)
     """A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix. (http://data.ashrae.org/standard223#ofSubstance)"""
+    _shape_constraints = (
+        _ShapeValues('has_value', 'b95e454441f39904415b18dc1, bc4f7ae22af7ed3730ac1bac4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_substance', 'b01fd9fb7448b5ef92bba2eb8, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+    )
 
     def __init__(
         self,
@@ -369,6 +378,12 @@ class ActuatableProperty(Property):
         definition='The term "actuatable" implies that writing to the `ActuatableProperty` value will directly trigger a physical actuation by either an `Actuator` or `Equipment`.\nIn contrast, the term "observable" (see {s223:ObservableProperty}) implies that reading the `ObservableProperty` value will return the result of a physical observation.',
         parent_iris=('http://data.ashrae.org/standard223#Property',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('has_value', 'b95e454441f39904415b18dc1, bc4f7ae22af7ed3730ac1bac4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_substance', 'b01fd9fb7448b5ef92bba2eb8, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
 _P_Connectable_cnx = _PropertySpec(
@@ -722,6 +737,9 @@ class Actuator(Equipment):
 
     actuates: _Rel[Equipment] = _Rel(_P_Actuator_actuates)
     """A `Relation` that associates an `Actuator` with the `Equipment` that it actuates. (http://data.ashrae.org/standard223#actuates)"""
+    _shape_constraints = (
+        _ShapeValues('actuated_by_property', 'b244bc874756dd5dc97be3617, bb12f7647c7a4f02d88af0ad0', required=(), defaults=(), choices=None, minimum=1, maximum=None),
+    )
 
     def __init__(
         self,
@@ -987,6 +1005,15 @@ class BACnetExternalReference(ExternalReference):
 
     property_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_property_identifier)
     """The Object_Identifier `Property` of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1. (http://data.ashrae.org/bacnet/2020#property-identifier)"""
+    _shape_constraints = (
+        _ShapeValues('device_identifier', 'b1a900c8cd314611fa217ec20', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('device_name', 'be33b0e747a136e0fc72bb73c', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('object_identifier', 'b07d17670e222bead75c11fc1', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('object_name', 'bba37523c93e38be4ede2e364', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('priority_for_writing', 'bb1db1615b4c880bcd2cbc8c9', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('property_array_index', 'b6f23479914a488e0faf05368', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('property_identifier', 'b51af76b24f3d1335988cfaf2', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+    )
 
     def __init__(
         self,
@@ -1204,6 +1231,14 @@ class ConnectionPoint(Concept):
 
     paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_ConnectionPoint_paired_with)
     """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
+    _shape_constraints = (
+        _ShapeValues('connection', 'b45e5b28f4870913fb56aa255, b96d11dc29e4c82ab3d27659f', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_electrical_phase', 'b0c1fffe312fa41f8bd4a2137', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('maps_to', 'b33487dbc91b59884232238e0, b63f473fd978018376601fa30, b9cec7071ee1f13fd2efc012b, bb642684edbfc5d5d697a18bf', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b27687f66cec843f6f6442183, b3ac841c3e1d777fcd3dd9330, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bcbdbd8352d5e02d426a20e1f, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('owner', 'bbbc51213b878601a6b8f0562', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('paired_with', 'b276ff53b66e82c6d438739d4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+    )
 
     def __init__(
         self,
@@ -1273,6 +1308,14 @@ class BidirectionalConnectionPoint(ConnectionPoint):
 
     maps_to: _RelOne[BidirectionalConnectionPoint | _DeferredEndpoint] = _RelOne(_P_BidirectionalConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
+    _shape_constraints = (
+        _ShapeValues('connection', 'b45e5b28f4870913fb56aa255, b96d11dc29e4c82ab3d27659f', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_electrical_phase', 'b0c1fffe312fa41f8bd4a2137', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('maps_to', 'b2eb0e0cfa158479c1b81512a, b33487dbc91b59884232238e0, b63f473fd978018376601fa30, b9cec7071ee1f13fd2efc012b, bb642684edbfc5d5d697a18bf', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b27687f66cec843f6f6442183, b3ac841c3e1d777fcd3dd9330, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bcbdbd8352d5e02d426a20e1f, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('owner', 'bbbc51213b878601a6b8f0562', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('paired_with', 'b05f9060fd85b998fa2c7a8e3, b276ff53b66e82c6d438739d4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+    )
 
     def __init__(
         self,
@@ -1660,6 +1703,11 @@ class Connection(Concept):
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_Connection_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -1730,6 +1778,11 @@ class Waveguide(Connection):
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_Waveguide_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, be4fd28291eae62cab922e936, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -1781,6 +1834,11 @@ class CoaxialCable(Waveguide):
         definition='A type of `Waveguide` that consists of a central conductor, surrounded by an insulator, a metallic shield, and an outer jacket, all sharing the same geometric axis - which allows it to efficiently transmit high-frequency signals over long distances with minimal interference - and is used for `Wideband-DOCSIS` and `Wideband-CATV` communication.',
         parent_iris=('http://data.ashrae.org/standard223#Waveguide',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b4fff8fdf92b2f0c0e36509ae, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, be4fd28291eae62cab922e936, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class CoffeeMaker(Equipment):
@@ -1972,6 +2030,11 @@ class Sensor(Equipment):
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -2068,6 +2131,11 @@ class ConcentrationSensor(Sensor):
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'bba2526521d93118bfa382b7e, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -2173,6 +2241,12 @@ class Conductor(Connection):
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_Conductor_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -2303,6 +2377,11 @@ class LightSensor(Sensor):
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb, bfd71067e4cb2fb6356addde6', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -2375,6 +2454,11 @@ class CorrelatedColorTemperatureSensor(LightSensor):
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a correlated color temperature (CCT) of a\nlight source, defined as the absolute temperature of a blackbody whose chromaticity most nearly resembles that of the light source.',
         parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#LightSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'b2bfe92825acb8fe865aca6a5, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb, bfd71067e4cb2fb6356addde6', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class Damper(Equipment):
@@ -2473,6 +2557,9 @@ class DomainSpace(Connectable):
 
     has_domain: _EnumOne[_EnumValue] = _EnumOne(_P_DomainSpace_has_domain)
     """A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`). (http://data.ashrae.org/standard223#hasDomain)"""
+    _shape_constraints = (
+        _ShapeValues('has_domain', 'ba3cb9d654fa531a9f0ca4633', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -2607,6 +2694,11 @@ class Duct(Connection):
         parent_iris=('http://data.ashrae.org/standard223#Connection',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 class DuvSensor(LightSensor):
     """A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a Duv of a light source, defined as the
@@ -2623,6 +2715,11 @@ class DuvSensor(LightSensor):
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a Duv of a light source, defined as the\ndistance between the chromaticity of the light source and a blackbody radiator of equal correlated color temperature (CCT).',
         parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#LightSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'b311bd280cfc5df87193290b8, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb, bfd71067e4cb2fb6356addde6', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 _P_EM_medium = _PropertySpec(
@@ -2658,6 +2755,11 @@ class EM(Connection):
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_EM_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, beebbb4c5b0712b03c867ce9c, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -2769,6 +2871,11 @@ class ElectricCurrentSensor(Sensor):
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'bdd43958d487e66d9f5bae558, be50f6020cf881de854cd1c39, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -3103,6 +3210,13 @@ class EnumerableProperty(Property):
 
     has_enumeration_kind: _EnumOne[_EnumValue] = _EnumOne(_P_EnumerableProperty_has_enumeration_kind)
     """A `Relation` that associates an `EnumerableProperty` with a class of enumeration values. This is used to, for example, identify what kind of substance is transported along a `Connection` or which day of the week a setpoint is active. (http://data.ashrae.org/standard223#hasEnumerationKind)"""
+    _shape_constraints = (
+        _ShapeValues('has_enumeration_kind', 'baf7e64b302199795068b3c52', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_value', 'b1a0bb8197e7c669143119665, b95e454441f39904415b18dc1, bc4f7ae22af7ed3730ac1bac4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_substance', 'b01fd9fb7448b5ef92bba2eb8, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+    )
 
     def __init__(
         self,
@@ -3161,6 +3275,13 @@ class EnumeratedActuatableProperty(ActuatableProperty, EnumerableProperty):
         parent_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#EnumerableProperty'),
         ancestor_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#EnumerableProperty', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('has_enumeration_kind', 'baf7e64b302199795068b3c52', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_value', 'b1a0bb8197e7c669143119665, b95e454441f39904415b18dc1, bc4f7ae22af7ed3730ac1bac4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_substance', 'b01fd9fb7448b5ef92bba2eb8, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+    )
 
 class ObservableProperty(Property):
     """The term "observable" implies that reading the `ObservableProperty` value will return the result of a physical observation, usually by a `Sensor`.
@@ -3178,6 +3299,12 @@ class ObservableProperty(Property):
         parent_iris=('http://data.ashrae.org/standard223#Property',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('has_value', 'b95e454441f39904415b18dc1, bc4f7ae22af7ed3730ac1bac4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_substance', 'b01fd9fb7448b5ef92bba2eb8, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+    )
 
 class EnumeratedObservableProperty(EnumerableProperty, ObservableProperty):
     """An `EnumeratedObservableProperty` is a `Property` with an enumerated (fixed) set of possible values that cannot be changed (can only be observed).
@@ -3193,6 +3320,13 @@ class EnumeratedObservableProperty(EnumerableProperty, ObservableProperty):
         definition='An `EnumeratedObservableProperty` is a `Property` with an enumerated (fixed) set of possible values that cannot be changed (can only be observed).',
         parent_iris=('http://data.ashrae.org/standard223#EnumerableProperty', 'http://data.ashrae.org/standard223#ObservableProperty'),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#EnumerableProperty', 'http://data.ashrae.org/standard223#ObservableProperty', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('has_enumeration_kind', 'baf7e64b302199795068b3c52', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_value', 'b1a0bb8197e7c669143119665, b95e454441f39904415b18dc1, bc4f7ae22af7ed3730ac1bac4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_substance', 'b01fd9fb7448b5ef92bba2eb8, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
 class Escalator(Equipment):
@@ -3263,6 +3397,12 @@ class EthernetCable(Conductor):
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_EthernetCable_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8e4fe72cf0c46e702d4ab09f, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -3317,6 +3457,12 @@ class EthernetCable_Cat1(EthernetCable):
         parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8e4fe72cf0c46e702d4ab09f, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 class EthernetCable_Cat2(EthernetCable):
     """EthernetCable-Cat2
@@ -3332,6 +3478,12 @@ class EthernetCable_Cat2(EthernetCable):
         definition='EthernetCable-Cat2',
         parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8e4fe72cf0c46e702d4ab09f, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class EthernetCable_Cat3(EthernetCable):
@@ -3349,6 +3501,12 @@ class EthernetCable_Cat3(EthernetCable):
         parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8e4fe72cf0c46e702d4ab09f, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 class EthernetCable_Cat4(EthernetCable):
     """EthernetCable-Cat4
@@ -3364,6 +3522,12 @@ class EthernetCable_Cat4(EthernetCable):
         definition='EthernetCable-Cat4',
         parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8e4fe72cf0c46e702d4ab09f, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class EthernetCable_Cat5(EthernetCable):
@@ -3381,6 +3545,12 @@ class EthernetCable_Cat5(EthernetCable):
         parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8e4fe72cf0c46e702d4ab09f, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 class EthernetCable_Cat5e(EthernetCable):
     """EthernetCable-Cat5e
@@ -3396,6 +3566,12 @@ class EthernetCable_Cat5e(EthernetCable):
         definition='EthernetCable-Cat5e',
         parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8e4fe72cf0c46e702d4ab09f, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class EthernetCable_Cat6(EthernetCable):
@@ -3413,6 +3589,12 @@ class EthernetCable_Cat6(EthernetCable):
         parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8e4fe72cf0c46e702d4ab09f, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 class EthernetCable_Cat6a(EthernetCable):
     """EthernetCable-Cat6a
@@ -3428,6 +3610,12 @@ class EthernetCable_Cat6a(EthernetCable):
         definition='EthernetCable-Cat6a',
         parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8e4fe72cf0c46e702d4ab09f, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class EthernetCable_Cat7(EthernetCable):
@@ -3445,6 +3633,12 @@ class EthernetCable_Cat7(EthernetCable):
         parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8e4fe72cf0c46e702d4ab09f, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 class EthernetCable_Cat7a(EthernetCable):
     """EthernetCable-Cat7a
@@ -3461,6 +3655,12 @@ class EthernetCable_Cat7a(EthernetCable):
         parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8e4fe72cf0c46e702d4ab09f, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 class EthernetCable_Cat8(EthernetCable):
     """EthernetCable-Cat8
@@ -3476,6 +3676,12 @@ class EthernetCable_Cat8(EthernetCable):
         definition='EthernetCable-Cat8',
         parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8e4fe72cf0c46e702d4ab09f, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class EthernetPort(Equipment):
@@ -3675,6 +3881,11 @@ class FiberOpticCable(Waveguide):
         parent_iris=('http://data.ashrae.org/standard223#Waveguide',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b11b471a08e958fd0e464cec3, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, be4fd28291eae62cab922e936, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 class FiberOpticCable_OM1(FiberOpticCable):
     """FiberOpticCable-OM1
@@ -3690,6 +3901,11 @@ class FiberOpticCable_OM1(FiberOpticCable):
         definition='FiberOpticCable-OM1',
         parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b11b471a08e958fd0e464cec3, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, be4fd28291eae62cab922e936, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class FiberOpticCable_OM2(FiberOpticCable):
@@ -3707,6 +3923,11 @@ class FiberOpticCable_OM2(FiberOpticCable):
         parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b11b471a08e958fd0e464cec3, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, be4fd28291eae62cab922e936, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 class FiberOpticCable_OM3(FiberOpticCable):
     """FiberOpticCable-OM3
@@ -3722,6 +3943,11 @@ class FiberOpticCable_OM3(FiberOpticCable):
         definition='FiberOpticCable-OM3',
         parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b11b471a08e958fd0e464cec3, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, be4fd28291eae62cab922e936, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class FiberOpticCable_OM4(FiberOpticCable):
@@ -3739,6 +3965,11 @@ class FiberOpticCable_OM4(FiberOpticCable):
         parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b11b471a08e958fd0e464cec3, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, be4fd28291eae62cab922e936, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 class FiberOpticCable_OM5(FiberOpticCable):
     """FiberOpticCable-OM5
@@ -3754,6 +3985,11 @@ class FiberOpticCable_OM5(FiberOpticCable):
         definition='FiberOpticCable-OM5',
         parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b11b471a08e958fd0e464cec3, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, be4fd28291eae62cab922e936, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class FiberOpticCable_OS1(FiberOpticCable):
@@ -3771,6 +4007,11 @@ class FiberOpticCable_OS1(FiberOpticCable):
         parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b11b471a08e958fd0e464cec3, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, be4fd28291eae62cab922e936, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 class FiberOpticCable_OS2(FiberOpticCable):
     """FiberOpticCable-OS2
@@ -3786,6 +4027,11 @@ class FiberOpticCable_OS2(FiberOpticCable):
         definition='FiberOpticCable-OS2',
         parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b11b471a08e958fd0e464cec3, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, be4fd28291eae62cab922e936, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class Filter(Equipment):
@@ -3845,6 +4091,11 @@ class FlowSensor(Sensor):
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'b59d36af7a21597b917046ed1, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -4098,6 +4349,11 @@ class PressureSensor(Sensor):
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'bd7b82cb90a3efeb37092a50f, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -4171,6 +4427,11 @@ class GaugePressureSensor(PressureSensor):
         definition='A `PressureSensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of pressure relative to atmospheric pressure.\nSuch sensors are commonly used to monitor compressed gas cylinders, for example, where a gauge reading of zero signifies that the measured pressure\nis equal to the atmospheric pressure, not a vacuum.',
         parent_iris=('http://data.ashrae.org/standard223#PressureSensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#PressureSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'b0593b8956d2cb10f4c22ba5e, bd7b82cb90a3efeb37092a50f, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class Generator(Equipment):
@@ -4335,6 +4596,11 @@ class HumiditySensor(Sensor):
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'b35dbf06577bbe234c8e1c078, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -4447,6 +4713,11 @@ class IlluminanceSensor(LightSensor):
         parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#LightSensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'bce3a0168ccef2c201c45147a, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb, bfd71067e4cb2fb6356addde6', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 _P_InletConnectionPoint_maps_to = _PropertySpec(
     name='maps_to',
@@ -4480,6 +4751,14 @@ class InletConnectionPoint(ConnectionPoint):
 
     maps_to: _RelOne[InletConnectionPoint | _DeferredEndpoint] = _RelOne(_P_InletConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
+    _shape_constraints = (
+        _ShapeValues('connection', 'b45e5b28f4870913fb56aa255, b96d11dc29e4c82ab3d27659f', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_electrical_phase', 'b0c1fffe312fa41f8bd4a2137', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('maps_to', 'b33487dbc91b59884232238e0, b3fb79c1b73227b7ff890bf12, b63f473fd978018376601fa30, b9836a3846d271eb3c01b5838, b9cec7071ee1f13fd2efc012b, bb642684edbfc5d5d697a18bf', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b27687f66cec843f6f6442183, b3ac841c3e1d777fcd3dd9330, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bcbdbd8352d5e02d426a20e1f, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('owner', 'bbbc51213b878601a6b8f0562', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('paired_with', 'b276ff53b66e82c6d438739d4, ba6ab42b86250afdca394ea9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+    )
 
     def __init__(
         self,
@@ -4583,6 +4862,10 @@ class Junction(Connectable):
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_Junction_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
+    _shape_constraints = (
+        _ShapeValues('has_connection_point', 'b8ad8d8b7d7a41f55c0bc4138, be2099568566b78227dcced58', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('medium', 'b27687f66cec843f6f6442183, b42897a1302c66ef48c1eb917, b668405d00cb3041e9cb292d8, b7b6e8b6b692e00280f1836e8, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, b9d6fe703e1f82459a5b8d55b, bbbcaeeb178444c2f6593093a, bc423102e47022f8fab24adb1, be65b6ced07bb4a44f718e9a4, bfa6b8152ca8e9eed314182a5, bfb8077af53aae66ed43f4c36', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -4711,6 +4994,11 @@ class OccupancySensor(Sensor):
         parent_iris=('http://data.ashrae.org/standard223#Sensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
 _P_OccupantCountSensor_observes = _PropertySpec(
     name='observes',
@@ -4749,6 +5037,11 @@ class OccupantCountSensor(OccupancySensor):
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'ba25a7d80394b4c33a438406c, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -4842,6 +5135,11 @@ class OccupantMotionSensor(OccupancySensor):
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'bd5a51094841e3cbea54021f0, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -4935,6 +5233,11 @@ class OccupantPresenceSensor(OccupancySensor):
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'bd69289dbadd77dd6a8abbeec, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -5113,6 +5416,14 @@ class OutletConnectionPoint(ConnectionPoint):
 
     maps_to: _RelOne[OutletConnectionPoint | _DeferredEndpoint] = _RelOne(_P_OutletConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
+    _shape_constraints = (
+        _ShapeValues('connection', 'b45e5b28f4870913fb56aa255, b96d11dc29e4c82ab3d27659f', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_electrical_phase', 'b0c1fffe312fa41f8bd4a2137', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('maps_to', 'b33487dbc91b59884232238e0, b398e8ae8d13bd06b4e8e26ce, b55452fef2eaf062afa4961eb, b63f473fd978018376601fa30, b9cec7071ee1f13fd2efc012b, bb642684edbfc5d5d697a18bf', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b27687f66cec843f6f6442183, b3ac841c3e1d777fcd3dd9330, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bcbdbd8352d5e02d426a20e1f, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('owner', 'bbbc51213b878601a6b8f0562', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('paired_with', 'b0cf918f9bc217d2c825c273a, b276ff53b66e82c6d438739d4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+    )
 
     def __init__(
         self,
@@ -5209,6 +5520,11 @@ class ParticulateSensor(Sensor):
 
     of_substance: _EnumSet[_EnumValue] = _EnumSet(_P_ParticulateSensor_of_substance)
     """A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix. (http://data.ashrae.org/standard223#ofSubstance)"""
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'b5fb805ffd07c4c73ab7d8316, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -5321,6 +5637,11 @@ class Pipe(Connection):
         definition='A `Connection` that is used primarily to transport liquids and gases such as water, sewage, natural gas, and compressed air.',
         parent_iris=('http://data.ashrae.org/standard223#Connection',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
 class PowerOverEthernetPort(Equipment):
@@ -5517,6 +5838,16 @@ class QuantifiableProperty(Property):
 
     value: _Rel[_EntityBase] = _Rel(_P_QuantifiableProperty_value)
     """value (http://qudt.org/schema/qudt/value)"""
+    _shape_constraints = (
+        _ShapeValues('has_quantity_kind', 'b702d66f8c2dfad4ecf14d7e2, b9cbc4d6692e6a98df2e7283a, ba909048f9e36bc78f73e6e12, bcca4b8aa80abba8c978d25f5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_unit', 'b0e66163b74f35b8ddc1f5b7c, b2169921a6f26d9abe140c862, b4c360faffff50df95b03aac2, b67a52970026f1b098f4b7208, b8b18b8c24bb2fb3fefa89449, bb9e7aa3b6cd2f6e2206b1933, bebb0bd3825666bb058b417d1', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_value', 'b4d6400ee13a39159ee72ef05, b95e454441f39904415b18dc1, bc4f7ae22af7ed3730ac1bac4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('is_delta_quantity', 'be248f5eac5f95ea50748c45f', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_substance', 'b01fd9fb7448b5ef92bba2eb8, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('value', 'b61fd8f37714fab39b3996515', required=(), defaults=(), choices=None, minimum=0, maximum=0),
+    )
 
     def __init__(
         self,
@@ -5591,6 +5922,16 @@ class QuantifiableActuatableProperty(ActuatableProperty, QuantifiableProperty):
         parent_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#QuantifiableProperty'),
         ancestor_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://data.ashrae.org/standard223#QuantifiableProperty', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
+    _shape_constraints = (
+        _ShapeValues('has_quantity_kind', 'b702d66f8c2dfad4ecf14d7e2, b9cbc4d6692e6a98df2e7283a, ba909048f9e36bc78f73e6e12, bcca4b8aa80abba8c978d25f5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_unit', 'b0e66163b74f35b8ddc1f5b7c, b2169921a6f26d9abe140c862, b4c360faffff50df95b03aac2, b67a52970026f1b098f4b7208, b8b18b8c24bb2fb3fefa89449, bb9e7aa3b6cd2f6e2206b1933, bebb0bd3825666bb058b417d1', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_value', 'b4d6400ee13a39159ee72ef05, b95e454441f39904415b18dc1, bc4f7ae22af7ed3730ac1bac4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('is_delta_quantity', 'be248f5eac5f95ea50748c45f', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_substance', 'b01fd9fb7448b5ef92bba2eb8, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('value', 'b61fd8f37714fab39b3996515', required=(), defaults=(), choices=None, minimum=0, maximum=0),
+    )
 
 class QuantifiableObservableProperty(ObservableProperty, QuantifiableProperty):
     """This class is for instances of `QuantifiableProperty` for which numerical values are observed, like a temperature reading or a voltage measure.
@@ -5606,6 +5947,16 @@ class QuantifiableObservableProperty(ObservableProperty, QuantifiableProperty):
         definition='This class is for instances of `QuantifiableProperty` for which numerical values are observed, like a temperature reading or a voltage measure.',
         parent_iris=('http://data.ashrae.org/standard223#ObservableProperty', 'http://data.ashrae.org/standard223#QuantifiableProperty'),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ObservableProperty', 'http://data.ashrae.org/standard223#Property', 'http://data.ashrae.org/standard223#QuantifiableProperty', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+    )
+    _shape_constraints = (
+        _ShapeValues('has_quantity_kind', 'b702d66f8c2dfad4ecf14d7e2, b9cbc4d6692e6a98df2e7283a, ba909048f9e36bc78f73e6e12, bcca4b8aa80abba8c978d25f5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_unit', 'b0e66163b74f35b8ddc1f5b7c, b2169921a6f26d9abe140c862, b4c360faffff50df95b03aac2, b67a52970026f1b098f4b7208, b8b18b8c24bb2fb3fefa89449, bb9e7aa3b6cd2f6e2206b1933, bebb0bd3825666bb058b417d1', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_value', 'b4d6400ee13a39159ee72ef05, b95e454441f39904415b18dc1, bc4f7ae22af7ed3730ac1bac4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('is_delta_quantity', 'be248f5eac5f95ea50748c45f', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('of_substance', 'b01fd9fb7448b5ef92bba2eb8, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('value', 'b61fd8f37714fab39b3996515', required=(), defaults=(), choices=None, minimum=0, maximum=0),
     )
 
 class RFOutlet(Equipment):
@@ -5768,6 +6119,9 @@ class RelationWithInverse(Relation):
 
     inverse_of: _RelOne[RelationWithInverse] = _RelOne(_P_RelationWithInverse_inverse_of)
     """A `Relation` that associates `Relation`s that are inverses of one another, such as `connectedTo` and `connectedFrom`. (http://data.ashrae.org/standard223#inverseOf)"""
+    _shape_constraints = (
+        _ShapeValues('inverse_of', 'b9a0a3ac284ed8ba313c7f70f', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -6002,6 +6356,9 @@ class System(Concept):
 
     has_role: _EnumSet[_EnumValue] = _EnumSet(_P_System_has_role)
     """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
+    _shape_constraints = (
+        _ShapeValues('has_member', 'b2c9296fcc86520151daa281a', required=(), defaults=(), choices=None, minimum=1, maximum=None),
+    )
 
     def __init__(
         self,
@@ -6087,6 +6444,11 @@ class TemperatureSensor(Sensor):
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'b53c6512873aa6502e79da13c, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -6176,6 +6538,9 @@ class ThermalEnergyStorageUnit(Equipment):
 
     has_connection_point: _Rel[ConnectionPoint] = _Rel(_P_ThermalEnergyStorageUnit_has_connection_point)
     """One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}). (http://data.ashrae.org/standard223#hasConnectionPoint)"""
+    _shape_constraints = (
+        _ShapeValues('has_connection_point', 'bbb2761f6fb9b3e8ae6caad14, be2099568566b78227dcced58', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+    )
 
     def __init__(
         self,
@@ -6273,6 +6638,9 @@ class ThreeWayValve(Valve):
 
     has_connection_point: _Rel[ConnectionPoint] = _Rel(_P_ThreeWayValve_has_connection_point)
     """One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}). (http://data.ashrae.org/standard223#hasConnectionPoint)"""
+    _shape_constraints = (
+        _ShapeValues('has_connection_point', 'b9cc2897cb59d5170cbce70a8, be2099568566b78227dcced58', required=(), defaults=(), choices=None, minimum=3, maximum=None),
+    )
 
     def __init__(
         self,
@@ -6410,6 +6778,12 @@ class USBCable(Conductor):
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_USBCable_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
+    _shape_constraints = (
+        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
+        _ShapeValues('has_electrical_phase', 'b7c1fd5bdb8242d06002b2f0d, b9a6aabea4ddb77f02dea0d9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b208da37448a026418d05c49c, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bf23cebcd33cb5adb3d3b263d, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -6589,6 +6963,11 @@ class VoltageSensor(Sensor):
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
+    _shape_constraints = (
+        _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+        _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
+        _ShapeValues('observes', 'b8441d6ef400bc61d0bcbb7a4, bdd43958d487e66d9f5bae558, bf09558d4ee6cbdf4ad01f156, bf86bf8568c746b80bb0b1ccb', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -6825,6 +7204,9 @@ class Zone(Concept):
 
     has_zone: _Rel[Zone] = _Rel(_P_Zone_has_zone)
     """A `Relation` that associates a `Zone` with component `Zone`s. (http://data.ashrae.org/standard223#hasZone)"""
+    _shape_constraints = (
+        _ShapeValues('has_domain', 'ba6b6a6d289d3c674904aad19, bcb01f73894e511a4bbf3d167', required=(), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
@@ -6869,6 +7251,20 @@ _P_ZoneGroup_contains_ = _PropertySpec(
     required=True,
 )
 
+_P_ZoneGroup_has_domain = _PropertySpec(
+    name='has_domain',
+    predicate='http://data.ashrae.org/standard223#hasDomain',
+    kind='enum',
+    label='has domain',
+    definition='A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`).',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Domain',),),
+    sources=('ba6b6a6d289d3c674904aad19', 'bcb01f73894e511a4bbf3d167', 'bcfc7fb858a1d6ea0a8b48742'),
+    min_count=1,
+    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Domain',),
+    required=True,
+    max_count=1,
+)
+
 class ZoneGroup(Zone):
     """A ZoneGroup is a grouping of zones that may be scheduled together. Zone groupings must be assigned based on rules in Clause 3.1.3 of Guideline 36.
 
@@ -6883,18 +7279,25 @@ class ZoneGroup(Zone):
         definition='A ZoneGroup is a grouping of zones that may be scheduled together. Zone groupings must be assigned based on rules in Clause 3.1.3 of Guideline 36.',
         parent_iris=('http://data.ashrae.org/standard223#Zone',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Zone', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_ZoneGroup_contains_,),
+        properties=(_P_ZoneGroup_contains_, _P_ZoneGroup_has_domain,),
     )
 
     contains_: _Rel[Zone_2] = _Rel(_P_ZoneGroup_contains_)
     """A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s. (http://data.ashrae.org/standard223#contains)"""
+
+    has_domain: _EnumOne[_EnumValue] = _EnumOne(_P_ZoneGroup_has_domain)
+    """A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`). (http://data.ashrae.org/standard223#hasDomain)"""
+    _shape_constraints = (
+        _ShapeValues('contains_', 'b3b625cc4a73e7dea252d5a42', required=(), defaults=(), choices=None, minimum=1, maximum=None),
+        _ShapeValues('has_domain', 'ba6b6a6d289d3c674904aad19, bcb01f73894e511a4bbf3d167, bcfc7fb858a1d6ea0a8b48742', required=(_TermValue('http://data.ashrae.org/standard223#Domain-HVAC', types=('http://data.ashrae.org/standard223#Class', 'http://data.ashrae.org/standard223#Domain-HVAC', 'http://www.w3.org/ns/shacl#NodeShape')),), defaults=(), choices=None, minimum=1, maximum=1),
+    )
 
     def __init__(
         self,
         name: str | None = None,
         *,
         contains_: _Iterable[Zone_2],
-        has_domain: _EnumValue | None,
+        has_domain: _EnumValue | None = None,
         has_domain_space: _Iterable[DomainSpace] = (),
         has_property: _Iterable[Property] = (),
         has_zone: _Iterable[Zone] = (),
@@ -6921,6 +7324,20 @@ class ZoneGroup(Zone):
             ),
         )
 
+_P_Zone_2_has_domain = _PropertySpec(
+    name='has_domain',
+    predicate='http://data.ashrae.org/standard223#hasDomain',
+    kind='enum',
+    label='has domain',
+    definition='A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`).',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Domain',),),
+    sources=('ba6b6a6d289d3c674904aad19', 'bbb1d059cd35bf6183f82d0ef', 'bcb01f73894e511a4bbf3d167'),
+    min_count=1,
+    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Domain',),
+    required=True,
+    max_count=1,
+)
+
 class Zone_2(Zone):
     """A thermal zone with the points required for Guideline 36 control sequences. It is a collection of s223:DomainSpace instances.
 
@@ -6935,7 +7352,44 @@ class Zone_2(Zone):
         definition='A thermal zone with the points required for Guideline 36 control sequences. It is a collection of s223:DomainSpace instances.',
         parent_iris=('http://data.ashrae.org/standard223#Zone',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Zone', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+        properties=(_P_Zone_2_has_domain,),
     )
+
+    has_domain: _EnumOne[_EnumValue] = _EnumOne(_P_Zone_2_has_domain)
+    """A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`). (http://data.ashrae.org/standard223#hasDomain)"""
+    _shape_constraints = (
+        _ShapeValues('has_domain', 'ba6b6a6d289d3c674904aad19, bbb1d059cd35bf6183f82d0ef, bcb01f73894e511a4bbf3d167', required=(_TermValue('http://data.ashrae.org/standard223#Domain-HVAC', types=('http://data.ashrae.org/standard223#Class', 'http://data.ashrae.org/standard223#Domain-HVAC', 'http://www.w3.org/ns/shacl#NodeShape')),), defaults=(), choices=None, minimum=1, maximum=1),
+    )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        has_domain: _EnumValue | None = None,
+        has_domain_space: _Iterable[DomainSpace] = (),
+        has_property: _Iterable[Property] = (),
+        has_zone: _Iterable[Zone] = (),
+        medium: _Iterable[_EnumValue] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                has_domain=has_domain,
+                has_domain_space=has_domain_space,
+                has_property=has_property,
+                has_zone=has_zone,
+                medium=medium,
+            ),
+        )
 
 
 # -- UX overlay: operator sugar and containment rules --

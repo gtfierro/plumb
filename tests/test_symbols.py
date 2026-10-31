@@ -7,7 +7,7 @@ import pytest
 from rdflib import Graph
 
 from plumb.gen import compile_modules, extract
-from plumb.gen.symbols import FILENAME, Symbols
+from plumb.gen.symbols import FILENAME, FORMAT, Symbols
 
 
 def test_dependency_symbols_keep_effective_constraints_and_ancestry():
@@ -45,7 +45,7 @@ def test_loading_dependency_never_executes_parent_packages(tmp_path, monkeypatch
     (leaf / FILENAME).write_text(
         json.dumps(
             {
-                "format": 1,
+                "format": FORMAT,
                 "ontology": {"iri": "urn:base"},
                 "classes": [],
                 "enums": [],

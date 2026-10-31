@@ -7,6 +7,7 @@ terms with familiar local names never select connection semantics.
 from __future__ import annotations
 
 from typing import Literal
+from collections.abc import Iterable
 
 from rdflib import Graph, Namespace, RDFS, URIRef
 from rdflib.namespace import SH
@@ -23,9 +24,12 @@ _DIRECTIONS: dict[URIRef, Literal["in", "out", "bi"]] = {
 }
 
 
-def direction(graph: Graph, value_class: URIRef) -> Literal["in", "out", "bi"] | None:
+def direction(
+    graph: Graph, value_class: URIRef, *, imported_ancestors: Iterable[str] = ()
+) -> Literal["in", "out", "bi"] | None:
     """Resolve a direction through ontology ancestry, diagnosing ambiguity."""
     ancestry = set(graph.transitive_objects(value_class, RDFS.subClassOf))
+    ancestry.update(URIRef(iri) for iri in imported_ancestors)
     directions = {value for root, value in _DIRECTIONS.items() if root in ancestry}
     if len(directions) > 1:
         raise ValueError(f"{value_class}: ambiguous connection-point directions")
