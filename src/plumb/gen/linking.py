@@ -9,12 +9,8 @@ from .symbols import Symbols
 
 def link(ir: SchemaIR, dependency: Symbols, overlay: Overlay) -> None:
     """Reuse identical imports; represent changed projections as nominal subtypes."""
-    # Three outcomes for a closure term:
-    #   new IRI                 -> a new Python identity
-    #   shared, same projection -> alias the dependency's exact class object
-    #   shared, added behavior  -> a nominal view with a canonical base
-    # Authoring policy counts as behavior even when the RDF constraints match.
-    # Installing that policy on an aliased class would mutate the dependency.
+    # Alias unchanged imported classes; emit canonical views for refinements.
+    # Policy changes also require a view to avoid modifying dependency classes.
     ir.dependencies = [
         {
             "module": dependency.module,

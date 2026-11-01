@@ -94,10 +94,8 @@ def merge_properties(left: PropIR, right: PropIR) -> PropIR:
         raise ValueError(
             f"property name collision {left.name}: {left.predicate}, {right.predicate}"
         )
-    # Refinement is asymmetric only for authoring defaults/documentation: the
-    # more local declaration wins there. Validity constraints remain conjunctive:
-    # minima tighten upward, maxima downward, required members accumulate, and
-    # choices intersect. None means unrestricted choices; () forbids all values.
+    # Intersect validity constraints; local defaults override inherited defaults.
+    # choices=None is unrestricted; choices=() permits no values.
     maxima = [n for n in (left.max_count, right.max_count) if n is not None]
     untyped = right.kind == "object" and not right.ranges and not right.range_groups
     choices = [set(prop.choices) for prop in (left, right) if prop.choices is not None]
@@ -139,10 +137,8 @@ def project_ranges(
         for iri in candidates
         if all(any(is_a(iri, root) for root in group) for group in prop.range_groups)
     }
-    # Failure to find a named common subtype does not prove a contradiction:
-    # RDF classes are not disjoint merely because the current closure lacks an
-    # intersection class. Choose a conservative annotation and leave every
-    # original conjunct in range_groups for runtime and SHACL enforcement.
+    # No named common subtype does not imply disjointness. Approximate the
+    # annotation while retaining every runtime constraint in range_groups.
     projection = narrowed or set(
         sorted(prop.range_groups, key=lambda group: (len(group), group))[0]
     )
@@ -191,9 +187,7 @@ def property_shapes(
     active: frozenset[Node] = frozenset(),
 ) -> list[Node]:
     """Find properties reached through ``sh:node`` and ``sh:and`` conjunctions."""
-    # active is a recursion PATH, not a global visited set. A shared shape may
-    # legitimately contribute to several owners or conjuncts; only revisiting
-    # it while expanding itself is a recursive constructive definition.
+    # Track the recursion path so shared shapes remain valid across branches.
     if shape in active:
         raise ValueError(f"{shape}: recursive constructive shape")
     active = active | {shape}

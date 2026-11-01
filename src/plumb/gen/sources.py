@@ -38,10 +38,8 @@ class SourceLock:
             except FileNotFoundError:
                 raise ValueError(f"{name}: missing source {key}: {path}") from None
             actual = hashlib.sha256(data).hexdigest()
-            # Verify raw bytes before parsing. A graph-equivalent rewrite is
-            # still a different captured input and needs an explicit lock
-            # update; ordinary generation must never bless changed sources or
-            # resolve a missing owl:imports dependency from the network.
+            # Verify bytes before parsing; equivalent RDF still needs a new lock
+            # hash if its source bytes changed.
             if actual != source["sha256"]:
                 raise ValueError(
                     f"{name}: SHA-256 mismatch for {key} ({path}): "

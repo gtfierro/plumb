@@ -51,10 +51,8 @@ def main() -> None:
     for name, build in [("air", air), ("water", water), ("ro", ro)]:
         timings = []
         for _ in range(args.repeats):
-            # Use fresh authored models so a previous iteration's frozen result
-            # cannot turn this into a cache-lookup benchmark. check() -> resolve()
-            # reuse within one iteration is intentional: that is the authoring
-            # workflow whose planning and snapshot costs we want to measure.
+            # Use fresh models per iteration; allow check() -> resolve() reuse
+            # within an iteration to match the authoring workflow.
             model = build()
             start = perf_counter()
             report = model.check()

@@ -252,11 +252,7 @@ def _configuration(
         base = dependency.classes[parent]
         specs = dict(base.effective_props)
         parent_name = ref(parent)
-    # Start from the parent's effective contract, then replace only refinements.
-    # The shared helpers own counts/ranges/defaults; this front end adds the
-    # explicit configuration projections (named ports and value schemas).
-    # Inherited records are refined by replacement, keeping dependency symbols
-    # unchanged when a local class narrows them.
+    # Refine inherited PropIR records by replacement to preserve the dependency.
     original = dict(specs)
     by_predicate = {spec.predicate: spec for spec in specs.values()}
     names = {key: cls.name for key, cls in dependency.classes.items()} | local_names
@@ -320,9 +316,7 @@ def _configuration(
                 label = _value(graph, fields.get(str(RDFS.label), []), SH.hasValue)
                 count = _one(graph, prop, SH.qualifiedMinCount)
                 maximum = _one(graph, prop, SH.qualifiedMaxCount)
-                # A named reference promises a recoverable, fixed RDF role.
-                # Variable counts/media cannot satisfy that promise on hydration;
-                # they belong to general solver negotiation, not this projection.
+                # Named ports require fixed facts that hydration can match.
                 if (
                     direction is None
                     or medium is None
@@ -426,10 +420,8 @@ def compile_configurations(
     ontology = selected[0]
     module_name = str(_one(graph, ontology, CODEGEN.baseModule))
     dependency = Symbols.load(module_name)
-    # Selecting a validation profile is not permission to modify the imported
-    # class's constructor or descriptors. Partition those shapes before lowering
-    # local classes; all runtime imports below are emitted as text, never used
-    # by compilation to discover dependency meaning.
+    # Imported profiles affect validation only; keep their constraints separate
+    # from the IR used to construct local classes.
     profiles = _imported_profiles(graph, dependency)
     imported_modules: dict[str, str] = {}
 
@@ -463,9 +455,7 @@ def compile_configurations(
     }
     if len(set(local_names.values())) != len(local_names):
         raise ValueError("configuration class name collision")
-    # Parent-before-child construction makes inherited effective metadata ready
-    # when each local class is compiled. An empty ready set with pending work
-    # is a cycle, rather than a reason to drop a parent and guess an ordering.
+    # Compile parents first so each child receives effective inherited metadata.
     known: dict[str, ConfigurationIR] = {}
     while pending:
         ready = sorted(

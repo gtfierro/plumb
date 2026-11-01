@@ -10,10 +10,8 @@ MANIFEST = "_generated.json"
 
 def write_modules(modules: dict[str, str], out: Path) -> None:
     """Write compiler output and remove files owned by the preceding build."""
-    # Ownership, not directory contents, determines what can be removed.
-    # A parent ontology and its nested configuration packages share a tree;
-    # deleting everything absent from this build would erase those children
-    # and handwritten helpers. Validate every owned name before the first write.
+    # Remove only manifest-owned files to preserve nested packages and helpers.
+    # Validate all filenames before writing.
     files = sorted(modules)
     for filename in files:
         _filename(filename)

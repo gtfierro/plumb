@@ -82,10 +82,8 @@ def stable_graph(graph: rdflib.Graph) -> rdflib.Graph:
 
     blank_nodes = set(outgoing) | set(incoming)
     labels: dict[BNode, str] = {}
-    # Content identifies a subtree; incoming context distinguishes identical
-    # subtrees used at different sites. Preserve physically distinct RDF nodes
-    # even when both hashes match: the suffix below separates storage identity,
-    # while source_id() drops that interchangeable suffix for diagnostics.
+    # Include incoming context to distinguish identical subtrees at different
+    # sites. Suffixes preserve distinct nodes; source_id() omits them in reports.
     for node in blank_nodes:
         context = sorted(
             f"{_term_key(s, content_hash)} {p.n3()}" for s, p in incoming[node]

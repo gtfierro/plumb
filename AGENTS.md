@@ -34,14 +34,11 @@ for functions, variables, and generated property names; use `PascalCase` for
 classes and `UPPER_CASE` for constants. Ruff intentionally excludes generated
 ontology packages listed in `pyproject.toml`.
 
-Use Redis-style source documentation: explain a subsystem's role, important
-data structures, invariants, and algorithm before its intricate implementation.
-Place comments next to ordering requirements, ownership boundaries, deliberate
-approximations, and surprising edge cases. Small examples are useful for compact
-representations such as conjunctive range groups. Explain why the code has its
-shape; avoid comments that merely narrate obvious statements. Keep comments
-accurate when changing behavior, and change generated documentation through the
-compiler rather than editing generated classes.
+Keep source comments terse and local: state a contract or explain a non-obvious
+invariant, ordering requirement, or implementation choice. Use concrete names.
+Put broad architecture in the docs; reserve longer comments for intricate
+algorithms. Keep comments accurate, and update generated documentation through
+the compiler.
 
 ## Testing Guidelines
 

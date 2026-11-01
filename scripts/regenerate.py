@@ -87,10 +87,8 @@ def main() -> None:
         build(args.output)
         return
     with TemporaryDirectory(prefix="plumb-regen-") as temporary:
-        # Copy the source tree into an isolated import root. Configurations must
-        # read the symbols of the base packages built earlier in THIS run, not
-        # yesterday's installed exports. A subprocess gives that build its own
-        # import state as well as a controlled PYTHONPATH.
+        # Build in a fresh import root so configurations read this run's base
+        # exports. The subprocess isolates import state and PYTHONPATH.
         stage = Path(temporary) / "src/plumb"
         shutil.copytree(
             ROOT / "src/plumb", stage, ignore=shutil.ignore_patterns("__pycache__")
@@ -101,9 +99,8 @@ def main() -> None:
             env=env,
             check=True,
         )
-        # Every compilation has succeeded before publication starts. Compare
-        # owned file sets as well as bytes: checking only files in the new build
-        # would miss obsolete generated modules left behind by a source removal.
+        # Publish only after all packages compile. Include old owned filenames
+        # in drift checks to catch obsolete generated files.
         differences = []
         for package in [value[2] for value in PACKAGES.values()] + ["qudt"]:
             built = stage / package
