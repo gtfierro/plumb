@@ -12,6 +12,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Literal
+from collections.abc import Iterable
 
 if TYPE_CHECKING:
     from .containment import ContainmentTable
@@ -286,17 +287,30 @@ class Registry:
         info = cls.__dict__.get("_classinfo")
         if info is None:  # pragma: no cover - guarded by __init_subclass__
             raise TypeError(f"{cls.__name__} has no _classinfo")
+        if info.canonical is not None and (
+            not issubclass(cls, info.canonical)
+            or info.iri != info.canonical.meta.iri
+            or info.canonical.meta.canonical is not info.canonical
+        ):
+            raise ValueError(f"invalid canonical class for view {info.iri}")
+        if info.iri in self.by_iri:
+            _select_class(self.by_iri[info.iri], cls)
         info.cls = cls
         self.by_name[cls.__name__] = cls
         self.by_iri[info.iri] = cls
 
     def include(self, dependency: Registry) -> None:
         """Include a dependency's symbols and policy without changing its classes."""
+        combined = dict(self.by_iri)
         for iri, cls in dependency.by_iri.items():
-            if iri in self.by_iri and self.by_iri[iri] is not cls:
-                raise ValueError(f"incompatible imported class identity {iri}")
+            combined[iri] = (
+                _select_class(combined[iri], cls) if iri in combined else cls
+            )
+        for iri, value in dependency.enums_by_iri.items():
+            if iri in self.enums_by_iri and self.enums_by_iri[iri] is not value:
+                raise ValueError(f"incompatible imported enum identity {iri}")
         self.by_name.update(dependency.by_name)
-        self.by_iri.update(dependency.by_iri)
+        self.by_iri = combined
         self.enums_by_iri.update(dependency.enums_by_iri)
         self.terms_by_iri.update(dependency.terms_by_iri)
         self.containment.rules.extend(
@@ -307,6 +321,29 @@ class Registry:
         self.sensor_classes.update(dependency.sensor_classes)
         if dependency not in self._dependencies:
             self._dependencies += (dependency,)
+
+    @classmethod
+    def compose(cls, registries: Iterable[Registry]) -> Registry:
+        """Select compatible symbols and policy, dependencies before extensions."""
+        ordered: list[Registry] = []
+        visited: set[Registry] = set()
+
+        def visit(registry: Registry) -> None:
+            if registry in visited:
+                return
+            visited.add(registry)
+            for dependency in registry._dependencies:
+                visit(dependency)
+            ordered.append(registry)
+
+        for registry in sorted(set(registries), key=lambda item: item.ontology.iri):
+            visit(registry)
+        if len(ordered) == 1:
+            return ordered[0]
+        combined = cls(OntologyInfo("Selected schemas", ""))
+        for registry in ordered:
+            combined.include(registry)
+        return combined
 
     def resolve(self, name: str) -> type[Entity]:
         """Look up a class by its Python name (used for range checking)."""
@@ -417,3 +454,19 @@ class ClassInfo:
 
     cls: type[Entity] | None = field(default=None, repr=False)
     """The Python class this info describes (set at registration)."""
+
+    canonical: type[Entity] | None = None
+    """Canonical dependency class when this is a package-specific typed view."""
+
+
+def _select_class(first: type[Entity], second: type[Entity]) -> type[Entity]:
+    """Select a compatible projection, independently of package import order."""
+    if first is second:
+        return first
+    if first.meta.canonical is second.meta.canonical:
+        if issubclass(first, second):
+            return first
+        if issubclass(second, first):
+            return second
+        raise ValueError(f"incompatible imported views of {first.meta.iri}")
+    raise ValueError(f"incompatible imported class identity {first.meta.iri}")

@@ -77,3 +77,74 @@ def test_label_and_comment_are_mutable(m):
     fan.comment = "rooftop unit"
     assert fan.label == "Supply Fan"
     assert fan.comment == "rooftop unit"
+
+
+@pytest.mark.parametrize("reverse", [False, True])
+def test_registry_selects_explicit_nominal_view_in_both_orders(reverse):
+    from plumb.core import ClassInfo, Entity, OntologyInfo, Registry
+
+    base = Registry(OntologyInfo("Base", "urn:view-base"))
+    extension = Registry(OntologyInfo("Extension", "urn:view-extension"))
+
+    class Original(Entity):
+        _classinfo = ClassInfo("urn:view#Term", base.ontology, base)
+
+    extension.include(base)
+
+    class Extended(Original):
+        _classinfo = ClassInfo(
+            Original.meta.iri, extension.ontology, extension, canonical=Original
+        )
+
+    assert Extended.meta.canonical is Original
+    assert base.by_iri[Original.meta.iri] is Original
+    registries = [base, extension]
+    if reverse:
+        registries.reverse()
+    selected = Registry(OntologyInfo("Selected", "urn:selected"))
+    for registry in registries:
+        selected.include(registry)
+    assert selected.by_iri[Original.meta.iri] is Extended
+
+
+def test_registry_rejects_incompatible_views_without_partial_changes():
+    from plumb.core import ClassInfo, Entity, OntologyInfo, Registry
+
+    base = Registry(OntologyInfo("Base", "urn:view-base"))
+    left = Registry(OntologyInfo("Left", "urn:view-left"))
+    right = Registry(OntologyInfo("Right", "urn:view-right"))
+
+    class Original(Entity):
+        _classinfo = ClassInfo("urn:view#Term", base.ontology, base)
+
+    class Left(Original):
+        _classinfo = ClassInfo(
+            Original.meta.iri, left.ontology, left, canonical=Original
+        )
+
+    class Right(Original):
+        _classinfo = ClassInfo(
+            Original.meta.iri, right.ontology, right, canonical=Original
+        )
+
+    before = dict(left.by_iri)
+    with pytest.raises(ValueError, match="incompatible imported views"):
+        left.include(right)
+    assert left.by_iri == before
+
+
+def test_view_requires_the_canonical_python_base():
+    from plumb.core import ClassInfo, Entity, OntologyInfo, Registry
+
+    base = Registry(OntologyInfo("Base", "urn:view-base"))
+    extension = Registry(OntologyInfo("Extension", "urn:view-extension"))
+
+    class Original(Entity):
+        _classinfo = ClassInfo("urn:view#Term", base.ontology, base)
+
+    with pytest.raises(ValueError, match="invalid canonical class"):
+
+        class Invalid(Entity):
+            _classinfo = ClassInfo(
+                Original.meta.iri, extension.ontology, extension, canonical=Original
+            )

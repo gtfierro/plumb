@@ -15,7 +15,7 @@ from rdflib import RDF, RDFS, OWL, Literal, URIRef
 
 from .entity import Entity
 from .errors import ModelingError
-from .meta import OntologyInfo, PropertySpec, Registry
+from .meta import PropertySpec, Registry
 from .terms import TermValue
 from .traversal import matches as matches
 
@@ -46,9 +46,7 @@ def load_graph(
         raise ValueError("at least one generated package registry is required")
     # Resolve the selected symbol set before inference can mutate the input.
     # Canonical classes cannot know their future extension terms and enums.
-    symbols = Registry(OntologyInfo("Loaded model", ""))
-    for registry in registry_list:
-        symbols.include(registry)
+    symbols = Registry.compose(registry_list)
     if infer:
         import shifty
 

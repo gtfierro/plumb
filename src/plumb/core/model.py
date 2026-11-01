@@ -720,13 +720,15 @@ class _SystemScope:
         candidates = self.model.entities[self._start :]
         if not candidates:
             raise ModelingError(f"system {self.name!r} has no members")
-        registry = candidates[0].meta.registry
+        from .meta import Registry
+
+        registry = Registry.compose(entity.meta.registry for entity in candidates)
         equipment_cls = registry.resolve("Connectable")
         system_cls = registry.resolve("System")
         members = tuple(
             entity
             for entity in candidates
-            if isinstance(entity, (equipment_cls, system_cls))
+            if entity.meta.is_a(equipment_cls) or entity.meta.is_a(system_cls)
         )
         if not members:
             raise ModelingError(f"system {self.name!r} has no equipment members")

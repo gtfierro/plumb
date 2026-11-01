@@ -18,6 +18,7 @@ from .core import (
     ResolutionExplanation,
     ResolutionReport,
     ResolvedModel,
+    Registry,
     UnsatisfiableModelError,
 )
 from .core.enums import _local
@@ -279,11 +280,8 @@ def _solve_component(
 ) -> _ComponentResult:
     entities = {_owner(endpoint) for h in handles for endpoint in (h.source, h.target)}
     entities.update(standalone or ())
-    connector = (
-        _owner(handles[0].source)._CONNECTOR
-        if handles
-        else next(iter(entities))._CONNECTOR
-    )
+    registry = Registry.compose(entity.meta.registry for entity in entities)
+    connector = registry.resolve("Connectable")._CONNECTOR
     assert connector is not None
     enum_values = _relevant_media(entities, handles)
     enum_ids = {value.iri: index for index, value in enumerate(enum_values)}
@@ -619,7 +617,8 @@ def _relevant_media(
     entities: Iterable[Entity], handles: Iterable[ConnectionHandle]
 ) -> list[EnumValue]:
     values: dict[str, EnumValue] = {}
-    registry = next(iter(entities)).meta.registry
+    entities = tuple(entities)
+    registry = Registry.compose(entity.meta.registry for entity in entities)
     roots: set[str] = set()
     for entity in entities:
         for slot in _all_slots(type(entity)) + _constraint_slots(type(entity)):

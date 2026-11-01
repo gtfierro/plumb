@@ -183,15 +183,7 @@ def _attached_quantity(
         raise TypeError("supply unit= or a QuantityAmount")
     definition = QuantityDefinition(name, "scalar quantity", kind, unit)
     number, selected_unit = definition.unpack(value)
-    if isinstance(target, Entity):
-        registry = target.meta.registry
-        model = target.meta.model
-    elif isinstance(target, PortHandle):
-        registry = target.owner.meta.registry
-        model = target._model
-    else:
-        registry = target._connection_type().meta.registry
-        model = target._model
+    registry, model = _context(target)
     with model._atomic():
         return _create_quantity(
             _quantity_class(registry, capability),
@@ -212,11 +204,22 @@ _LOCATIONS = tuple(
 
 
 def _context(target: Entity | PortHandle | ConnectionHandle) -> tuple[Registry, Model]:
+    from plumb.core import Registry
+    from plumb.core.points import endpoint_owner
+
     if isinstance(target, Entity):
-        return target.meta.registry, target.meta.model
+        owner = endpoint_owner(target)
+        return Registry.compose(
+            [target.meta.registry, owner.meta.registry]
+        ), target.meta.model
     if isinstance(target, PortHandle):
         return target.owner.meta.registry, target._model
-    return target._connection_type().meta.registry, target._model
+    return Registry.compose(
+        [
+            endpoint_owner(target.source).meta.registry,
+            endpoint_owner(target.target).meta.registry,
+        ]
+    ), target._model
 
 
 def _s223_class(registry: Registry, name: str) -> Any:
@@ -301,8 +304,7 @@ def _attached_sensor(
     """
     registry, model = _context(target)
     if isinstance(target, Entity) and not any(
-        (cls := registry.by_iri.get(iri)) is not None and isinstance(target, cls)
-        for iri in _LOCATIONS
+        target.meta.is_a(iri) for iri in _LOCATIONS
     ):
         raise TypeError(
             f"{target.type} cannot be a sensor's observation location; use "
@@ -312,7 +314,9 @@ def _attached_sensor(
     if sensor_class is None:
         chosen = registry.sensor_classes.get(kind.iri)
         sensor_class = registry.resolve(chosen) if chosen is not None else base
-    elif not (isinstance(sensor_class, type) and issubclass(sensor_class, base)):
+    elif not (
+        isinstance(sensor_class, type) and issubclass(sensor_class, base.meta.canonical)
+    ):
         raise TypeError(f"sensor_class must be a Sensor subclass, got {sensor_class!r}")
     constructor: Any = sensor_class
     with model._atomic():
@@ -351,7 +355,7 @@ def _attached_actuator(
     actuator ``actuates`` the equipment.
     """
     registry, model = _context(target)
-    if not isinstance(target, _s223_class(registry, "Equipment")):
+    if not target.meta.is_a(_s223_class(registry, "Equipment")):
         raise TypeError(f"{target.type} is not Equipment, so it cannot be actuated")
     with model._atomic():
         command = _dynamic_property(

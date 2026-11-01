@@ -40,6 +40,7 @@ class EnumValue:
         label: str | None = None,
         definition: str | None = None,
         parent: EnumValue | None = None,
+        _register_parent: bool = True,
     ) -> None:
         self.iri = iri
         self.label = label
@@ -49,14 +50,15 @@ class EnumValue:
         # Constituents of a mixture medium (``s223:composedOf/ofConstituent``).
         self.constituents: tuple[EnumValue, ...] = ()
         self._children: dict[str, EnumValue] = {}
-        if parent is not None:
+        if parent is not None and _register_parent:
             parent._children[_segment(iri)] = self
 
-    def _add_parent(self, parent: EnumValue) -> None:
+    def _add_parent(self, parent: EnumValue, *, register_child: bool = True) -> None:
         """Register an additional ontology superclass after module creation."""
         if parent not in self.parents:
             self.parents += (parent,)
-            parent._children[_segment(self.iri)] = self
+            if register_child:
+                parent._children[_segment(self.iri)] = self
 
     def is_a(self, other: EnumValue | str) -> bool:
         """True if this value is ``other`` or a descendant of it."""

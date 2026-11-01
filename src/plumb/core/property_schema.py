@@ -264,7 +264,7 @@ def apply_properties(
     from .entity import Entity
     from .points import PointRef
     from .resolution import ConnectionHandle, PortHandle
-    from plumb.qudt import _quantity_class, _create_quantity
+    from plumb.qudt import _quantity_class, _create_quantity, _context
 
     if not isinstance(schema, PropertySchema):
         raise TypeError("properties must be an instance of a generated PropertySchema")
@@ -274,15 +274,13 @@ def apply_properties(
         if not hasattr(target, "has_property"):
             raise TypeError(f"{target.type} has no has_property relation")
         model = target.meta.model
-        registry = target.meta.registry
     elif isinstance(target, PortHandle):
         model = target._model
-        registry = target.owner.meta.registry
     elif isinstance(target, ConnectionHandle):
         model = target._model
-        registry = target._connection_type().meta.registry
     else:
         raise TypeError("target must support RDF properties")
+    registry, model = _context(target)
     model._assert_mutable()
     stem = target.name if prefix is None else prefix
     if not stem:

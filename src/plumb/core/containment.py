@@ -94,8 +94,8 @@ class ContainmentTable:
         matches = [
             rule
             for rule in self.rules
-            if isinstance(container, self._registry.resolve(rule.container))
-            and isinstance(child, self._registry.resolve(rule.child))
+            if container.meta.is_a(self._registry.resolve(rule.container))
+            and child.meta.is_a(self._registry.resolve(rule.child))
         ]
         if not matches:
             return None

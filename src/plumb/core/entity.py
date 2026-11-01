@@ -96,6 +96,12 @@ class ClassMetaView:
         return self._cls._classinfo.registry
 
     @property
+    def canonical(self) -> type[Entity]:
+        """The defining ontology class behind a package-specific typed view."""
+        info = self._cls._classinfo
+        return info.canonical or info.cls or self._cls
+
+    @property
     def parents(self) -> tuple[type[Entity], ...]:
         """Direct ontology superclasses (as Python classes)."""
         iris = self._cls._classinfo.parent_iris
