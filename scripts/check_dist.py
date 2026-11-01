@@ -57,6 +57,11 @@ def main() -> None:
     from plumb.gen.symbols import Symbols
 
     Symbols.load("plumb.watr")  # Also verify the installed dependency digest.
+    from plumb.gen.review import compare_packages
+
+    package = Path(watr.__file__).parent
+    if compare_packages(package, package).changed:
+        raise SystemExit("installed compiler review metadata is inconsistent")
 
     from plumb import brick
 

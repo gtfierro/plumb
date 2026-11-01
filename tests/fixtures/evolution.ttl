@@ -1,0 +1,14 @@
+@prefix ex: <urn:evolution#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:ontology a owl:Ontology ; owl:versionInfo "1" .
+ex:Animal a owl:Class .
+ex:Dog a owl:Class ; rdfs:subClassOf ex:Animal .
+ex:Owner a owl:Class ;
+    sh:property ex:MemberShape, ex:CodeShape .
+ex:MemberShape sh:path ex:member ; sh:class ex:Animal ; sh:maxCount 3 .
+ex:CodeShape sh:path ex:code ; sh:datatype xsd:string ; sh:maxCount 1 ;
+    sh:defaultValue "old" ; sh:in ("old" "new") .

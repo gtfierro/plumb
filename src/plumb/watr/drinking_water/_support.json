@@ -222,7 +222,8 @@
       "reason": "Required member inserted and protected against mutation.",
       "source": "cb12af41702c1ba288b2ea584cf88da18317ab814bb3ccb2f4c0ac463cf27a6da02",
       "target": "https://watermetadata.org/plumb/drinking-water#ChlorinationStage",
-      "value": "<https://watermetadata.org/ontology/watr#Process-Chlorination>"
+      "value": "<https://watermetadata.org/ontology/watr#Process-Chlorination>",
+      "value_key": "<https://watermetadata.org/ontology/watr#Process-Chlorination>"
     },
     {
       "enforcement": [
@@ -235,7 +236,8 @@
       "reason": "Required member inserted and protected against mutation.",
       "source": "cb13e81b1c87f466d28536cc9d6f11d9aad2144e9578de3d59e3c94c5defab8ced4",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "<https://watermetadata.org/ontology/watr#Process-Settling>"
+      "value": "<https://watermetadata.org/ontology/watr#Process-Settling>",
+      "value_key": "<https://watermetadata.org/ontology/watr#Process-Settling>"
     },
     {
       "enforcement": [
@@ -248,7 +250,8 @@
       "reason": "Required member inserted and protected against mutation.",
       "source": "cb1646f6a6b21cab8cbfcf97528ad0560db127964549809ee2057975a54b4bff291",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "<https://watermetadata.org/ontology/watr#Process-RapidSandFiltration>"
+      "value": "<https://watermetadata.org/ontology/watr#Process-RapidSandFiltration>",
+      "value_key": "<https://watermetadata.org/ontology/watr#Process-RapidSandFiltration>"
     },
     {
       "enforcement": [
@@ -261,7 +264,8 @@
       "reason": "Required member inserted and protected against mutation.",
       "source": "cb172c0e033255224fb32955471031954076a4e16527a4ede2a11cc4196e495ac8e",
       "target": "https://watermetadata.org/plumb/drinking-water#CoagulationStage",
-      "value": "<https://watermetadata.org/ontology/watr#Process-Coagulation>"
+      "value": "<https://watermetadata.org/ontology/watr#Process-Coagulation>",
+      "value_key": "<https://watermetadata.org/ontology/watr#Process-Coagulation>"
     },
     {
       "enforcement": [
@@ -274,7 +278,8 @@
       "reason": "Required member inserted and protected against mutation.",
       "source": "cb673a4698bea5cc55d6d1597ab783628d1e847b0697741aaeec137d798e5e948a",
       "target": "https://watermetadata.org/plumb/drinking-water#FlocculationStage",
-      "value": "<https://watermetadata.org/ontology/watr#Process-Flocculation>"
+      "value": "<https://watermetadata.org/ontology/watr#Process-Flocculation>",
+      "value_key": "<https://watermetadata.org/ontology/watr#Process-Flocculation>"
     },
     {
       "enforcement": [
@@ -287,7 +292,8 @@
       "reason": "Required member inserted and protected against mutation.",
       "source": "cb1326af8ed69dab16e7cf90378ac3e8b121b45469b489e8fe9c5a35e71b23f77f3",
       "target": "https://watermetadata.org/plumb/drinking-water#FlocculationStage",
-      "value": "<https://watermetadata.org/ontology/watr#TreatmentObjective-TurbidityRemoval>"
+      "value": "<https://watermetadata.org/ontology/watr#TreatmentObjective-TurbidityRemoval>",
+      "value_key": "<https://watermetadata.org/ontology/watr#TreatmentObjective-TurbidityRemoval>"
     },
     {
       "enforcement": [
@@ -300,7 +306,8 @@
       "reason": "Required member inserted and protected against mutation.",
       "source": "cb137a260cbcfcac91ed1a981800f20aedbec4428d23987bd6d27e25414069ac49a",
       "target": "https://watermetadata.org/plumb/drinking-water#ChlorinationStage",
-      "value": "<https://watermetadata.org/ontology/watr#TreatmentObjective-Disinfection>"
+      "value": "<https://watermetadata.org/ontology/watr#TreatmentObjective-Disinfection>",
+      "value_key": "<https://watermetadata.org/ontology/watr#TreatmentObjective-Disinfection>"
     },
     {
       "enforcement": [
@@ -313,7 +320,8 @@
       "reason": "Required member inserted and protected against mutation.",
       "source": "cb14be08cca11b578ad72e53d419b982daa7fb5dce47d2ac407e95368bcd49d1610",
       "target": "https://watermetadata.org/plumb/drinking-water#CoagulationStage",
-      "value": "<https://watermetadata.org/ontology/watr#TreatmentObjective-TurbidityRemoval>"
+      "value": "<https://watermetadata.org/ontology/watr#TreatmentObjective-TurbidityRemoval>",
+      "value_key": "<https://watermetadata.org/ontology/watr#TreatmentObjective-TurbidityRemoval>"
     },
     {
       "enforcement": [
@@ -326,7 +334,8 @@
       "reason": "Required member inserted and protected against mutation.",
       "source": "cb1556cb4a6cc4ab703282b9b374494717d39be8abc289956e40f483833734f7bf3",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "<https://watermetadata.org/ontology/watr#TreatmentObjective-Clarification>"
+      "value": "<https://watermetadata.org/ontology/watr#TreatmentObjective-Clarification>",
+      "value_key": "<https://watermetadata.org/ontology/watr#TreatmentObjective-Clarification>"
     },
     {
       "enforcement": [
@@ -339,7 +348,8 @@
       "reason": "Required member inserted and protected against mutation.",
       "source": "cb1b45607b38c7a00dd4e618c308c6ce9f6a7b7c7f4f442f5efd3b0ad7e0b18c3f5",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "<https://watermetadata.org/ontology/watr#TreatmentObjective-TurbidityRemoval>"
+      "value": "<https://watermetadata.org/ontology/watr#TreatmentObjective-TurbidityRemoval>",
+      "value_key": "<https://watermetadata.org/ontology/watr#TreatmentObjective-TurbidityRemoval>"
     },
     {
       "enforcement": [
@@ -351,7 +361,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1bd543f4bfb85dbd2cb41fb9d513d8004640981e4577bd6adc03c3ae0355fe946",
       "target": "https://watermetadata.org/plumb/drinking-water#ChlorinationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -363,7 +374,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1bd543f4bfb85dbd2cb41fb9d513d8004640981e4577bd6adc03c3ae0355fe946",
       "target": "https://watermetadata.org/plumb/drinking-water#CoagulationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -375,7 +387,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1bd543f4bfb85dbd2cb41fb9d513d8004640981e4577bd6adc03c3ae0355fe946",
       "target": "https://watermetadata.org/plumb/drinking-water#FlocculationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -387,7 +400,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1d782eef15c5bed27883309e17ef092adaccaac6b3ebfd408b64e1bf3163d449e",
       "target": "https://watermetadata.org/plumb/drinking-water#ChlorinationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -399,7 +413,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1d782eef15c5bed27883309e17ef092adaccaac6b3ebfd408b64e1bf3163d449e",
       "target": "https://watermetadata.org/plumb/drinking-water#CoagulationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -411,7 +426,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1d782eef15c5bed27883309e17ef092adaccaac6b3ebfd408b64e1bf3163d449e",
       "target": "https://watermetadata.org/plumb/drinking-water#FlocculationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -423,7 +439,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb254b8d3f21ac31b72366c2bd85c77f70fd46ad5f85003e2869260250f403e3867",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -435,7 +452,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb2911fd6b283f096f62bad4d9377843d5cb63011b60469a0b2832b429fd39fea3e",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -447,7 +465,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb29909f4f99fc41e44c7153615c44a27858faef38b685c15c8f42672fbf96f6aaf",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -459,7 +478,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb2a336e63a5713fbcda5f787939e3f1023d611c1dc4dfa0a90c5f164955168d376",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -471,7 +491,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb2b81f9c34180893f32c2d54c8ff8205ef6fe86f9323d65b8265b276d775b914e6",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -483,7 +504,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb2d133f5120eeb8ce0807bbe7a69733a3e81633dba0228e1e1bb82e4d82d123ce8",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -495,7 +517,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb34cf9e7af75b1c2ae275ef51070a3667fab0b8858afbdc451ae759a4448c5fc11",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -507,7 +530,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1bd543f4bfb85dbd2cb41fb9d513d8004640981e4577bd6adc03c3ae0355fe946",
       "target": "https://watermetadata.org/plumb/drinking-water#ChlorinationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -519,7 +543,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1bd543f4bfb85dbd2cb41fb9d513d8004640981e4577bd6adc03c3ae0355fe946",
       "target": "https://watermetadata.org/plumb/drinking-water#CoagulationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -531,7 +556,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1bd543f4bfb85dbd2cb41fb9d513d8004640981e4577bd6adc03c3ae0355fe946",
       "target": "https://watermetadata.org/plumb/drinking-water#FlocculationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -543,7 +569,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1d782eef15c5bed27883309e17ef092adaccaac6b3ebfd408b64e1bf3163d449e",
       "target": "https://watermetadata.org/plumb/drinking-water#ChlorinationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -555,7 +582,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1d782eef15c5bed27883309e17ef092adaccaac6b3ebfd408b64e1bf3163d449e",
       "target": "https://watermetadata.org/plumb/drinking-water#CoagulationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -567,7 +595,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1d782eef15c5bed27883309e17ef092adaccaac6b3ebfd408b64e1bf3163d449e",
       "target": "https://watermetadata.org/plumb/drinking-water#FlocculationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -579,7 +608,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb254b8d3f21ac31b72366c2bd85c77f70fd46ad5f85003e2869260250f403e3867",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -591,7 +621,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb2911fd6b283f096f62bad4d9377843d5cb63011b60469a0b2832b429fd39fea3e",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -603,7 +634,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb29909f4f99fc41e44c7153615c44a27858faef38b685c15c8f42672fbf96f6aaf",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -615,7 +647,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb2a336e63a5713fbcda5f787939e3f1023d611c1dc4dfa0a90c5f164955168d376",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -627,7 +660,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb2b81f9c34180893f32c2d54c8ff8205ef6fe86f9323d65b8265b276d775b914e6",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -639,7 +673,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb2d133f5120eeb8ce0807bbe7a69733a3e81633dba0228e1e1bb82e4d82d123ce8",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -651,7 +686,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb34cf9e7af75b1c2ae275ef51070a3667fab0b8858afbdc451ae759a4448c5fc11",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -663,7 +699,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1bd543f4bfb85dbd2cb41fb9d513d8004640981e4577bd6adc03c3ae0355fe946",
       "target": "https://watermetadata.org/plumb/drinking-water#ChlorinationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#Outlet>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#Outlet>",
+      "value_key": "sha256:327ca9a5cc16e3a1bdcdd5d78ee6c51488eec9bb49383eb8099afd1db39aeea8"
     },
     {
       "enforcement": [
@@ -675,7 +712,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1bd543f4bfb85dbd2cb41fb9d513d8004640981e4577bd6adc03c3ae0355fe946",
       "target": "https://watermetadata.org/plumb/drinking-water#CoagulationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#Outlet>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#Outlet>",
+      "value_key": "sha256:327ca9a5cc16e3a1bdcdd5d78ee6c51488eec9bb49383eb8099afd1db39aeea8"
     },
     {
       "enforcement": [
@@ -687,7 +725,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1bd543f4bfb85dbd2cb41fb9d513d8004640981e4577bd6adc03c3ae0355fe946",
       "target": "https://watermetadata.org/plumb/drinking-water#FlocculationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#Outlet>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#Outlet>",
+      "value_key": "sha256:327ca9a5cc16e3a1bdcdd5d78ee6c51488eec9bb49383eb8099afd1db39aeea8"
     },
     {
       "enforcement": [
@@ -699,7 +738,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1d782eef15c5bed27883309e17ef092adaccaac6b3ebfd408b64e1bf3163d449e",
       "target": "https://watermetadata.org/plumb/drinking-water#ChlorinationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#Inlet>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#Inlet>",
+      "value_key": "sha256:31ea57d82aac9b768c3117617ade5884cb384fbc67b58bfe99a7f7314901cd51"
     },
     {
       "enforcement": [
@@ -711,7 +751,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1d782eef15c5bed27883309e17ef092adaccaac6b3ebfd408b64e1bf3163d449e",
       "target": "https://watermetadata.org/plumb/drinking-water#CoagulationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#Inlet>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#Inlet>",
+      "value_key": "sha256:31ea57d82aac9b768c3117617ade5884cb384fbc67b58bfe99a7f7314901cd51"
     },
     {
       "enforcement": [
@@ -723,7 +764,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb1d782eef15c5bed27883309e17ef092adaccaac6b3ebfd408b64e1bf3163d449e",
       "target": "https://watermetadata.org/plumb/drinking-water#FlocculationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#Inlet>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#Inlet>",
+      "value_key": "sha256:31ea57d82aac9b768c3117617ade5884cb384fbc67b58bfe99a7f7314901cd51"
     },
     {
       "enforcement": [
@@ -735,7 +777,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb254b8d3f21ac31b72366c2bd85c77f70fd46ad5f85003e2869260250f403e3867",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#FilteredWater>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#FilteredWater>",
+      "value_key": "sha256:febd32d90d5d2655d060baf9944f75beddac425d492b3bb8689329b10cb187d8"
     },
     {
       "enforcement": [
@@ -747,7 +790,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb2911fd6b283f096f62bad4d9377843d5cb63011b60469a0b2832b429fd39fea3e",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#Inlet>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#Inlet>",
+      "value_key": "sha256:31ea57d82aac9b768c3117617ade5884cb384fbc67b58bfe99a7f7314901cd51"
     },
     {
       "enforcement": [
@@ -759,7 +803,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb29909f4f99fc41e44c7153615c44a27858faef38b685c15c8f42672fbf96f6aaf",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#Sludge>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#Sludge>",
+      "value_key": "sha256:acc6d6c0958bb249220d8543a59a1022ee3ac8781463f9daf0b625f0ade78994"
     },
     {
       "enforcement": [
@@ -771,7 +816,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb2a336e63a5713fbcda5f787939e3f1023d611c1dc4dfa0a90c5f164955168d376",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#Inlet>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#Inlet>",
+      "value_key": "sha256:31ea57d82aac9b768c3117617ade5884cb384fbc67b58bfe99a7f7314901cd51"
     },
     {
       "enforcement": [
@@ -783,7 +829,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb2b81f9c34180893f32c2d54c8ff8205ef6fe86f9323d65b8265b276d775b914e6",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#BackwashSupply>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#BackwashSupply>",
+      "value_key": "sha256:77f85b6f487aabdbab6397a66d7db3ed4a230d647770c857bb2a446e39c1739b"
     },
     {
       "enforcement": [
@@ -795,7 +842,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb2d133f5120eeb8ce0807bbe7a69733a3e81633dba0228e1e1bb82e4d82d123ce8",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#ClarifiedWater>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#ClarifiedWater>",
+      "value_key": "sha256:fe0629b47d11fb27c8a54df1052e0fb60ed9741a0a5a6d4ed91a7983f5470f65"
     },
     {
       "enforcement": [
@@ -807,7 +855,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "cb34cf9e7af75b1c2ae275ef51070a3667fab0b8858afbdc451ae759a4448c5fc11",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#BackwashWaste>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#BackwashWaste>",
+      "value_key": "sha256:a746b11037e41c38980b20dc56c151406ae86f618647e4f1dba26604baa9f4af"
     },
     {
       "enforcement": [
@@ -818,7 +867,8 @@
       "reason": "Outside this generated projection; retained for SHACL validation.",
       "source": "cb1366016003f7f1244521f654aa6b1230057fac26c26870fc559c8ab413e97b823",
       "target": "https://watermetadata.org/plumb/drinking-water#ChlorinationStage",
-      "value": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -829,7 +879,8 @@
       "reason": "Outside this generated projection; retained for SHACL validation.",
       "source": "cb1366016003f7f1244521f654aa6b1230057fac26c26870fc559c8ab413e97b823",
       "target": "https://watermetadata.org/plumb/drinking-water#CoagulationStage",
-      "value": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -840,7 +891,8 @@
       "reason": "Outside this generated projection; retained for SHACL validation.",
       "source": "cb1366016003f7f1244521f654aa6b1230057fac26c26870fc559c8ab413e97b823",
       "target": "https://watermetadata.org/plumb/drinking-water#FlocculationStage",
-      "value": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -851,7 +903,8 @@
       "reason": "Outside this generated projection; retained for SHACL validation.",
       "source": "cb1e173a2d6423434ffac26f3a0017f8b623ad651e9b715bc9afa41ce313b2d92d8",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -862,7 +915,8 @@
       "reason": "Outside this generated projection; retained for SHACL validation.",
       "source": "cb2ba0bba9000469ec541b1010fdeede5298f4a335862dd0f43339a33a754b470b9",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "\"3\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"3\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"3\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -873,7 +927,8 @@
       "reason": "Outside this generated projection; retained for SHACL validation.",
       "source": "cb1366016003f7f1244521f654aa6b1230057fac26c26870fc559c8ab413e97b823",
       "target": "https://watermetadata.org/plumb/drinking-water#ChlorinationStage",
-      "value": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -884,7 +939,8 @@
       "reason": "Outside this generated projection; retained for SHACL validation.",
       "source": "cb1366016003f7f1244521f654aa6b1230057fac26c26870fc559c8ab413e97b823",
       "target": "https://watermetadata.org/plumb/drinking-water#CoagulationStage",
-      "value": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -895,7 +951,8 @@
       "reason": "Outside this generated projection; retained for SHACL validation.",
       "source": "cb1366016003f7f1244521f654aa6b1230057fac26c26870fc559c8ab413e97b823",
       "target": "https://watermetadata.org/plumb/drinking-water#FlocculationStage",
-      "value": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"2\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -906,7 +963,8 @@
       "reason": "Outside this generated projection; retained for SHACL validation.",
       "source": "cb1e173a2d6423434ffac26f3a0017f8b623ad651e9b715bc9afa41ce313b2d92d8",
       "target": "https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage",
-      "value": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -917,7 +975,8 @@
       "reason": "Outside this generated projection; retained for SHACL validation.",
       "source": "cb2ba0bba9000469ec541b1010fdeede5298f4a335862dd0f43339a33a754b470b9",
       "target": "https://watermetadata.org/plumb/drinking-water#ClarificationStage",
-      "value": "\"3\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"3\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"3\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -928,7 +987,8 @@
       "reason": "Conjunctive property projections are listed separately below this source shape.",
       "source": "https://watermetadata.org/plumb/drinking-water#ChlorinationStageShape",
       "target": "https://watermetadata.org/plumb/drinking-water#ChlorinationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#TwoPortWaterStageShape>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#TwoPortWaterStageShape>",
+      "value_key": "sha256:c9f94ddddf7766f5f5c4426d6ad891a96c20da23349ca37c8e6e31ba0762c937"
     },
     {
       "enforcement": [
@@ -939,7 +999,8 @@
       "reason": "Conjunctive property projections are listed separately below this source shape.",
       "source": "https://watermetadata.org/plumb/drinking-water#CoagulationStageShape",
       "target": "https://watermetadata.org/plumb/drinking-water#CoagulationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#TwoPortWaterStageShape>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#TwoPortWaterStageShape>",
+      "value_key": "sha256:c9f94ddddf7766f5f5c4426d6ad891a96c20da23349ca37c8e6e31ba0762c937"
     },
     {
       "enforcement": [
@@ -950,10 +1011,11 @@
       "reason": "Conjunctive property projections are listed separately below this source shape.",
       "source": "https://watermetadata.org/plumb/drinking-water#FlocculationStageShape",
       "target": "https://watermetadata.org/plumb/drinking-water#FlocculationStage",
-      "value": "<https://watermetadata.org/plumb/drinking-water#TwoPortWaterStageShape>"
+      "value": "<https://watermetadata.org/plumb/drinking-water#TwoPortWaterStageShape>",
+      "value_key": "sha256:c9f94ddddf7766f5f5c4426d6ad891a96c20da23349ca37c8e6e31ba0762c937"
     }
   ],
-  "format": 1,
+  "format": 2,
   "profile_targets": [],
   "quantities": [],
   "summary": {

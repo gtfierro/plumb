@@ -77,7 +77,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -89,7 +90,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -101,7 +103,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -113,7 +116,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -125,7 +129,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -137,7 +142,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -149,7 +155,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -161,7 +168,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -173,7 +181,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape>"
+      "value": "<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape>",
+      "value_key": "sha256:063be77be8bdc893eb5bb5cb1943e1e0311d7a5d28cd4485fde9caef48935b82"
     },
     {
       "enforcement": [
@@ -185,7 +194,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape>"
+      "value": "<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape>",
+      "value_key": "sha256:8e8d393254b71b242473da09043ac27f53cf1666b9105817440f27825f606316"
     },
     {
       "enforcement": [
@@ -197,7 +207,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape>"
+      "value": "<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape>",
+      "value_key": "sha256:11c3ae1203afaa21025ec4b88517e48451ac9625974fa4599ddcc2d42982ebc6"
     },
     {
       "enforcement": [
@@ -209,7 +220,8 @@
       "reason": "S223 connection projection; see connections for expression and assertion scope.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape>"
+      "value": "<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape>",
+      "value_key": "sha256:af970f72157621bdc1953604992f4c086094d516c635402a1703e99acc93f174"
     },
     {
       "enforcement": [
@@ -220,7 +232,8 @@
       "reason": "Outside this generated projection; retained for SHACL validation.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/4",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     },
     {
       "enforcement": [
@@ -231,10 +244,11 @@
       "reason": "Outside this generated projection; retained for SHACL validation.",
       "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/4",
       "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
-      "value": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+      "value": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "value_key": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>"
     }
   ],
-  "format": 1,
+  "format": 2,
   "profile_targets": [],
   "quantities": [],
   "summary": {

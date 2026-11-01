@@ -1,4 +1,4 @@
-"""Command-line interface: ``plumb gen``.
+"""Compile packages with ``plumb gen`` and review upgrades with ``plumb diff``.
 
 Compile an ontology into a generated Python package:
 
@@ -44,8 +44,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     gen.add_argument(
         "--source",
-        help="canonical source URL to record in the package (used by "
-        "Model.validate() to fetch shapes); defaults to --file/--iri",
+        help="canonical source identity recorded in package metadata; "
+        "defaults to --file/--iri",
     )
     gen.add_argument(
         "--no-overlay",
@@ -53,7 +53,21 @@ def main(argv: list[str] | None = None) -> int:
         help="skip built-in UX overlay registrations",
     )
 
+    diff = sub.add_parser("diff", help="review changes between generated packages")
+    diff.add_argument("before", type=Path, help="saved baseline package directory")
+    diff.add_argument("after", type=Path, help="candidate package directory")
+    diff.add_argument("--json", action="store_true", help="emit a structured report")
+
     args = parser.parse_args(argv)
+    if args.command == "diff":
+        from .gen.review import compare_packages
+
+        try:
+            report = compare_packages(args.before, args.after)
+        except ValueError as error:
+            diff.error(str(error))
+        print(report.to_json() if args.json else report.render(), end="")
+        return 0
     if args.command == "gen":
         try:
             return _cmd_gen(args)

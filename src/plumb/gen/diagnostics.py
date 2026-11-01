@@ -8,18 +8,21 @@ replace full RDF validation.
 from __future__ import annotations
 
 from collections.abc import Iterable
+import hashlib
 import json
 from typing import Any
 
-from rdflib import BNode, Graph, URIRef
+from rdflib import BNode, Graph, RDF, URIRef
 from rdflib.namespace import SH
 from rdflib.term import Node
+from rdflib.compare import to_canonical_graph
 
 from .constraints import DATATYPES
 from .ir import ClassIR, PropIR
 from .stable import source_id
 
 FILENAME = "_support.json"
+FORMAT = 2
 
 
 class CompilationError(ValueError):
@@ -53,6 +56,16 @@ _ANNOTATIONS = {
     SH.namespace,
 }
 _S223 = "http://data.ashrae.org/standard223#"
+_BOOLEAN_LISTS = {SH["and"], SH["or"], SH.xone}
+_SHAPE_REFERENCES = {
+    SH.property,
+    SH.node,
+    SH.sparql,
+    SH.qualifiedValueShape,
+    SH["not"],
+    SH.prefixes,
+    SH.declare,
+}
 
 
 def support_report(
@@ -85,6 +98,7 @@ def support_report(
     connections = [source_groups(item) for item in connections]
     quantities = list(quantities)
     bindings = list(bindings)
+    value_keys: dict[tuple[Node, Node], str] = {}
     direct_slots = {
         (item["target"], item["source"]): item for item in connections if "path" in item
     }
@@ -201,6 +215,7 @@ def support_report(
                     "value": f"_:{source_id(value)}"
                     if isinstance(value, BNode)
                     else value.n3(),
+                    "value_key": _value_key(graph, parameter, value, value_keys),
                     "enforcement": enforcement,
                     "reason": reason,
                     **({"profile": True} if target in profile_targets else {}),
@@ -230,7 +245,7 @@ def support_report(
     return (
         json.dumps(
             {
-                "format": 1,
+                "format": FORMAT,
                 "summary": {
                     **{
                         stage: sum(stage in record["enforcement"] for record in records)
@@ -258,3 +273,76 @@ def support_report(
         )
         + "\n"
     )
+
+
+def _value_key(
+    graph: Graph, parameter: Node, value: Node, cache: dict[tuple[Node, Node], str]
+) -> str:
+    """Fingerprint a constraint value independently of anonymous source context.
+
+    Follow blank-node contents and explicit shape/query/prefix references, not
+    class ranges or vocabulary values. This is an RDF
+    identity check, not a proof of equivalence between arbitrary SHACL programs.
+    """
+    if (parameter, value) in cache:
+        return cache[parameter, value]
+    if parameter in {SH["in"], SH["and"], SH["or"], SH.xone} and (
+        value == RDF.nil or (value, RDF.first, None) in graph
+    ):
+        members = [
+            _value_key(
+                graph,
+                SH.node if parameter in _BOOLEAN_LISTS else SH.hasValue,
+                member,
+                cache,
+            )
+            for member in graph.items(value)
+        ]
+        # All four operators are order-independent. Repeated xone alternatives
+        # remain significant because xone counts successful branches.
+        key = json.dumps(sorted(members if parameter == SH.xone else set(members)))
+    elif not isinstance(value, BNode) and parameter not in {
+        SH.sparql,
+        SH.node,
+        SH.qualifiedValueShape,
+        SH["not"],
+    }:
+        key = value.n3()
+    else:
+        rooted = Graph()
+        rooted.add((URIRef("urn:plumb:review:root"), RDF_VALUE, value))
+        pending, seen = [(value, parameter)], set()
+        while pending:
+            node, context = pending.pop()
+            if (node, context) in seen:
+                continue
+            seen.add((node, context))
+            for predicate, child in graph.predicate_objects(node):
+                # Prefix carriers are often owl:Ontology nodes. Their version,
+                # imports, and documentation are not part of a query's meaning.
+                if context == SH.prefixes and predicate != SH.declare:
+                    continue
+                rooted.add((node, predicate, child))
+                if (
+                    isinstance(child, BNode)
+                    or predicate in _SHAPE_REFERENCES
+                    or context in _BOOLEAN_LISTS
+                    and predicate == RDF.first
+                ):
+                    pending.append(
+                        (
+                            child,
+                            context
+                            if context in _BOOLEAN_LISTS and predicate == RDF.rest
+                            else predicate,
+                        )
+                    )
+        content = "\n".join(
+            sorted(to_canonical_graph(rooted).serialize(format="nt").splitlines())
+        )
+        key = "sha256:" + hashlib.sha256(content.encode()).hexdigest()
+    cache[parameter, value] = key
+    return key
+
+
+RDF_VALUE = URIRef("urn:plumb:review:value")
