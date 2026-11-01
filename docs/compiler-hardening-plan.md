@@ -14,11 +14,14 @@ with explicit typed views for added authoring surfaces and ancestry. Mixed
 hydration, containment, connections, class-valued terms, import orders, and
 positive/negative typing are covered. The
 [identity/profile decision](shared-identities-and-profiles.md) records the contract.
+Core now owns snapshots, transactions, cache bounds, and publication. S223 and
+WaTr share an internal domain capability; plain and loaded RDF models need no
+native planning. Topology and named-point interpretation live outside core.
 The user has explicitly authorized
 breaking changes: prefer the coherent final interfaces over compatibility
 wrappers or preservation of the previous generated API.
 
-Still pending: the core/backend lifecycle split and semantic upgrade reports.
+Still pending: semantic upgrade reports and the complete ontology-evolution workflow.
 The initial source lock intentionally
 captures historical closures rather than claiming recovered import boundaries.
 Configuration named ports and scalar quantity schemas remain distinct Python
@@ -248,6 +251,30 @@ all equal-IRI values through range checks; subtype and profile constraints
 must remain enforced.
 
 ### 5. Put model lifecycle in core and connection semantics in the backend
+
+Implemented: `core/lifecycle.py` selects an optional domain plan and
+`core/snapshot.py` owns copying and freezing. Registry capabilities route S223
+authoring and topology to `domain223.py`/`topology223.py`; `solver223.py` plans
+and populates domain objects without owning the model lifecycle. Core aggregates
+compiled port requirements once. Lifecycle, sparse-cache, rollback, loaded-graph,
+and no-native-planner regressions are covered in `tests/test_lifecycle.py`.
+Use `scripts/benchmark_resolution.py` for timing and RDF-output comparisons.
+
+Verification on 2026-10-31: all 416 tests, Ruff, formatting, type checking,
+offline regeneration, installed-wheel smoke tests, and executable documentation
+passed. Local medians of three fresh models timed `check()` plus `resolve()`;
+construction and serialization were outside the timed region:
+
+| Workload | Snapshot entities | Before | After |
+| --- | ---: | ---: | ---: |
+| 30 independent air connections | 210 | 98.0 ms | 95.8 ms |
+| 20 water tanks, 19 connections | 77 | 38.6 ms | 39.6 ms |
+| Full seawater RO example | 131 | 282.7 ms | 242.6 ms |
+
+Sorted N-Triples hashes match the baseline for every workload. These local
+measurements check for substantial regressions; they are not performance
+guarantees. Run `uv run python scripts/benchmark_resolution.py --repeats 3`
+without competing build/test jobs to repeat the comparison.
 
 Deliverables:
 

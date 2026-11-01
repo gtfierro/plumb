@@ -9,6 +9,11 @@ core owns model lifecycle, and domain adapters own vocabulary interpretation.
 Model authors should not coordinate registries, compilation stages, or backends.
 Breaking interface changes are authorized where they improve that design.
 
+The runtime now uses a core-owned snapshot lifecycle with optional domain plans.
+S223/WaTr registries share an internal capability for connection authoring and
+topology; plain and loaded RDF models resolve without the native planner.
+Callers continue to use `Model.check()`, `resolve()`, and `compile()`.
+
 An object-oriented authoring layer for RDF building/water models (Brick, ASHRAE 223P, WATR).
 Practitioners write plain Python against typed classes; RDF is produced behind the scenes.
 No IRIs, no triples, no namespaces in user code.

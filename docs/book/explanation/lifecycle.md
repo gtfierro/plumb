@@ -19,11 +19,15 @@ are created with the equipment; the rest wait for resolution.
 
 ## Resolve
 
-`check()` asks the Z3 solver whether the model has exactly one
-interpretation. `resolve()` builds it: a frozen `ResolvedModel` with every
+`check()` checks deferred intentions without changing authored objects. S223
+and WaTr intentions use the shared Z3 planner; ordinary RDF models need no
+connection planning. `resolve()` produces a frozen `ResolvedModel` with every
 connection point, connection, and inverse relation. The authored model is not
 changed, and any later edit invalidates the snapshot. See
 [How connections are resolved](connection-resolution.md).
+
+Core owns copying, transactions, caching, and freezing. Domain selection is
+automatic; model authors keep using `Model.check()` and `Model.resolve()`.
 
 `find_all()` works on any model, but walks such as `find_all_next()` follow
 concrete pipes and points. An authored model gets those only from
@@ -41,8 +45,10 @@ validate.
 ## Load
 
 `Model.from_graph()` builds objects from existing RDF. A loaded model is
-backed by its graph, and edits write through to it. It has no resolution
-step, so `connect()` and `model.system()` are unavailable, but its pipes and
+backed by its graph, and edits write through to it. Its connections are already
+concrete: `resolve()` copies and freezes them without invoking the planner,
+preserving original IRIs, unprojected RDF, and the loaded point projection.
+Deferred `connect()` and `model.system()` are unavailable, but its pipes and
 points are concrete, so it can be searched and walked directly. See
 [Save, load, and edit models](../how-to/save-and-load.md).
 

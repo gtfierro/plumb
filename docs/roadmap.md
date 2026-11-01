@@ -31,6 +31,10 @@ the committed WaTr package to canonical S223 classes and enum values, with
 explicit nominal views for added properties, ancestry, and authoring policy.
 Transitive profiles, mixed hydration, connections, containment, class-valued
 terms, and static typing are covered in both package/registry orders.
+Core owns immutable snapshots and transactions, with bounded plan caching and
+an optional internal domain hook. Plain and loaded RDF bypass native planning;
+S223/WaTr share domain authoring, topology, and connection resolution. The
+remaining phase is semantic upgrade reports and ontology-evolution coverage.
 
 Design criterion: deep modules with simple interfaces. These phases assign
 ownership of complexity; they should reduce caller coordination and keep

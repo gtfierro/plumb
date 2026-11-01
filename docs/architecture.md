@@ -12,8 +12,8 @@ generated package (plumb.brick, ...)      ← output of plumb.gen
 runtime core (plumb.core)
     │  Entity / Model / descriptors / deferred intentions
     ▼
-Z3 resolution (plumb.solver223)
-    │  immutable compiled snapshot
+core lifecycle + optional domain plan (S223: plumb.solver223)
+    │  core-owned immutable snapshot
     ▼
 rdflib (serialization) · shifty (SHACL) · ontoenv (imports resolution)
 ```
@@ -26,8 +26,9 @@ rdflib (serialization) · shifty (SHACL) · ontoenv (imports resolution)
   `Registry` that resolves string range names to classes at runtime.
 - **`entity.py`** — the `Entity` base. Construction binds to the ambient
   `Model`, applies constructor kwargs through descriptors, enforces required
-  properties, then attaches to any open containment scope; any failure after
-  binding unbinds (no ghost entities). `.meta` serves `ClassMetaView` /
+  properties, then attaches to any open containment scope. Core transactions
+  roll back failed construction, including inverse links, names, and caches.
+  `.meta` serves `ClassMetaView` /
   `InstanceMetaView`. `>>`/`<<` read the class's `_RSHIFT` property.
 - **`relations.py`** — descriptors covering object relations, literals,
   enumeration values, compiled vocabulary terms, and unconstrained scalar
@@ -40,8 +41,8 @@ rdflib (serialization) · shifty (SHACL) · ontoenv (imports resolution)
   per-package `ContainmentTable`; `attach()` walks the stack innermost-first
   and applies the first matching rule, raising with guidance otherwise.
 - **`model.py`** — namespace, IRI minting, name uniqueness, entity lookup,
-  revision tracking, resolution caching, and the only rdflib-touching
-  serializer. It also exposes typed selection and tracked mutation over loaded
+  revision tracking, bounded plan caching, serialization, and transactions.
+  It also exposes typed selection and tracked mutation over loaded
   graphs.
   Serialization and validation of authored models operate on resolved
   snapshots; output graphs declare an `owl:Ontology` and import the generated
@@ -50,10 +51,15 @@ rdflib (serialization) · shifty (SHACL) · ontoenv (imports resolution)
   generated class for each typed RDF resource, and hydrates generated
   attributes. Generated attribute changes replace their managed triples while
   unmodeled RDF is preserved.
+- **`lifecycle.py`** / **`snapshot.py`** — select an optional domain plan,
+  translate resolution failures, copy model state, and publish a frozen snapshot.
+  Plain RDF models take the copy path without loading the native planner. Copies
+  preserve loaded IRIs, unprojected RDF, selected schemas, and point references.
+  A failed domain build is discarded; it cannot publish a partial snapshot.
 - **`traversal.py`** — the `find`/`find_all` filter semantics (narrowing
   classes and enum values, `exact()`), containment navigation over the
-  registries' containment tables, and breadth-first topology walks over the
-  223 connection vocabulary. Its indexes are cached on the model and dropped
+  registries' containment tables, and delegation of topology walks to the
+  registry's domain capability. Indexes are cached on the model and dropped
   by every edit. See [traversal.md](traversal.md).
 - **`resolution.py`** — stable authored `ConnectionHandle`s, staged generated
   property collections, and the `ResolutionReport`/`ResolvedModel` public API.
@@ -108,9 +114,8 @@ new identities separate from these projections; shared enums retain identity.
 The [identity/profile decision](shared-identities-and-profiles.md) records the
 implementation, shape-bundle coverage, and selection rules.
 
-The [hardening plan](compiler-hardening-plan.md) tracks remaining work:
-a core/backend lifecycle boundary and semantic upgrade reports. The runtime still
-delegates snapshot creation to the S223 solver for ordinary models.
+The [hardening plan](compiler-hardening-plan.md) tracks the remaining semantic
+upgrade reports and ontology-evolution workflow.
 
 `tests/toy.py` is a hand-written module in exactly the emitter's shape; the
 core test suite runs against it so runtime and compiler stay independently
@@ -119,6 +124,14 @@ behavior (including that emitted code passes `ty check` and that generation
 is deterministic).
 
 ## The 223 layer
+
+- **`domain223.py`** — the internal capability shared by S223 and WaTr
+  registries. It owns named-point authoring/restoration, system and boundary
+  interpretation, endpoint ownership, and selection of native planning only
+  when there are deferred intentions. Registry inclusion inherits this capability
+  without changing imported classes; callers never select a backend.
+- **`topology223.py`** — interprets S223 predicates and semantic point ancestry
+  for breadth-first walks. Concrete loaded graphs can be walked without Z3.
 
 - **`core/enums.py`** — `EnumValue` constants for punned enumeration
   hierarchies, with `is_a()` walking the parent chain; generated packages
@@ -131,8 +144,9 @@ is deterministic).
 - **`solver223.py`** — partitions intentions by shared endpoints, encodes
   shape alternatives, cardinality, class, and permitted-media constraints in
   Z3, then ranks valid assignments by domain overlap. It checks uniqueness,
-  caches unchanged component plans, and materializes derived objects in an
-  immutable clone. Unsatisfiable cores refer back to authored handles and
+  asks core to cache unchanged component plans, and populates derived objects
+  in a core-owned snapshot build. Its interface is a report and an `apply`
+  operation. Unsatisfiable cores refer back to authored handles and
   entities.
 - **Compiler additions** — metaclass-aware class collection (223 types
   classes with `s223:Class`/`s223:AbstractClass`), `s223:inverseOf`
