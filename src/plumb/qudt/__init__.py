@@ -204,10 +204,8 @@ _LOCATIONS = tuple(
 
 
 def _context(target: Entity | PortHandle | ConnectionHandle) -> tuple[Registry, Model]:
-    # A deferred location has no concrete RDF subject yet, but its property
-    # still belongs to the same model. Select schema policy from the endpoint
-    # owners AND referenced medium: a WaTr enum on canonical S223 equipment
-    # can be the only evidence that the water vocabulary/profile is in use.
+    # Include medium provenance: a WaTr enum on canonical S223 equipment can
+    # select the water schema even when the owner uses a dependency class.
     from plumb.core import Registry
     from plumb.core.points import endpoint_owner
 

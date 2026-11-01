@@ -32,9 +32,8 @@ def constraints(cls: type[Entity]) -> tuple[ShapeValues, ...]:
 
 
 def initial_values(entity: Entity, supplied: dict[str, Any]) -> dict[str, Any]:
-    # Defaults are replaceable when a caller supplies a value. Required members
-    # are additive: supplying extra members never cancels sh:hasValue. Perform
-    # this merge only for new authoring; hydration preserves the RDF as written.
+    # Supplied values replace defaults; sh:hasValue members still accumulate.
+    # Apply this merge only during construction, never during hydration.
     values = dict(supplied)
     specs = entity._effective_specs()
     for item in constraints(type(entity)):

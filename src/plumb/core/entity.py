@@ -327,10 +327,8 @@ class Entity:
                 f"no active Model: create entities inside `with Model(...):` "
                 f"or pass model= to {type(self).__name__}(...)"
             )
-        # Binding comes before property assignment: inverse edges and generated
-        # helpers need a real model/IRI. The transaction makes that early binding
-        # safe when a later required-value or containment check rejects the
-        # constructor. No ghost object or consumed automatic name may survive.
+        # Property assignment needs a bound entity. Roll back its registration
+        # and reserved names if any later constructor check fails.
         with m._atomic():
             if name is None:
                 name = m._auto_name(type(self))
@@ -881,10 +879,8 @@ class Entity:
         cached = cls.__dict__.get("_specs_cache")
         if cached is not None:
             return cached
-        # Each declaration already contains its effective compiled constraint.
-        # The MRO selects the nearest descriptor; it must not recompute range
-        # intersections or reintroduce a broader inherited range. Look up the
-        # cache in __dict__ so a subclass never borrows its parent's spec set.
+        # Select compiled specs by MRO; constraint composition is already done.
+        # The __dict__ cache lookup above prevents inheriting a parent's cache.
         specs: dict[str, PropertySpec] = {}
         for klass in reversed(cls.__mro__):
             info = klass.__dict__.get("_classinfo")
@@ -916,10 +912,8 @@ class Entity:
             (tuple(sorted(allowed_iris)),) if allowed else ()
         )
 
-        # A group is a union; the tuple of groups is a conjunction. For example,
-        # ((Dog, Cat), (Tagged,)) means (Dog OR Cat) AND Tagged. Flattening this
-        # into one list would silently accept untagged animals. RDF ancestry,
-        # not the repaired Python MRO, decides membership in each group.
+        # ((Dog, Cat), (Tagged,)) means (Dog OR Cat) AND Tagged.
+        # Check every group using RDF ancestry; Python's MRO may omit a parent.
         def conforms(candidate: type[Entity] | TermValue) -> bool:
             return all(
                 any(

@@ -44,10 +44,7 @@ class PointDeclaration(Generic[P]):
             raise ValueError("a connection point declaration needs count >= 1")
 
 
-# A declaration belongs to a class; a reference belongs to one instance.
-# _port points at a PortHandle during authoring and at a concrete Entity after
-# hydration. Keeping that indirection lets the same named-point API work before
-# resolution and when reading RDF, without pretending a deferred port is RDF.
+# _port holds a PortHandle during authoring or a concrete Entity after hydration.
 class PointRef:
     """Stable reference to one declared point on one equipment instance."""
 

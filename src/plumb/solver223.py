@@ -29,18 +29,8 @@ if TYPE_CHECKING:
     from .core.points import PointGroupRef
 
 
-# Planner representation and order of work
-# ---------------------------------------
-# _Point is a finite candidate, not a new model entity. Its active flag says
-# whether it exists in a solution; its medium is an index into a local enum
-# table. Existing RDF points and authored ports occupy the same candidate pool.
-#
-# For each component we build candidates, assert hard requirements, minimize
-# newly active points, then minimize the medium-affinity penalty. Only after
-# fixing those objectives do we ask whether a second *observable* solution
-# exists. A complete result contains ordinary _PointResult/_IntentResult data;
-# materialization uses that data to populate a core-owned snapshot, never the
-# authored model. No Z3 variable escapes through the public resolved API.
+# _Point holds solver candidates; _PointResult holds solved values.
+# active controls existence; medium indexes the component's enum table.
 @dataclass
 class _Point:
     owner: Entity
@@ -129,11 +119,8 @@ def _component_key(
     handles: list[ConnectionHandle], standalone: set[Entity] | None = None
 ) -> tuple[Any, ...]:
     """Fingerprint the authored facts that affect one solver component."""
-    # This fingerprint intentionally outlives the whole-model revision cache:
-    # editing unrelated equipment should reuse this component's solved plan.
-    # Include every fact read by selection and symmetry grouping, especially
-    # labels, pairings, and vocabulary provenance. Omitting one can reuse a
-    # formerly unique choice after an edit has made the component ambiguous.
+    # Include all facts used by solving and symmetry grouping. Exclude the model
+    # revision so unrelated edits can reuse an unchanged component's plan.
     endpoints = {
         endpoint
         for handle in handles
@@ -208,10 +195,8 @@ def _components(model: Model) -> list[tuple[list[ConnectionHandle], set[Entity]]
         return [
             ([], {entity}) for entity in model.entities if _has_named_points(entity)
         ]
-    # Union-find groups equipment whose choices constrain one another. Physical
-    # intentions and deferred mapsTo links both join components. Named ports
-    # without connections still need standalone components: their directions,
-    # counts, and media must be resolved even when no pipe uses them yet.
+    # Union-find joins equipment through intentions and deferred mapsTo links.
+    # Unconnected named ports still require standalone components.
     parent: dict[Entity, Entity] = {}
 
     def find(entity: Entity) -> Entity:
@@ -386,9 +371,8 @@ def _solve_component(
             )
         for constraint_index, constraint in enumerate(_all_constraints(type(entity))):
             if _contains_opaque(constraint):
-                # A partial boolean expression is not safe to assert: replacing
-                # an unknown branch with True or False changes or/xone meaning.
-                # Leave the entire affected expression to bundled SHACL checks.
+                # Unknown branches change or/xone meaning; validate the whole
+                # expression with SHACL instead of asserting a partial tree.
                 continue
             tracked(
                 _constraint_expr(entity_points, constraint, enum_values, enum_ids),
@@ -516,10 +500,8 @@ def _solve_component(
             None,
         )
 
-    # Objectives are lexicographic. First avoid unnecessary points, then rank
-    # otherwise valid medium assignments; affinity is never a hard physical
-    # equality rule. Each minimizer locks its optimum into the same solver so
-    # the uniqueness check below compares only equally preferred solutions.
+    # Minimize point count before affinity. Lock both optima so the uniqueness
+    # check compares only equally preferred solutions.
     _minimize_active(solver, points)
     _minimize_expression(
         solver,
@@ -531,9 +513,8 @@ def _solve_component(
         entities, points, handles, point_selections, intent_mediums
     )
     values = [assignment.eval(expr, model_completion=True) for expr in observables]
-    # Block this observable result and search again at the fixed optimum. Z3
-    # variables for inactive candidates or interchangeable unnamed points may
-    # differ freely; only a difference visible to the author is an ambiguity.
+    # Block this observable result and search for an equally preferred alternative.
+    # Ignore differences in inactive candidates or interchangeable point identities.
     solver.push()
     solver.add(z3.Or([expr != value for expr, value in zip(observables, values)]))
     ambiguous = solver.check() == z3.sat
@@ -946,10 +927,8 @@ def _minimize_active(solver: z3.Solver, points: list[_Point]) -> None:
 
 def _minimize_expression(solver: z3.Solver, expression: z3.ArithRef) -> None:
     """Constrain an integer objective to its minimum using the core solver."""
-    # Tighten a feasible integer bound until the next improvement is impossible.
-    # The temporary failed bound is popped; the proven optimum is then asserted
-    # permanently. Using this solver throughout retains tracked hard constraints
-    # and makes the later second-solution query obey exactly the same objectives.
+    # Probe stricter bounds under push/pop; commit the optimum when no better
+    # assignment exists so subsequent queries retain it.
     while solver.check() == z3.sat:
         evaluated = z3.simplify(solver.model().eval(expression, model_completion=True))
         value = evaluated.as_long()
@@ -970,10 +949,8 @@ def _observable_expressions(
     selections: dict[tuple[int, int], z3.BoolRef],
     intent_mediums: dict[int, z3.ArithRef],
 ) -> list[z3.ArithRef]:
-    # Compare group usage counts rather than raw point-selection booleans.
-    # Choosing inlet-1 instead of an otherwise identical inlet-2 is a permutation,
-    # not an authoring decision. Explicit names/labels and symmetry keys split
-    # those groups when the distinction really is part of the public model.
+    # Compare group counts so swapping identical inlet-1/inlet-2 is not ambiguity.
+    # _selection_group() preserves distinctions from names, labels, and symmetry keys.
     expressions: list[z3.ArithRef] = list(intent_mediums.values())
     for point in points:
         if point.authored is not None:
@@ -1111,10 +1088,8 @@ def _connection_class(connector: S223Connector, medium: EnumValue) -> type[Entit
 
 
 def _materialize(build: Snapshot, plans: tuple[_Plan, ...]) -> None:
-    # Allocate points/connections first, then repair deferred references. Roles,
-    # pairings, mapsTo edges, and staged property links may refer across plans,
-    # so translating those links before all concrete objects exist is unsafe.
-    # Every entity reference must pass through the build's identity maps.
+    # Create concrete objects before resolving cross-plan deferred links.
+    # Translate authored entity references through the build's identity maps.
     model = build.source
     snapshot, mapping = build.model, build.entities
     point_entities: dict[tuple[int, str], Entity] = {}

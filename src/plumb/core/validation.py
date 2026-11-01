@@ -103,10 +103,8 @@ def validate_model(
     """
     import shifty
 
-    # Validation reads a graph, not a mutable authoring session. Authored models
-    # must resolve first so SHACL sees concrete points and connections. The
-    # fallback maps those derived focus nodes back to useful Python entities
-    # even though they do not exist in the original author's entity index.
+    # Resolve authored models before validation. Use the snapshot as a fallback
+    # when a SHACL focus node identifies a derived point or connection.
     shapes_graph = _resolve_shapes(model, shapes)
     if model._loaded_graph is not None:
         data_graph = model.graph()

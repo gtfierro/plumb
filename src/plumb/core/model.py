@@ -82,12 +82,8 @@ class Model:
         self.prefixes = dict(prefixes or {})
         if "" in self.prefixes:
             raise ValueError("the default prefix is reserved for the model namespace")
-        # State has three layers:
-        #   entities/indexes       concrete authored objects and their identities
-        #   *_intents              requests for objects that planning will create
-        #   caches                 derived views, never the authoring authority
-        # Reserving a future point/connection name prevents a later constructor
-        # from taking an identity the planner has already promised to a handle.
+        # Index concrete entities here; record deferred work in *_intents.
+        # Caches are derived state and are invalidated by _touch().
         self.entities: list[Entity] = []
         self._by_name: dict[str, Entity] = {}
         self._by_iri: dict[str, Entity] = {}
@@ -96,6 +92,7 @@ class Model:
         self._connection_intents: list[ConnectionHandle] = []
         self._port_intents: list[PortHandle] = []
         self._system_intents: list[tuple[Entity, tuple[Entity, ...]]] = []
+        # Prevent constructors from taking a deferred point/connection's name.
         self._reserved_names: set[str] = set()
         self._next_intent_id = 1
         self._revision = 0
@@ -122,10 +119,8 @@ class Model:
             # An unpublished snapshot build is discarded as a unit on failure.
             yield
             return
-        # Preserve object identity while copying mutable containers. Replacing
-        # existing entities with clones on rollback would strand references held
-        # by callers and inverse relations. The journal restores stores on those
-        # same objects, along with revisions and the previously published snapshot.
+        # Restore stores on the original entities during rollback so caller
+        # references and inverse links retain their object identities.
         loaded_triples = (
             set(self._loaded_graph) if self._loaded_graph is not None else None
         )
@@ -236,9 +231,7 @@ class Model:
             if isinstance(entity, EntityBase):
                 touched[entity._iri] = entity
         for iri, entity in touched.items():
-            # Replace our previous projection, not every outgoing RDF triple.
-            # The rest of the graph belongs to its original author and may
-            # contain predicates or values this package cannot represent.
+            # Replace only managed triples; preserve RDF outside the projection.
             for triple in self._managed_triples.get(iri, ()):
                 self._loaded_graph.remove(triple)
             current: set[tuple[Any, Any, Any]] = set()

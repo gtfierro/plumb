@@ -49,9 +49,6 @@ class S223Connector:
         Slots without a medium (e.g. Pump) stay lazy: a ConnectionPoint
         needs a medium, which only negotiation or the user can supply.
         """
-        # This is only eager materialization of already determined facts, not
-        # negotiation. Defer any choice of domain member or layout to the
-        # planner, where neighboring intentions can contribute evidence.
         with _containment.suppressed():
             existing = list(getattr(entity, "has_connection_point"))
             for slot in _port_requirements(type(entity))[0]:

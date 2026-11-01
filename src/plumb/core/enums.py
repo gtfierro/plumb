@@ -65,9 +65,8 @@ class EnumValue:
 
     def _add_parent(self, parent: EnumValue, *, register_child: bool = True) -> None:
         """Register an additional ontology superclass after module creation."""
-        # Parent links answer semantic is-a queries; child indexes drive package
-        # discovery/completion. An extension may need the former without adding
-        # its local values to a shared dependency's public navigation tree.
+        # Extensions can add ancestry without adding their values to the
+        # dependency's shared child index (register_child=False).
         if parent not in self.parents:
             self.parents += (parent,)
             if register_child:

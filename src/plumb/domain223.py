@@ -39,10 +39,8 @@ def point_direction(cls: type[Entity]) -> str | None:
 
 class _S223Domain:
     def plan(self, model: Model) -> Plan | None:
-        # Loaded RDF already states concrete topology. Replanning would invent
-        # facts and turn a read/copy operation into an authoring operation. Keep
-        # the solver import below this gate so neither loaded graphs nor plain
-        # concrete models need Z3 merely to serialize or freeze their state.
+        # Loaded graphs and models without intentions need no planning.
+        # Return before importing solver223 so those paths do not load Z3.
         if model._loaded_graph is not None or not (
             model._connection_intents or model._port_intents
         ):
@@ -73,9 +71,7 @@ class _S223Domain:
                         label=declaration.label,
                         fixed_medium=True,
                     )
-                    # Group members are alternatives of the same named role.
-                    # The planner may permute them without reporting ambiguity;
-                    # differently named groups must remain distinct choices.
+                    # Members of one named group are interchangeable to the solver.
                     port.symmetry_key = point_name
                     refs.append(PointRef(entity, local, port))
                 entity._named_points[point_name] = (
@@ -220,10 +216,8 @@ def restore_named_points(
     """Rebuild generated references from RDF-observable point facts."""
     from .core.points import PointGroupRef, PointRef
 
-    # Names minted by one Python run are not an RDF identification contract.
-    # Recover references from the declared direction, medium, label, and count.
-    # Consume each matched point once so two declarations cannot silently bind
-    # to the same RDF resource. In strict mode an ambiguous match must fail.
+    # Match declared RDF facts, not minted names. Each point can satisfy one
+    # declaration; strict mode rejects ambiguous matches.
     candidates = list(getattr(entity, "has_connection_point"))
     used: set[Entity] = set()
     direction_classes = {

@@ -50,10 +50,8 @@ class RelSet(Generic[T]):
         """Validate the complete update before touching either side of an edge."""
         owner, spec = self._owner, self._spec
         owner._model._assert_mutable()
-        # Consume the input exactly once, then preflight the full proposed set
-        # and every new inverse edge. A failure on the final item must leave
-        # earlier items untouched. Only after all checks pass may either side
-        # change; the single _touch() then synchronizes RDF and invalidates views.
+        # Validate all proposed values and inverse edges before writing either
+        # side. Call _touch() once after the complete update.
         proposed = list(dict.fromkeys(_link_value(spec, item) for item in items))
         for item in proposed:
             owner._check_range(spec, item)
@@ -562,9 +560,7 @@ def _check_inverse(owner: Entity, spec: PropertySpec, target: object) -> None:
 
 def _link_inverse(owner: Entity, spec: PropertySpec, target: object) -> None:
     """Write a preflighted inverse edge without recursively invoking descriptors."""
-    # Calling a public descriptor here would mirror the edge back again and
-    # recurse. These raw writes are safe only after _check_inverse() has checked
-    # the target's range, capacity, and fixed-value constraints.
+    # Requires _check_inverse() first. Raw writes avoid recursive inverse updates.
     from .entity import Entity
 
     if spec.inverse is None or not isinstance(target, Entity):

@@ -259,11 +259,6 @@ class _Cluster:
     children: list[_Cluster] = field(default_factory=list)
 
 
-# This is a presentation index over concrete entities, not another planner.
-# RDF identity/ownership stays in the model; these maps only decide where to
-# draw boxes, clusters, junctions, and instrument bubbles. Collect instrument
-# anchors before emitting streams because an instrument may force a junction
-# onto a connection that would otherwise render as a single edge.
 class _Builder:
     def __init__(
         self,
@@ -484,9 +479,7 @@ class _Builder:
         sources = [p for p in points if _is(p, "OutletConnectionPoint")]
         targets = [p for p in points if _is(p, "InletConnectionPoint")]
         others = [p for p in points if p not in sources and p not in targets]
-        # Bidirectional points do not state a physical source. Pick a drawing
-        # orientation for such a stream without modifying the underlying graph
-        # or claiming that this layout choice is inferred flow direction.
+        # Bidirectional point order determines drawing orientation only.
         if not sources and others:
             sources.append(others.pop(0))
         targets.extend(others)
