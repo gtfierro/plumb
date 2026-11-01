@@ -13,6 +13,8 @@
         "https://watermetadata.org/ontology/watr#Tank",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [
         [
           "has_process",
@@ -105,6 +107,8 @@
         "https://watermetadata.org/ontology/watr#Tank",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [
         [
           "has_process",
@@ -216,6 +220,8 @@
         "https://watermetadata.org/ontology/watr#Tank",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [
         [
           "has_process",
@@ -308,6 +314,8 @@
         "https://watermetadata.org/ontology/watr#Tank",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [
         [
           "has_process",
@@ -401,6 +409,8 @@
         "https://watermetadata.org/ontology/watr#RapidSandFilter",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [
         [
           "has_process",
@@ -529,11 +539,11 @@
         "source": "ontology/watr-0.3.0rc1.ttl",
         "version": "0.3.rc1"
       },
-      "sha256": "d49443dde2ed6cdc7202dc2d44dbb6f6b9c0ae982019b1c71cbd634358fa8598"
+      "sha256": "43e356ab672a646e2de463289b096e10c47b876db498803c68966d0f63f93e09"
     }
   ],
   "enums": [],
-  "format": 2,
+  "format": 3,
   "graph_sha256": "b9371b48a2fca8729f1366d2ec79a34b3cb31261d5068ab0ef2a50fb6b654b2b",
   "ontology": {
     "iri": "https://watermetadata.org/plumb/drinking-water#",
@@ -1309,5 +1319,6 @@
       "term_ranges": []
     }
   },
-  "term_types": {}
+  "term_types": {},
+  "views": []
 }

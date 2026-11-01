@@ -12,6 +12,8 @@
         "https://watermetadata.org/ontology/watr#UVH2O2Reactor",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [
         [
           "has_process",
@@ -65,6 +67,8 @@
         "http://www.w3.org/2000/01/rdf-schema#Resource",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [
@@ -168,6 +172,8 @@
         "http://www.w3.org/2000/01/rdf-schema#Resource",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [],
@@ -212,6 +218,8 @@
         "http://www.w3.org/2000/01/rdf-schema#Resource",
         "https://watermetadata.org/ontology/watr#Pump"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [
@@ -286,6 +294,8 @@
         "https://watermetadata.org/ontology/watr#Filter",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [],
@@ -334,6 +344,8 @@
         "https://watermetadata.org/ontology/watr#Tank",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [
         [
           "has_process",
@@ -386,6 +398,8 @@
         "https://watermetadata.org/ontology/watr#Tank",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [
         [
           "has_process",
@@ -437,6 +451,8 @@
         "https://watermetadata.org/ontology/watr#Tank",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [
@@ -502,6 +518,8 @@
         "http://www.w3.org/2000/01/rdf-schema#Resource",
         "https://watermetadata.org/ontology/watr#PressureExchanger"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [],
@@ -545,6 +563,8 @@
         "http://data.ashrae.org/standard223#Junction",
         "http://www.w3.org/2000/01/rdf-schema#Resource"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [
         {
@@ -685,7 +705,7 @@
         }
       ],
       "properties": [
-        "c91b245b22c435c303ba8aeb12019782868c38b81e438ffbd0d22329d4adf5b2",
+        "1ef816c982b8418531c3f3a3d5557b8c44f36800f07f79c771b60f36e0d2e58b",
         "4c1bf8b724b95e4996b0a40466c4aae5fda6a45b0367a8f3747f04e39869ae5c",
         "23cc85eebcc09707813a90ff6b1d5ce0d2eaff65ff8299845362883a8e01b14f",
         "b89f7cd7ac9fa79724557fb53eb381277af043b8d2140efa95b3d25bbec81974",
@@ -693,7 +713,7 @@
         "e0af2845e17c376cee0a0e8055d2fa4d9cd479ad3feab225c4f0e789a76d1ffe",
         "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4",
         "0f52f189700ddf510f4dec33e869a11ac6647e788921ffc8d99b47d26b9363a8",
-        "12e3557c1d0388c92c4ee92b880d880d316e8dbbb27980d0652da02a232d3d5b"
+        "093f9ed85d3d018f4c943bf9247900de39c90bb032a455c74178a684f0e4e0ef"
       ],
       "python_module": null
     },
@@ -706,6 +726,8 @@
         "http://www.w3.org/2000/01/rdf-schema#Resource",
         "https://watermetadata.org/ontology/watr#Pump"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [
@@ -777,6 +799,8 @@
         "http://www.w3.org/2000/01/rdf-schema#Resource",
         "https://watermetadata.org/ontology/watr#Pump"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [
@@ -847,6 +871,8 @@
         "http://data.ashrae.org/standard223#Equipment",
         "http://www.w3.org/2000/01/rdf-schema#Resource"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [
@@ -931,6 +957,8 @@
         "http://www.w3.org/2000/01/rdf-schema#Resource",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [
@@ -1034,6 +1062,8 @@
         "http://www.w3.org/2000/01/rdf-schema#Resource",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [],
@@ -1081,6 +1111,8 @@
         "https://watermetadata.org/ontology/watr#Tank",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [
         [
           "has_process",
@@ -1129,6 +1161,8 @@
         "http://data.ashrae.org/standard223#Pipe",
         "http://www.w3.org/2000/01/rdf-schema#Resource"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [],
@@ -1145,14 +1179,14 @@
       ],
       "points": [],
       "properties": [
-        "7e65911bf6449ab832584bdc748903089cd3e663706794e04e83f4511cfa393f",
+        "92bcc5617140c89fe0e09e214a376dc1ca20f0917089c9e7356243bb601d5a9c",
         "981a14bf111a6e6b9b742800b6a28cddaa383efe9393d49f73076f67aecc7f64",
         "309e5f05d98362099601840290b17237f6d7ce9b0bb206db6ce76d539bd7b7d4",
         "7029e7f87f522ebc3e81670c2d82c244f9d0dd995c8c480af26be3df20435623",
         "2b96385b3f74a9e7395864091dcc97a457b3ebbf43c79fcd27af981c72d0c746",
         "862aa20950b063150edf6b0d67dd08d45ea07b50a665cebfb15c8e89ef009faa",
         "a2a5274fb5f50d1fa9e2bf3d6d0fd20b3696998497c6ee71d0a089816fc94ac1",
-        "1bff9907715fe0f7b82700564ea316d3987b3fedd036f4c2aa3da76b7c8cc0b5"
+        "a02b261ae66f0439c088d848ed866bbda28be2902d3185215c328353a0239470"
       ],
       "python_module": null
     },
@@ -1168,6 +1202,8 @@
         "https://watermetadata.org/ontology/watr#Tank",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [
         [
           "has_process",
@@ -1279,6 +1315,8 @@
         "https://watermetadata.org/ontology/watr#ReverseOsmosisMembrane",
         "https://watermetadata.org/ontology/watr#UnitProcess"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [
         [
           "has_process",
@@ -1386,6 +1424,8 @@
         "http://data.ashrae.org/standard223#Equipment",
         "http://www.w3.org/2000/01/rdf-schema#Resource"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [
@@ -1451,6 +1491,8 @@
         "http://www.w3.org/2000/01/rdf-schema#Resource",
         "https://watermetadata.org/ontology/watr#Tank"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [],
@@ -1496,11 +1538,11 @@
         "source": "ontology/watr-0.3.0rc1.ttl",
         "version": "0.3.rc1"
       },
-      "sha256": "d49443dde2ed6cdc7202dc2d44dbb6f6b9c0ae982019b1c71cbd634358fa8598"
+      "sha256": "43e356ab672a646e2de463289b096e10c47b876db498803c68966d0f63f93e09"
     }
   ],
   "enums": [],
-  "format": 2,
+  "format": 3,
   "graph_sha256": "e4ca55dfe4e48f58d49cbbd001e280fb006e5da0db15a5509c0d1eeb75ccb1c1",
   "ontology": {
     "iri": "https://watermetadata.org/plumb/seawater-ro#",
@@ -1572,6 +1614,49 @@
       ],
       "term_ranges": []
     },
+    "093f9ed85d3d018f4c943bf9247900de39c90bb032a455c74178a684f0e4e0ef": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#Substance-Medium"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has medium",
+      "max_count": 1,
+      "min_count": 1,
+      "name": "medium",
+      "predicate": "http://data.ashrae.org/standard223#hasMedium",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Substance-Medium"
+        ]
+      ],
+      "ranges": [],
+      "required": true,
+      "required_values": [
+        "<http://data.ashrae.org/standard223#Fluid-Water>"
+      ],
+      "sources": [
+        "b27687f66cec843f6f6442183",
+        "b42897a1302c66ef48c1eb917",
+        "b668405d00cb3041e9cb292d8",
+        "b7b6e8b6b692e00280f1836e8",
+        "b7fcb9534d9769671e8d0b97b",
+        "b8f0b12dc85f638024437a859",
+        "b9d6fe703e1f82459a5b8d55b",
+        "bbbcaeeb178444c2f6593093a",
+        "bc423102e47022f8fab24adb1",
+        "be65b6ced07bb4a44f718e9a4",
+        "bfa6b8152ca8e9eed314182a5",
+        "bfb8077af53aae66ed43f4c36",
+        "https://watermetadata.org/plumb/seawater-ro#FeedSplitterShape/hasMedium/0"
+      ],
+      "term_ranges": []
+    },
     "0f0d600adc36a365d8623c61f4ddf7ac34afdd3aa5be25637b80652ce6709ad4": {
       "choices": null,
       "datatype": "str",
@@ -1627,49 +1712,6 @@
       "required_values": [],
       "sources": [
         "b894486338780f2f7730cd6ec"
-      ],
-      "term_ranges": []
-    },
-    "12e3557c1d0388c92c4ee92b880d880d316e8dbbb27980d0652da02a232d3d5b": {
-      "choices": null,
-      "datatype": "str",
-      "default_values": [],
-      "deferred": false,
-      "definition": "The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).",
-      "enum_ranges": [
-        "http://data.ashrae.org/standard223#Substance-Medium"
-      ],
-      "inverse": null,
-      "kind": "enum",
-      "label": "has medium",
-      "max_count": 1,
-      "min_count": 1,
-      "name": "medium",
-      "predicate": "http://data.ashrae.org/standard223#hasMedium",
-      "range_groups": [
-        [
-          "http://data.ashrae.org/standard223#Substance-Medium"
-        ]
-      ],
-      "ranges": [],
-      "required": true,
-      "required_values": [
-        "<http://data.ashrae.org/standard223#Fluid-Water>"
-      ],
-      "sources": [
-        "b0070bb08b6715a4e7a32e88c",
-        "b08ea5991a9d595339cdac23a",
-        "b114c42d9256c0b70b09fad9c",
-        "b2b77f818aaa5e179e6cb3872",
-        "b490b774633a41f304e59947b",
-        "b5aecdad0a8f3f7f4ac11e130",
-        "b67b7bcfa9dd137bb3bc07a54",
-        "b7b6e8b6b692e00280f1836e8",
-        "b84423396b6605606439f6e08",
-        "b9c3a652daf6472abbe15c7f2",
-        "bb16c0d83de406776e044c163",
-        "bee798fa46491f095cadd03d0",
-        "https://watermetadata.org/plumb/seawater-ro#FeedSplitterShape/hasMedium/0"
       ],
       "term_ranges": []
     },
@@ -1735,43 +1777,33 @@
       ],
       "term_ranges": []
     },
-    "1bff9907715fe0f7b82700564ea316d3987b3fedd036f4c2aa3da76b7c8cc0b5": {
+    "1ef816c982b8418531c3f3a3d5557b8c44f36800f07f79c771b60f36e0d2e58b": {
       "choices": null,
       "datatype": "str",
       "default_values": [],
       "deferred": false,
-      "definition": "The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).",
-      "enum_ranges": [
-        "http://data.ashrae.org/standard223#Substance-Medium"
-      ],
+      "definition": "A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.",
+      "enum_ranges": [],
       "inverse": null,
-      "kind": "enum",
-      "label": "has medium",
-      "max_count": 1,
-      "min_count": 1,
-      "name": "medium",
-      "predicate": "http://data.ashrae.org/standard223#hasMedium",
+      "kind": "object",
+      "label": "cnx",
+      "max_count": null,
+      "min_count": 0,
+      "name": "cnx",
+      "predicate": "http://data.ashrae.org/standard223#cnx",
       "range_groups": [
         [
-          "http://data.ashrae.org/standard223#Substance-Medium"
+          "http://data.ashrae.org/standard223#ConnectionPoint"
         ]
       ],
-      "ranges": [],
-      "required": true,
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
       "required_values": [],
       "sources": [
-        "b08ea5991a9d595339cdac23a",
-        "b12ca976aa7f6ff2f39104dba",
-        "b490b774633a41f304e59947b",
-        "b4dc0d1658287df40e921ad35",
-        "b59c7af6a2db2bd70f0dac26a",
-        "b5aecdad0a8f3f7f4ac11e130",
-        "b73706e6130865d1a05507c79",
-        "b779b3e6d70bca0b584bb320c",
-        "b9c3a652daf6472abbe15c7f2",
-        "ba0b040374feef1cc9f970b08",
-        "bb2dc6068ee4797c8be4b9372",
-        "be44de150b3c396415bd19166"
+        "b269337e680c70964a1933e9f",
+        "b7e07cff51177986b8f64bb06"
       ],
       "term_ranges": []
     },
@@ -2263,36 +2295,6 @@
       ],
       "term_ranges": []
     },
-    "7e65911bf6449ab832584bdc748903089cd3e663706794e04e83f4511cfa393f": {
-      "choices": null,
-      "datatype": "str",
-      "default_values": [],
-      "deferred": false,
-      "definition": "A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.",
-      "enum_ranges": [],
-      "inverse": null,
-      "kind": "object",
-      "label": "cnx",
-      "max_count": null,
-      "min_count": 0,
-      "name": "cnx",
-      "predicate": "http://data.ashrae.org/standard223#cnx",
-      "range_groups": [
-        [
-          "http://data.ashrae.org/standard223#ConnectionPoint"
-        ]
-      ],
-      "ranges": [
-        "ConnectionPoint"
-      ],
-      "required": false,
-      "required_values": [],
-      "sources": [
-        "b4479e0a22cb783423fa8fdf8",
-        "b454110a4c1b1cf380dd5154a"
-      ],
-      "term_ranges": []
-    },
     "85f3b41b85cb451799e447cef7bf1bb307dce8bd5e881ecbd541abf395219dd1": {
       "choices": null,
       "datatype": "str",
@@ -2377,6 +2379,36 @@
       "required_values": [],
       "sources": [
         "https://watermetadata.org/ontology/watr#hasTreatmentObjective"
+      ],
+      "term_ranges": []
+    },
+    "92bcc5617140c89fe0e09e214a376dc1ca20f0917089c9e7356243bb601d5a9c": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.",
+      "enum_ranges": [],
+      "inverse": null,
+      "kind": "object",
+      "label": "cnx",
+      "max_count": null,
+      "min_count": 0,
+      "name": "cnx",
+      "predicate": "http://data.ashrae.org/standard223#cnx",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#ConnectionPoint"
+        ]
+      ],
+      "ranges": [
+        "ConnectionPoint"
+      ],
+      "required": false,
+      "required_values": [],
+      "sources": [
+        "b454110a4c1b1cf380dd5154a",
+        "bb803dfa4cb0c339d12ebec0e"
       ],
       "term_ranges": []
     },
@@ -2529,6 +2561,46 @@
         "bc09fac0c70bc9398630ec2a2",
         "https://watermetadata.org/ontology/watr#hasProcess",
         "https://watermetadata.org/plumb/seawater-ro#MediaFilterShape/hasProcess/0"
+      ],
+      "term_ranges": []
+    },
+    "a02b261ae66f0439c088d848ed866bbda28be2902d3185215c328353a0239470": {
+      "choices": null,
+      "datatype": "str",
+      "default_values": [],
+      "deferred": false,
+      "definition": "The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).",
+      "enum_ranges": [
+        "http://data.ashrae.org/standard223#Substance-Medium"
+      ],
+      "inverse": null,
+      "kind": "enum",
+      "label": "has medium",
+      "max_count": 1,
+      "min_count": 1,
+      "name": "medium",
+      "predicate": "http://data.ashrae.org/standard223#hasMedium",
+      "range_groups": [
+        [
+          "http://data.ashrae.org/standard223#Substance-Medium"
+        ]
+      ],
+      "ranges": [],
+      "required": true,
+      "required_values": [],
+      "sources": [
+        "b0131760cbc6e8f22d742dde8",
+        "b08013af0fa22636fac5ed53d",
+        "b123223c5e01ff28447b865ff",
+        "b191b216459fa4b5f132d1672",
+        "b27687f66cec843f6f6442183",
+        "b44e2ba9901fa7038c51721ff",
+        "b59c7af6a2db2bd70f0dac26a",
+        "b6af3bcb21b82b70deae5e465",
+        "b7fcb9534d9769671e8d0b97b",
+        "b8f0b12dc85f638024437a859",
+        "bb21b41d9f4b8b32f5821a889",
+        "bfa6b8152ca8e9eed314182a5"
       ],
       "term_ranges": []
     },
@@ -3094,5 +3166,6 @@
       "term_ranges": []
     }
   },
-  "term_types": {}
+  "term_types": {},
+  "views": []
 }

@@ -530,6 +530,9 @@ class Model:
                 dependency = getattr(value, "ontology_iri", None)
                 if dependency:
                     imports.add(dependency)
+                    vocabulary = getattr(value, "_registry", None)
+                    if vocabulary is not None and vocabulary.ontology.version:
+                        ontology_versions[dependency] = vocabulary.ontology.version
                 if spec.kind == "class":
                     obj = URIRef(value.meta.iri)
                 elif spec.kind == "object":
@@ -569,9 +572,12 @@ class Model:
         registries = set(self._loaded_registries) | {
             entity.meta.registry
             for entity in self.entities
-            if getattr(entity.meta.registry, "schema_graph", None) is not None
+            if not entity.meta.registry._schema_covers_dependencies
+            and entity.meta.registry.schema_graph is not None
         }
         for registry in registries:
+            if registry._schema_covers_dependencies:
+                continue
             schema = registry.schema_graph
             if schema is not None:
                 for triple in schema:

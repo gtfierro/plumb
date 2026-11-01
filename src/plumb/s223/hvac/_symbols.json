@@ -10,6 +10,8 @@
         "http://data.ashrae.org/standard223#Equipment",
         "http://www.w3.org/2000/01/rdf-schema#Resource"
       ],
+      "canonical_module": null,
+      "canonical_name": null,
       "class_defaults": [],
       "cp_constraints": [],
       "cp_slots": [
@@ -131,11 +133,11 @@
         "source": "https://open223.info/223p.ttl",
         "version": "git:master@6fdc11c60b930ccb042d775b66a9115547fd22a7 date:2026-10-06 20:01:58 UTC"
       },
-      "sha256": "70a4312a6588e3aa4aec418aa7c31de7dc2feb6b1c6b457f07673faa678059e1"
+      "sha256": "cf81a778a4f944780ff83f8c7344de00ff20431e5c25eaf2d4d349b5b16c9eeb"
     }
   ],
   "enums": [],
-  "format": 2,
+  "format": 3,
   "graph_sha256": "5ca550eb6ad33d6f2d5765821a3d0239c9498e1dae5d2011c076dc8ed3cc6a8c",
   "ontology": {
     "iri": "https://watermetadata.org/plumb/hvac#",
@@ -554,5 +556,6 @@
       "term_ranges": []
     }
   },
-  "term_types": {}
+  "term_types": {},
+  "views": []
 }

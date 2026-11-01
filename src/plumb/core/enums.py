@@ -17,7 +17,10 @@ value also exposes its children as attributes for interactive exploration.
 
 from __future__ import annotations
 
-from typing import TextIO
+from typing import TYPE_CHECKING, TextIO
+
+if TYPE_CHECKING:
+    from .meta import Registry
 
 
 class EnumValue:
@@ -31,6 +34,7 @@ class EnumValue:
         "parents",
         "constituents",
         "_children",
+        "_registry",
     )
 
     def __init__(
@@ -50,8 +54,14 @@ class EnumValue:
         # Constituents of a mixture medium (``s223:composedOf/ofConstituent``).
         self.constituents: tuple[EnumValue, ...] = ()
         self._children: dict[str, EnumValue] = {}
+        self._registry: Registry | None = None
         if parent is not None and _register_parent:
             parent._children[_segment(iri)] = self
+
+    @property
+    def ontology_iri(self) -> str | None:
+        """The defining vocabulary, retained when this value crosses packages."""
+        return self._registry.ontology.iri if self._registry is not None else None
 
     def _add_parent(self, parent: EnumValue, *, register_child: bool = True) -> None:
         """Register an additional ontology superclass after module creation."""
@@ -214,6 +224,7 @@ class EnumValue:
         return sorted(
             {
                 "iri",
+                "ontology_iri",
                 "label",
                 "definition",
                 "parent",

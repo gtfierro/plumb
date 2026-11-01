@@ -141,27 +141,14 @@ def shapes_for(classes: Iterable[type], registries: Iterable[Registry]) -> rdfli
     package_files: set[Path] = set()
     sources: set[str] = set()
     pending = list(registries)
+    candidates = []
     for entity_type in classes:
         for cls in entity_type.__mro__:
             if "_classinfo" not in cls.__dict__:
                 continue
             registry = cls.__dict__["_classinfo"].registry
             pending.append(registry)
-            if registry.schema_graph is not None:
-                # This is the authoritative bundle, already parsed by the
-                # package. Parsing its file again would duplicate anonymous
-                # shape/list nodes rather than simply deduplicating triples.
-                continue
-            module = sys.modules.get(cls.__module__)
-            module_file = getattr(module, "__file__", None)
-            bundled = (
-                Path(module_file).with_name("_shapes.ttl") if module_file else None
-            )
-            if bundled is not None and bundled.exists():
-                package_files.add(bundled)
-            source = cls.__dict__["_classinfo"].ontology.source
-            if source is not None and (bundled is None or not bundled.exists()):
-                sources.add(source)
+            candidates.append(cls)
     selected: set[Registry] = set()
     while pending:
         registry = pending.pop()
@@ -169,9 +156,36 @@ def shapes_for(classes: Iterable[type], registries: Iterable[Registry]) -> rdfli
             continue
         selected.add(registry)
         pending.extend(registry._dependencies)
+    # A linked ontology bundles its full imports closure; local configuration
+    # schemas contain only their own additions. Do not parse a covered base a
+    # second time, which would duplicate anonymous SHACL expression/list nodes.
+    covered: set[Registry] = set()
+    pending = [
+        dependency
+        for registry in selected
+        if registry._schema_covers_dependencies and registry.schema_graph is not None
+        for dependency in registry._dependencies
+    ]
+    while pending:
+        registry = pending.pop()
+        if registry in covered:
+            continue
+        covered.add(registry)
+        pending.extend(registry._dependencies)
+    for cls in candidates:
+        info = cls.__dict__["_classinfo"]
+        if info.registry in covered or info.registry.schema_graph is not None:
+            continue
+        module = sys.modules.get(cls.__module__)
+        module_file = getattr(module, "__file__", None)
+        bundled = Path(module_file).with_name("_shapes.ttl") if module_file else None
+        if bundled is not None and bundled.exists():
+            package_files.add(bundled)
+        elif info.ontology.source is not None:
+            sources.add(info.ontology.source)
     schemas = [
         schema
-        for registry in selected
+        for registry in selected - covered
         if (schema := getattr(registry, "schema_graph", None)) is not None
     ]
     if not package_files and not sources and not schemas:
@@ -196,13 +210,17 @@ def _package_shapes(model: Model) -> rdflib.Graph:
     Each generated package records where its ontology was loaded from
     (``OntologyInfo.source``); we parse the union of the distinct sources.
     """
-    g = shapes_for(
-        [type(entity) for entity in model.entities],
-        {
-            *model._loaded_registries,
-            *(entity.meta.registry for entity in model.entities),
-        },
-    )
+    from .enums import EnumValue
+
+    registries = {
+        *model._loaded_registries,
+        *(entity.meta.registry for entity in model),
+    }
+    for entity in model:
+        for _spec, value in entity._property_values():
+            if isinstance(value, EnumValue) and value._registry is not None:
+                registries.add(value._registry)
+    g = shapes_for([type(entity) for entity in model], registries)
     # Vocabulary references carry authoritative types compiled from their
     # catalogs. A base package's bundled closure need not contain every unit
     # or quantity-kind individual referenced by the model.

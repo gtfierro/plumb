@@ -91,6 +91,8 @@ class ClassIR:
     points: list[PointIR] = field(default_factory=list)
     maximum_ports: int | None = None
     python_module: str | None = None  # None means defined by this package
+    canonical_module: str | None = None  # typed view of an imported class
+    canonical_name: str | None = None
 
 
 @dataclass
@@ -104,6 +106,8 @@ class EnumIR:
     parent: str | None = None  # python name of the parent member
     parents: tuple[str, ...] = ()  # all direct parents, including the primary
     constituents: tuple[str, ...] = ()  # python names, via composedOf/ofConstituent
+    python_module: str | None = None
+    python_name: str | None = None
 
 
 @dataclass

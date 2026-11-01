@@ -10,64 +10,28 @@ from __future__ import annotations
 from plumb.core import EnumValue as _EnumValue
 
 
-_E_EnumerationKind = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind', label='Enumeration kind', definition='This is the encapsulating class for all `EnumerationKind`s.\n`EnumerationKind`s define the closed set of permissible values for a given purpose.\nFor example, `EnumerationKind-DayOfWeek` enumerates the days of the week and allows no other values.\n\n`EnumerationKind`s are arranged in a class hierarchy tree, with the root class named `EnumerationKind`. Each subclass is named\nstarting with its immediate superclass, followed by a hyphen and a name that is unique among the sibling classes.\nEach class is also an instance of itself. This unusual modeling pattern was used to achieve:\n\n- The ability to set an `EnumerationKind` value that is more general, or not yet fully specified\n  at the time of modeling, such as `Electricity-AC` without having to state exactly what voltage or frequency it is.\n\n- The ability to use the `sh:class` SHACL predicate at any level in the `EnumerationKind` hierarchy\n  to constrain a value in the s223 specification, even if it is a more general one such as `Electricity-AC` in the above example.\n\nCertain validation constraints exist in the standard that evaluate compatibility of `EnumerationKind`s.\nTwo values are deemed compatible if they are the same, if one is a direct ancestor (or descendant) of the other,\nor if they are mixtures sharing at least one constituent.')
-"""This is the encapsulating class for all `EnumerationKind`s.
-`EnumerationKind`s define the closed set of permissible values for a given purpose.
-For example, `EnumerationKind-DayOfWeek` enumerates the days of the week and allows no other values.
-
-`EnumerationKind`s are arranged in a class hierarchy tree, with the root class named `EnumerationKind`. Each subclass is named
-starting with its immediate superclass, followed by a hyphen and a name that is unique among the sibling classes.
-Each class is also an instance of itself. This unusual modeling pattern was used to achieve:
-
-- The ability to set an `EnumerationKind` value that is more general, or not yet fully specified
-  at the time of modeling, such as `Electricity-AC` without having to state exactly what voltage or frequency it is.
-
-- The ability to use the `sh:class` SHACL predicate at any level in the `EnumerationKind` hierarchy
-  to constrain a value in the s223 specification, even if it is a more general one such as `Electricity-AC` in the above example.
-
-Certain validation constraints exist in the standard that evaluate compatibility of `EnumerationKind`s.
-Two values are deemed compatible if they are the same, if one is a direct ancestor (or descendant) of the other,
-or if they are mixtures sharing at least one constituent.
-"""
-_E_EnumerationKind_Aspect = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Aspect', label='Aspect', definition='Aspect enumerations provide context to the meaning of a `Property` that would otherwise not be apparent.', parent=_E_EnumerationKind)
-"""Aspect enumerations provide context to the meaning of a `Property` that would otherwise not be apparent."""
-_E_Aspect_Alarm = _EnumValue('http://data.ashrae.org/standard223#Aspect-Alarm', label='Alarm', definition='The property value indicates whether an alarm condition is active or provides details about an active alarm.', parent=_E_EnumerationKind_Aspect)
-"""The property value indicates whether an alarm condition is active or provides details about an active alarm."""
-_E_Aspect_CatalogNumber = _EnumValue('http://data.ashrae.org/standard223#Aspect-CatalogNumber', label='Catalog number', definition='The property value is a number or other identifier of a product in a manufacturer’s catalog.', parent=_E_EnumerationKind_Aspect)
-"""The property value is a number or other identifier of a product in a manufacturer’s catalog."""
-_E_Aspect_Deadband = _EnumValue('http://data.ashrae.org/standard223#Aspect-Deadband', label='Deadband', definition='The property value is a range around a setpoint where no control action is taken to avoid unnecessary corrections.', parent=_E_EnumerationKind_Aspect)
-"""The property value is a range around a setpoint where no control action is taken to avoid unnecessary corrections."""
-_E_Aspect_Delta = _EnumValue('http://data.ashrae.org/standard223#Aspect-Delta', label='Delta', definition='The property value is a differential value (e.g., pressure difference) instead of an absolute value.', parent=_E_EnumerationKind_Aspect)
-"""The property value is a differential value (e.g., pressure difference) instead of an absolute value."""
-_E_Aspect_Fault = _EnumValue('http://data.ashrae.org/standard223#Aspect-Fault', label='Fault', definition='The property value is a fault indicator or code that signals a malfunction or issue with the system or equipment.', parent=_E_EnumerationKind_Aspect)
-"""The property value is a fault indicator or code that signals a malfunction or issue with the system or equipment."""
-_E_Aspect_HighLimit = _EnumValue('http://data.ashrae.org/standard223#Aspect-HighLimit', label='High limit', definition='The property value is an upper threshold used in a control or alarm detection algorithm.', parent=_E_EnumerationKind_Aspect)
-"""The property value is an upper threshold used in a control or alarm detection algorithm."""
-_E_Aspect_LowLimit = _EnumValue('http://data.ashrae.org/standard223#Aspect-LowLimit', label='Low limit', definition='The property value is a lower threshold used in a control or alarm detection algorithm.', parent=_E_EnumerationKind_Aspect)
-"""The property value is a lower threshold used in a control or alarm detection algorithm."""
-_E_Aspect_Manufacturer = _EnumValue('http://data.ashrae.org/standard223#Aspect-Manufacturer', label='Manufacturer', definition='The property value is a name or other identifier of the product’s manufacturer.', parent=_E_EnumerationKind_Aspect)
-"""The property value is a name or other identifier of the product’s manufacturer."""
-_E_Aspect_Maximum = _EnumValue('http://data.ashrae.org/standard223#Aspect-Maximum', label='Maximum', definition='The property value is a highest specified or observed value. (Examples: upper limit of the specified operating voltage range; maximum measured temperature.)', parent=_E_EnumerationKind_Aspect)
-"""The property value is a highest specified or observed value. (Examples: upper limit of the specified operating voltage range; maximum measured temperature.)"""
-_E_Aspect_Minimum = _EnumValue('http://data.ashrae.org/standard223#Aspect-Minimum', label='Minimum', definition='The property value is a lowest specified or observed value. (Examples: lower limit of the specified operating voltage range; minimum measured temperature.)', parent=_E_EnumerationKind_Aspect)
-"""The property value is a lowest specified or observed value. (Examples: lower limit of the specified operating voltage range; minimum measured temperature.)"""
-_E_Aspect_Model = _EnumValue('http://data.ashrae.org/standard223#Aspect-Model', label='Model', definition='The property value is a model identifier of the product.', parent=_E_EnumerationKind_Aspect)
-"""The property value is a model identifier of the product."""
-_E_Aspect_Nominal = _EnumValue('http://data.ashrae.org/standard223#Aspect-Nominal', label='Nominal', definition='The property value is a value that is expected or desired under normal operating conditions, but may not reflect the actual value at all times. (Example: nominal voltage.)', parent=_E_EnumerationKind_Aspect)
-"""The property value is a value that is expected or desired under normal operating conditions, but may not reflect the actual value at all times. (Example: nominal voltage.)"""
-_E_Aspect_OperatingMode = _EnumValue('http://data.ashrae.org/standard223#Aspect-OperatingMode', label='Operating mode', definition="The property value is the current intended mode of operation, such as 'Automatic', 'On', or 'Off'.", parent=_E_EnumerationKind_Aspect)
-"""The property value is the current intended mode of operation, such as 'Automatic', 'On', or 'Off'."""
-_E_Aspect_OperatingStatus = _EnumValue('http://data.ashrae.org/standard223#Aspect-OperatingStatus', label='Operating status', definition="The property value is the current operational status of the system or equipment, such as 'Running,' 'Stopped,' or 'Maintenance Mode.'", parent=_E_EnumerationKind_Aspect)
-"""The property value is the current operational status of the system or equipment, such as 'Running,' 'Stopped,' or 'Maintenance Mode.'"""
-_E_Aspect_Rated = _EnumValue('http://data.ashrae.org/standard223#Aspect-Rated', label='Rated', definition='The property value indicates a limit for continuous safe operation set by the manufacturer, but may not reflect the actual value at all times. (Example: rated voltage.)', parent=_E_EnumerationKind_Aspect)
-"""The property value indicates a limit for continuous safe operation set by the manufacturer, but may not reflect the actual value at all times. (Example: rated voltage.)"""
-_E_Aspect_SerialNumber = _EnumValue('http://data.ashrae.org/standard223#Aspect-SerialNumber', label='Serial number', definition='The property value is the serial number assigned by the manufacturer to the system or equipment.', parent=_E_EnumerationKind_Aspect)
-"""The property value is the serial number assigned by the manufacturer to the system or equipment."""
-_E_Aspect_Setpoint = _EnumValue('http://data.ashrae.org/standard223#Aspect-Setpoint', label='Setpoint', definition='The property value is a target value for a control algorithm.', parent=_E_EnumerationKind_Aspect)
-"""The property value is a target value for a control algorithm."""
-_E_Aspect_Threshold = _EnumValue('http://data.ashrae.org/standard223#Aspect-Threshold', label='Threshold', definition='The property value is a threshold used in a control algorithm.', parent=_E_EnumerationKind_Aspect)
-"""The property value is a threshold used in a control algorithm."""
-_E_EnumerationKind_Aggregation = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-Aggregation', label='Aggregation', definition='EnumerationKind for aggregation semantics carried by a property, such as total, mean, maximum, or minimum.', parent=_E_EnumerationKind_Aspect)
+from plumb.s223.enums import values as _VALUES0
+_E_EnumerationKind = _VALUES0.EnumerationKind
+_E_EnumerationKind_Aspect = _VALUES0.EnumerationKind_Aspect
+_E_Aspect_Alarm = _VALUES0.Aspect_Alarm
+_E_Aspect_CatalogNumber = _VALUES0.Aspect_CatalogNumber
+_E_Aspect_Deadband = _VALUES0.Aspect_Deadband
+_E_Aspect_Delta = _VALUES0.Aspect_Delta
+_E_Aspect_Fault = _VALUES0.Aspect_Fault
+_E_Aspect_HighLimit = _VALUES0.Aspect_HighLimit
+_E_Aspect_LowLimit = _VALUES0.Aspect_LowLimit
+_E_Aspect_Manufacturer = _VALUES0.Aspect_Manufacturer
+_E_Aspect_Maximum = _VALUES0.Aspect_Maximum
+_E_Aspect_Minimum = _VALUES0.Aspect_Minimum
+_E_Aspect_Model = _VALUES0.Aspect_Model
+_E_Aspect_Nominal = _VALUES0.Aspect_Nominal
+_E_Aspect_OperatingMode = _VALUES0.Aspect_OperatingMode
+_E_Aspect_OperatingStatus = _VALUES0.Aspect_OperatingStatus
+_E_Aspect_Rated = _VALUES0.Aspect_Rated
+_E_Aspect_SerialNumber = _VALUES0.Aspect_SerialNumber
+_E_Aspect_Setpoint = _VALUES0.Aspect_Setpoint
+_E_Aspect_Threshold = _VALUES0.Aspect_Threshold
+_E_EnumerationKind_Aggregation = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-Aggregation', label='Aggregation', definition='EnumerationKind for aggregation semantics carried by a property, such as total, mean, maximum, or minimum.', parent=_E_EnumerationKind_Aspect, _register_parent=False)
 """EnumerationKind for aggregation semantics carried by a property, such as total, mean, maximum, or minimum."""
 _E_Aggregation_Count = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Count', label='Count', definition='The associated property represents a count over an aggregation scope.', parent=_E_EnumerationKind_Aggregation)
 """The associated property represents a count over an aggregation scope."""
@@ -93,1424 +57,418 @@ _E_Aggregation_Total = _EnumValue('https://watermetadata.org/ontology/watr#Aggre
 """The associated property represents the total amount of the characterized quantity or substance."""
 _E_Aggregation_Variance = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Variance', label='Variance', definition='The associated property represents the variance over an aggregation scope.', parent=_E_EnumerationKind_Aggregation)
 """The associated property represents the variance over an aggregation scope."""
-_E_EnumerationKind_Binary = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Binary', label='Binary', definition='This class and its enumerated subclasses represent common binary values.\n\n: EnumerationKind-Binary Enumerations\n\n| Enumeration |\n|:-----------|\n| `Binary-Logical` |\n| `Binary-OnOff` |\n| `Binary-Position` |', parent=_E_EnumerationKind)
-"""This class and its enumerated subclasses represent common binary values.
-
-: EnumerationKind-Binary Enumerations
-
-| Enumeration |
-|:-----------|
-| `Binary-Logical` |
-| `Binary-OnOff` |
-| `Binary-Position` |
-"""
-_E_Binary_Logical = _EnumValue('http://data.ashrae.org/standard223#Binary-Logical', label='Logical', definition='This class and its enumerated subclasses represent the possible values of a logical `Property`, e.g., True or False.\n\n: Binary-Logical Enumerations\n\n| Enumeration |\n|:-----------|\n| `Logical-False` |\n| `Logical-True` |', parent=_E_EnumerationKind_Binary)
-"""This class and its enumerated subclasses represent the possible values of a logical `Property`, e.g., True or False.
-
-: Binary-Logical Enumerations
-
-| Enumeration |
-|:-----------|
-| `Logical-False` |
-| `Logical-True` |
-"""
-_E_Logical_False = _EnumValue('http://data.ashrae.org/standard223#Logical-False', label='Logical false', definition='Logical-False', parent=_E_Binary_Logical)
-"""Logical-False"""
-_E_Logical_True = _EnumValue('http://data.ashrae.org/standard223#Logical-True', label='Logical true', definition='Logical-True', parent=_E_Binary_Logical)
-"""Logical-True"""
-_E_Binary_OnOff = _EnumValue('http://data.ashrae.org/standard223#Binary-OnOff', label='On/off', definition='This class and its enumerated subclasses represent basic operational states, e.g., On or Off.\n\n: Binary-OnOff Enumerations\n\n| Enumeration |\n|:-----------|\n| `OnOff-Off` |\n| `OnOff-On` |', parent=_E_EnumerationKind_Binary)
-"""This class and its enumerated subclasses represent basic operational states, e.g., On or Off.
-
-: Binary-OnOff Enumerations
-
-| Enumeration |
-|:-----------|
-| `OnOff-Off` |
-| `OnOff-On` |
-"""
-_E_OnOff_Off = _EnumValue('http://data.ashrae.org/standard223#OnOff-Off', label='Off', definition='OnOff-Off', parent=_E_Binary_OnOff)
-"""OnOff-Off"""
-_E_OnOff_On = _EnumValue('http://data.ashrae.org/standard223#OnOff-On', label='On', definition='OnOff-On', parent=_E_Binary_OnOff)
-"""OnOff-On"""
-_E_Binary_Position = _EnumValue('http://data.ashrae.org/standard223#Binary-Position', label='Position', definition='This class and its enumerated subclasses represent basic positional states, e.g., Open or Closed.\n\n: Binary-Position Enumerations\n\n| Enumeration |\n|:-----------|\n| `Position-Closed` |\n| `Position-Open` |', parent=_E_EnumerationKind_Binary)
-"""This class and its enumerated subclasses represent basic positional states, e.g., Open or Closed.
-
-: Binary-Position Enumerations
-
-| Enumeration |
-|:-----------|
-| `Position-Closed` |
-| `Position-Open` |
-"""
-_E_Position_Closed = _EnumValue('http://data.ashrae.org/standard223#Position-Closed', label='Closed', definition='Position-Closed', parent=_E_Binary_Position)
-"""Position-Closed"""
-_E_Position_Open = _EnumValue('http://data.ashrae.org/standard223#Position-Open', label='Open', definition='Position-Open', parent=_E_Binary_Position)
-"""Position-Open"""
-_E_EnumerationKind_DayOfWeek = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-DayOfWeek', label='Day of week', definition='This class and its enumerated subclasses represent the days of the week, according to the Gregorian calendar, i.e., Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, and Sunday. The Weekend and Weekday EnumerationKinds define subsets of this `EnumerationKind` for Mon-Fri and Sat, Sun, respectively.\n\n: EnumerationKind-DayOfWeek Enumerations\n\n| Enumeration |\n|:-----------|\n| `DayOfWeek-Weekday` |\n| `DayOfWeek-Weekend` |', parent=_E_EnumerationKind)
-"""This class and its enumerated subclasses represent the days of the week, according to the Gregorian calendar, i.e., Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, and Sunday. The Weekend and Weekday EnumerationKinds define subsets of this `EnumerationKind` for Mon-Fri and Sat, Sun, respectively.
-
-: EnumerationKind-DayOfWeek Enumerations
-
-| Enumeration |
-|:-----------|
-| `DayOfWeek-Weekday` |
-| `DayOfWeek-Weekend` |
-"""
-_E_DayOfWeek_Weekday = _EnumValue('http://data.ashrae.org/standard223#DayOfWeek-Weekday', label='Weekday', definition='This class and its enumerated subclasses represent weekdays according to the Gregorian calendar, i.e., Monday, Tuesday, Wednesday, Thursday, and Friday.\n\n: DayOfWeek-Weekday Enumerations\n\n| Enumeration |\n|:-----------|\n| `Weekday-Friday` |\n| `Weekday-Monday` |\n| `Weekday-Thursday` |\n| `Weekday-Tuesday` |\n| `Weekday-Wednesday` |', parent=_E_EnumerationKind_DayOfWeek)
-"""This class and its enumerated subclasses represent weekdays according to the Gregorian calendar, i.e., Monday, Tuesday, Wednesday, Thursday, and Friday.
-
-: DayOfWeek-Weekday Enumerations
-
-| Enumeration |
-|:-----------|
-| `Weekday-Friday` |
-| `Weekday-Monday` |
-| `Weekday-Thursday` |
-| `Weekday-Tuesday` |
-| `Weekday-Wednesday` |
-"""
-_E_Weekday_Friday = _EnumValue('http://data.ashrae.org/standard223#Weekday-Friday', label='Friday', definition='Weekday-Friday', parent=_E_DayOfWeek_Weekday)
-"""Weekday-Friday"""
-_E_Weekday_Monday = _EnumValue('http://data.ashrae.org/standard223#Weekday-Monday', label='Monday', definition='Weekday-Monday', parent=_E_DayOfWeek_Weekday)
-"""Weekday-Monday"""
-_E_Weekday_Thursday = _EnumValue('http://data.ashrae.org/standard223#Weekday-Thursday', label='Thursday', definition='Weekday-Thursday', parent=_E_DayOfWeek_Weekday)
-"""Weekday-Thursday"""
-_E_Weekday_Tuesday = _EnumValue('http://data.ashrae.org/standard223#Weekday-Tuesday', label='Tuesday', definition='Weekday-Tuesday', parent=_E_DayOfWeek_Weekday)
-"""Weekday-Tuesday"""
-_E_Weekday_Wednesday = _EnumValue('http://data.ashrae.org/standard223#Weekday-Wednesday', label='Wednesday', definition='Weekday-Wednesday', parent=_E_DayOfWeek_Weekday)
-"""Weekday-Wednesday"""
-_E_DayOfWeek_Weekend = _EnumValue('http://data.ashrae.org/standard223#DayOfWeek-Weekend', label='Weekend', definition='This class and its enumerated subclasses represent weekend days according to the Gregorian calendar, i.e., Saturday and Sunday.\n\n: DayOfWeek-Weekend Enumerations\n\n| Enumeration |\n|:-----------|\n| `Weekend-Saturday` |\n| `Weekend-Sunday` |', parent=_E_EnumerationKind_DayOfWeek)
-"""This class and its enumerated subclasses represent weekend days according to the Gregorian calendar, i.e., Saturday and Sunday.
-
-: DayOfWeek-Weekend Enumerations
-
-| Enumeration |
-|:-----------|
-| `Weekend-Saturday` |
-| `Weekend-Sunday` |
-"""
-_E_Weekend_Saturday = _EnumValue('http://data.ashrae.org/standard223#Weekend-Saturday', label='Saturday', definition='Weekend-Saturday', parent=_E_DayOfWeek_Weekend)
-"""Weekend-Saturday"""
-_E_Weekend_Sunday = _EnumValue('http://data.ashrae.org/standard223#Weekend-Sunday', label='Sunday', definition='Weekend-Sunday', parent=_E_DayOfWeek_Weekend)
-"""Weekend-Sunday"""
-_E_EnumerationKind_Domain = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Domain', label='Domain', definition='This class and its enumerated subclasses represent building systems and services (e.g., HVAC, Lighting, and Plumbing).\n\n: EnumerationKind-Domain Enumerations\n\n| Enumeration |\n|:-----------|\n| `Domain-ConveyanceSystems` |\n| `Domain-Electrical` |\n| `Domain-FireProtection` |\n| `Domain-HVAC` |\n| `Domain-Lighting` |\n| `Domain-Networking` |\n| `Domain-Occupancy` |\n| `Domain-PhysicalSecurity` |\n| `Domain-Plumbing` |\n| `Domain-Refrigeration` |', parent=_E_EnumerationKind)
-"""This class and its enumerated subclasses represent building systems and services (e.g., HVAC, Lighting, and Plumbing).
-
-: EnumerationKind-Domain Enumerations
-
-| Enumeration |
-|:-----------|
-| `Domain-ConveyanceSystems` |
-| `Domain-Electrical` |
-| `Domain-FireProtection` |
-| `Domain-HVAC` |
-| `Domain-Lighting` |
-| `Domain-Networking` |
-| `Domain-Occupancy` |
-| `Domain-PhysicalSecurity` |
-| `Domain-Plumbing` |
-| `Domain-Refrigeration` |
-"""
-_E_Domain_ConveyanceSystems = _EnumValue('http://data.ashrae.org/standard223#Domain-ConveyanceSystems', label='Conveyance systems domain', definition='The domain that represents equipment that moves people or things within a building. Example `Domain-ConveyanceSystems` equipment include `Elevator` and `Escalator`.', parent=_E_EnumerationKind_Domain)
-"""The domain that represents equipment that moves people or things within a building. Example `Domain-ConveyanceSystems` equipment include `Elevator` and `Escalator`."""
-_E_Domain_Electrical = _EnumValue('http://data.ashrae.org/standard223#Domain-Electrical', label='Electrical domain', definition='The domain that represents equipment that distributes and monitors electrical power within a building. Example `Domain-Electrical` equipment include `ElectricityBreaker`, `ElectricEnergyConverter`, and `ElectricityMeter`.', parent=_E_EnumerationKind_Domain)
-"""The domain that represents equipment that distributes and monitors electrical power within a building. Example `Domain-Electrical` equipment include `ElectricityBreaker`, `ElectricEnergyConverter`, and `ElectricityMeter`."""
-_E_Domain_FireProtection = _EnumValue('http://data.ashrae.org/standard223#Domain-FireProtection', label='Fire protection domain', definition='The domain that represents equipment that detect and mitigate the spread of fire within a building. Example `Domain-FireProtection` equipment include smoke detectors, alarms, and emergency public address systems.', parent=_E_EnumerationKind_Domain)
-"""The domain that represents equipment that detect and mitigate the spread of fire within a building. Example `Domain-FireProtection` equipment include smoke detectors, alarms, and emergency public address systems."""
-_E_Domain_HVAC = _EnumValue('http://data.ashrae.org/standard223#Domain-HVAC', label='HVAC domain', definition='The domain that represents equipment that condition and ventilate spaces within a building. Example `Domain-HVAC` equipment include `Fan`, `Pump`, and `AirHandlingUnit`.', parent=_E_EnumerationKind_Domain)
-"""The domain that represents equipment that condition and ventilate spaces within a building. Example `Domain-HVAC` equipment include `Fan`, `Pump`, and `AirHandlingUnit`."""
-_E_Domain_Lighting = _EnumValue('http://data.ashrae.org/standard223#Domain-Lighting', label='Lighting domain', definition='The domain that represents equipment that illuminate and manage the distribution of light within or outside of a building. Example `Domain-Lighting` equipment include `Luminaire`, `LightSensor`, and `WindowShade`.', parent=_E_EnumerationKind_Domain)
-"""The domain that represents equipment that illuminate and manage the distribution of light within or outside of a building. Example `Domain-Lighting` equipment include `Luminaire`, `LightSensor`, and `WindowShade`."""
-_E_Domain_Networking = _EnumValue('http://data.ashrae.org/standard223#Domain-Networking', label='Networking domain', definition='The domain that represents equipment that distributes and manages the flow of communication signals within a building. Example `Domain-Networking` equipment include `EthernetSwitch` and `PowerOverEthernetSwitch`', parent=_E_EnumerationKind_Domain)
-"""The domain that represents equipment that distributes and manages the flow of communication signals within a building. Example `Domain-Networking` equipment include `EthernetSwitch` and `PowerOverEthernetSwitch`"""
-_E_Domain_Occupancy = _EnumValue('http://data.ashrae.org/standard223#Domain-Occupancy', label='Occupancy domain', definition='The domain that represents equipment that determine whether and how many people are moving or present within a building. Example `Domain-Occupancy` equipment include `OccupantMotionSensor`, `OccupantPresenceSensor` and `OccupantCountSensor`', parent=_E_EnumerationKind_Domain)
-"""The domain that represents equipment that determine whether and how many people are moving or present within a building. Example `Domain-Occupancy` equipment include `OccupantMotionSensor`, `OccupantPresenceSensor` and `OccupantCountSensor`"""
-_E_Domain_PhysicalSecurity = _EnumValue('http://data.ashrae.org/standard223#Domain-PhysicalSecurity', label='Physical security domain', definition='The domain that represents equipment that control and monitor physical access to spaces within or outside of a building. Example `Domain-PhysicalSecurity` equipment include cameras, keycard sensors, and biometric scanners.', parent=_E_EnumerationKind_Domain)
-"""The domain that represents equipment that control and monitor physical access to spaces within or outside of a building. Example `Domain-PhysicalSecurity` equipment include cameras, keycard sensors, and biometric scanners."""
-_E_Domain_Plumbing = _EnumValue('http://data.ashrae.org/standard223#Domain-Plumbing', label='Plumbing domain', definition='The domain that represents equipment that distributes, holds, removes and monitors water within or outside of a building. Example `Domain-Plumbing` equipment include `Faucet`, `Sink`, and `FlushToilet`.', parent=_E_EnumerationKind_Domain)
-"""The domain that represents equipment that distributes, holds, removes and monitors water within or outside of a building. Example `Domain-Plumbing` equipment include `Faucet`, `Sink`, and `FlushToilet`."""
-_E_Domain_Refrigeration = _EnumValue('http://data.ashrae.org/standard223#Domain-Refrigeration', label='Refrigeration domain', definition='The domain that represents equipment that maintain internal temperatures below the surrounding ambient temperature with a building. Example `Domain-Refrigeration` equipment include `Refrigerator` and `Freezer`', parent=_E_EnumerationKind_Domain)
-"""The domain that represents equipment that maintain internal temperatures below the surrounding ambient temperature with a building. Example `Domain-Refrigeration` equipment include `Refrigerator` and `Freezer`"""
-_E_EnumerationKind_ElectricalPhaseIdentifier = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-ElectricalPhaseIdentifier', label='Electrical phase identifier', definition='This class and its enumerated subclasses represent all possible electrical phases for AC electricity service.\n\n: EnumerationKind-ElectricalPhaseIdentifier Enumerations\n\n| Enumeration |\n|:-----------|\n| `ElectricalPhaseIdentifier-A` |\n| `ElectricalPhaseIdentifier-AB` |\n| `ElectricalPhaseIdentifier-ABC` |\n| `ElectricalPhaseIdentifier-B` |\n| `ElectricalPhaseIdentifier-BC` |\n| `ElectricalPhaseIdentifier-C` |\n| `ElectricalPhaseIdentifier-CA` |', parent=_E_EnumerationKind)
-"""This class and its enumerated subclasses represent all possible electrical phases for AC electricity service.
-
-: EnumerationKind-ElectricalPhaseIdentifier Enumerations
-
-| Enumeration |
-|:-----------|
-| `ElectricalPhaseIdentifier-A` |
-| `ElectricalPhaseIdentifier-AB` |
-| `ElectricalPhaseIdentifier-ABC` |
-| `ElectricalPhaseIdentifier-B` |
-| `ElectricalPhaseIdentifier-BC` |
-| `ElectricalPhaseIdentifier-C` |
-| `ElectricalPhaseIdentifier-CA` |
-"""
-_E_ElectricalPhaseIdentifier_A = _EnumValue('http://data.ashrae.org/standard223#ElectricalPhaseIdentifier-A', label='Electrical phase identifier A', definition='ElectricalPhaseIdentifier-A', parent=_E_EnumerationKind_ElectricalPhaseIdentifier)
-"""ElectricalPhaseIdentifier-A"""
-_E_ElectricalPhaseIdentifier_AB = _EnumValue('http://data.ashrae.org/standard223#ElectricalPhaseIdentifier-AB', label='Electrical phase identifier AB', definition='ElectricalPhaseIdentifier-AB', parent=_E_EnumerationKind_ElectricalPhaseIdentifier)
-"""ElectricalPhaseIdentifier-AB"""
-_E_ElectricalPhaseIdentifier_ABC = _EnumValue('http://data.ashrae.org/standard223#ElectricalPhaseIdentifier-ABC', label='Electrical phase identifier ABC', definition='ElectricalPhaseIdentifier-ABC', parent=_E_EnumerationKind_ElectricalPhaseIdentifier)
-"""ElectricalPhaseIdentifier-ABC"""
-_E_ElectricalPhaseIdentifier_B = _EnumValue('http://data.ashrae.org/standard223#ElectricalPhaseIdentifier-B', label='Electrical phase identifier B', definition='ElectricalPhaseIdentifier-B', parent=_E_EnumerationKind_ElectricalPhaseIdentifier)
-"""ElectricalPhaseIdentifier-B"""
-_E_ElectricalPhaseIdentifier_BC = _EnumValue('http://data.ashrae.org/standard223#ElectricalPhaseIdentifier-BC', label='Electrical phase identifier BC', definition='ElectricalPhaseIdentifier-BC', parent=_E_EnumerationKind_ElectricalPhaseIdentifier)
-"""ElectricalPhaseIdentifier-BC"""
-_E_ElectricalPhaseIdentifier_C = _EnumValue('http://data.ashrae.org/standard223#ElectricalPhaseIdentifier-C', label='Electrical phase identifier C', definition='ElectricalPhaseIdentifier-C', parent=_E_EnumerationKind_ElectricalPhaseIdentifier)
-"""ElectricalPhaseIdentifier-C"""
-_E_ElectricalPhaseIdentifier_CA = _EnumValue('http://data.ashrae.org/standard223#ElectricalPhaseIdentifier-CA', label='Electrical phase identifier CA', definition='ElectricalPhaseIdentifier-CA', parent=_E_EnumerationKind_ElectricalPhaseIdentifier)
-"""ElectricalPhaseIdentifier-CA"""
-_E_EnumerationKind_Numerical = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Numerical', label='Numerical', definition='\nNumerical enumeration kinds are used to support the definitions of the\n`Constituent-Electricity`. The enumerations instances in these classes have names that\nare recognizable by humans but are just a string for a computer application. To\navoid the need to parse strings, each of these `EnumerationKind`s have\nrelations with the `EnumerationKind`s that represent electrical\nphase, voltage, and frequency. The purpose of these properties is to enable a\nmachine to query them and obtain the same information that a person would\nassociate with the string.\n', parent=_E_EnumerationKind)
-"""
-Numerical enumeration kinds are used to support the definitions of the
-`Constituent-Electricity`. The enumerations instances in these classes have names that
-are recognizable by humans but are just a string for a computer application. To
-avoid the need to parse strings, each of these `EnumerationKind`s have
-relations with the `EnumerationKind`s that represent electrical
-phase, voltage, and frequency. The purpose of these properties is to enable a
-machine to query them and obtain the same information that a person would
-associate with the string.
-
-"""
-_E_Numerical_Frequency = _EnumValue('http://data.ashrae.org/standard223#Numerical-Frequency', label='Frequency', definition='This class and its enumerated subclasses represent common frequencies for AC electricity service.\n\n: Numerical-Frequency Enumerations\n\n| Enumeration |\n|:-----------|\n| `Frequency-50Hz` |\n| `Frequency-60Hz` |', parent=_E_EnumerationKind_Numerical)
-"""This class and its enumerated subclasses represent common frequencies for AC electricity service.
-
-: Numerical-Frequency Enumerations
-
-| Enumeration |
-|:-----------|
-| `Frequency-50Hz` |
-| `Frequency-60Hz` |
-"""
-_E_Frequency_50Hz = _EnumValue('http://data.ashrae.org/standard223#Frequency-50Hz', label='50 Hertz', definition='Frequency-50Hz', parent=_E_Numerical_Frequency)
-"""Frequency-50Hz"""
-_E_Frequency_60Hz = _EnumValue('http://data.ashrae.org/standard223#Frequency-60Hz', label='60 Hertz', definition='Frequency-60Hz', parent=_E_Numerical_Frequency)
-"""Frequency-60Hz"""
-_E_Numerical_NumberOfElectricalPhases = _EnumValue('http://data.ashrae.org/standard223#Numerical-NumberOfElectricalPhases', label='Number of electrical phases', definition='This class and its enumerated subclasses represent all possible service phases for AC electricity service, i.e., single-phase or three-phase. The `hasNumberOfElectricalPhases` relation points to one of the values of this enumeration.\n\n: Numerical-NumberOfElectricalPhases Enumerations\n\n| Enumeration |\n|:-----------|\n| `NumberOfElectricalPhases-SinglePhase` |\n| `NumberOfElectricalPhases-ThreePhase` |', parent=_E_EnumerationKind_Numerical)
-"""This class and its enumerated subclasses represent all possible service phases for AC electricity service, i.e., single-phase or three-phase. The `hasNumberOfElectricalPhases` relation points to one of the values of this enumeration.
-
-: Numerical-NumberOfElectricalPhases Enumerations
-
-| Enumeration |
-|:-----------|
-| `NumberOfElectricalPhases-SinglePhase` |
-| `NumberOfElectricalPhases-ThreePhase` |
-"""
-_E_NumberOfElectricalPhases_SinglePhase = _EnumValue('http://data.ashrae.org/standard223#NumberOfElectricalPhases-SinglePhase', label='Single phase', definition='Single phase', parent=_E_Numerical_NumberOfElectricalPhases)
-"""Single phase"""
-_E_NumberOfElectricalPhases_ThreePhase = _EnumValue('http://data.ashrae.org/standard223#NumberOfElectricalPhases-ThreePhase', label='Three phase', definition='Three phase', parent=_E_Numerical_NumberOfElectricalPhases)
-"""Three phase"""
-_E_Numerical_Voltage = _EnumValue('http://data.ashrae.org/standard223#Numerical-Voltage', label='Voltage', definition='This class and its enumerated subclasses represent common voltages for electricity service.\n  doc:subclauses (\n      s223:Voltage-PoE\n    ) ;\n\n\n: Numerical-Voltage Enumerations\n\n| Enumeration |\n|:-----------|\n| `Voltage-0V` |\n| `Voltage-2.5V` |\n| `Voltage-3V` |\n| `Voltage-5V` |\n| `Voltage-6V` |\n| `Voltage-12V` |\n| `Voltage-24V` |\n| `Voltage-48V` |\n| `Voltage-110V` |\n| `Voltage-120V` |\n| `Voltage-127V` |\n| `Voltage-139V` |\n| `Voltage-190V` |\n| `Voltage-208V` |\n| `Voltage-219V` |\n| `Voltage-220V` |\n| `Voltage-230V` |\n| `Voltage-240V` |\n| `Voltage-277V` |\n| `Voltage-347V` |\n| `Voltage-380V` |\n| `Voltage-400V` |\n| `Voltage-415V` |\n| `Voltage-480V` |\n| `Voltage-600V` |\n| `Voltage-1730V` |\n| `Voltage-1900V` |\n| `Voltage-2400V` |\n| `Voltage-3000V` |\n| `Voltage-3300V` |\n| `Voltage-3460V` |\n| `Voltage-3810V` |\n| `Voltage-4160V` |\n| `Voltage-5770V` |\n| `Voltage-6000V` |\n| `Voltage-6600V` |\n| `Voltage-10000V` |\n| `Voltage-PoE` (see {s223:Voltage-PoE}) |', parent=_E_EnumerationKind_Numerical)
-"""This class and its enumerated subclasses represent common voltages for electricity service.
-  doc:subclauses (
-      s223:Voltage-PoE
-    ) ;
-
-
-: Numerical-Voltage Enumerations
-
-| Enumeration |
-|:-----------|
-| `Voltage-0V` |
-| `Voltage-2.5V` |
-| `Voltage-3V` |
-| `Voltage-5V` |
-| `Voltage-6V` |
-| `Voltage-12V` |
-| `Voltage-24V` |
-| `Voltage-48V` |
-| `Voltage-110V` |
-| `Voltage-120V` |
-| `Voltage-127V` |
-| `Voltage-139V` |
-| `Voltage-190V` |
-| `Voltage-208V` |
-| `Voltage-219V` |
-| `Voltage-220V` |
-| `Voltage-230V` |
-| `Voltage-240V` |
-| `Voltage-277V` |
-| `Voltage-347V` |
-| `Voltage-380V` |
-| `Voltage-400V` |
-| `Voltage-415V` |
-| `Voltage-480V` |
-| `Voltage-600V` |
-| `Voltage-1730V` |
-| `Voltage-1900V` |
-| `Voltage-2400V` |
-| `Voltage-3000V` |
-| `Voltage-3300V` |
-| `Voltage-3460V` |
-| `Voltage-3810V` |
-| `Voltage-4160V` |
-| `Voltage-5770V` |
-| `Voltage-6000V` |
-| `Voltage-6600V` |
-| `Voltage-10000V` |
-| `Voltage-PoE` (see {s223:Voltage-PoE}) |
-"""
-_E_Voltage_0V = _EnumValue('http://data.ashrae.org/standard223#Voltage-0V', label='0 V', definition='Voltage-0V', parent=_E_Numerical_Voltage)
-"""Voltage-0V"""
-_E_Voltage_10000V = _EnumValue('http://data.ashrae.org/standard223#Voltage-10000V', label='10000 V', definition='Voltage-10000V', parent=_E_Numerical_Voltage)
-"""Voltage-10000V"""
-_E_Voltage_110V = _EnumValue('http://data.ashrae.org/standard223#Voltage-110V', label='110 V', definition='Voltage-110V', parent=_E_Numerical_Voltage)
-"""Voltage-110V"""
-_E_Voltage_120V = _EnumValue('http://data.ashrae.org/standard223#Voltage-120V', label='120 V', definition='Voltage-120V', parent=_E_Numerical_Voltage)
-"""Voltage-120V"""
-_E_Voltage_127V = _EnumValue('http://data.ashrae.org/standard223#Voltage-127V', label='127 V', definition='Voltage-127V', parent=_E_Numerical_Voltage)
-"""Voltage-127V"""
-_E_Voltage_12V = _EnumValue('http://data.ashrae.org/standard223#Voltage-12V', label='12 V', definition='Voltage-12V', parent=_E_Numerical_Voltage)
-"""Voltage-12V"""
-_E_Voltage_139V = _EnumValue('http://data.ashrae.org/standard223#Voltage-139V', label='139 V', definition='Voltage-139V', parent=_E_Numerical_Voltage)
-"""Voltage-139V"""
-_E_Voltage_1730V = _EnumValue('http://data.ashrae.org/standard223#Voltage-1730V', label='1730 V', definition='Voltage-1730V', parent=_E_Numerical_Voltage)
-"""Voltage-1730V"""
-_E_Voltage_1900V = _EnumValue('http://data.ashrae.org/standard223#Voltage-1900V', label='1900 V', definition='Voltage-1900V', parent=_E_Numerical_Voltage)
-"""Voltage-1900V"""
-_E_Voltage_190V = _EnumValue('http://data.ashrae.org/standard223#Voltage-190V', label='190 V', definition='Voltage-190V', parent=_E_Numerical_Voltage)
-"""Voltage-190V"""
-_E_Voltage_2_5V = _EnumValue('http://data.ashrae.org/standard223#Voltage-2.5V', label='2.5 V', definition='Voltage-2.5V', parent=_E_Numerical_Voltage)
-"""Voltage-2.5V"""
-_E_Voltage_208V = _EnumValue('http://data.ashrae.org/standard223#Voltage-208V', label='208 V', definition='Voltage-208V', parent=_E_Numerical_Voltage)
-"""Voltage-208V"""
-_E_Voltage_219V = _EnumValue('http://data.ashrae.org/standard223#Voltage-219V', label='219 V', definition='Voltage-219V', parent=_E_Numerical_Voltage)
-"""Voltage-219V"""
-_E_Voltage_220V = _EnumValue('http://data.ashrae.org/standard223#Voltage-220V', label='220 V', definition='Voltage-220V', parent=_E_Numerical_Voltage)
-"""Voltage-220V"""
-_E_Voltage_230V = _EnumValue('http://data.ashrae.org/standard223#Voltage-230V', label='230 V', definition='Voltage-230V', parent=_E_Numerical_Voltage)
-"""Voltage-230V"""
-_E_Voltage_2400V = _EnumValue('http://data.ashrae.org/standard223#Voltage-2400V', label='2400 V', definition='Voltage-2400V', parent=_E_Numerical_Voltage)
-"""Voltage-2400V"""
-_E_Voltage_240V = _EnumValue('http://data.ashrae.org/standard223#Voltage-240V', label='240 V', definition='Voltage-240V', parent=_E_Numerical_Voltage)
-"""Voltage-240V"""
-_E_Voltage_24V = _EnumValue('http://data.ashrae.org/standard223#Voltage-24V', label='24 V', definition='Voltage-24V', parent=_E_Numerical_Voltage)
-"""Voltage-24V"""
-_E_Voltage_277V = _EnumValue('http://data.ashrae.org/standard223#Voltage-277V', label='277 V', definition='Voltage-277V', parent=_E_Numerical_Voltage)
-"""Voltage-277V"""
-_E_Voltage_3000V = _EnumValue('http://data.ashrae.org/standard223#Voltage-3000V', label='3000 V', definition='Voltage-3000V', parent=_E_Numerical_Voltage)
-"""Voltage-3000V"""
-_E_Voltage_3300V = _EnumValue('http://data.ashrae.org/standard223#Voltage-3300V', label='3300 V', definition='Voltage-3300V', parent=_E_Numerical_Voltage)
-"""Voltage-3300V"""
-_E_Voltage_3460V = _EnumValue('http://data.ashrae.org/standard223#Voltage-3460V', label='3460 V', definition='Voltage-3460V', parent=_E_Numerical_Voltage)
-"""Voltage-3460V"""
-_E_Voltage_347V = _EnumValue('http://data.ashrae.org/standard223#Voltage-347V', label='347 V', definition='Voltage-347V', parent=_E_Numerical_Voltage)
-"""Voltage-347V"""
-_E_Voltage_380V = _EnumValue('http://data.ashrae.org/standard223#Voltage-380V', label='380 V', definition='Voltage-380V', parent=_E_Numerical_Voltage)
-"""Voltage-380V"""
-_E_Voltage_3810V = _EnumValue('http://data.ashrae.org/standard223#Voltage-3810V', label='3810 V', definition='Voltage-3810V', parent=_E_Numerical_Voltage)
-"""Voltage-3810V"""
-_E_Voltage_3V = _EnumValue('http://data.ashrae.org/standard223#Voltage-3V', label='3 V', definition='Voltage-3V', parent=_E_Numerical_Voltage)
-"""Voltage-3V"""
-_E_Voltage_400V = _EnumValue('http://data.ashrae.org/standard223#Voltage-400V', label='400 V', definition='Voltage-400V', parent=_E_Numerical_Voltage)
-"""Voltage-400V"""
-_E_Voltage_415V = _EnumValue('http://data.ashrae.org/standard223#Voltage-415V', label='415 V', definition='Voltage-415V', parent=_E_Numerical_Voltage)
-"""Voltage-415V"""
-_E_Voltage_4160V = _EnumValue('http://data.ashrae.org/standard223#Voltage-4160V', label='4160 V', definition='Voltage-4160V', parent=_E_Numerical_Voltage)
-"""Voltage-4160V"""
-_E_Voltage_480V = _EnumValue('http://data.ashrae.org/standard223#Voltage-480V', label='480 V', definition='Voltage-480V', parent=_E_Numerical_Voltage)
-"""Voltage-480V"""
-_E_Voltage_48V = _EnumValue('http://data.ashrae.org/standard223#Voltage-48V', label='48 V', definition='Voltage-48V', parent=_E_Numerical_Voltage)
-"""Voltage-48V"""
-_E_Voltage_5770V = _EnumValue('http://data.ashrae.org/standard223#Voltage-5770V', label='5770 V', definition='Voltage-5770V', parent=_E_Numerical_Voltage)
-"""Voltage-5770V"""
-_E_Voltage_5V = _EnumValue('http://data.ashrae.org/standard223#Voltage-5V', label='5 V', definition='Voltage-5V', parent=_E_Numerical_Voltage)
-"""Voltage-5V"""
-_E_Voltage_6000V = _EnumValue('http://data.ashrae.org/standard223#Voltage-6000V', label='6000 V', definition='Voltage-6000V', parent=_E_Numerical_Voltage)
-"""Voltage-6000V"""
-_E_Voltage_600V = _EnumValue('http://data.ashrae.org/standard223#Voltage-600V', label='600 V', definition='Voltage-600V', parent=_E_Numerical_Voltage)
-"""Voltage-600V"""
-_E_Voltage_6600V = _EnumValue('http://data.ashrae.org/standard223#Voltage-6600V', label='6600 V', definition='Voltage-6600V', parent=_E_Numerical_Voltage)
-"""Voltage-6600V"""
-_E_Voltage_6V = _EnumValue('http://data.ashrae.org/standard223#Voltage-6V', label='6 V', definition='Voltage-6V', parent=_E_Numerical_Voltage)
-"""Voltage-6V"""
-_E_Voltage_PoE = _EnumValue('http://data.ashrae.org/standard223#Voltage-PoE', label='PoE voltage', definition='This class represents the standardized 44-57VDC range that is produced by PoE Power Sourcing Equipment.', parent=_E_Numerical_Voltage)
-"""This class represents the standardized 44-57VDC range that is produced by PoE Power Sourcing Equipment."""
-_E_EnumerationKind_Occupancy = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Occupancy', label='Occupancy', definition='This class and its enumerated subclasses represent the occupancy status of a space within a building, i.e., the state of being occupied by a human being. The `Occupancy-Motion` and `Occupancy-Presence` subclasses are associated with specific characteristics of occupancy and associated means of detection, while the `Occupancy-Occupied` subclass is generic, in that it is not associated with a specific characteristic or occupancy or associated means of detection.', parent=_E_EnumerationKind)
-"""This class and its enumerated subclasses represent the occupancy status of a space within a building, i.e., the state of being occupied by a human being. The `Occupancy-Motion` and `Occupancy-Presence` subclasses are associated with specific characteristics of occupancy and associated means of detection, while the `Occupancy-Occupied` subclass is generic, in that it is not associated with a specific characteristic or occupancy or associated means of detection."""
-_E_Occupancy_Motion = _EnumValue('http://data.ashrae.org/standard223#Occupancy-Motion', label='Motion-based occupancy', definition='This class and its enumerated subclasses represent the detection of human motion in a space.\n\n: Occupancy-Motion Enumerations\n\n| Enumeration |\n|:-----------|\n| `Motion-False` |\n| `Motion-True` |', parent=_E_EnumerationKind_Occupancy)
-"""This class and its enumerated subclasses represent the detection of human motion in a space.
-
-: Occupancy-Motion Enumerations
-
-| Enumeration |
-|:-----------|
-| `Motion-False` |
-| `Motion-True` |
-"""
-_E_Motion_False = _EnumValue('http://data.ashrae.org/standard223#Motion-False', label='Motion-based false', definition='`Motion-False`', parent=_E_Occupancy_Motion)
-"""`Motion-False`"""
-_E_Motion_True = _EnumValue('http://data.ashrae.org/standard223#Motion-True', label='Motion-based true', definition='`Motion-True`', parent=_E_Occupancy_Motion)
-"""`Motion-True`"""
-_E_Occupancy_Occupied = _EnumValue('http://data.ashrae.org/standard223#Occupancy-Occupied', label='Generic occupancy', definition='This class and its enumerated subclasses represent the generic detection of human occupancy in a space.\n\n: Occupancy-Occupied Enumerations\n\n| Enumeration |\n|:-----------|\n| `Occupied-False` |\n| `Occupied-True` |', parent=_E_EnumerationKind_Occupancy)
-"""This class and its enumerated subclasses represent the generic detection of human occupancy in a space.
-
-: Occupancy-Occupied Enumerations
-
-| Enumeration |
-|:-----------|
-| `Occupied-False` |
-| `Occupied-True` |
-"""
-_E_Occupied_False = _EnumValue('http://data.ashrae.org/standard223#Occupied-False', label='False', definition='`Occupied-False`', parent=_E_Occupancy_Occupied)
-"""`Occupied-False`"""
-_E_Occupied_True = _EnumValue('http://data.ashrae.org/standard223#Occupied-True', label='True', definition='`Occupied-True`', parent=_E_Occupancy_Occupied)
-"""`Occupied-True`"""
-_E_Occupancy_Presence = _EnumValue('http://data.ashrae.org/standard223#Occupancy-Presence', label='Presence-based occupancy', definition='This class and its enumerated subclasses represent the detection of human presence in a space.\n\n: Occupancy-Presence Enumerations\n\n| Enumeration |\n|:-----------|\n| `Presence-False` |\n| `Presence-True` |', parent=_E_EnumerationKind_Occupancy)
-"""This class and its enumerated subclasses represent the detection of human presence in a space.
-
-: Occupancy-Presence Enumerations
-
-| Enumeration |
-|:-----------|
-| `Presence-False` |
-| `Presence-True` |
-"""
-_E_Presence_False = _EnumValue('http://data.ashrae.org/standard223#Presence-False', label='Presence-based false', definition='`Presence-False`', parent=_E_Occupancy_Presence)
-"""`Presence-False`"""
-_E_Presence_True = _EnumValue('http://data.ashrae.org/standard223#Presence-True', label='Presence-based true', definition='`Presence-True`', parent=_E_Occupancy_Presence)
-"""`Presence-True`"""
-_E_EnumerationKind_Role = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Role', label='Role', definition='This class and its enumerated subclasses represent roles played by entities, such as cooling, generator,\nrelief, and return. These enumeration kinds are intended to indicate the capability of an entity to play a given\nrole, rather than the role being actively played at any given point in time. For example,\na reversible piece of equipment might play a role of `Role-Cooling` at one time and `Role-Heating` at another time.\nSuch an entity would be modeled using the `hasRole` relation with both role values. The active role at a particular time can be modeled as a `Property` with\nan `ExternalReference` to telemetry data.\n\n: EnumerationKind-Role Enumerations\n\n| Enumeration |\n|:-----------|\n| `Role-Condenser` |\n| `Role-Cooling` |\n| `Role-Dehumidifying` |\n| `Role-Discharge` |\n| `Role-Economizer` |\n| `Role-Evaporator` |\n| `Role-Exhaust` |\n| `Role-Expansion` |\n| `Role-Generator` |\n| `Role-Heating` |\n| `Role-HeatRecovery` |\n| `Role-HeatTransfer` |\n| `Role-Load` |\n| `Role-OutdoorAirIntake` |\n| `Role-Primary` |\n| `Role-Recirculating` |\n| `Role-Relief` |\n| `Role-Return` |\n| `Role-Secondary` |\n| `Role-Supply` |\n| `Role-Ventilating` |', parent=_E_EnumerationKind)
-"""This class and its enumerated subclasses represent roles played by entities, such as cooling, generator,
-relief, and return. These enumeration kinds are intended to indicate the capability of an entity to play a given
-role, rather than the role being actively played at any given point in time. For example,
-a reversible piece of equipment might play a role of `Role-Cooling` at one time and `Role-Heating` at another time.
-Such an entity would be modeled using the `hasRole` relation with both role values. The active role at a particular time can be modeled as a `Property` with
-an `ExternalReference` to telemetry data.
-
-: EnumerationKind-Role Enumerations
-
-| Enumeration |
-|:-----------|
-| `Role-Condenser` |
-| `Role-Cooling` |
-| `Role-Dehumidifying` |
-| `Role-Discharge` |
-| `Role-Economizer` |
-| `Role-Evaporator` |
-| `Role-Exhaust` |
-| `Role-Expansion` |
-| `Role-Generator` |
-| `Role-Heating` |
-| `Role-HeatRecovery` |
-| `Role-HeatTransfer` |
-| `Role-Load` |
-| `Role-OutdoorAirIntake` |
-| `Role-Primary` |
-| `Role-Recirculating` |
-| `Role-Relief` |
-| `Role-Return` |
-| `Role-Secondary` |
-| `Role-Supply` |
-| `Role-Ventilating` |
-"""
-_E_Role_Condenser = _EnumValue('http://data.ashrae.org/standard223#Role-Condenser', label='Condenser role', definition='`Role-Condenser`', parent=_E_EnumerationKind_Role)
-"""`Role-Condenser`"""
-_E_Role_Cooling = _EnumValue('http://data.ashrae.org/standard223#Role-Cooling', label='Cooling role', definition='`Role-Cooling`', parent=_E_EnumerationKind_Role)
-"""`Role-Cooling`"""
-_E_Role_Dehumidifying = _EnumValue('http://data.ashrae.org/standard223#Role-Dehumidifying', label='Dehumidifying role', definition='`Role-Dehumidifying`', parent=_E_EnumerationKind_Role)
-"""`Role-Dehumidifying`"""
-_E_Role_Discharge = _EnumValue('http://data.ashrae.org/standard223#Role-Discharge', label='Discharge role', definition='`Role-Discharge`', parent=_E_EnumerationKind_Role)
-"""`Role-Discharge`"""
-_E_Role_Drain = _EnumValue('https://watermetadata.org/ontology/watr#Role-Drain', label='Role-Drain', definition='A connection point that empties a vessel below its working level, for maintenance or solids removal.', parent=_E_Role_Discharge)
+_E_EnumerationKind_Binary = _VALUES0.EnumerationKind_Binary
+_E_Binary_Logical = _VALUES0.Binary_Logical
+_E_Logical_False = _VALUES0.Logical_False
+_E_Logical_True = _VALUES0.Logical_True
+_E_Binary_OnOff = _VALUES0.Binary_OnOff
+_E_OnOff_Off = _VALUES0.OnOff_Off
+_E_OnOff_On = _VALUES0.OnOff_On
+_E_Binary_Position = _VALUES0.Binary_Position
+_E_Position_Closed = _VALUES0.Position_Closed
+_E_Position_Open = _VALUES0.Position_Open
+_E_EnumerationKind_DayOfWeek = _VALUES0.EnumerationKind_DayOfWeek
+_E_DayOfWeek_Weekday = _VALUES0.DayOfWeek_Weekday
+_E_Weekday_Friday = _VALUES0.Weekday_Friday
+_E_Weekday_Monday = _VALUES0.Weekday_Monday
+_E_Weekday_Thursday = _VALUES0.Weekday_Thursday
+_E_Weekday_Tuesday = _VALUES0.Weekday_Tuesday
+_E_Weekday_Wednesday = _VALUES0.Weekday_Wednesday
+_E_DayOfWeek_Weekend = _VALUES0.DayOfWeek_Weekend
+_E_Weekend_Saturday = _VALUES0.Weekend_Saturday
+_E_Weekend_Sunday = _VALUES0.Weekend_Sunday
+_E_EnumerationKind_Domain = _VALUES0.EnumerationKind_Domain
+_E_Domain_ConveyanceSystems = _VALUES0.Domain_ConveyanceSystems
+_E_Domain_Electrical = _VALUES0.Domain_Electrical
+_E_Domain_FireProtection = _VALUES0.Domain_FireProtection
+_E_Domain_HVAC = _VALUES0.Domain_HVAC
+_E_Domain_Lighting = _VALUES0.Domain_Lighting
+_E_Domain_Networking = _VALUES0.Domain_Networking
+_E_Domain_Occupancy = _VALUES0.Domain_Occupancy
+_E_Domain_PhysicalSecurity = _VALUES0.Domain_PhysicalSecurity
+_E_Domain_Plumbing = _VALUES0.Domain_Plumbing
+_E_Domain_Refrigeration = _VALUES0.Domain_Refrigeration
+_E_EnumerationKind_ElectricalPhaseIdentifier = _VALUES0.EnumerationKind_ElectricalPhaseIdentifier
+_E_ElectricalPhaseIdentifier_A = _VALUES0.ElectricalPhaseIdentifier_A
+_E_ElectricalPhaseIdentifier_AB = _VALUES0.ElectricalPhaseIdentifier_AB
+_E_ElectricalPhaseIdentifier_ABC = _VALUES0.ElectricalPhaseIdentifier_ABC
+_E_ElectricalPhaseIdentifier_B = _VALUES0.ElectricalPhaseIdentifier_B
+_E_ElectricalPhaseIdentifier_BC = _VALUES0.ElectricalPhaseIdentifier_BC
+_E_ElectricalPhaseIdentifier_C = _VALUES0.ElectricalPhaseIdentifier_C
+_E_ElectricalPhaseIdentifier_CA = _VALUES0.ElectricalPhaseIdentifier_CA
+_E_EnumerationKind_Numerical = _VALUES0.EnumerationKind_Numerical
+_E_Numerical_Frequency = _VALUES0.Numerical_Frequency
+_E_Frequency_50Hz = _VALUES0.Frequency_50Hz
+_E_Frequency_60Hz = _VALUES0.Frequency_60Hz
+_E_Numerical_NumberOfElectricalPhases = _VALUES0.Numerical_NumberOfElectricalPhases
+_E_NumberOfElectricalPhases_SinglePhase = _VALUES0.NumberOfElectricalPhases_SinglePhase
+_E_NumberOfElectricalPhases_ThreePhase = _VALUES0.NumberOfElectricalPhases_ThreePhase
+_E_Numerical_Voltage = _VALUES0.Numerical_Voltage
+_E_Voltage_0V = _VALUES0.Voltage_0V
+_E_Voltage_10000V = _VALUES0.Voltage_10000V
+_E_Voltage_110V = _VALUES0.Voltage_110V
+_E_Voltage_120V = _VALUES0.Voltage_120V
+_E_Voltage_127V = _VALUES0.Voltage_127V
+_E_Voltage_12V = _VALUES0.Voltage_12V
+_E_Voltage_139V = _VALUES0.Voltage_139V
+_E_Voltage_1730V = _VALUES0.Voltage_1730V
+_E_Voltage_1900V = _VALUES0.Voltage_1900V
+_E_Voltage_190V = _VALUES0.Voltage_190V
+_E_Voltage_2_5V = _VALUES0.Voltage_2_5V
+_E_Voltage_208V = _VALUES0.Voltage_208V
+_E_Voltage_219V = _VALUES0.Voltage_219V
+_E_Voltage_220V = _VALUES0.Voltage_220V
+_E_Voltage_230V = _VALUES0.Voltage_230V
+_E_Voltage_2400V = _VALUES0.Voltage_2400V
+_E_Voltage_240V = _VALUES0.Voltage_240V
+_E_Voltage_24V = _VALUES0.Voltage_24V
+_E_Voltage_277V = _VALUES0.Voltage_277V
+_E_Voltage_3000V = _VALUES0.Voltage_3000V
+_E_Voltage_3300V = _VALUES0.Voltage_3300V
+_E_Voltage_3460V = _VALUES0.Voltage_3460V
+_E_Voltage_347V = _VALUES0.Voltage_347V
+_E_Voltage_380V = _VALUES0.Voltage_380V
+_E_Voltage_3810V = _VALUES0.Voltage_3810V
+_E_Voltage_3V = _VALUES0.Voltage_3V
+_E_Voltage_400V = _VALUES0.Voltage_400V
+_E_Voltage_415V = _VALUES0.Voltage_415V
+_E_Voltage_4160V = _VALUES0.Voltage_4160V
+_E_Voltage_480V = _VALUES0.Voltage_480V
+_E_Voltage_48V = _VALUES0.Voltage_48V
+_E_Voltage_5770V = _VALUES0.Voltage_5770V
+_E_Voltage_5V = _VALUES0.Voltage_5V
+_E_Voltage_6000V = _VALUES0.Voltage_6000V
+_E_Voltage_600V = _VALUES0.Voltage_600V
+_E_Voltage_6600V = _VALUES0.Voltage_6600V
+_E_Voltage_6V = _VALUES0.Voltage_6V
+_E_Voltage_PoE = _VALUES0.Voltage_PoE
+_E_EnumerationKind_Occupancy = _VALUES0.EnumerationKind_Occupancy
+_E_Occupancy_Motion = _VALUES0.Occupancy_Motion
+_E_Motion_False = _VALUES0.Motion_False
+_E_Motion_True = _VALUES0.Motion_True
+_E_Occupancy_Occupied = _VALUES0.Occupancy_Occupied
+_E_Occupied_False = _VALUES0.Occupied_False
+_E_Occupied_True = _VALUES0.Occupied_True
+_E_Occupancy_Presence = _VALUES0.Occupancy_Presence
+_E_Presence_False = _VALUES0.Presence_False
+_E_Presence_True = _VALUES0.Presence_True
+_E_EnumerationKind_Role = _VALUES0.EnumerationKind_Role
+_E_Role_Condenser = _VALUES0.Role_Condenser
+_E_Role_Cooling = _VALUES0.Role_Cooling
+_E_Role_Dehumidifying = _VALUES0.Role_Dehumidifying
+_E_Role_Discharge = _VALUES0.Role_Discharge
+_E_Role_Drain = _EnumValue('https://watermetadata.org/ontology/watr#Role-Drain', label='Role-Drain', definition='A connection point that empties a vessel below its working level, for maintenance or solids removal.', parent=_E_Role_Discharge, _register_parent=False)
 """A connection point that empties a vessel below its working level, for maintenance or solids removal."""
-_E_Role_Overflow = _EnumValue('https://watermetadata.org/ontology/watr#Role-Overflow', label='Role-Overflow', definition="A connection point that discharges liquid above a tank's working level.", parent=_E_Role_Discharge)
+_E_Role_Overflow = _EnumValue('https://watermetadata.org/ontology/watr#Role-Overflow', label='Role-Overflow', definition="A connection point that discharges liquid above a tank's working level.", parent=_E_Role_Discharge, _register_parent=False)
 """A connection point that discharges liquid above a tank's working level."""
-_E_Role_Economizer = _EnumValue('http://data.ashrae.org/standard223#Role-Economizer', label='Economizer role', definition='`Role-Economizer`', parent=_E_EnumerationKind_Role)
-"""`Role-Economizer`"""
-_E_Role_Evaporator = _EnumValue('http://data.ashrae.org/standard223#Role-Evaporator', label='Evaporator role', definition='`Role-Evaporator`', parent=_E_EnumerationKind_Role)
-"""`Role-Evaporator`"""
-_E_Role_Exhaust = _EnumValue('http://data.ashrae.org/standard223#Role-Exhaust', label='Exhaust role', definition='`Role-Exhaust`', parent=_E_EnumerationKind_Role)
-"""`Role-Exhaust`"""
-_E_Role_Expansion = _EnumValue('http://data.ashrae.org/standard223#Role-Expansion', label='Expansion role', definition='`Role-Expansion`', parent=_E_EnumerationKind_Role)
-"""`Role-Expansion`"""
-_E_Role_Generator = _EnumValue('http://data.ashrae.org/standard223#Role-Generator', label='Generator role', definition='`Role-Generator`', parent=_E_EnumerationKind_Role)
-"""`Role-Generator`"""
-_E_Role_HeatRecovery = _EnumValue('http://data.ashrae.org/standard223#Role-HeatRecovery', label='Heat recovery role', definition='Role-HeatRecovery', parent=_E_EnumerationKind_Role)
-"""Role-HeatRecovery"""
-_E_Role_HeatTransfer = _EnumValue('http://data.ashrae.org/standard223#Role-HeatTransfer', label='Heat transfer role', definition='Role-HeatTransfer', parent=_E_EnumerationKind_Role)
-"""Role-HeatTransfer"""
-_E_Role_Heating = _EnumValue('http://data.ashrae.org/standard223#Role-Heating', label='Heating role', definition='`Role-Heating`', parent=_E_EnumerationKind_Role)
-"""`Role-Heating`"""
-_E_Role_Load = _EnumValue('http://data.ashrae.org/standard223#Role-Load', label='Load role', definition='`Role-Load`', parent=_E_EnumerationKind_Role)
-"""`Role-Load`"""
-_E_Role_OutdoorAirIntake = _EnumValue('http://data.ashrae.org/standard223#Role-OutdoorAirIntake', label='Outdoor air intake role', definition='`Role-OutdoorAirIntake`', parent=_E_EnumerationKind_Role)
-"""`Role-OutdoorAirIntake`"""
-_E_Role_Primary_2 = _EnumValue('http://data.ashrae.org/standard223#Role-Primary', label='Primary role', definition='`Role-Primary`', parent=_E_EnumerationKind_Role)
-"""`Role-Primary`"""
-_E_Role_Recirculating = _EnumValue('http://data.ashrae.org/standard223#Role-Recirculating', label='Recirculating role', definition='`Role-Recirculating`', parent=_E_EnumerationKind_Role)
-"""`Role-Recirculating`"""
-_E_Role_Relief = _EnumValue('http://data.ashrae.org/standard223#Role-Relief', label='Relief role', definition='`Role-Relief`', parent=_E_EnumerationKind_Role)
-"""`Role-Relief`"""
-_E_Role_Return = _EnumValue('http://data.ashrae.org/standard223#Role-Return', label='Return role', definition='`Role-Return`', parent=_E_EnumerationKind_Role)
-"""`Role-Return`"""
-_E_Role_Secondary_2 = _EnumValue('http://data.ashrae.org/standard223#Role-Secondary', label='Secondary role', definition='`Role-Secondary`', parent=_E_EnumerationKind_Role)
-"""`Role-Secondary`"""
-_E_Role_Supply = _EnumValue('http://data.ashrae.org/standard223#Role-Supply', label='Supply role', definition='`Role-Supply`', parent=_E_EnumerationKind_Role)
-"""`Role-Supply`"""
-_E_Role_Ventilating = _EnumValue('http://data.ashrae.org/standard223#Role-Ventilating', label='Ventilating role', definition='`Role-Ventilating`', parent=_E_EnumerationKind_Role)
-"""`Role-Ventilating`"""
-_E_Role_Aerobic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Aerobic', label='Aerobic', definition='The zone is commissioned to run in an aerobic regime, with dissolved oxygen present. A design claim, not a reading: a basin whose blowers are off still carries it.', parent=_E_EnumerationKind_Role)
+_E_Role_Economizer = _VALUES0.Role_Economizer
+_E_Role_Evaporator = _VALUES0.Role_Evaporator
+_E_Role_Exhaust = _VALUES0.Role_Exhaust
+_E_Role_Expansion = _VALUES0.Role_Expansion
+_E_Role_Generator = _VALUES0.Role_Generator
+_E_Role_HeatRecovery = _VALUES0.Role_HeatRecovery
+_E_Role_HeatTransfer = _VALUES0.Role_HeatTransfer
+_E_Role_Heating = _VALUES0.Role_Heating
+_E_Role_Load = _VALUES0.Role_Load
+_E_Role_OutdoorAirIntake = _VALUES0.Role_OutdoorAirIntake
+_E_Role_Primary_2 = _VALUES0.Role_Primary
+_E_Role_Recirculating = _VALUES0.Role_Recirculating
+_E_Role_Relief = _VALUES0.Role_Relief
+_E_Role_Return = _VALUES0.Role_Return
+_E_Role_Secondary_2 = _VALUES0.Role_Secondary
+_E_Role_Supply = _VALUES0.Role_Supply
+_E_Role_Ventilating = _VALUES0.Role_Ventilating
+_E_Role_Aerobic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Aerobic', label='Aerobic', definition='The zone is commissioned to run in an aerobic regime, with dissolved oxygen present. A design claim, not a reading: a basin whose blowers are off still carries it.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """The zone is commissioned to run in an aerobic regime, with dissolved oxygen present. A design claim, not a reading: a basin whose blowers are off still carries it."""
-_E_Role_Anaerobic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Anaerobic', label='Anaerobic', definition='The zone is commissioned to run in an anaerobic regime, without dissolved oxygen or nitrate.', parent=_E_EnumerationKind_Role)
+_E_Role_Anaerobic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Anaerobic', label='Anaerobic', definition='The zone is commissioned to run in an anaerobic regime, without dissolved oxygen or nitrate.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """The zone is commissioned to run in an anaerobic regime, without dissolved oxygen or nitrate."""
-_E_Role_Anoxic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Anoxic', label='Anoxic', definition='The zone is commissioned to run in an anoxic regime, without dissolved oxygen and with nitrate present.', parent=_E_EnumerationKind_Role)
+_E_Role_Anoxic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Anoxic', label='Anoxic', definition='The zone is commissioned to run in an anoxic regime, without dissolved oxygen and with nitrate present.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """The zone is commissioned to run in an anoxic regime, without dissolved oxygen and with nitrate present."""
-_E_Role_Backwash = _EnumValue('https://watermetadata.org/ontology/watr#Role-Backwash', label='Role-Backwash', definition='Deprecated. Model backwashing as watr:hasProcess watr:Process-Backwashing on the equipment or system that performs it.', parent=_E_EnumerationKind_Role)
+_E_Role_Backwash = _EnumValue('https://watermetadata.org/ontology/watr#Role-Backwash', label='Role-Backwash', definition='Deprecated. Model backwashing as watr:hasProcess watr:Process-Backwashing on the equipment or system that performs it.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """Deprecated. Model backwashing as watr:hasProcess watr:Process-Backwashing on the equipment or system that performs it."""
-_E_Role_Containment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Containment', label='Containment', definition='The equipment confines a spill or an off-specification stream to keep it out of the rest of the plant.', parent=_E_EnumerationKind_Role)
+_E_Role_Containment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Containment', label='Containment', definition='The equipment confines a spill or an off-specification stream to keep it out of the rest of the plant.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """The equipment confines a spill or an off-specification stream to keep it out of the rest of the plant."""
-_E_Role_Detention = _EnumValue('https://watermetadata.org/ontology/watr#Role-Detention', label='Detention', definition='The equipment holds flow for a designed interval, typically to allow a reaction or settling to complete.', parent=_E_EnumerationKind_Role)
+_E_Role_Detention = _EnumValue('https://watermetadata.org/ontology/watr#Role-Detention', label='Detention', definition='The equipment holds flow for a designed interval, typically to allow a reaction or settling to complete.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """The equipment holds flow for a designed interval, typically to allow a reaction or settling to complete."""
-_E_Role_Equalization = _EnumValue('https://watermetadata.org/ontology/watr#Role-Equalization', label='Equalization', definition='The equipment buffers variation in flow or load so that the processes downstream of it see a steadier stream.', parent=_E_EnumerationKind_Role)
+_E_Role_Equalization = _EnumValue('https://watermetadata.org/ontology/watr#Role-Equalization', label='Equalization', definition='The equipment buffers variation in flow or load so that the processes downstream of it see a steadier stream.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """The equipment buffers variation in flow or load so that the processes downstream of it see a steadier stream."""
-_E_Role_Extended = _EnumValue('https://watermetadata.org/ontology/watr#Role-Extended', label='Extended', definition='The equipment is operated at an extended solids retention time.', parent=_E_EnumerationKind_Role)
+_E_Role_Extended = _EnumValue('https://watermetadata.org/ontology/watr#Role-Extended', label='Extended', definition='The equipment is operated at an extended solids retention time.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """The equipment is operated at an extended solids retention time."""
-_E_Role_Feed = _EnumValue('https://watermetadata.org/ontology/watr#Role-Feed', label='Feed', definition='A connection point that admits the stream a process acts on.', parent=_E_EnumerationKind_Role)
+_E_Role_Feed = _EnumValue('https://watermetadata.org/ontology/watr#Role-Feed', label='Feed', definition='A connection point that admits the stream a process acts on.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """A connection point that admits the stream a process acts on."""
-_E_Role_MakeUp = _EnumValue('https://watermetadata.org/ontology/watr#Role-MakeUp', label='Role-MakeUp', definition='A connection point that admits water to replace what a process consumes or loses.', parent=_E_EnumerationKind_Role)
+_E_Role_MakeUp = _EnumValue('https://watermetadata.org/ontology/watr#Role-MakeUp', label='Role-MakeUp', definition='A connection point that admits water to replace what a process consumes or loses.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """A connection point that admits water to replace what a process consumes or loses."""
-_E_Role_Permeate = _EnumValue('https://watermetadata.org/ontology/watr#Role-Permeate', label='Permeate', definition='A connection point carrying the stream that has passed through a membrane.', parent=_E_EnumerationKind_Role)
+_E_Role_Permeate = _EnumValue('https://watermetadata.org/ontology/watr#Role-Permeate', label='Permeate', definition='A connection point carrying the stream that has passed through a membrane.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """A connection point carrying the stream that has passed through a membrane."""
-_E_Role_Posttreatment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Posttreatment', label='Posttreatment', definition='The equipment sits after the main treatment train and conditions the effluent for discharge or reuse.', parent=_E_EnumerationKind_Role)
+_E_Role_Posttreatment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Posttreatment', label='Posttreatment', definition='The equipment sits after the main treatment train and conditions the effluent for discharge or reuse.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """The equipment sits after the main treatment train and conditions the effluent for discharge or reuse."""
-_E_Role_Pretreatment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Pretreatment', label='Pretreatment', definition='The equipment sits ahead of the main treatment train and conditions the influent for it.', parent=_E_EnumerationKind_Role)
+_E_Role_Pretreatment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Pretreatment', label='Pretreatment', definition='The equipment sits ahead of the main treatment train and conditions the influent for it.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """The equipment sits ahead of the main treatment train and conditions the influent for it."""
-_E_Role_Primary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Primary', label='Primary', definition='Primary treatment: the equipment belongs to the stage that removes settleable and floatable solids ahead of biological treatment. Not to be confused with s223:Role-Primary, which denotes a primary loop.', parent=_E_EnumerationKind_Role)
+_E_Role_Primary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Primary', label='Primary', definition='Primary treatment: the equipment belongs to the stage that removes settleable and floatable solids ahead of biological treatment. Not to be confused with s223:Role-Primary, which denotes a primary loop.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """Primary treatment: the equipment belongs to the stage that removes settleable and floatable solids ahead of biological treatment. Not to be confused with s223:Role-Primary, which denotes a primary loop."""
-_E_Role_Retention = _EnumValue('https://watermetadata.org/ontology/watr#Role-Retention', label='Retention', definition='The equipment holds flow to attenuate a peak, typically stormwater, and releases it at a controlled rate.', parent=_E_EnumerationKind_Role)
+_E_Role_Retention = _EnumValue('https://watermetadata.org/ontology/watr#Role-Retention', label='Retention', definition='The equipment holds flow to attenuate a peak, typically stormwater, and releases it at a controlled rate.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """The equipment holds flow to attenuate a peak, typically stormwater, and releases it at a controlled rate."""
-_E_Role_Secondary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Secondary', label='Secondary', definition='Secondary treatment: the equipment belongs to the stage that removes biodegradable organics and suspended solids, typically biologically. Not to be confused with s223:Role-Secondary, which denotes a secondary loop.', parent=_E_EnumerationKind_Role)
+_E_Role_Secondary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Secondary', label='Secondary', definition='Secondary treatment: the equipment belongs to the stage that removes biodegradable organics and suspended solids, typically biologically. Not to be confused with s223:Role-Secondary, which denotes a secondary loop.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """Secondary treatment: the equipment belongs to the stage that removes biodegradable organics and suspended solids, typically biologically. Not to be confused with s223:Role-Secondary, which denotes a secondary loop."""
-_E_Role_Stepfeed = _EnumValue('https://watermetadata.org/ontology/watr#Role-Stepfeed', label='Stepfeed', definition='The equipment is fed at multiple points along its length rather than only at its head.', parent=_E_EnumerationKind_Role)
+_E_Role_Stepfeed = _EnumValue('https://watermetadata.org/ontology/watr#Role-Stepfeed', label='Stepfeed', definition='The equipment is fed at multiple points along its length rather than only at its head.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """The equipment is fed at multiple points along its length rather than only at its head."""
-_E_Role_Storage = _EnumValue('https://watermetadata.org/ontology/watr#Role-Storage', label='Storage', definition='The equipment holds water or sludge for later use rather than acting on it.', parent=_E_EnumerationKind_Role)
+_E_Role_Storage = _EnumValue('https://watermetadata.org/ontology/watr#Role-Storage', label='Storage', definition='The equipment holds water or sludge for later use rather than acting on it.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """The equipment holds water or sludge for later use rather than acting on it."""
-_E_Role_Tertiary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Tertiary', label='Tertiary', definition='Tertiary treatment: the equipment belongs to the polishing stage downstream of secondary treatment, for residual solids, nutrients or specific constituents.', parent=_E_EnumerationKind_Role)
+_E_Role_Tertiary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Tertiary', label='Tertiary', definition='Tertiary treatment: the equipment belongs to the polishing stage downstream of secondary treatment, for residual solids, nutrients or specific constituents.', parent=_E_EnumerationKind_Role, _register_parent=False)
 """Tertiary treatment: the equipment belongs to the polishing stage downstream of secondary treatment, for residual solids, nutrients or specific constituents."""
-_E_EnumerationKind_Substance = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Substance', label='Substance', definition='\nThis class and its enumerated subclasses represent substances that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between media, particulates, and soot.\n\n: EnumerationKind-Substance Enumerations\n\n| Enumeration |\n|:-----------|\n| `Substance-Medium` (see {s223:Substance-Medium}) |\n| `Substance-Particulate` (see {s223:Substance-Particulate}) |\n| `Substance-Soot` (see {s223:Substance-Soot}) |', parent=_E_EnumerationKind)
-"""
-This class and its enumerated subclasses represent substances that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between media, particulates, and soot.
-
-: EnumerationKind-Substance Enumerations
-
-| Enumeration |
-|:-----------|
-| `Substance-Medium` (see {s223:Substance-Medium}) |
-| `Substance-Particulate` (see {s223:Substance-Particulate}) |
-| `Substance-Soot` (see {s223:Substance-Soot}) |
-"""
-_E_Substance_Medium = _EnumValue('http://data.ashrae.org/standard223#Substance-Medium', label='Medium', definition='This class and its enumerated subclasses represent substances that facilitate the conveyance of matter, energy, or information.  It is used to qualify `Connection`s and `ConnectionPoint`s with the relation `hasMedium` (see {s223:hasMedium}).\n\n`Substance-Medium` is also the root of the medium hierarchy that is used to ensure compatibility of different medium designations. For example,\n`Fluid-Water` and `Water-ChilledWater` are alternative but compatible ways of identifying what is flowing in a pipe, using different degrees of\nspecificity. `Water-ChilledWater` and `Water-HotWater` are not compatible. Compatibility is determined by testing if one medium is a subclass of the\nother. This gets a bit more complicated in the case of mixtures, where at least one of the constituents of a mixture must be compatible with at least one of\nthe constituents of the other medium.\n\nTesting for medium compatibility is done in the context of entities that have a `hasMedium` relation, such as\n\n* `Connection` and its associated `ConnectionPoint`s (see {s223:Connection});\n\n* `Junction` and its associated `ConnectionPoint`s (see {s223:Junction});\n\n* `Filter` and its associated `ConnectionPoint`s (see {s223:Filter});\n\n* any `Concept` that has a `hasMedium` relation, compared with an associated `Property` with an `ofMedium` relation (see {s223:Concept}).\n\nThese tests are listed in the constraint tables for the respective classes listed above, identified as Case 1, Case 2, etc.\n\n: Substance-Medium Enumerations\n\n| Enumeration |\n|:-----------|\n| `Medium-Constituent` (see {s223:Medium-Constituent}) |\n| `Medium-MechanicalLinkage` |\n| `Medium-Mix` (see {s223:Medium-Mix}) |\n| `Medium-ThermalContact` |', parent=_E_EnumerationKind_Substance)
-"""This class and its enumerated subclasses represent substances that facilitate the conveyance of matter, energy, or information.  It is used to qualify `Connection`s and `ConnectionPoint`s with the relation `hasMedium` (see {s223:hasMedium}).
-
-`Substance-Medium` is also the root of the medium hierarchy that is used to ensure compatibility of different medium designations. For example,
-`Fluid-Water` and `Water-ChilledWater` are alternative but compatible ways of identifying what is flowing in a pipe, using different degrees of
-specificity. `Water-ChilledWater` and `Water-HotWater` are not compatible. Compatibility is determined by testing if one medium is a subclass of the
-other. This gets a bit more complicated in the case of mixtures, where at least one of the constituents of a mixture must be compatible with at least one of
-the constituents of the other medium.
-
-Testing for medium compatibility is done in the context of entities that have a `hasMedium` relation, such as
-
-* `Connection` and its associated `ConnectionPoint`s (see {s223:Connection});
-
-* `Junction` and its associated `ConnectionPoint`s (see {s223:Junction});
-
-* `Filter` and its associated `ConnectionPoint`s (see {s223:Filter});
-
-* any `Concept` that has a `hasMedium` relation, compared with an associated `Property` with an `ofMedium` relation (see {s223:Concept}).
-
-These tests are listed in the constraint tables for the respective classes listed above, identified as Case 1, Case 2, etc.
-
-: Substance-Medium Enumerations
-
-| Enumeration |
-|:-----------|
-| `Medium-Constituent` (see {s223:Medium-Constituent}) |
-| `Medium-MechanicalLinkage` |
-| `Medium-Mix` (see {s223:Medium-Mix}) |
-| `Medium-ThermalContact` |
-"""
-_E_Medium_Constituent = _EnumValue('http://data.ashrae.org/standard223#Medium-Constituent', label='Constituent', definition='\nThis class and its enumerated subclasses represent substances that may be combined to form a `Medium-Mix`. Constituents are distinguished from `Medium-Mix` and its subclasses in that constituents cannot use the `composedOf` relation to reference a concentration of other constituents.\n\n: Medium-Constituent Enumerations\n\n| Enumeration |\n|:-----------|\n| `Constituent-Ar` |\n| `Constituent-CH4` |\n| `Constituent-CO` |\n| `Constituent-CO2` |\n| `Constituent-Electricity` (see {s223:Constituent-Electricity}) |\n| `Constituent-EM` (see {s223:Constituent-EM}) |\n| `Constituent-Glycol` |\n| `Constituent-H2O` |\n| `Constituent-H2S` |\n| `Constituent-N2` |\n| `Constituent-NH3` |\n| `Constituent-NOX` (see {s223:Constituent-NOX}) |\n| `Constituent-O2` |\n| `Constituent-O3` |\n| `Constituent-Oil` |\n| `Constituent-Radon` |\n| `Constituent-Refrigerant` (see {s223:Constituent-Refrigerant}) |\n| `Constituent-SO2` |\n| `Constituent-VolatileOrganicCompounds` |\n', parent=_E_Substance_Medium)
-"""
-This class and its enumerated subclasses represent substances that may be combined to form a `Medium-Mix`. Constituents are distinguished from `Medium-Mix` and its subclasses in that constituents cannot use the `composedOf` relation to reference a concentration of other constituents.
-
-: Medium-Constituent Enumerations
-
-| Enumeration |
-|:-----------|
-| `Constituent-Ar` |
-| `Constituent-CH4` |
-| `Constituent-CO` |
-| `Constituent-CO2` |
-| `Constituent-Electricity` (see {s223:Constituent-Electricity}) |
-| `Constituent-EM` (see {s223:Constituent-EM}) |
-| `Constituent-Glycol` |
-| `Constituent-H2O` |
-| `Constituent-H2S` |
-| `Constituent-N2` |
-| `Constituent-NH3` |
-| `Constituent-NOX` (see {s223:Constituent-NOX}) |
-| `Constituent-O2` |
-| `Constituent-O3` |
-| `Constituent-Oil` |
-| `Constituent-Radon` |
-| `Constituent-Refrigerant` (see {s223:Constituent-Refrigerant}) |
-| `Constituent-SO2` |
-| `Constituent-VolatileOrganicCompounds` |
-
-"""
-_E_Constituent_Ar = _EnumValue('http://data.ashrae.org/standard223#Constituent-Ar', label='Ar', definition='Argon', parent=_E_Medium_Constituent)
-"""Argon"""
-_E_Constituent_CH4 = _EnumValue('http://data.ashrae.org/standard223#Constituent-CH4', label='CH4', definition='Methane', parent=_E_Medium_Constituent)
-"""Methane"""
-_E_Constituent_CO = _EnumValue('http://data.ashrae.org/standard223#Constituent-CO', label='CO', definition='Carbon monoxide', parent=_E_Medium_Constituent)
-"""Carbon monoxide"""
-_E_Constituent_CO2 = _EnumValue('http://data.ashrae.org/standard223#Constituent-CO2', label='CO2', definition='Carbon dioxide', parent=_E_Medium_Constituent)
-"""Carbon dioxide"""
-_E_Constituent_EM = _EnumValue('http://data.ashrae.org/standard223#Constituent-EM', label='EM', definition='This class and its enumerated subclasses represent electromagnetic energy at commonly defined frequency ranges.\n\n: Constituent-EM Enumerations\n\n| Enumeration |\n|:-----------|\n| `EM-Light` (see {s223:EM-Light}) |\n| `EM-Microwave` |\n| `EM-RF` (see {s223:EM-RF}) |', parent=_E_Medium_Constituent)
-"""This class and its enumerated subclasses represent electromagnetic energy at commonly defined frequency ranges.
-
-: Constituent-EM Enumerations
-
-| Enumeration |
-|:-----------|
-| `EM-Light` (see {s223:EM-Light}) |
-| `EM-Microwave` |
-| `EM-RF` (see {s223:EM-RF}) |
-"""
-_E_EM_Light = _EnumValue('http://data.ashrae.org/standard223#EM-Light', label='Light', definition='This class and its enumerated subclasses represent light at commonly defined frequency or wavelength ranges.\n\n: EM-Light Enumerations\n\n| Enumeration |\n|:-----------|\n| `Light-Infrared` (see {s223:Light-Infrared}) |\n| `Light-Ultraviolet` |\n| `Light-Visible` |', parent=_E_Constituent_EM)
-"""This class and its enumerated subclasses represent light at commonly defined frequency or wavelength ranges.
-
-: EM-Light Enumerations
-
-| Enumeration |
-|:-----------|
-| `Light-Infrared` (see {s223:Light-Infrared}) |
-| `Light-Ultraviolet` |
-| `Light-Visible` |
-"""
-_E_Light_Infrared = _EnumValue('http://data.ashrae.org/standard223#Light-Infrared', label='Infrared light', definition=' This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for any defined purpose, including the creation of communication signals and common communication protocols.\n\n: Light-Infrared Enumerations\n\n  | Enumeration |\n  |:-----------|\n  | `Infrared-Signal` (see {s223:Infrared-Signal}) |', parent=_E_EM_Light)
-""" This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for any defined purpose, including the creation of communication signals and common communication protocols.
-
-: Light-Infrared Enumerations
-
-  | Enumeration |
-  |:-----------|
-  | `Infrared-Signal` (see {s223:Infrared-Signal}) |
-"""
-_E_Infrared_Signal = _EnumValue('http://data.ashrae.org/standard223#Infrared-Signal', label='Infrared signal', definition=' This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for creating communication signals and common communication protocols.\n\n: Infrared-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-FiberEthernet` (see {s223:Signal-FiberEthernet}) |', parent=_E_Light_Infrared)
-""" This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for creating communication signals and common communication protocols.
-
-: Infrared-Signal Enumerations
-
-| Enumeration |
-|:-----------|
-| `Signal-FiberEthernet` (see {s223:Signal-FiberEthernet}) |
-"""
-_E_Signal_FiberEthernet = _EnumValue('http://data.ashrae.org/standard223#Signal-FiberEthernet', label='Fiber Ethernet', definition='This class and its enumerated subclasses represent common fiber Ethernet communication protocols that are used to deliver data over `FiberOpticCable`s.\n\n: Signal-FiberEthernet Enumerations\n\n| Enumeration |\n|:-----------|\n| `FiberEthernet-1X9` |\n| `FiberEthernet-300PIN` |\n| `FiberEthernet-CFP` |\n| `FiberEthernet-CFP2` |\n| `FiberEthernet-CFP4` |\n| `FiberEthernet-CPAK` |\n| `FiberEthernet-CXP` |\n| `FiberEthernet-GBIC` |\n| `FiberEthernet-QSFP` |\n| `FiberEthernet-QSFP+` |\n| `FiberEthernet-QSFP28` |\n| `FiberEthernet-SFF` |\n| `FiberEthernet-SFP` |\n| `FiberEthernet-SFP+` |\n| `FiberEthernet-X2` |\n| `FiberEthernet-XENPAK` |\n| `FiberEthernet-XFP` |', parent=_E_Infrared_Signal)
-"""This class and its enumerated subclasses represent common fiber Ethernet communication protocols that are used to deliver data over `FiberOpticCable`s.
-
-: Signal-FiberEthernet Enumerations
-
-| Enumeration |
-|:-----------|
-| `FiberEthernet-1X9` |
-| `FiberEthernet-300PIN` |
-| `FiberEthernet-CFP` |
-| `FiberEthernet-CFP2` |
-| `FiberEthernet-CFP4` |
-| `FiberEthernet-CPAK` |
-| `FiberEthernet-CXP` |
-| `FiberEthernet-GBIC` |
-| `FiberEthernet-QSFP` |
-| `FiberEthernet-QSFP+` |
-| `FiberEthernet-QSFP28` |
-| `FiberEthernet-SFF` |
-| `FiberEthernet-SFP` |
-| `FiberEthernet-SFP+` |
-| `FiberEthernet-X2` |
-| `FiberEthernet-XENPAK` |
-| `FiberEthernet-XFP` |
-"""
-_E_FiberEthernet_1X9 = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-1X9', label='Fiber Ethernet 1X9', definition='FiberEthernet-1X9', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-1X9"""
-_E_FiberEthernet_300PIN = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-300PIN', label='Fiber Ethernet 300PIN', definition='FiberEthernet-300PIN', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-300PIN"""
-_E_FiberEthernet_CFP = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-CFP', label='Fiber Ethernet CFP', definition='FiberEthernet-CFP', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-CFP"""
-_E_FiberEthernet_CFP2 = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-CFP2', label='Fiber Ethernet CFP2', definition='FiberEthernet-CFP2', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-CFP2"""
-_E_FiberEthernet_CFP4 = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-CFP4', label='Fiber Ethernet CFP4', definition='FiberEthernet-CFP4', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-CFP4"""
-_E_FiberEthernet_CPAK = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-CPAK', label='Fiber Ethernet CPAK', definition='FiberEthernet-CPAK', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-CPAK"""
-_E_FiberEthernet_CXP = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-CXP', label='Fiber Ethernet CXP', definition='FiberEthernet-CXP', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-CXP"""
-_E_FiberEthernet_GBIC = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-GBIC', label='Fiber Ethernet GBIC', definition='FiberEthernet-GBIC', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-GBIC"""
-_E_FiberEthernet_QSFP = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-QSFP', label='Fiber Ethernet QSFP', definition='FiberEthernet-QSFP', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-QSFP"""
-_E_FiberEthernet_QSFP_ = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-QSFP+', label='Fiber Ethernet QSFP+', definition='FiberEthernet-QSFP+', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-QSFP+"""
-_E_FiberEthernet_QSFP28 = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-QSFP28', label='Fiber Ethernet QSFP28', definition='FiberEthernet-QSFP28', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-QSFP28"""
-_E_FiberEthernet_SFF = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-SFF', label='Fiber Ethernet SFF', definition='FiberEthernet-SFF', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-SFF"""
-_E_FiberEthernet_SFP = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-SFP', label='Fiber Ethernet SFP', definition='FiberEthernet-SFP', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-SFP"""
-_E_FiberEthernet_SFP_ = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-SFP+', label='Fiber Ethernet SFP+', definition='FiberEthernet-SFP+', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-SFP+"""
-_E_FiberEthernet_X2 = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-X2', label='Fiber Ethernet X2', definition='FiberEthernet-X2', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-X2"""
-_E_FiberEthernet_XENPAK = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-XENPAK', label='Fiber Ethernet XENPAK', definition='FiberEthernet-XENPAK', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-XENPAK"""
-_E_FiberEthernet_XFP = _EnumValue('http://data.ashrae.org/standard223#FiberEthernet-XFP', label='Fiber Ethernet XFP', definition='FiberEthernet-XFP', parent=_E_Signal_FiberEthernet)
-"""FiberEthernet-XFP"""
-_E_Light_Ultraviolet = _EnumValue('http://data.ashrae.org/standard223#Light-Ultraviolet', label='Ultraviolet light', definition='`Light-Ultraviolet`', parent=_E_EM_Light)
-"""`Light-Ultraviolet`"""
-_E_Light_Visible = _EnumValue('http://data.ashrae.org/standard223#Light-Visible', label='Visible light', definition='`Light-Visible`', parent=_E_EM_Light)
-"""`Light-Visible`"""
-_E_EM_Microwave = _EnumValue('http://data.ashrae.org/standard223#EM-Microwave', label='Microwave', definition='`EM-Microwave`', parent=_E_Constituent_EM)
-"""`EM-Microwave`"""
-_E_EM_RF = _EnumValue('http://data.ashrae.org/standard223#EM-RF', label='RF', definition='\nThis class and its enumerated subclasses represent the use electromagnetic energy in the radio frequency range for multiple purposes, including communication signals.\n\n: EM-RF Enumerations\n\n| Enumeration |\n|:-----------|\n| `RF-Signal` (see {s223:RF-Signal}) |', parent=_E_Constituent_EM)
-"""
-This class and its enumerated subclasses represent the use electromagnetic energy in the radio frequency range for multiple purposes, including communication signals.
-
-: EM-RF Enumerations
-
-| Enumeration |
-|:-----------|
-| `RF-Signal` (see {s223:RF-Signal}) |
-"""
-_E_RF_Signal = _EnumValue('http://data.ashrae.org/standard223#RF-Signal', label='Radio frequency signal', definition='This class and its enumerated subclasses represent the use of radio frequency for creating communication signals and common communication protocols. The radio spectrum of frequencies (`RF-Signal`) is divided into bands (i.e., subclasses) with conventional names designated by the International Telecommunication Union (e.g., UHF for Ultra High Frequency).\n\n: RF-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-EHF` |\n| `Signal-ELF` |\n| `Signal-HF` |\n| `Signal-LF` |\n| `Signal-MF` |\n| `Signal-SHF` |\n| `Signal-SLF` |\n| `Signal-THF` |\n| `Signal-UHF` (see {s223:Signal-UHF}) |\n| `Signal-ULF` |\n| `Signal-VHF` |\n| `Signal-VLF` |\n| `Signal-Wideband` (see {s223:Signal-Wideband}) |', parent=_E_EM_RF)
-"""This class and its enumerated subclasses represent the use of radio frequency for creating communication signals and common communication protocols. The radio spectrum of frequencies (`RF-Signal`) is divided into bands (i.e., subclasses) with conventional names designated by the International Telecommunication Union (e.g., UHF for Ultra High Frequency).
-
-: RF-Signal Enumerations
-
-| Enumeration |
-|:-----------|
-| `Signal-EHF` |
-| `Signal-ELF` |
-| `Signal-HF` |
-| `Signal-LF` |
-| `Signal-MF` |
-| `Signal-SHF` |
-| `Signal-SLF` |
-| `Signal-THF` |
-| `Signal-UHF` (see {s223:Signal-UHF}) |
-| `Signal-ULF` |
-| `Signal-VHF` |
-| `Signal-VLF` |
-| `Signal-Wideband` (see {s223:Signal-Wideband}) |
-"""
-_E_Signal_EHF = _EnumValue('http://data.ashrae.org/standard223#Signal-EHF', label='EHF', definition='This class represents the use of radio frequency in the Extremely High Frequency band, from 30 GHz to 300 GHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency in the Extremely High Frequency band, from 30 GHz to 300 GHz, for creating communication signals and common communication protocols."""
-_E_Signal_ELF = _EnumValue('http://data.ashrae.org/standard223#Signal-ELF', label='ELF', definition='This class represents the use of radio frequency in the Extremely Low Frequency band, from 3 Hz to 30 Hz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency in the Extremely Low Frequency band, from 3 Hz to 30 Hz, for creating communication signals and common communication protocols."""
-_E_Signal_HF = _EnumValue('http://data.ashrae.org/standard223#Signal-HF', label='HF', definition='This class represents the use of radio frequency in the High Frequency band, from 3 MHz to 30 MHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency in the High Frequency band, from 3 MHz to 30 MHz, for creating communication signals and common communication protocols."""
-_E_Signal_LF = _EnumValue('http://data.ashrae.org/standard223#Signal-LF', label='LF', definition='This class represents the use of radio frequency in the Low Frequency band, from 30 kHz to 300 kHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency in the Low Frequency band, from 30 kHz to 300 kHz, for creating communication signals and common communication protocols."""
-_E_Signal_MF = _EnumValue('http://data.ashrae.org/standard223#Signal-MF', label='MF', definition='This class represents the use of radio frequency in the Medium Frequency band, from 300 kHz to 3 MHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency in the Medium Frequency band, from 300 kHz to 3 MHz, for creating communication signals and common communication protocols."""
-_E_Signal_SHF = _EnumValue('http://data.ashrae.org/standard223#Signal-SHF', label='SHF', definition='This class represents the use of radio frequency in the Super High Frequency band, from 3 GHz to 30 GHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency in the Super High Frequency band, from 3 GHz to 30 GHz, for creating communication signals and common communication protocols."""
-_E_Signal_SLF = _EnumValue('http://data.ashrae.org/standard223#Signal-SLF', label='SLF', definition='This class represents the use of radio frequency in the Super Low Frequency band, from 30 Hz to 300 Hz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency in the Super Low Frequency band, from 30 Hz to 300 Hz, for creating communication signals and common communication protocols."""
-_E_Signal_THF = _EnumValue('http://data.ashrae.org/standard223#Signal-THF', label='THF', definition='This class represents the use of radio frequency in the Tremendously High Frequency band, from 300 GHz to 3 THz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency in the Tremendously High Frequency band, from 300 GHz to 3 THz, for creating communication signals and common communication protocols."""
-_E_Signal_UHF = _EnumValue('http://data.ashrae.org/standard223#Signal-UHF', label='UHF', definition='This class represents the use of radio frequency in the Ultra High Frequency band, from 300 MHz to 3 GHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency in the Ultra High Frequency band, from 300 MHz to 3 GHz, for creating communication signals and common communication protocols."""
-_E_UHF_ISMBand = _EnumValue('http://data.ashrae.org/standard223#UHF-ISMBand', label='ISM band', definition='This class and its enumerated subclasses represent communication protocols that use radio frequencies that are reserved internationally for license-free support of Industrial, Scientific, and Medical applications.\n\n: UHF-ISMBand Enumerations\n\n| Enumeration |\n|:-----------|\n| `ISMBand-BluetoothLE` |\n| `ISMBand-IEEE802.11` |\n| `ISMBand-IEEE802.15.4` |\n| `ISMBand-LoRaWAN` |\n| `ISMBand-NFC` |\n| `ISMBand-RFID` |', parent=_E_Signal_UHF)
-"""This class and its enumerated subclasses represent communication protocols that use radio frequencies that are reserved internationally for license-free support of Industrial, Scientific, and Medical applications.
-
-: UHF-ISMBand Enumerations
-
-| Enumeration |
-|:-----------|
-| `ISMBand-BluetoothLE` |
-| `ISMBand-IEEE802.11` |
-| `ISMBand-IEEE802.15.4` |
-| `ISMBand-LoRaWAN` |
-| `ISMBand-NFC` |
-| `ISMBand-RFID` |
-"""
-_E_ISMBand_BluetoothLE = _EnumValue('http://data.ashrae.org/standard223#ISMBand-BluetoothLE', label='BluetoothLE', definition='The BluetoothLE radio frequency communication protocol.', parent=_E_UHF_ISMBand)
-"""The BluetoothLE radio frequency communication protocol."""
-_E_ISMBand_IEEE802_11 = _EnumValue('http://data.ashrae.org/standard223#ISMBand-IEEE802.11', label='IEEE 802.11', definition='The IEEE 802.11 radio frequency communication protocol.', parent=_E_UHF_ISMBand)
-"""The IEEE 802.11 radio frequency communication protocol."""
-_E_ISMBand_IEEE802_15_4 = _EnumValue('http://data.ashrae.org/standard223#ISMBand-IEEE802.15.4', label='IEEE 802.15.4', definition='The IEEE 802.15.4 radio frequency communication protocol.', parent=_E_UHF_ISMBand)
-"""The IEEE 802.15.4 radio frequency communication protocol."""
-_E_ISMBand_LoRaWAN = _EnumValue('http://data.ashrae.org/standard223#ISMBand-LoRaWAN', label='LoRaWAN', definition='The LoRaWAN radio frequency communication protocol.', parent=_E_UHF_ISMBand)
-"""The LoRaWAN radio frequency communication protocol."""
-_E_ISMBand_NFC = _EnumValue('http://data.ashrae.org/standard223#ISMBand-NFC', label='NFC', definition='NFC radio frequency communication protocols.', parent=_E_UHF_ISMBand)
-"""NFC radio frequency communication protocols."""
-_E_ISMBand_RFID = _EnumValue('http://data.ashrae.org/standard223#ISMBand-RFID', label='RFID', definition='RFID radio frequency communication protocols.', parent=_E_UHF_ISMBand)
-"""RFID radio frequency communication protocols."""
-_E_UHF_LicensedBand = _EnumValue('http://data.ashrae.org/standard223#UHF-LicensedBand', label='Licensed band', definition='This class represents communication protocols that use radio frequencies in licensed bands of the UHF spectrum.', parent=_E_Signal_UHF)
-"""This class represents communication protocols that use radio frequencies in licensed bands of the UHF spectrum."""
-_E_Signal_ULF = _EnumValue('http://data.ashrae.org/standard223#Signal-ULF', label='ULF', definition='This class represents the use of radio frequency in the Ultra Low Frequency band, from 300 Hz to 3 kHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency in the Ultra Low Frequency band, from 300 Hz to 3 kHz, for creating communication signals and common communication protocols."""
-_E_Signal_VHF = _EnumValue('http://data.ashrae.org/standard223#Signal-VHF', label='VHF', definition='This class represents the use of radio frequency in the Very High Frequency band, from 30 MHz to 300 MHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency in the Very High Frequency band, from 30 MHz to 300 MHz, for creating communication signals and common communication protocols."""
-_E_Signal_VLF = _EnumValue('http://data.ashrae.org/standard223#Signal-VLF', label='VLF', definition='This class represents the use of radio frequency in the Very Low Frequency band, from 3 kHz to 30 kHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency in the Very Low Frequency band, from 3 kHz to 30 kHz, for creating communication signals and common communication protocols."""
-_E_Signal_Wideband = _EnumValue('http://data.ashrae.org/standard223#Signal-Wideband', label='Wideband', definition='This class represents the use of radio frequency over a wide frequency range for any defined purpose, including the creation of communication signals and common communication protocols', parent=_E_RF_Signal)
-"""This class represents the use of radio frequency over a wide frequency range for any defined purpose, including the creation of communication signals and common communication protocols"""
-_E_Wideband_CATV = _EnumValue('http://data.ashrae.org/standard223#Wideband-CATV', label='CATV', definition='The Community Antenna Television communication protocol that is used to deliver cable TV service over `CoaxialCable`s or `FiberOpticCable`s.', parent=_E_Signal_Wideband)
-"""The Community Antenna Television communication protocol that is used to deliver cable TV service over `CoaxialCable`s or `FiberOpticCable`s."""
-_E_Wideband_DOCSIS = _EnumValue('http://data.ashrae.org/standard223#Wideband-DOCSIS', label='DOCSIS', definition='The global standard Data Over Cable Service Interface Specification communication protocol that is used to deliver high-speed internet service over `CoaxialCable`s.', parent=_E_Signal_Wideband)
-"""The global standard Data Over Cable Service Interface Specification communication protocol that is used to deliver high-speed internet service over `CoaxialCable`s."""
-_E_Constituent_Electricity = _EnumValue('http://data.ashrae.org/standard223#Constituent-Electricity', label='Electricity', definition='This class and its enumerated subclasses represent common forms of electrical energy, including AC, DC, and electrical communication signals.\n\n: Constituent-Electricity Enumerations\n\n| Enumeration |\n|:-----------|\n| `Electricity-AC` (see {s223:Electricity-AC}) |\n| `Electricity-DC` (see {s223:Electricity-DC}) |\n| `Electricity-Earth` |\n| `Electricity-Neutral` |\n| `Electricity-Signal` (see {s223:Electricity-Signal}) |', parent=_E_Medium_Constituent)
-"""This class and its enumerated subclasses represent common forms of electrical energy, including AC, DC, and electrical communication signals.
-
-: Constituent-Electricity Enumerations
-
-| Enumeration |
-|:-----------|
-| `Electricity-AC` (see {s223:Electricity-AC}) |
-| `Electricity-DC` (see {s223:Electricity-DC}) |
-| `Electricity-Earth` |
-| `Electricity-Neutral` |
-| `Electricity-Signal` (see {s223:Electricity-Signal}) |
-"""
-_E_Electricity_AC = _EnumValue('http://data.ashrae.org/standard223#Electricity-AC', label='AC electricity', definition='This class and its enumerated subclasses represent common AC electricity services.\n\n: Electricity-AC Enumerations\n\n| Enumeration |\n|:-----------|\n| `AC-24VLN-1Ph-50Hz` |\n| `AC-24VLN-1Ph-60Hz` |\n| `AC-110VLN-1Ph-50Hz` |\n| `AC-120VLN-1Ph-60Hz` |\n| `AC-127VLN-1Ph-50Hz` |\n| `AC-139VLN-1Ph-50Hz` |\n| `AC-190VLL-1Ph-50Hz` |\n| `AC-190VLL-3Ph-50Hz` |\n| `AC-190VLL-110VLN-1Ph-50Hz` |\n| `AC-190VLL-110VLN-3Ph-50Hz` |\n| `AC-208VLL-1Ph-60Hz` |\n| `AC-208VLL-3Ph-60Hz` |\n| `AC-208VLL-120VLN-1Ph-60Hz` |\n| `AC-208VLL-120VLN-3Ph-60Hz` |\n| `AC-208VLN-1Ph-60Hz` |\n| `AC-219VLN-1Ph-60Hz` |\n| `AC-220VLL-1Ph-50Hz` |\n| `AC-220VLL-3Ph-50Hz` |\n| `AC-220VLL-127VLN-1Ph-50Hz` |\n| `AC-220VLL-127VLN-3Ph-50Hz` |\n| `AC-230VLN-1Ph-50Hz` |\n| `AC-240VLL-1Ph-50Hz` |\n| `AC-240VLL-1Ph-60Hz` |\n| `AC-240VLL-3Ph-50Hz` |\n| `AC-240VLL-3Ph-60Hz` |\n| `AC-240VLL-120VLN-1Ph-60Hz` |\n| `AC-240VLL-139VLN-1Ph-50Hz` |\n| `AC-240VLL-139VLN-3Ph-50Hz` |\n| `AC-240VLL-208VLN-120VLN-1Ph-60Hz` |\n| `AC-240VLL-208VLN-120VLN-3Ph-60Hz` |\n| `AC-240VLN-1Ph-50Hz` |\n| `AC-277VLN-1Ph-60Hz` |\n| `AC-347VLN-1Ph-60Hz` |\n| `AC-380VLL-1Ph-60Hz` |\n| `AC-380VLL-3Ph-60Hz` |\n| `AC-380VLL-219VLN-1Ph-60Hz` |\n| `AC-380VLL-219VLN-3Ph-60Hz` |\n| `AC-400VLL-1Ph-50Hz` |\n| `AC-400VLL-3Ph-50Hz` |\n| `AC-400VLL-230VLN-1Ph-50Hz` |\n| `AC-400VLL-230VLN-3Ph-50Hz` |\n| `AC-415VLL-1Ph-50Hz` |\n| `AC-415VLL-3Ph-50Hz` |\n| `AC-415VLL-240VLN-1Ph-50Hz` |\n| `AC-415VLL-240VLN-3Ph-50Hz` |\n| `AC-480VLL-1Ph-60Hz` |\n| `AC-480VLL-3Ph-60Hz` |\n| `AC-480VLL-277VLN-1Ph-60Hz` |\n| `AC-480VLL-277VLN-3Ph-60Hz` |\n| `AC-600VLL-1Ph-60Hz` |\n| `AC-600VLL-3Ph-60Hz` |\n| `AC-600VLL-347VLN-1Ph-60Hz` |\n| `AC-600VLL-347VLN-3Ph-60Hz` |\n| `AC-1730VLN-1Ph-60Hz` |\n| `AC-1900VLN-1Ph-60Hz` |\n| `AC-2400VLN-1Ph-60Hz` |\n| `AC-3000VLL-1Ph-60Hz` |\n| `AC-3000VLL-3Ph-60Hz` |\n| `AC-3000VLL-1730VLN-1Ph-60Hz` |\n| `AC-3000VLL-1730VLN-3Ph-60Hz` |\n| `AC-3300VLL-1Ph-60Hz` |\n| `AC-3300VLL-3Ph-60Hz` |\n| `AC-3300VLL-1900VLN-1Ph-60Hz` |\n| `AC-3300VLL-1900VLN-3Ph-60Hz` |\n| `AC-3460VLN-1Ph-60Hz` |\n| `AC-3810VLN-1Ph-60Hz` |\n| `AC-4160VLL-1Ph-60Hz` |\n| `AC-4160VLL-3Ph-60Hz` |\n| `AC-4160VLL-2400VLN-1Ph-60Hz` |\n| `AC-4160VLL-2400VLN-3Ph-60Hz` |\n| `AC-5770VLN-1Ph-60Hz` |\n| `AC-6000VLL-1Ph-60Hz` |\n| `AC-6000VLL-3Ph-60Hz` |\n| `AC-6000VLL-3460VLN-1Ph-60Hz` |\n| `AC-6000VLL-3460VLN-3Ph-60Hz` |\n| `AC-6600VLL-1Ph-60Hz` |\n| `AC-6600VLL-3Ph-60Hz` |\n| `AC-6600VLL-3810VLN-1Ph-60Hz` |\n| `AC-6600VLL-3810VLN-3Ph-60Hz` |\n| `AC-10000VLL-1Ph-60Hz` |\n| `AC-10000VLL-3Ph-60Hz` |\n| `AC-10000VLL-5770VLN-1Ph-60Hz` |\n| `AC-10000VLL-5770VLN-3Ph-60Hz` |', parent=_E_Constituent_Electricity)
-"""This class and its enumerated subclasses represent common AC electricity services.
-
-: Electricity-AC Enumerations
-
-| Enumeration |
-|:-----------|
-| `AC-24VLN-1Ph-50Hz` |
-| `AC-24VLN-1Ph-60Hz` |
-| `AC-110VLN-1Ph-50Hz` |
-| `AC-120VLN-1Ph-60Hz` |
-| `AC-127VLN-1Ph-50Hz` |
-| `AC-139VLN-1Ph-50Hz` |
-| `AC-190VLL-1Ph-50Hz` |
-| `AC-190VLL-3Ph-50Hz` |
-| `AC-190VLL-110VLN-1Ph-50Hz` |
-| `AC-190VLL-110VLN-3Ph-50Hz` |
-| `AC-208VLL-1Ph-60Hz` |
-| `AC-208VLL-3Ph-60Hz` |
-| `AC-208VLL-120VLN-1Ph-60Hz` |
-| `AC-208VLL-120VLN-3Ph-60Hz` |
-| `AC-208VLN-1Ph-60Hz` |
-| `AC-219VLN-1Ph-60Hz` |
-| `AC-220VLL-1Ph-50Hz` |
-| `AC-220VLL-3Ph-50Hz` |
-| `AC-220VLL-127VLN-1Ph-50Hz` |
-| `AC-220VLL-127VLN-3Ph-50Hz` |
-| `AC-230VLN-1Ph-50Hz` |
-| `AC-240VLL-1Ph-50Hz` |
-| `AC-240VLL-1Ph-60Hz` |
-| `AC-240VLL-3Ph-50Hz` |
-| `AC-240VLL-3Ph-60Hz` |
-| `AC-240VLL-120VLN-1Ph-60Hz` |
-| `AC-240VLL-139VLN-1Ph-50Hz` |
-| `AC-240VLL-139VLN-3Ph-50Hz` |
-| `AC-240VLL-208VLN-120VLN-1Ph-60Hz` |
-| `AC-240VLL-208VLN-120VLN-3Ph-60Hz` |
-| `AC-240VLN-1Ph-50Hz` |
-| `AC-277VLN-1Ph-60Hz` |
-| `AC-347VLN-1Ph-60Hz` |
-| `AC-380VLL-1Ph-60Hz` |
-| `AC-380VLL-3Ph-60Hz` |
-| `AC-380VLL-219VLN-1Ph-60Hz` |
-| `AC-380VLL-219VLN-3Ph-60Hz` |
-| `AC-400VLL-1Ph-50Hz` |
-| `AC-400VLL-3Ph-50Hz` |
-| `AC-400VLL-230VLN-1Ph-50Hz` |
-| `AC-400VLL-230VLN-3Ph-50Hz` |
-| `AC-415VLL-1Ph-50Hz` |
-| `AC-415VLL-3Ph-50Hz` |
-| `AC-415VLL-240VLN-1Ph-50Hz` |
-| `AC-415VLL-240VLN-3Ph-50Hz` |
-| `AC-480VLL-1Ph-60Hz` |
-| `AC-480VLL-3Ph-60Hz` |
-| `AC-480VLL-277VLN-1Ph-60Hz` |
-| `AC-480VLL-277VLN-3Ph-60Hz` |
-| `AC-600VLL-1Ph-60Hz` |
-| `AC-600VLL-3Ph-60Hz` |
-| `AC-600VLL-347VLN-1Ph-60Hz` |
-| `AC-600VLL-347VLN-3Ph-60Hz` |
-| `AC-1730VLN-1Ph-60Hz` |
-| `AC-1900VLN-1Ph-60Hz` |
-| `AC-2400VLN-1Ph-60Hz` |
-| `AC-3000VLL-1Ph-60Hz` |
-| `AC-3000VLL-3Ph-60Hz` |
-| `AC-3000VLL-1730VLN-1Ph-60Hz` |
-| `AC-3000VLL-1730VLN-3Ph-60Hz` |
-| `AC-3300VLL-1Ph-60Hz` |
-| `AC-3300VLL-3Ph-60Hz` |
-| `AC-3300VLL-1900VLN-1Ph-60Hz` |
-| `AC-3300VLL-1900VLN-3Ph-60Hz` |
-| `AC-3460VLN-1Ph-60Hz` |
-| `AC-3810VLN-1Ph-60Hz` |
-| `AC-4160VLL-1Ph-60Hz` |
-| `AC-4160VLL-3Ph-60Hz` |
-| `AC-4160VLL-2400VLN-1Ph-60Hz` |
-| `AC-4160VLL-2400VLN-3Ph-60Hz` |
-| `AC-5770VLN-1Ph-60Hz` |
-| `AC-6000VLL-1Ph-60Hz` |
-| `AC-6000VLL-3Ph-60Hz` |
-| `AC-6000VLL-3460VLN-1Ph-60Hz` |
-| `AC-6000VLL-3460VLN-3Ph-60Hz` |
-| `AC-6600VLL-1Ph-60Hz` |
-| `AC-6600VLL-3Ph-60Hz` |
-| `AC-6600VLL-3810VLN-1Ph-60Hz` |
-| `AC-6600VLL-3810VLN-3Ph-60Hz` |
-| `AC-10000VLL-1Ph-60Hz` |
-| `AC-10000VLL-3Ph-60Hz` |
-| `AC-10000VLL-5770VLN-1Ph-60Hz` |
-| `AC-10000VLL-5770VLN-3Ph-60Hz` |
-"""
-_E_AC_10000VLL_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-10000VLL-1Ph-60Hz', label='AC-10000VLL-1Ph-60Hz', definition='`AC-10000VLL-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-10000VLL-1Ph-60Hz`"""
-_E_AC_10000VLL_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-10000VLL-3Ph-60Hz', label='AC-10000VLL-3Ph-60Hz', definition='`AC-10000VLL-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-10000VLL-3Ph-60Hz`"""
-_E_AC_10000VLL_5770VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-10000VLL-5770VLN-1Ph-60Hz', label='AC-10000VLL-5770VLN-1Ph-60Hz', definition='`AC-10000VLL-5770VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-10000VLL-5770VLN-1Ph-60Hz`"""
-_E_AC_10000VLL_5770VLN_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-10000VLL-5770VLN-3Ph-60Hz', label='AC-10000VLL-5770VLN-3Ph-60Hz', definition='`AC-10000VLL-5770VLN-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-10000VLL-5770VLN-3Ph-60Hz`"""
-_E_AC_110VLN_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-110VLN-1Ph-50Hz', label='AC-110VLN-1Ph-50Hz', definition='`AC-110VLN-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-110VLN-1Ph-50Hz`"""
-_E_AC_120VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-120VLN-1Ph-60Hz', label='AC-120VLN-1Ph-60Hz', definition='`AC-120VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-120VLN-1Ph-60Hz`"""
-_E_AC_127VLN_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-127VLN-1Ph-50Hz', label='AC-127VLN-1Ph-50Hz', definition='`AC-127VLN-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-127VLN-1Ph-50Hz`"""
-_E_AC_139VLN_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-139VLN-1Ph-50Hz', label='AC-139VLN-1Ph-50Hz', definition='`AC-139VLN-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-139VLN-1Ph-50Hz`"""
-_E_AC_1730VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-1730VLN-1Ph-60Hz', label='AC-1730VLN-1Ph-60Hz', definition='`AC-1730VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-1730VLN-1Ph-60Hz`"""
-_E_AC_1900VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-1900VLN-1Ph-60Hz', label='AC-1900VLN-1Ph-60Hz', definition='`AC-1900VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-1900VLN-1Ph-60Hz`"""
-_E_AC_190VLL_110VLN_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-190VLL-110VLN-1Ph-50Hz', label='AC-190VLL-110VLN-1Ph-50Hz', definition='`AC-190VLL-110VLN-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-190VLL-110VLN-1Ph-50Hz`"""
-_E_AC_190VLL_110VLN_3Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-190VLL-110VLN-3Ph-50Hz', label='AC-190VLL-110VLN-3Ph-50Hz', definition='`AC-190VLL-110VLN-3Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-190VLL-110VLN-3Ph-50Hz`"""
-_E_AC_190VLL_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-190VLL-1Ph-50Hz', label='AC-190VLL-1Ph-50Hz', definition='`AC-190VLL-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-190VLL-1Ph-50Hz`"""
-_E_AC_190VLL_3Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-190VLL-3Ph-50Hz', label='AC-190VLL-3Ph-50Hz', definition='`AC-190VLL-3Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-190VLL-3Ph-50Hz`"""
-_E_AC_208VLL_120VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-208VLL-120VLN-1Ph-60Hz', label='AC-208VLL-120VLN-1Ph-60Hz', definition='`AC-208VLL-120VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-208VLL-120VLN-1Ph-60Hz`"""
-_E_AC_208VLL_120VLN_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-208VLL-120VLN-3Ph-60Hz', label='AC-208VLL-120VLN-3Ph-60Hz', definition='`AC-208VLL-120VLN-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-208VLL-120VLN-3Ph-60Hz`"""
-_E_AC_208VLL_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-208VLL-1Ph-60Hz', label='AC-208VLL-1Ph-60Hz', definition='`AC-208VLL-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-208VLL-1Ph-60Hz`"""
-_E_AC_208VLL_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-208VLL-3Ph-60Hz', label='AC-208VLL-3Ph-60Hz', definition='`AC-208VLL-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-208VLL-3Ph-60Hz`"""
-_E_AC_208VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-208VLN-1Ph-60Hz', label='AC-208VLN-1Ph-60Hz', definition='`AC-208VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-208VLN-1Ph-60Hz`"""
-_E_AC_219VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-219VLN-1Ph-60Hz', label='AC-219VLN-1Ph-60Hz', definition='`AC-219VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-219VLN-1Ph-60Hz`"""
-_E_AC_220VLL_127VLN_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-220VLL-127VLN-1Ph-50Hz', label='AC-220VLL-127VLN-1Ph-50Hz', definition='`AC-220VLL-127VLN-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-220VLL-127VLN-1Ph-50Hz`"""
-_E_AC_220VLL_127VLN_3Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-220VLL-127VLN-3Ph-50Hz', label='AC-220VLL-127VLN-3Ph-50Hz', definition='`AC-220VLL-127VLN-3Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-220VLL-127VLN-3Ph-50Hz`"""
-_E_AC_220VLL_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-220VLL-1Ph-50Hz', label='AC-220VLL-1Ph-50Hz', definition='`AC-220VLL-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-220VLL-1Ph-50Hz`"""
-_E_AC_220VLL_3Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-220VLL-3Ph-50Hz', label='AC-220VLL-3Ph-50Hz', definition='`AC-220VLL-3Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-220VLL-3Ph-50Hz`"""
-_E_AC_230VLN_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-230VLN-1Ph-50Hz', label='AC-230VLN-1Ph-50Hz', definition='`AC-230VLN-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-230VLN-1Ph-50Hz`"""
-_E_AC_2400VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-2400VLN-1Ph-60Hz', label='AC-2400VLN-1Ph-60Hz', definition='`AC-2400VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-2400VLN-1Ph-60Hz`"""
-_E_AC_240VLL_120VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-240VLL-120VLN-1Ph-60Hz', label='AC-240VLL-120VLN-1Ph-60Hz', definition='`AC-240VLL-120VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-240VLL-120VLN-1Ph-60Hz`"""
-_E_AC_240VLL_139VLN_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-240VLL-139VLN-1Ph-50Hz', label='AC-240VLL-139VLN-1Ph-50Hz', definition='`AC-240VLL-139VLN-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-240VLL-139VLN-1Ph-50Hz`"""
-_E_AC_240VLL_139VLN_3Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-240VLL-139VLN-3Ph-50Hz', label='AC-240VLL-139VLN-3Ph-50Hz', definition='`AC-240VLL-139VLN-3Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-240VLL-139VLN-3Ph-50Hz`"""
-_E_AC_240VLL_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-240VLL-1Ph-50Hz', label='AC-240VLL-1Ph-50Hz', definition='`AC-240VLL-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-240VLL-1Ph-50Hz`"""
-_E_AC_240VLL_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-240VLL-1Ph-60Hz', label='AC-240VLL-1Ph-60Hz', definition='`AC-240VLL-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-240VLL-1Ph-60Hz`"""
-_E_AC_240VLL_208VLN_120VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-240VLL-208VLN-120VLN-1Ph-60Hz', label='AC-240VLL-208VLN-120VLN-1Ph-60Hz', definition='`AC-240VLL-208VLN-120VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-240VLL-208VLN-120VLN-1Ph-60Hz`"""
-_E_AC_240VLL_208VLN_120VLN_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-240VLL-208VLN-120VLN-3Ph-60Hz', label='AC-240VLL-208VLN-120VLN-3Ph-60Hz', definition='`AC-240VLL-208VLN-120VLN-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-240VLL-208VLN-120VLN-3Ph-60Hz`"""
-_E_AC_240VLL_3Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-240VLL-3Ph-50Hz', label='AC-240VLL-3Ph-50Hz', definition='`AC-240VLL-3Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-240VLL-3Ph-50Hz`"""
-_E_AC_240VLL_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-240VLL-3Ph-60Hz', label='AC-240VLL-3Ph-60Hz', definition='`AC-240VLL-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-240VLL-3Ph-60Hz`"""
-_E_AC_240VLN_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-240VLN-1Ph-50Hz', label='AC-240VLN-1Ph-50Hz', definition='`AC-240VLN-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-240VLN-1Ph-50Hz`"""
-_E_AC_24VLN_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-24VLN-1Ph-50Hz', label='AC-24VLN-1Ph-50Hz', definition='`AC-24VLN-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-24VLN-1Ph-50Hz`"""
-_E_AC_24VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-24VLN-1Ph-60Hz', label='AC-24VLN-1Ph-60Hz', definition='`AC-24VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-24VLN-1Ph-60Hz`"""
-_E_AC_277VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-277VLN-1Ph-60Hz', label='AC-277VLN-1Ph-60Hz', definition='`AC-277VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-277VLN-1Ph-60Hz`"""
-_E_AC_3000VLL_1730VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-3000VLL-1730VLN-1Ph-60Hz', label='AC-3000VLL-1730VLN-1Ph-60Hz', definition='`AC-3000VLL-1730VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-3000VLL-1730VLN-1Ph-60Hz`"""
-_E_AC_3000VLL_1730VLN_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-3000VLL-1730VLN-3Ph-60Hz', label='AC-3000VLL-1730VLN-3Ph-60Hz', definition='`AC-3000VLL-1730VLN-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-3000VLL-1730VLN-3Ph-60Hz`"""
-_E_AC_3000VLL_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-3000VLL-1Ph-60Hz', label='AC-3000VLL-1Ph-60Hz', definition='`AC-3000VLL-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-3000VLL-1Ph-60Hz`"""
-_E_AC_3000VLL_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-3000VLL-3Ph-60Hz', label='AC-3000VLL-3Ph-60Hz', definition='`AC-3000VLL-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-3000VLL-3Ph-60Hz`"""
-_E_AC_3300VLL_1900VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-3300VLL-1900VLN-1Ph-60Hz', label='AC-3300VLL-1900VLN-1Ph-60Hz', definition='`AC-3300VLL-1900VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-3300VLL-1900VLN-1Ph-60Hz`"""
-_E_AC_3300VLL_1900VLN_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-3300VLL-1900VLN-3Ph-60Hz', label='AC-3300VLL-1900VLN-3Ph-60Hz', definition='`AC-3300VLL-1900VLN-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-3300VLL-1900VLN-3Ph-60Hz`"""
-_E_AC_3300VLL_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-3300VLL-1Ph-60Hz', label='AC-3300VLL-1Ph-60Hz', definition='`AC-3300VLL-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-3300VLL-1Ph-60Hz`"""
-_E_AC_3300VLL_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-3300VLL-3Ph-60Hz', label='AC-3300VLL-3Ph-60Hz', definition='`AC-3300VLL-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-3300VLL-3Ph-60Hz`"""
-_E_AC_3460VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-3460VLN-1Ph-60Hz', label='AC-3460VLN-1Ph-60Hz', definition='`AC-3460VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-3460VLN-1Ph-60Hz`"""
-_E_AC_347VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-347VLN-1Ph-60Hz', label='AC-347VLN-1Ph-60Hz', definition='`AC-347VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-347VLN-1Ph-60Hz`"""
-_E_AC_380VLL_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-380VLL-1Ph-60Hz', label='AC-380VLL-1Ph-60Hz', definition='`AC-380VLL-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-380VLL-1Ph-60Hz`"""
-_E_AC_380VLL_219VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-380VLL-219VLN-1Ph-60Hz', label='AC-380VLL-219VLN-1Ph-60Hz', definition='`AC-380VLL-219VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-380VLL-219VLN-1Ph-60Hz`"""
-_E_AC_380VLL_219VLN_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-380VLL-219VLN-3Ph-60Hz', label='AC-380VLL-219VLN-3Ph-60Hz', definition='`AC-380VLL-219VLN-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-380VLL-219VLN-3Ph-60Hz`"""
-_E_AC_380VLL_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-380VLL-3Ph-60Hz', label='AC-380VLL-3Ph-60Hz', definition='`AC-380VLL-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-380VLL-3Ph-60Hz`"""
-_E_AC_3810VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-3810VLN-1Ph-60Hz', label='AC-3810VLN-1Ph-60Hz', definition='`AC-3810VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-3810VLN-1Ph-60Hz`"""
-_E_AC_400VLL_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-400VLL-1Ph-50Hz', label='AC-400VLL-1Ph-50Hz', definition='`AC-400VLL-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-400VLL-1Ph-50Hz`"""
-_E_AC_400VLL_230VLN_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-400VLL-230VLN-1Ph-50Hz', label='AC-400VLL-230VLN-1Ph-50Hz', definition='`AC-400VLL-230VLN-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-400VLL-230VLN-1Ph-50Hz`"""
-_E_AC_400VLL_230VLN_3Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-400VLL-230VLN-3Ph-50Hz', label='AC-400VLL-230VLN-3Ph-50Hz', definition='`AC-400VLL-230VLN-3Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-400VLL-230VLN-3Ph-50Hz`"""
-_E_AC_400VLL_3Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-400VLL-3Ph-50Hz', label='AC-400VLL-3Ph-50Hz', definition='`AC-400VLL-3Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-400VLL-3Ph-50Hz`"""
-_E_AC_415VLL_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-415VLL-1Ph-50Hz', label='AC-415VLL-1Ph-50Hz', definition='`AC-415VLL-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-415VLL-1Ph-50Hz`"""
-_E_AC_415VLL_240VLN_1Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-415VLL-240VLN-1Ph-50Hz', label='AC-415VLL-240VLN-1Ph-50Hz', definition='`AC-415VLL-240VLN-1Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-415VLL-240VLN-1Ph-50Hz`"""
-_E_AC_415VLL_240VLN_3Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-415VLL-240VLN-3Ph-50Hz', label='AC-415VLL-240VLN-3Ph-50Hz', definition='`AC-415VLL-240VLN-3Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-415VLL-240VLN-3Ph-50Hz`"""
-_E_AC_415VLL_3Ph_50Hz = _EnumValue('http://data.ashrae.org/standard223#AC-415VLL-3Ph-50Hz', label='AC-415VLL-3Ph-50Hz', definition='`AC-415VLL-3Ph-50Hz`', parent=_E_Electricity_AC)
-"""`AC-415VLL-3Ph-50Hz`"""
-_E_AC_4160VLL_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-4160VLL-1Ph-60Hz', label='AC-4160VLL-1Ph-60Hz', definition='`AC-4160VLL-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-4160VLL-1Ph-60Hz`"""
-_E_AC_4160VLL_2400VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-4160VLL-2400VLN-1Ph-60Hz', label='AC-4160VLL-2400VLN-1Ph-60Hz', definition='`AC-4160VLL-2400VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-4160VLL-2400VLN-1Ph-60Hz`"""
-_E_AC_4160VLL_2400VLN_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-4160VLL-2400VLN-3Ph-60Hz', label='AC-4160VLL-2400VLN-3Ph-60Hz', definition='`AC-4160VLL-2400VLN-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-4160VLL-2400VLN-3Ph-60Hz`"""
-_E_AC_4160VLL_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-4160VLL-3Ph-60Hz', label='AC-4160VLL-3Ph-60Hz', definition='`AC-4160VLL-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-4160VLL-3Ph-60Hz`"""
-_E_AC_480VLL_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-480VLL-1Ph-60Hz', label='AC-480VLL-1Ph-60Hz', definition='`AC-480VLL-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-480VLL-1Ph-60Hz`"""
-_E_AC_480VLL_277VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-480VLL-277VLN-1Ph-60Hz', label='AC-480VLL-277VLN-1Ph-60Hz', definition='`AC-480VLL-277VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-480VLL-277VLN-1Ph-60Hz`"""
-_E_AC_480VLL_277VLN_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-480VLL-277VLN-3Ph-60Hz', label='AC-480VLL-277VLN-3Ph-60Hz', definition='`AC-480VLL-277VLN-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-480VLL-277VLN-3Ph-60Hz`"""
-_E_AC_480VLL_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-480VLL-3Ph-60Hz', label='AC-480VLL-3Ph-60Hz', definition='`AC-480VLL-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-480VLL-3Ph-60Hz`"""
-_E_AC_5770VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-5770VLN-1Ph-60Hz', label='AC-5770VLN-1Ph-60Hz', definition='`AC-5770VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-5770VLN-1Ph-60Hz`"""
-_E_AC_6000VLL_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-6000VLL-1Ph-60Hz', label='AC-6000VLL-1Ph-60Hz', definition='`AC-6000VLL-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-6000VLL-1Ph-60Hz`"""
-_E_AC_6000VLL_3460VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-6000VLL-3460VLN-1Ph-60Hz', label='AC-6000VLL-3460VLN-1Ph-60Hz', definition='`AC-6000VLL-3460VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-6000VLL-3460VLN-1Ph-60Hz`"""
-_E_AC_6000VLL_3460VLN_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-6000VLL-3460VLN-3Ph-60Hz', label='AC-6000VLL-3460VLN-3Ph-60Hz', definition='`AC-6000VLL-3460VLN-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-6000VLL-3460VLN-3Ph-60Hz`"""
-_E_AC_6000VLL_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-6000VLL-3Ph-60Hz', label='AC-6000VLL-3Ph-60Hz', definition='`AC-6000VLL-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-6000VLL-3Ph-60Hz`"""
-_E_AC_600VLL_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-600VLL-1Ph-60Hz', label='AC-600VLL-1Ph-60Hz', definition='`AC-600VLL-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-600VLL-1Ph-60Hz`"""
-_E_AC_600VLL_347VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-600VLL-347VLN-1Ph-60Hz', label='AC-600VLL-347VLN-1Ph-60Hz', definition='`AC-600VLL-347VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-600VLL-347VLN-1Ph-60Hz`"""
-_E_AC_600VLL_347VLN_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-600VLL-347VLN-3Ph-60Hz', label='AC-600VLL-347VLN-3Ph-60Hz', definition='`AC-600VLL-347VLN-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-600VLL-347VLN-3Ph-60Hz`"""
-_E_AC_600VLL_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-600VLL-3Ph-60Hz', label='AC-600VLL-3Ph-60Hz', definition='`AC-600VLL-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-600VLL-3Ph-60Hz`"""
-_E_AC_6600VLL_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-6600VLL-1Ph-60Hz', label='AC-6600VLL-1Ph-60Hz', definition='`AC-6600VLL-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-6600VLL-1Ph-60Hz`"""
-_E_AC_6600VLL_3810VLN_1Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-6600VLL-3810VLN-1Ph-60Hz', label='AC-6600VLL-3810VLN-1Ph-60Hz', definition='`AC-6600VLL-3810VLN-1Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-6600VLL-3810VLN-1Ph-60Hz`"""
-_E_AC_6600VLL_3810VLN_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-6600VLL-3810VLN-3Ph-60Hz', label='AC-6600VLL-3810VLN-3Ph-60Hz', definition='`AC-6600VLL-3810VLN-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-6600VLL-3810VLN-3Ph-60Hz`"""
-_E_AC_6600VLL_3Ph_60Hz = _EnumValue('http://data.ashrae.org/standard223#AC-6600VLL-3Ph-60Hz', label='AC-6600VLL-3Ph-60Hz', definition='`AC-6600VLL-3Ph-60Hz`', parent=_E_Electricity_AC)
-"""`AC-6600VLL-3Ph-60Hz`"""
-_E_Electricity_DC = _EnumValue('http://data.ashrae.org/standard223#Electricity-DC', label='DC electricity', definition='This class and its enumerated subclasses represent common DC electricity services.\n\n: Electricity-DC Enumerations\n\n| Enumeration |\n|:-----------|\n| `DC-5V` |\n| `DC-6V` |\n| `DC-12V` |\n| `DC-24V` |\n| `DC-48V` |\n| `DC-380V` |\n| `DC-PoE` |', parent=_E_Constituent_Electricity)
-"""This class and its enumerated subclasses represent common DC electricity services.
-
-: Electricity-DC Enumerations
-
-| Enumeration |
-|:-----------|
-| `DC-5V` |
-| `DC-6V` |
-| `DC-12V` |
-| `DC-24V` |
-| `DC-48V` |
-| `DC-380V` |
-| `DC-PoE` |
-"""
-_E_DC_12V = _EnumValue('http://data.ashrae.org/standard223#DC-12V', label='12 VDC electricity', definition='This class and its enumerated subclasses represent all polarities of 12 volt DC electricity.\n\n: DC-12V Enumerations\n\n| Enumeration |\n|:-----------|\n| `12V-6V-Neg-6V-Pos` |\n| `12V-12V-Neg` |\n| `12V-12V-Pos` |', parent=_E_Electricity_DC)
-"""This class and its enumerated subclasses represent all polarities of 12 volt DC electricity.
-
-: DC-12V Enumerations
-
-| Enumeration |
-|:-----------|
-| `12V-6V-Neg-6V-Pos` |
-| `12V-12V-Neg` |
-| `12V-12V-Pos` |
-"""
-_E__12V_12V_Neg = _EnumValue('http://data.ashrae.org/standard223#12V-12V-Neg', label='Negative 12 VDC electricity', definition='12V-Neg', parent=_E_DC_12V)
-"""12V-Neg"""
-_E__12V_12V_Pos = _EnumValue('http://data.ashrae.org/standard223#12V-12V-Pos', label='Positive 12 VDC electricity', definition='12V-Pos', parent=_E_DC_12V)
-"""12V-Pos"""
-_E__12V_6V_Neg_6V_Pos = _EnumValue('http://data.ashrae.org/standard223#12V-6V-Neg-6V-Pos', label='Negative 6 VDC and positive 6 VDC electricity', definition='6V-Neg-6V-Pos', parent=_E_DC_12V)
-"""6V-Neg-6V-Pos"""
-_E_DC_24V = _EnumValue('http://data.ashrae.org/standard223#DC-24V', label='24 VDC electricity', definition='This class and its enumerated subclasses represent all polarities of 24 volt DC electricity.\n\n: DC-24V Enumerations\n\n| Enumeration |\n|:-----------|\n| `24V-12V-Neg-12V-Pos` |\n| `24V-24V-Neg` |\n| `24V-24V-Pos` |', parent=_E_Electricity_DC)
-"""This class and its enumerated subclasses represent all polarities of 24 volt DC electricity.
-
-: DC-24V Enumerations
-
-| Enumeration |
-|:-----------|
-| `24V-12V-Neg-12V-Pos` |
-| `24V-24V-Neg` |
-| `24V-24V-Pos` |
-"""
-_E__24V_12V_Neg_12V_Pos = _EnumValue('http://data.ashrae.org/standard223#24V-12V-Neg-12V-Pos', label='Negative 12 VDC and positive 12 VDC electricity', definition='12V-Neg-12V-Pos', parent=_E_DC_24V)
-"""12V-Neg-12V-Pos"""
-_E__24V_24V_Neg = _EnumValue('http://data.ashrae.org/standard223#24V-24V-Neg', label='Negative 24 VDC electricity', definition='24V-Neg', parent=_E_DC_24V)
-"""24V-Neg"""
-_E__24V_24V_Pos = _EnumValue('http://data.ashrae.org/standard223#24V-24V-Pos', label='Positive 24 VDC electricity', definition='24V-Pos', parent=_E_DC_24V)
-"""24V-Pos"""
-_E_DC_380V = _EnumValue('http://data.ashrae.org/standard223#DC-380V', label='380 VDC electricity', definition='This class and its enumerated subclasses represent all polarities of 380 volt DC electricity.\n\n: DC-380V Enumerations\n\n| Enumeration |\n|:-----------|\n| `380V-190V-Neg-190V-Pos` |\n| `380V-380V-Neg` |\n| `380V-380V-Pos` |', parent=_E_Electricity_DC)
-"""This class and its enumerated subclasses represent all polarities of 380 volt DC electricity.
-
-: DC-380V Enumerations
-
-| Enumeration |
-|:-----------|
-| `380V-190V-Neg-190V-Pos` |
-| `380V-380V-Neg` |
-| `380V-380V-Pos` |
-"""
-_E__380V_190V_Neg_190V_Pos = _EnumValue('http://data.ashrae.org/standard223#380V-190V-Neg-190V-Pos', label='Negative 190 VDC and positive 190 VDC electricity', definition='190V-Neg-190V-Pos', parent=_E_DC_380V)
-"""190V-Neg-190V-Pos"""
-_E__380V_380V_Neg = _EnumValue('http://data.ashrae.org/standard223#380V-380V-Neg', label='Negative 380 VDC electricity', definition='380V-Neg', parent=_E_DC_380V)
-"""380V-Neg"""
-_E__380V_380V_Pos = _EnumValue('http://data.ashrae.org/standard223#380V-380V-Pos', label='Positive 380 VDC electricity', definition='380V-Pos', parent=_E_DC_380V)
-"""380V-Pos"""
-_E_DC_48V = _EnumValue('http://data.ashrae.org/standard223#DC-48V', label='48 VDC electricity', definition='This class and its enumerated subclasses represent all polarities of 48 volt DC electricity.\n\n: DC-48V Enumerations\n\n| Enumeration |\n|:-----------|\n| `48V-24V-Neg-24V-Pos` |\n| `48V-48V-Neg` |\n| `48V-48V-Pos` |', parent=_E_Electricity_DC)
-"""This class and its enumerated subclasses represent all polarities of 48 volt DC electricity.
-
-: DC-48V Enumerations
-
-| Enumeration |
-|:-----------|
-| `48V-24V-Neg-24V-Pos` |
-| `48V-48V-Neg` |
-| `48V-48V-Pos` |
-"""
-_E__48V_24V_Neg_24V_Pos = _EnumValue('http://data.ashrae.org/standard223#48V-24V-Neg-24V-Pos', label='Negative 24 VDC and positive 24 VDC electricity', definition='24V-Neg-24V-Pos', parent=_E_DC_48V)
-"""24V-Neg-24V-Pos"""
-_E__48V_48V_Neg = _EnumValue('http://data.ashrae.org/standard223#48V-48V-Neg', label='Negative 48 VDC electricity', definition='48V-Neg', parent=_E_DC_48V)
-"""48V-Neg"""
-_E__48V_48V_Pos = _EnumValue('http://data.ashrae.org/standard223#48V-48V-Pos', label='Positive 48 VDC electricity', definition='48V-Pos', parent=_E_DC_48V)
-"""48V-Pos"""
-_E_DC_5V = _EnumValue('http://data.ashrae.org/standard223#DC-5V', label='5 VDC electricity', definition='This class and its enumerated subclasses represent all polarities of 5 volt DC electricity.\n\n: DC-5V Enumerations\n\n| Enumeration |\n|:-----------|\n| `5V-2.5V-Neg-2.5V-Pos` |\n| `5V-5V-Neg` |\n| `5V-5V-Pos` |', parent=_E_Electricity_DC)
-"""This class and its enumerated subclasses represent all polarities of 5 volt DC electricity.
-
-: DC-5V Enumerations
-
-| Enumeration |
-|:-----------|
-| `5V-2.5V-Neg-2.5V-Pos` |
-| `5V-5V-Neg` |
-| `5V-5V-Pos` |
-"""
-_E__5V_2_5V_Neg_2_5V_Pos = _EnumValue('http://data.ashrae.org/standard223#5V-2.5V-Neg-2.5V-Pos', label='Negative 2.5 VDC and positive 2.5 VDC electricity', definition='2.5V-Neg-2.5V-Pos', parent=_E_DC_5V)
-"""2.5V-Neg-2.5V-Pos"""
-_E__5V_5V_Neg = _EnumValue('http://data.ashrae.org/standard223#5V-5V-Neg', label='Negative 5 VDC electricity', definition='5V-Neg', parent=_E_DC_5V)
-"""5V-Neg"""
-_E__5V_5V_Pos = _EnumValue('http://data.ashrae.org/standard223#5V-5V-Pos', label='Positive 5 VDC electricity', definition='5V-Pos', parent=_E_DC_5V)
-"""5V-Pos"""
-_E_DC_6V = _EnumValue('http://data.ashrae.org/standard223#DC-6V', label='6 VDC electricity', definition='This class and its enumerated subclasses represent all polarities of 6 volt DC electricity.\n\n: DC-6V Enumerations\n\n| Enumeration |\n|:-----------|\n| `6V-3V-Neg-3V-Pos` |\n| `6V-6V-Neg` |\n| `6V-6V-Pos` |', parent=_E_Electricity_DC)
-"""This class and its enumerated subclasses represent all polarities of 6 volt DC electricity.
-
-: DC-6V Enumerations
-
-| Enumeration |
-|:-----------|
-| `6V-3V-Neg-3V-Pos` |
-| `6V-6V-Neg` |
-| `6V-6V-Pos` |
-"""
-_E__6V_3V_Neg_3V_Pos = _EnumValue('http://data.ashrae.org/standard223#6V-3V-Neg-3V-Pos', label='Negative 3 VDC and positive 3 VDC electricity', definition='3V-Neg-3V-Pos', parent=_E_DC_6V)
-"""3V-Neg-3V-Pos"""
-_E__6V_6V_Neg = _EnumValue('http://data.ashrae.org/standard223#6V-6V-Neg', label='Negative 6 VDC electricity', definition='6V-Neg', parent=_E_DC_6V)
-"""6V-Neg"""
-_E__6V_6V_Pos = _EnumValue('http://data.ashrae.org/standard223#6V-6V-Pos', label='Positive 6 VDC electricity', definition='6V-Pos', parent=_E_DC_6V)
-"""6V-Pos"""
-_E_DC_PoE = _EnumValue('http://data.ashrae.org/standard223#DC-PoE', label='PoE electricity', definition='This class and its enumerated subclasses represent standardized types of PoE DC electricity.\n\n: DC-PoE Enumerations\n\n| Enumeration |\n|:-----------|\n| `PoE-802.3af-1` |\n| `PoE-802.3at-2` |\n| `PoE-802.3bt-3` |\n| `PoE-802.3bt-4` |', parent=_E_Electricity_DC)
-"""This class and its enumerated subclasses represent standardized types of PoE DC electricity.
-
-: DC-PoE Enumerations
-
-| Enumeration |
-|:-----------|
-| `PoE-802.3af-1` |
-| `PoE-802.3at-2` |
-| `PoE-802.3bt-3` |
-| `PoE-802.3bt-4` |
-"""
-_E_PoE_802_3af_1 = _EnumValue('http://data.ashrae.org/standard223#PoE-802.3af-1', label='PoE 802.3af-1', definition='PoE-802.3af-1', parent=_E_DC_PoE)
-"""PoE-802.3af-1"""
-_E_PoE_802_3at_2 = _EnumValue('http://data.ashrae.org/standard223#PoE-802.3at-2', label='PoE 802.3at-2', definition='PoE-802.3at-2', parent=_E_DC_PoE)
-"""PoE-802.3at-2"""
-_E_PoE_802_3bt_3 = _EnumValue('http://data.ashrae.org/standard223#PoE-802.3bt-3', label='PoE 802.3bt-3', definition='PoE-802.3bt-3', parent=_E_DC_PoE)
-"""PoE-802.3bt-3"""
-_E_PoE_802_3bt_4 = _EnumValue('http://data.ashrae.org/standard223#PoE-802.3bt-4', label='PoE 802.3bt-4', definition='PoE-802.3bt-4', parent=_E_DC_PoE)
-"""PoE-802.3bt-4"""
-_E_Electricity_Earth = _EnumValue('http://data.ashrae.org/standard223#Electricity-Earth', label='Earth', definition='`Electricity-Earth`', parent=_E_Constituent_Electricity)
-"""`Electricity-Earth`"""
-_E_Electricity_Neutral = _EnumValue('http://data.ashrae.org/standard223#Electricity-Neutral', label='Neutral', definition='`Electricity-Neutral`', parent=_E_Constituent_Electricity)
-"""`Electricity-Neutral`"""
-_E_Electricity_Signal = _EnumValue('http://data.ashrae.org/standard223#Electricity-Signal', label='Electrical signal', definition='This class and its enumerated subclasses represent the use of electricity for creating communication signals and common communication protocols.\n\n: Electricity-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-EIA485` |\n| `Signal-IEC14908` |\n| `Signal-Modulated` (see {s223:Signal-Modulated}) |\n| `Signal-USB` |\n| `Signal-WiredEthernet` (see {s223:Signal-WiredEthernet}) |', parent=_E_Constituent_Electricity)
-"""This class and its enumerated subclasses represent the use of electricity for creating communication signals and common communication protocols.
-
-: Electricity-Signal Enumerations
-
-| Enumeration |
-|:-----------|
-| `Signal-EIA485` |
-| `Signal-IEC14908` |
-| `Signal-Modulated` (see {s223:Signal-Modulated}) |
-| `Signal-USB` |
-| `Signal-WiredEthernet` (see {s223:Signal-WiredEthernet}) |
-"""
-_E_Signal_EIA485 = _EnumValue('http://data.ashrae.org/standard223#Signal-EIA485', label='EIA485', definition='Signal EIA485', parent=_E_Electricity_Signal)
-"""Signal EIA485"""
-_E_Signal_IEC14908 = _EnumValue('http://data.ashrae.org/standard223#Signal-IEC14908', label='IEC 14908', definition='Signal-IEC14908', parent=_E_Electricity_Signal)
-"""Signal-IEC14908"""
-_E_Signal_Modulated = _EnumValue('http://data.ashrae.org/standard223#Signal-Modulated', label='Modulated signal', definition='This class and its enumerated subclasses represent common analog communication protocols.\n\n: Signal-Modulated Enumerations\n\n| Enumeration |\n|:-----------|\n| `Modulated-0-10V` |\n| `Modulated-4-20mA` |\n| `Modulated-Resistive` |', parent=_E_Electricity_Signal)
-"""This class and its enumerated subclasses represent common analog communication protocols.
-
-: Signal-Modulated Enumerations
-
-| Enumeration |
-|:-----------|
-| `Modulated-0-10V` |
-| `Modulated-4-20mA` |
-| `Modulated-Resistive` |
-"""
-_E_Modulated_0_10V = _EnumValue('http://data.ashrae.org/standard223#Modulated-0-10V', label='Modulated 0-10 V', definition='Modulated-0-10V', parent=_E_Signal_Modulated)
-"""Modulated-0-10V"""
-_E_Modulated_4_20mA = _EnumValue('http://data.ashrae.org/standard223#Modulated-4-20mA', label='Modulated 4-20 mA', definition='Modulated-4-20mA', parent=_E_Signal_Modulated)
-"""Modulated-4-20mA"""
-_E_Modulated_Resistive = _EnumValue('http://data.ashrae.org/standard223#Modulated-Resistive', label='Modulated resistive', definition='Modulated-Resistive', parent=_E_Signal_Modulated)
-"""Modulated-Resistive"""
-_E_Signal_USB = _EnumValue('http://data.ashrae.org/standard223#Signal-USB', label='USB', definition='The Universal Serial Bus protocol that is used to deliver data and/or power over `USBCable`s.', parent=_E_Electricity_Signal)
-"""The Universal Serial Bus protocol that is used to deliver data and/or power over `USBCable`s."""
-_E_Signal_WiredEthernet = _EnumValue('http://data.ashrae.org/standard223#Signal-WiredEthernet', label='Wired Ethernet', definition='This class and its enumerated subclasses represent common wired Ethernet communication protocols that are used to deliver data and/or power over `EthernetCable`s.\n\n: Signal-WiredEthernet Enumerations\n\n| Enumeration |\n|:-----------|\n| `WiredEthernet-2.5GBASE-T` |\n| `WiredEthernet-2.5GBASE-T1` |\n| `WiredEthernet-5GBASE-T` |\n| `WiredEthernet-5GBASE-T1` |\n| `WiredEthernet-10BASE-T` |\n| `WiredEthernet-10BASE-T1L` |\n| `WiredEthernet-10BASE-T1S` |\n| `WiredEthernet-10GBASE-T` |\n| `WiredEthernet-10GBASE-T1` |\n| `WiredEthernet-25GBASE-T` |\n| `WiredEthernet-40GBASE-T` |\n| `WiredEthernet-100BASE-T1` |\n| `WiredEthernet-100BASE-TX` |\n| `WiredEthernet-1000BASE-T` |\n| `WiredEthernet-1000BASE-T1` |', parent=_E_Electricity_Signal)
-"""This class and its enumerated subclasses represent common wired Ethernet communication protocols that are used to deliver data and/or power over `EthernetCable`s.
-
-: Signal-WiredEthernet Enumerations
-
-| Enumeration |
-|:-----------|
-| `WiredEthernet-2.5GBASE-T` |
-| `WiredEthernet-2.5GBASE-T1` |
-| `WiredEthernet-5GBASE-T` |
-| `WiredEthernet-5GBASE-T1` |
-| `WiredEthernet-10BASE-T` |
-| `WiredEthernet-10BASE-T1L` |
-| `WiredEthernet-10BASE-T1S` |
-| `WiredEthernet-10GBASE-T` |
-| `WiredEthernet-10GBASE-T1` |
-| `WiredEthernet-25GBASE-T` |
-| `WiredEthernet-40GBASE-T` |
-| `WiredEthernet-100BASE-T1` |
-| `WiredEthernet-100BASE-TX` |
-| `WiredEthernet-1000BASE-T` |
-| `WiredEthernet-1000BASE-T1` |
-"""
-_E_WiredEthernet_1000BASE_T = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-1000BASE-T', label='Wired Ethernet 1000BASE-T', definition='WiredEthernet-1000BASE-T', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-1000BASE-T"""
-_E_WiredEthernet_1000BASE_T1 = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-1000BASE-T1', label='Wired Ethernet 1000BASE-T1', definition='WiredEthernet-1000BASE-T1', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-1000BASE-T1"""
-_E_WiredEthernet_100BASE_T1 = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-100BASE-T1', label='Wired Ethernet 100BASE-T1', definition='WiredEthernet-100BASE-T1', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-100BASE-T1"""
-_E_WiredEthernet_100BASE_TX = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-100BASE-TX', label='Wired Ethernet 100BASE-TX', definition='WiredEthernet-100BASE-TX', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-100BASE-TX"""
-_E_WiredEthernet_10BASE_T = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-10BASE-T', label='Wired Ethernet 10BASE-T', definition='WiredEthernet-10BASE-T', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-10BASE-T"""
-_E_WiredEthernet_10BASE_T1L = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-10BASE-T1L', label='Wired Ethernet 10BASE-T1L', definition='WiredEthernet-10BASE-T1L', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-10BASE-T1L"""
-_E_WiredEthernet_10BASE_T1S = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-10BASE-T1S', label='Wired Ethernet 10BASE-T1S', definition='WiredEthernet-10BASE-T1S', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-10BASE-T1S"""
-_E_WiredEthernet_10GBASE_T = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-10GBASE-T', label='Wired Ethernet 10GBASE-T', definition='WiredEthernet-10GBASE-T', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-10GBASE-T"""
-_E_WiredEthernet_10GBASE_T1 = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-10GBASE-T1', label='Wired Ethernet 10GBASE-T1', definition='WiredEthernet-10GBASE-T1', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-10GBASE-T1"""
-_E_WiredEthernet_2_5GBASE_T = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-2.5GBASE-T', label='Wired Ethernet 2.5GBASE-T', definition='WiredEthernet-2.5GBASE-T', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-2.5GBASE-T"""
-_E_WiredEthernet_2_5GBASE_T1 = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-2.5GBASE-T1', label='Wired Ethernet 2.5GBASE-T1', definition='WiredEthernet-2.5GBASE-T1', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-2.5GBASE-T1"""
-_E_WiredEthernet_25GBASE_T = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-25GBASE-T', label='Wired Ethernet 25GBASE-T', definition='WiredEthernet-25GBASE-T', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-25GBASE-T"""
-_E_WiredEthernet_40GBASE_T = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-40GBASE-T', label='Wired Ethernet 40GBASE-T', definition='WiredEthernet-40GBASE-T', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-40GBASE-T"""
-_E_WiredEthernet_5GBASE_T = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-5GBASE-T', label='Wired Ethernet 5GBASE-T', definition='WiredEthernet-5GBASE-T', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-5GBASE-T"""
-_E_WiredEthernet_5GBASE_T1 = _EnumValue('http://data.ashrae.org/standard223#WiredEthernet-5GBASE-T1', label='Wired Ethernet 5GBASE-T1', definition='WiredEthernet-5GBASE-T1', parent=_E_Signal_WiredEthernet)
-"""WiredEthernet-5GBASE-T1"""
-_E_Constituent_Glycol = _EnumValue('http://data.ashrae.org/standard223#Constituent-Glycol', label='Glycol', definition='`Constituent-Glycol`', parent=_E_Medium_Constituent)
-"""`Constituent-Glycol`"""
-_E_Constituent_H2O = _EnumValue('http://data.ashrae.org/standard223#Constituent-H2O', label='H2O', definition='Pure water', parent=_E_Medium_Constituent)
-"""Pure water"""
-_E_Constituent_H2S = _EnumValue('http://data.ashrae.org/standard223#Constituent-H2S', label='H2S', definition='Hydrogen sulfide', parent=_E_Medium_Constituent)
-"""Hydrogen sulfide"""
-_E_Constituent_N2 = _EnumValue('http://data.ashrae.org/standard223#Constituent-N2', label='N2', definition='Nitrogen', parent=_E_Medium_Constituent)
-"""Nitrogen"""
-_E_Constituent_NH3 = _EnumValue('http://data.ashrae.org/standard223#Constituent-NH3', label='NH3', definition='Ammonia', parent=_E_Medium_Constituent)
-"""Ammonia"""
-_E_Constituent_NOX = _EnumValue('http://data.ashrae.org/standard223#Constituent-NOX', label='NOX', definition='This class and its enumerated subclasses represent common Nitrogen Oxides (NOx).\n\n: Constituent-NOX Enumerations\n\n| Enumeration |\n|:-----------|\n| `NOX-NO` |\n| `NOX-NO2` |', parent=_E_Medium_Constituent)
-"""This class and its enumerated subclasses represent common Nitrogen Oxides (NOx).
-
-: Constituent-NOX Enumerations
-
-| Enumeration |
-|:-----------|
-| `NOX-NO` |
-| `NOX-NO2` |
-"""
-_E_NOX_NO = _EnumValue('http://data.ashrae.org/standard223#NOX-NO', label='NO', definition='Nitric oxide (NO)', parent=_E_Constituent_NOX)
-"""Nitric oxide (NO)"""
-_E_NOX_NO2 = _EnumValue('http://data.ashrae.org/standard223#NOX-NO2', label='NO2', definition='Nitrogen dioxide (NO2)', parent=_E_Constituent_NOX)
-"""Nitrogen dioxide (NO2)"""
-_E_Constituent_O2 = _EnumValue('http://data.ashrae.org/standard223#Constituent-O2', label='O2', definition='Oxygen', parent=_E_Medium_Constituent)
-"""Oxygen"""
-_E_Constituent_O3 = _EnumValue('http://data.ashrae.org/standard223#Constituent-O3', label='O3', definition='Ozone', parent=_E_Medium_Constituent)
-"""Ozone"""
-_E_Constituent_Oil = _EnumValue('http://data.ashrae.org/standard223#Constituent-Oil', label='Oil', definition='Oil as an impurity within some `Mix-Fluid`', parent=_E_Medium_Constituent)
-"""Oil as an impurity within some `Mix-Fluid`"""
-_E_Constituent_Radon = _EnumValue('http://data.ashrae.org/standard223#Constituent-Radon', label='Radon', definition='Radon', parent=_E_Medium_Constituent)
-"""Radon"""
-_E_Constituent_Refrigerant = _EnumValue('http://data.ashrae.org/standard223#Constituent-Refrigerant', label='Refrigerant', definition='This class and its enumerated subclasses represent commonly used refrigerants. The composition of the refrigerants is defined in ASHRAE Standard 34 and ISO 817.\n\n: Constituent-Refrigerant Enumerations\n\n| Enumeration |\n|:-----------|\n| `Refrigerant-R-22` |\n| `Refrigerant-R-32` |\n| `Refrigerant-R-123` |\n| `Refrigerant-R-134A` |\n| `Refrigerant-R-290` |\n| `Refrigerant-R-404A` |\n| `Refrigerant-R-407A` |\n| `Refrigerant-R-407C` |\n| `Refrigerant-R-407F` |\n| `Refrigerant-R-410A` |\n| `Refrigerant-R-422A` |\n| `Refrigerant-R-422C` |\n| `Refrigerant-R-422D` |\n| `Refrigerant-R-427A` |\n| `Refrigerant-R-438A` |\n| `Refrigerant-R-444A` |\n| `Refrigerant-R-445A` |\n| `Refrigerant-R-448A` |\n| `Refrigerant-R-449A` |\n| `Refrigerant-R-450A` |\n| `Refrigerant-R-454A` |\n| `Refrigerant-R-454C` |\n| `Refrigerant-R-455A` |\n| `Refrigerant-R-457A` |\n| `Refrigerant-R-459B` |\n| `Refrigerant-R-507` |\n| `Refrigerant-R-513A` |\n| `Refrigerant-R-516A` |\n| `Refrigerant-R-600A` |\n| `Refrigerant-R-717` |\n| `Refrigerant-R-744` |\n| `Refrigerant-R-1234yf` |\n| `Refrigerant-R-1234ze` |', parent=_E_Medium_Constituent)
-"""This class and its enumerated subclasses represent commonly used refrigerants. The composition of the refrigerants is defined in ASHRAE Standard 34 and ISO 817.
-
-: Constituent-Refrigerant Enumerations
-
-| Enumeration |
-|:-----------|
-| `Refrigerant-R-22` |
-| `Refrigerant-R-32` |
-| `Refrigerant-R-123` |
-| `Refrigerant-R-134A` |
-| `Refrigerant-R-290` |
-| `Refrigerant-R-404A` |
-| `Refrigerant-R-407A` |
-| `Refrigerant-R-407C` |
-| `Refrigerant-R-407F` |
-| `Refrigerant-R-410A` |
-| `Refrigerant-R-422A` |
-| `Refrigerant-R-422C` |
-| `Refrigerant-R-422D` |
-| `Refrigerant-R-427A` |
-| `Refrigerant-R-438A` |
-| `Refrigerant-R-444A` |
-| `Refrigerant-R-445A` |
-| `Refrigerant-R-448A` |
-| `Refrigerant-R-449A` |
-| `Refrigerant-R-450A` |
-| `Refrigerant-R-454A` |
-| `Refrigerant-R-454C` |
-| `Refrigerant-R-455A` |
-| `Refrigerant-R-457A` |
-| `Refrigerant-R-459B` |
-| `Refrigerant-R-507` |
-| `Refrigerant-R-513A` |
-| `Refrigerant-R-516A` |
-| `Refrigerant-R-600A` |
-| `Refrigerant-R-717` |
-| `Refrigerant-R-744` |
-| `Refrigerant-R-1234yf` |
-| `Refrigerant-R-1234ze` |
-"""
-_E_Refrigerant_R_123 = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-123', label='Refrigerant R-123', definition='`Refrigerant-R-123`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-123`"""
-_E_Refrigerant_R_1234yf = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-1234yf', label='Refrigerant R-1234yf', definition='`Refrigerant-R-1234yf`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-1234yf`"""
-_E_Refrigerant_R_1234ze = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-1234ze', label='Refrigerant R-1234ze', definition='`Refrigerant-R-1234ze`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-1234ze`"""
-_E_Refrigerant_R_134A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-134A', label='Refrigerant R-134A', definition='`Refrigerant-R-134A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-134A`"""
-_E_Refrigerant_R_22 = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-22', label='Refrigerant R-22', definition='`Refrigerant-R-22`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-22`"""
-_E_Refrigerant_R_290 = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-290', label='Refrigerant R-290', definition='`Refrigerant-R-290` (Propane)', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-290` (Propane)"""
-_E_Refrigerant_R_32 = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-32', label='Refrigerant R-32', definition='`Refrigerant-R-32`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-32`"""
-_E_Refrigerant_R_404A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-404A', label='Refrigerant R-404A', definition='`Refrigerant-R-404A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-404A`"""
-_E_Refrigerant_R_407A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-407A', label='Refrigerant R-407A', definition='`Refrigerant-R-407A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-407A`"""
-_E_Refrigerant_R_407C = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-407C', label='Refrigerant R-407C', definition='`Refrigerant-R-407C`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-407C`"""
-_E_Refrigerant_R_407F = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-407F', label='Refrigerant R-407F', definition='`Refrigerant-R-407F`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-407F`"""
-_E_Refrigerant_R_410A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-410A', label='Refrigerant R-410A', definition='`Refrigerant-R-410A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-410A`"""
-_E_Refrigerant_R_422A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-422A', label='Refrigerant R-422A', definition='`Refrigerant-R-422A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-422A`"""
-_E_Refrigerant_R_422C = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-422C', label='Refrigerant R-422C', definition='`Refrigerant-R-422C`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-422C`"""
-_E_Refrigerant_R_422D = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-422D', label='Refrigerant R-422D', definition='`Refrigerant-R-422D`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-422D`"""
-_E_Refrigerant_R_427A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-427A', label='Refrigerant R-427A', definition='`Refrigerant-R-427A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-427A`"""
-_E_Refrigerant_R_438A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-438A', label='Refrigerant R-438A', definition='`Refrigerant-R-438A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-438A`"""
-_E_Refrigerant_R_444A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-444A', label='Refrigerant R-444A', definition='`Refrigerant-R-444A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-444A`"""
-_E_Refrigerant_R_445A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-445A', label='Refrigerant R-445A', definition='`Refrigerant-R-445A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-445A`"""
-_E_Refrigerant_R_448A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-448A', label='Refrigerant R-448A', definition='`Refrigerant-R-448A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-448A`"""
-_E_Refrigerant_R_449A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-449A', label='Refrigerant R-449A', definition='`Refrigerant-R-449A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-449A`"""
-_E_Refrigerant_R_450A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-450A', label='Refrigerant R-450A', definition='`Refrigerant-R-450A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-450A`"""
-_E_Refrigerant_R_454A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-454A', label='Refrigerant R-454A', definition='`Refrigerant-R-454A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-454A`"""
-_E_Refrigerant_R_454C = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-454C', label='Refrigerant R-454C', definition='`Refrigerant-R-454C`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-454C`"""
-_E_Refrigerant_R_455A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-455A', label='Refrigerant R-455A', definition='`Refrigerant-R-455A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-455A`"""
-_E_Refrigerant_R_457A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-457A', label='Refrigerant R-457A', definition='`Refrigerant-R-457A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-457A`"""
-_E_Refrigerant_R_459B = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-459B', label='Refrigerant R-459B', definition='`Refrigerant-R-459B`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-459B`"""
-_E_Refrigerant_R_507 = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-507', label='Refrigerant R-507', definition='`Refrigerant-R-507`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-507`"""
-_E_Refrigerant_R_513A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-513A', label='Refrigerant R-513A', definition='`Refrigerant-R-513A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-513A`"""
-_E_Refrigerant_R_516A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-516A', label='Refrigerant R-516A', definition='`Refrigerant-R-516A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-516A`"""
-_E_Refrigerant_R_600A = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-600A', label='Refrigerant R-600A', definition='`Refrigerant-R-600A`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-600A`"""
-_E_Refrigerant_R_717 = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-717', label='Refrigerant R-717', definition='`Refrigerant-R-717`', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-717`"""
-_E_Refrigerant_R_744 = _EnumValue('http://data.ashrae.org/standard223#Refrigerant-R-744', label='Refrigerant R-744', definition='`Refrigerant-R-744` (Transcritical CO2)', parent=_E_Constituent_Refrigerant)
-"""`Refrigerant-R-744` (Transcritical CO2)"""
-_E_Constituent_SO2 = _EnumValue('http://data.ashrae.org/standard223#Constituent-SO2', label='SO2', definition='Sulfur dioxide', parent=_E_Medium_Constituent)
-"""Sulfur dioxide"""
-_E_Constituent_VolatileOrganicCompounds_2 = _EnumValue('http://data.ashrae.org/standard223#Constituent-VolatileOrganicCompounds', label='Volatile organic compounds', definition='`Constituent-VolatileOrganicCompounds`', parent=_E_Medium_Constituent)
-"""`Constituent-VolatileOrganicCompounds`"""
-_E_Constituent_ChlorineResidual = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ChlorineResidual', label='Chlorine Residual', definition='Chlorine remaining in the water after disinfection, free or combined. Wanted in a distribution system and unwanted in a discharge, which is why removing it is an objective of its own.', parent=_E_Medium_Constituent)
+_E_EnumerationKind_Substance = _VALUES0.EnumerationKind_Substance
+_E_Substance_Medium = _VALUES0.Substance_Medium
+_E_Medium_Constituent = _VALUES0.Medium_Constituent
+_E_Constituent_Ar = _VALUES0.Constituent_Ar
+_E_Constituent_CH4 = _VALUES0.Constituent_CH4
+_E_Constituent_CO = _VALUES0.Constituent_CO
+_E_Constituent_CO2 = _VALUES0.Constituent_CO2
+_E_Constituent_EM = _VALUES0.Constituent_EM
+_E_EM_Light = _VALUES0.EM_Light
+_E_Light_Infrared = _VALUES0.Light_Infrared
+_E_Infrared_Signal = _VALUES0.Infrared_Signal
+_E_Signal_FiberEthernet = _VALUES0.Signal_FiberEthernet
+_E_FiberEthernet_1X9 = _VALUES0.FiberEthernet_1X9
+_E_FiberEthernet_300PIN = _VALUES0.FiberEthernet_300PIN
+_E_FiberEthernet_CFP = _VALUES0.FiberEthernet_CFP
+_E_FiberEthernet_CFP2 = _VALUES0.FiberEthernet_CFP2
+_E_FiberEthernet_CFP4 = _VALUES0.FiberEthernet_CFP4
+_E_FiberEthernet_CPAK = _VALUES0.FiberEthernet_CPAK
+_E_FiberEthernet_CXP = _VALUES0.FiberEthernet_CXP
+_E_FiberEthernet_GBIC = _VALUES0.FiberEthernet_GBIC
+_E_FiberEthernet_QSFP = _VALUES0.FiberEthernet_QSFP
+_E_FiberEthernet_QSFP_ = _VALUES0.FiberEthernet_QSFP_
+_E_FiberEthernet_QSFP28 = _VALUES0.FiberEthernet_QSFP28
+_E_FiberEthernet_SFF = _VALUES0.FiberEthernet_SFF
+_E_FiberEthernet_SFP = _VALUES0.FiberEthernet_SFP
+_E_FiberEthernet_SFP_ = _VALUES0.FiberEthernet_SFP_
+_E_FiberEthernet_X2 = _VALUES0.FiberEthernet_X2
+_E_FiberEthernet_XENPAK = _VALUES0.FiberEthernet_XENPAK
+_E_FiberEthernet_XFP = _VALUES0.FiberEthernet_XFP
+_E_Light_Ultraviolet = _VALUES0.Light_Ultraviolet
+_E_Light_Visible = _VALUES0.Light_Visible
+_E_EM_Microwave = _VALUES0.EM_Microwave
+_E_EM_RF = _VALUES0.EM_RF
+_E_RF_Signal = _VALUES0.RF_Signal
+_E_Signal_EHF = _VALUES0.Signal_EHF
+_E_Signal_ELF = _VALUES0.Signal_ELF
+_E_Signal_HF = _VALUES0.Signal_HF
+_E_Signal_LF = _VALUES0.Signal_LF
+_E_Signal_MF = _VALUES0.Signal_MF
+_E_Signal_SHF = _VALUES0.Signal_SHF
+_E_Signal_SLF = _VALUES0.Signal_SLF
+_E_Signal_THF = _VALUES0.Signal_THF
+_E_Signal_UHF = _VALUES0.Signal_UHF
+_E_UHF_ISMBand = _VALUES0.UHF_ISMBand
+_E_ISMBand_BluetoothLE = _VALUES0.ISMBand_BluetoothLE
+_E_ISMBand_IEEE802_11 = _VALUES0.ISMBand_IEEE802_11
+_E_ISMBand_IEEE802_15_4 = _VALUES0.ISMBand_IEEE802_15_4
+_E_ISMBand_LoRaWAN = _VALUES0.ISMBand_LoRaWAN
+_E_ISMBand_NFC = _VALUES0.ISMBand_NFC
+_E_ISMBand_RFID = _VALUES0.ISMBand_RFID
+_E_UHF_LicensedBand = _VALUES0.UHF_LicensedBand
+_E_Signal_ULF = _VALUES0.Signal_ULF
+_E_Signal_VHF = _VALUES0.Signal_VHF
+_E_Signal_VLF = _VALUES0.Signal_VLF
+_E_Signal_Wideband = _VALUES0.Signal_Wideband
+_E_Wideband_CATV = _VALUES0.Wideband_CATV
+_E_Wideband_DOCSIS = _VALUES0.Wideband_DOCSIS
+_E_Constituent_Electricity = _VALUES0.Constituent_Electricity
+_E_Electricity_AC = _VALUES0.Electricity_AC
+_E_AC_10000VLL_1Ph_60Hz = _VALUES0.AC_10000VLL_1Ph_60Hz
+_E_AC_10000VLL_3Ph_60Hz = _VALUES0.AC_10000VLL_3Ph_60Hz
+_E_AC_10000VLL_5770VLN_1Ph_60Hz = _VALUES0.AC_10000VLL_5770VLN_1Ph_60Hz
+_E_AC_10000VLL_5770VLN_3Ph_60Hz = _VALUES0.AC_10000VLL_5770VLN_3Ph_60Hz
+_E_AC_110VLN_1Ph_50Hz = _VALUES0.AC_110VLN_1Ph_50Hz
+_E_AC_120VLN_1Ph_60Hz = _VALUES0.AC_120VLN_1Ph_60Hz
+_E_AC_127VLN_1Ph_50Hz = _VALUES0.AC_127VLN_1Ph_50Hz
+_E_AC_139VLN_1Ph_50Hz = _VALUES0.AC_139VLN_1Ph_50Hz
+_E_AC_1730VLN_1Ph_60Hz = _VALUES0.AC_1730VLN_1Ph_60Hz
+_E_AC_1900VLN_1Ph_60Hz = _VALUES0.AC_1900VLN_1Ph_60Hz
+_E_AC_190VLL_110VLN_1Ph_50Hz = _VALUES0.AC_190VLL_110VLN_1Ph_50Hz
+_E_AC_190VLL_110VLN_3Ph_50Hz = _VALUES0.AC_190VLL_110VLN_3Ph_50Hz
+_E_AC_190VLL_1Ph_50Hz = _VALUES0.AC_190VLL_1Ph_50Hz
+_E_AC_190VLL_3Ph_50Hz = _VALUES0.AC_190VLL_3Ph_50Hz
+_E_AC_208VLL_120VLN_1Ph_60Hz = _VALUES0.AC_208VLL_120VLN_1Ph_60Hz
+_E_AC_208VLL_120VLN_3Ph_60Hz = _VALUES0.AC_208VLL_120VLN_3Ph_60Hz
+_E_AC_208VLL_1Ph_60Hz = _VALUES0.AC_208VLL_1Ph_60Hz
+_E_AC_208VLL_3Ph_60Hz = _VALUES0.AC_208VLL_3Ph_60Hz
+_E_AC_208VLN_1Ph_60Hz = _VALUES0.AC_208VLN_1Ph_60Hz
+_E_AC_219VLN_1Ph_60Hz = _VALUES0.AC_219VLN_1Ph_60Hz
+_E_AC_220VLL_127VLN_1Ph_50Hz = _VALUES0.AC_220VLL_127VLN_1Ph_50Hz
+_E_AC_220VLL_127VLN_3Ph_50Hz = _VALUES0.AC_220VLL_127VLN_3Ph_50Hz
+_E_AC_220VLL_1Ph_50Hz = _VALUES0.AC_220VLL_1Ph_50Hz
+_E_AC_220VLL_3Ph_50Hz = _VALUES0.AC_220VLL_3Ph_50Hz
+_E_AC_230VLN_1Ph_50Hz = _VALUES0.AC_230VLN_1Ph_50Hz
+_E_AC_2400VLN_1Ph_60Hz = _VALUES0.AC_2400VLN_1Ph_60Hz
+_E_AC_240VLL_120VLN_1Ph_60Hz = _VALUES0.AC_240VLL_120VLN_1Ph_60Hz
+_E_AC_240VLL_139VLN_1Ph_50Hz = _VALUES0.AC_240VLL_139VLN_1Ph_50Hz
+_E_AC_240VLL_139VLN_3Ph_50Hz = _VALUES0.AC_240VLL_139VLN_3Ph_50Hz
+_E_AC_240VLL_1Ph_50Hz = _VALUES0.AC_240VLL_1Ph_50Hz
+_E_AC_240VLL_1Ph_60Hz = _VALUES0.AC_240VLL_1Ph_60Hz
+_E_AC_240VLL_208VLN_120VLN_1Ph_60Hz = _VALUES0.AC_240VLL_208VLN_120VLN_1Ph_60Hz
+_E_AC_240VLL_208VLN_120VLN_3Ph_60Hz = _VALUES0.AC_240VLL_208VLN_120VLN_3Ph_60Hz
+_E_AC_240VLL_3Ph_50Hz = _VALUES0.AC_240VLL_3Ph_50Hz
+_E_AC_240VLL_3Ph_60Hz = _VALUES0.AC_240VLL_3Ph_60Hz
+_E_AC_240VLN_1Ph_50Hz = _VALUES0.AC_240VLN_1Ph_50Hz
+_E_AC_24VLN_1Ph_50Hz = _VALUES0.AC_24VLN_1Ph_50Hz
+_E_AC_24VLN_1Ph_60Hz = _VALUES0.AC_24VLN_1Ph_60Hz
+_E_AC_277VLN_1Ph_60Hz = _VALUES0.AC_277VLN_1Ph_60Hz
+_E_AC_3000VLL_1730VLN_1Ph_60Hz = _VALUES0.AC_3000VLL_1730VLN_1Ph_60Hz
+_E_AC_3000VLL_1730VLN_3Ph_60Hz = _VALUES0.AC_3000VLL_1730VLN_3Ph_60Hz
+_E_AC_3000VLL_1Ph_60Hz = _VALUES0.AC_3000VLL_1Ph_60Hz
+_E_AC_3000VLL_3Ph_60Hz = _VALUES0.AC_3000VLL_3Ph_60Hz
+_E_AC_3300VLL_1900VLN_1Ph_60Hz = _VALUES0.AC_3300VLL_1900VLN_1Ph_60Hz
+_E_AC_3300VLL_1900VLN_3Ph_60Hz = _VALUES0.AC_3300VLL_1900VLN_3Ph_60Hz
+_E_AC_3300VLL_1Ph_60Hz = _VALUES0.AC_3300VLL_1Ph_60Hz
+_E_AC_3300VLL_3Ph_60Hz = _VALUES0.AC_3300VLL_3Ph_60Hz
+_E_AC_3460VLN_1Ph_60Hz = _VALUES0.AC_3460VLN_1Ph_60Hz
+_E_AC_347VLN_1Ph_60Hz = _VALUES0.AC_347VLN_1Ph_60Hz
+_E_AC_380VLL_1Ph_60Hz = _VALUES0.AC_380VLL_1Ph_60Hz
+_E_AC_380VLL_219VLN_1Ph_60Hz = _VALUES0.AC_380VLL_219VLN_1Ph_60Hz
+_E_AC_380VLL_219VLN_3Ph_60Hz = _VALUES0.AC_380VLL_219VLN_3Ph_60Hz
+_E_AC_380VLL_3Ph_60Hz = _VALUES0.AC_380VLL_3Ph_60Hz
+_E_AC_3810VLN_1Ph_60Hz = _VALUES0.AC_3810VLN_1Ph_60Hz
+_E_AC_400VLL_1Ph_50Hz = _VALUES0.AC_400VLL_1Ph_50Hz
+_E_AC_400VLL_230VLN_1Ph_50Hz = _VALUES0.AC_400VLL_230VLN_1Ph_50Hz
+_E_AC_400VLL_230VLN_3Ph_50Hz = _VALUES0.AC_400VLL_230VLN_3Ph_50Hz
+_E_AC_400VLL_3Ph_50Hz = _VALUES0.AC_400VLL_3Ph_50Hz
+_E_AC_415VLL_1Ph_50Hz = _VALUES0.AC_415VLL_1Ph_50Hz
+_E_AC_415VLL_240VLN_1Ph_50Hz = _VALUES0.AC_415VLL_240VLN_1Ph_50Hz
+_E_AC_415VLL_240VLN_3Ph_50Hz = _VALUES0.AC_415VLL_240VLN_3Ph_50Hz
+_E_AC_415VLL_3Ph_50Hz = _VALUES0.AC_415VLL_3Ph_50Hz
+_E_AC_4160VLL_1Ph_60Hz = _VALUES0.AC_4160VLL_1Ph_60Hz
+_E_AC_4160VLL_2400VLN_1Ph_60Hz = _VALUES0.AC_4160VLL_2400VLN_1Ph_60Hz
+_E_AC_4160VLL_2400VLN_3Ph_60Hz = _VALUES0.AC_4160VLL_2400VLN_3Ph_60Hz
+_E_AC_4160VLL_3Ph_60Hz = _VALUES0.AC_4160VLL_3Ph_60Hz
+_E_AC_480VLL_1Ph_60Hz = _VALUES0.AC_480VLL_1Ph_60Hz
+_E_AC_480VLL_277VLN_1Ph_60Hz = _VALUES0.AC_480VLL_277VLN_1Ph_60Hz
+_E_AC_480VLL_277VLN_3Ph_60Hz = _VALUES0.AC_480VLL_277VLN_3Ph_60Hz
+_E_AC_480VLL_3Ph_60Hz = _VALUES0.AC_480VLL_3Ph_60Hz
+_E_AC_5770VLN_1Ph_60Hz = _VALUES0.AC_5770VLN_1Ph_60Hz
+_E_AC_6000VLL_1Ph_60Hz = _VALUES0.AC_6000VLL_1Ph_60Hz
+_E_AC_6000VLL_3460VLN_1Ph_60Hz = _VALUES0.AC_6000VLL_3460VLN_1Ph_60Hz
+_E_AC_6000VLL_3460VLN_3Ph_60Hz = _VALUES0.AC_6000VLL_3460VLN_3Ph_60Hz
+_E_AC_6000VLL_3Ph_60Hz = _VALUES0.AC_6000VLL_3Ph_60Hz
+_E_AC_600VLL_1Ph_60Hz = _VALUES0.AC_600VLL_1Ph_60Hz
+_E_AC_600VLL_347VLN_1Ph_60Hz = _VALUES0.AC_600VLL_347VLN_1Ph_60Hz
+_E_AC_600VLL_347VLN_3Ph_60Hz = _VALUES0.AC_600VLL_347VLN_3Ph_60Hz
+_E_AC_600VLL_3Ph_60Hz = _VALUES0.AC_600VLL_3Ph_60Hz
+_E_AC_6600VLL_1Ph_60Hz = _VALUES0.AC_6600VLL_1Ph_60Hz
+_E_AC_6600VLL_3810VLN_1Ph_60Hz = _VALUES0.AC_6600VLL_3810VLN_1Ph_60Hz
+_E_AC_6600VLL_3810VLN_3Ph_60Hz = _VALUES0.AC_6600VLL_3810VLN_3Ph_60Hz
+_E_AC_6600VLL_3Ph_60Hz = _VALUES0.AC_6600VLL_3Ph_60Hz
+_E_Electricity_DC = _VALUES0.Electricity_DC
+_E_DC_12V = _VALUES0.DC_12V
+_E__12V_12V_Neg = _VALUES0._12V_12V_Neg
+_E__12V_12V_Pos = _VALUES0._12V_12V_Pos
+_E__12V_6V_Neg_6V_Pos = _VALUES0._12V_6V_Neg_6V_Pos
+_E_DC_24V = _VALUES0.DC_24V
+_E__24V_12V_Neg_12V_Pos = _VALUES0._24V_12V_Neg_12V_Pos
+_E__24V_24V_Neg = _VALUES0._24V_24V_Neg
+_E__24V_24V_Pos = _VALUES0._24V_24V_Pos
+_E_DC_380V = _VALUES0.DC_380V
+_E__380V_190V_Neg_190V_Pos = _VALUES0._380V_190V_Neg_190V_Pos
+_E__380V_380V_Neg = _VALUES0._380V_380V_Neg
+_E__380V_380V_Pos = _VALUES0._380V_380V_Pos
+_E_DC_48V = _VALUES0.DC_48V
+_E__48V_24V_Neg_24V_Pos = _VALUES0._48V_24V_Neg_24V_Pos
+_E__48V_48V_Neg = _VALUES0._48V_48V_Neg
+_E__48V_48V_Pos = _VALUES0._48V_48V_Pos
+_E_DC_5V = _VALUES0.DC_5V
+_E__5V_2_5V_Neg_2_5V_Pos = _VALUES0._5V_2_5V_Neg_2_5V_Pos
+_E__5V_5V_Neg = _VALUES0._5V_5V_Neg
+_E__5V_5V_Pos = _VALUES0._5V_5V_Pos
+_E_DC_6V = _VALUES0.DC_6V
+_E__6V_3V_Neg_3V_Pos = _VALUES0._6V_3V_Neg_3V_Pos
+_E__6V_6V_Neg = _VALUES0._6V_6V_Neg
+_E__6V_6V_Pos = _VALUES0._6V_6V_Pos
+_E_DC_PoE = _VALUES0.DC_PoE
+_E_PoE_802_3af_1 = _VALUES0.PoE_802_3af_1
+_E_PoE_802_3at_2 = _VALUES0.PoE_802_3at_2
+_E_PoE_802_3bt_3 = _VALUES0.PoE_802_3bt_3
+_E_PoE_802_3bt_4 = _VALUES0.PoE_802_3bt_4
+_E_Electricity_Earth = _VALUES0.Electricity_Earth
+_E_Electricity_Neutral = _VALUES0.Electricity_Neutral
+_E_Electricity_Signal = _VALUES0.Electricity_Signal
+_E_Signal_EIA485 = _VALUES0.Signal_EIA485
+_E_Signal_IEC14908 = _VALUES0.Signal_IEC14908
+_E_Signal_Modulated = _VALUES0.Signal_Modulated
+_E_Modulated_0_10V = _VALUES0.Modulated_0_10V
+_E_Modulated_4_20mA = _VALUES0.Modulated_4_20mA
+_E_Modulated_Resistive = _VALUES0.Modulated_Resistive
+_E_Signal_USB = _VALUES0.Signal_USB
+_E_Signal_WiredEthernet = _VALUES0.Signal_WiredEthernet
+_E_WiredEthernet_1000BASE_T = _VALUES0.WiredEthernet_1000BASE_T
+_E_WiredEthernet_1000BASE_T1 = _VALUES0.WiredEthernet_1000BASE_T1
+_E_WiredEthernet_100BASE_T1 = _VALUES0.WiredEthernet_100BASE_T1
+_E_WiredEthernet_100BASE_TX = _VALUES0.WiredEthernet_100BASE_TX
+_E_WiredEthernet_10BASE_T = _VALUES0.WiredEthernet_10BASE_T
+_E_WiredEthernet_10BASE_T1L = _VALUES0.WiredEthernet_10BASE_T1L
+_E_WiredEthernet_10BASE_T1S = _VALUES0.WiredEthernet_10BASE_T1S
+_E_WiredEthernet_10GBASE_T = _VALUES0.WiredEthernet_10GBASE_T
+_E_WiredEthernet_10GBASE_T1 = _VALUES0.WiredEthernet_10GBASE_T1
+_E_WiredEthernet_2_5GBASE_T = _VALUES0.WiredEthernet_2_5GBASE_T
+_E_WiredEthernet_2_5GBASE_T1 = _VALUES0.WiredEthernet_2_5GBASE_T1
+_E_WiredEthernet_25GBASE_T = _VALUES0.WiredEthernet_25GBASE_T
+_E_WiredEthernet_40GBASE_T = _VALUES0.WiredEthernet_40GBASE_T
+_E_WiredEthernet_5GBASE_T = _VALUES0.WiredEthernet_5GBASE_T
+_E_WiredEthernet_5GBASE_T1 = _VALUES0.WiredEthernet_5GBASE_T1
+_E_Constituent_Glycol = _VALUES0.Constituent_Glycol
+_E_Constituent_H2O = _VALUES0.Constituent_H2O
+_E_Constituent_H2S = _VALUES0.Constituent_H2S
+_E_Constituent_N2 = _VALUES0.Constituent_N2
+_E_Constituent_NH3 = _VALUES0.Constituent_NH3
+_E_Constituent_NOX = _VALUES0.Constituent_NOX
+_E_NOX_NO = _VALUES0.NOX_NO
+_E_NOX_NO2 = _VALUES0.NOX_NO2
+_E_Constituent_O2 = _VALUES0.Constituent_O2
+_E_Constituent_O3 = _VALUES0.Constituent_O3
+_E_Constituent_Oil = _VALUES0.Constituent_Oil
+_E_Constituent_Radon = _VALUES0.Constituent_Radon
+_E_Constituent_Refrigerant = _VALUES0.Constituent_Refrigerant
+_E_Refrigerant_R_123 = _VALUES0.Refrigerant_R_123
+_E_Refrigerant_R_1234yf = _VALUES0.Refrigerant_R_1234yf
+_E_Refrigerant_R_1234ze = _VALUES0.Refrigerant_R_1234ze
+_E_Refrigerant_R_134A = _VALUES0.Refrigerant_R_134A
+_E_Refrigerant_R_22 = _VALUES0.Refrigerant_R_22
+_E_Refrigerant_R_290 = _VALUES0.Refrigerant_R_290
+_E_Refrigerant_R_32 = _VALUES0.Refrigerant_R_32
+_E_Refrigerant_R_404A = _VALUES0.Refrigerant_R_404A
+_E_Refrigerant_R_407A = _VALUES0.Refrigerant_R_407A
+_E_Refrigerant_R_407C = _VALUES0.Refrigerant_R_407C
+_E_Refrigerant_R_407F = _VALUES0.Refrigerant_R_407F
+_E_Refrigerant_R_410A = _VALUES0.Refrigerant_R_410A
+_E_Refrigerant_R_422A = _VALUES0.Refrigerant_R_422A
+_E_Refrigerant_R_422C = _VALUES0.Refrigerant_R_422C
+_E_Refrigerant_R_422D = _VALUES0.Refrigerant_R_422D
+_E_Refrigerant_R_427A = _VALUES0.Refrigerant_R_427A
+_E_Refrigerant_R_438A = _VALUES0.Refrigerant_R_438A
+_E_Refrigerant_R_444A = _VALUES0.Refrigerant_R_444A
+_E_Refrigerant_R_445A = _VALUES0.Refrigerant_R_445A
+_E_Refrigerant_R_448A = _VALUES0.Refrigerant_R_448A
+_E_Refrigerant_R_449A = _VALUES0.Refrigerant_R_449A
+_E_Refrigerant_R_450A = _VALUES0.Refrigerant_R_450A
+_E_Refrigerant_R_454A = _VALUES0.Refrigerant_R_454A
+_E_Refrigerant_R_454C = _VALUES0.Refrigerant_R_454C
+_E_Refrigerant_R_455A = _VALUES0.Refrigerant_R_455A
+_E_Refrigerant_R_457A = _VALUES0.Refrigerant_R_457A
+_E_Refrigerant_R_459B = _VALUES0.Refrigerant_R_459B
+_E_Refrigerant_R_507 = _VALUES0.Refrigerant_R_507
+_E_Refrigerant_R_513A = _VALUES0.Refrigerant_R_513A
+_E_Refrigerant_R_516A = _VALUES0.Refrigerant_R_516A
+_E_Refrigerant_R_600A = _VALUES0.Refrigerant_R_600A
+_E_Refrigerant_R_717 = _VALUES0.Refrigerant_R_717
+_E_Refrigerant_R_744 = _VALUES0.Refrigerant_R_744
+_E_Constituent_SO2 = _VALUES0.Constituent_SO2
+_E_Constituent_VolatileOrganicCompounds_2 = _VALUES0.Constituent_VolatileOrganicCompounds
+_E_Constituent_ChlorineResidual = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ChlorineResidual', label='Chlorine Residual', definition='Chlorine remaining in the water after disinfection, free or combined. Wanted in a distribution system and unwanted in a discharge, which is why removing it is an objective of its own.', parent=_E_Medium_Constituent, _register_parent=False)
 """Chlorine remaining in the water after disinfection, free or combined. Wanted in a distribution system and unwanted in a discharge, which is why removing it is an objective of its own."""
-_E_Constituent_Cyanide = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Cyanide', label='Cyanide', definition='Cyanide present as a constituent of a treatment medium. Highly toxic to aquatic life.', parent=_E_Medium_Constituent)
+_E_Constituent_Cyanide = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Cyanide', label='Cyanide', definition='Cyanide present as a constituent of a treatment medium. Highly toxic to aquatic life.', parent=_E_Medium_Constituent, _register_parent=False)
 """Cyanide present as a constituent of a treatment medium. Highly toxic to aquatic life."""
-_E_Constituent_DissolvedOxygen = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-DissolvedOxygen', label='Dissolved Oxygen', definition='Molecular oxygen dissolved in a treatment medium.', parent=_E_Medium_Constituent)
+_E_Constituent_DissolvedOxygen = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-DissolvedOxygen', label='Dissolved Oxygen', definition='Molecular oxygen dissolved in a treatment medium.', parent=_E_Medium_Constituent, _register_parent=False)
 """Molecular oxygen dissolved in a treatment medium."""
-_E_Constituent_DissolvedSolids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-DissolvedSolids', label='Dissolved Solids', definition='Material dissolved in a treatment medium rather than suspended in it, measured together as total dissolved solids.', parent=_E_Medium_Constituent)
+_E_Constituent_DissolvedSolids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-DissolvedSolids', label='Dissolved Solids', definition='Material dissolved in a treatment medium rather than suspended in it, measured together as total dissolved solids.', parent=_E_Medium_Constituent, _register_parent=False)
 """Material dissolved in a treatment medium rather than suspended in it, measured together as total dissolved solids."""
 _E_Constituent_Arsenic = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Arsenic', label='Arsenic', definition='Arsenic species in water, including dissolved arsenite and arsenate.', parent=_E_Constituent_DissolvedSolids)
 """Arsenic species in water, including dissolved arsenite and arsenate."""
@@ -1528,15 +486,15 @@ _E_Constituent_Silica = _EnumValue('https://watermetadata.org/ontology/watr#Cons
 """Silica present as a constituent of a treatment medium, dissolved or colloidal. A scalant on membranes and in evaporators."""
 _E_Constituent_Sulfate = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Sulfate', label='Sulfate', definition='Sulfate present as a dissolved constituent of a treatment medium.', parent=_E_Constituent_DissolvedSolids)
 """Sulfate present as a dissolved constituent of a treatment medium."""
-_E_Constituent_InorganicCarbon = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-InorganicCarbon', label='Inorganic Carbon', definition='Inorganic carbon species present as constituents of a treatment medium.', parent=_E_Medium_Constituent)
+_E_Constituent_InorganicCarbon = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-InorganicCarbon', label='Inorganic Carbon', definition='Inorganic carbon species present as constituents of a treatment medium.', parent=_E_Medium_Constituent, _register_parent=False)
 """Inorganic carbon species present as constituents of a treatment medium."""
-_E_Constituent_Inorganics = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Inorganics', label='Inorganics', definition='Inorganic chemical matter present as a constituent of a treatment medium.', parent=_E_Medium_Constituent)
+_E_Constituent_Inorganics = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Inorganics', label='Inorganics', definition='Inorganic chemical matter present as a constituent of a treatment medium.', parent=_E_Medium_Constituent, _register_parent=False)
 """Inorganic chemical matter present as a constituent of a treatment medium."""
 _E_Constituent_ASM2d_S_NO3 = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_NO3', label='ASM2d nitrate and nitrite nitrogen', definition='S_NO3: combined nitrate and nitrite nitrogen pool in ASM2d, expressed as nitrogen; neither nitrate nor nitrite alone.', parent=_E_Constituent_Inorganics)
 """S_NO3: combined nitrate and nitrite nitrogen pool in ASM2d, expressed as nitrogen; neither nitrate nor nitrite alone."""
 _E_Constituent_ASM2d_S_PO4 = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_PO4', label='ASM2d soluble inorganic phosphorus', definition='S_PO4: soluble inorganic phosphorus pool in ASM2d, primarily orthophosphate, expressed as phosphorus.', parent=_E_Constituent_Inorganics)
 """S_PO4: soluble inorganic phosphorus pool in ASM2d, primarily orthophosphate, expressed as phosphorus."""
-_E_Constituent_Nitrogen = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Nitrogen', label='Nitrogen', definition='Nitrogen present as a constituent of a treatment medium in any form: ammonia, nitrite, nitrate and organic nitrogen together.', parent=_E_Medium_Constituent)
+_E_Constituent_Nitrogen = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Nitrogen', label='Nitrogen', definition='Nitrogen present as a constituent of a treatment medium in any form: ammonia, nitrite, nitrate and organic nitrogen together.', parent=_E_Medium_Constituent, _register_parent=False)
 """Nitrogen present as a constituent of a treatment medium in any form: ammonia, nitrite, nitrate and organic nitrogen together."""
 _E_Constituent_Ammonia = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Ammonia', label='Ammonia', definition='Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium.', parent=_E_Constituent_Nitrogen)
 """Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium."""
@@ -1548,9 +506,9 @@ _E_Constituent_Nitrite = _EnumValue('https://watermetadata.org/ontology/watr#Con
 """Nitrite present as an intermediate nitrogen-bearing constituent of a treatment medium."""
 _E_Constituent_OrganicNitrogen = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-OrganicNitrogen', label='Organic Nitrogen', definition='Nitrogen bound in organic matter present as a constituent of a treatment medium, which hydrolysis releases as ammonia.', parent=_E_Constituent_Nitrogen)
 """Nitrogen bound in organic matter present as a constituent of a treatment medium, which hydrolysis releases as ammonia."""
-_E_Constituent_NitrogenOxides = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-NitrogenOxides', label='Nitrogen Oxides', definition='Nitrogen oxide species present as constituents of a treatment medium, including gaseous or dissolved forms.', parent=_E_Medium_Constituent)
+_E_Constituent_NitrogenOxides = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-NitrogenOxides', label='Nitrogen Oxides', definition='Nitrogen oxide species present as constituents of a treatment medium, including gaseous or dissolved forms.', parent=_E_Medium_Constituent, _register_parent=False)
 """Nitrogen oxide species present as constituents of a treatment medium, including gaseous or dissolved forms."""
-_E_Constituent_Organics = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Organics', label='Organics', definition='Organic chemical matter present as a constituent of a treatment medium.', parent=_E_Medium_Constituent)
+_E_Constituent_Organics = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Organics', label='Organics', definition='Organic chemical matter present as a constituent of a treatment medium.', parent=_E_Medium_Constituent, _register_parent=False)
 """Organic chemical matter present as a constituent of a treatment medium."""
 _E_Constituent_ASM2d_S_A = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_A', label='ASM2d fermentation products', definition='S_A: soluble fermentation products represented as acetate in ASM2d, expressed on a COD basis; not a pure acetate concentration.', parent=_E_Constituent_Organics)
 """S_A: soluble fermentation products represented as acetate in ASM2d, expressed on a COD basis; not a pure acetate concentration."""
@@ -1564,7 +522,7 @@ _E_Constituent_PFAS = _EnumValue('https://watermetadata.org/ontology/watr#Consti
 """Per- and polyfluoroalkyl substances present as constituents of a treatment medium."""
 _E_Constituent_VolatileOrganicCompounds = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-VolatileOrganicCompounds', label='Volatile Organic Compounds', definition='Organic compounds volatile enough to leave the water into an off-gas stream, which is why air stripping removes them and settling does not.', parent=_E_Constituent_Organics)
 """Organic compounds volatile enough to leave the water into an off-gas stream, which is why air stripping removes them and settling does not."""
-_E_Constituent_Particles = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Particles', label='Particles', definition='Particulate matter present as a constituent of a medium.', parent=_E_Medium_Constituent)
+_E_Constituent_Particles = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Particles', label='Particles', definition='Particulate matter present as a constituent of a medium.', parent=_E_Medium_Constituent, _register_parent=False)
 """Particulate matter present as a constituent of a medium."""
 _E_Constituent_Solids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Solids', label='Solids', definition='Solid material present as a constituent of a treatment medium.', parent=_E_Constituent_Particles)
 """Solid material present as a constituent of a treatment medium."""
@@ -1586,7 +544,7 @@ _E_Constituent_ASM2d_X_PP = _EnumValue('https://watermetadata.org/ontology/watr#
 """X_PP: intracellular polyphosphate storage pool of phosphate-accumulating organisms in ASM2d."""
 _E_Constituent_ASM2d_X_S = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_S', label='ASM2d slowly biodegradable substrates', definition='X_S: slowly biodegradable particulate substrate pool in ASM2d.', parent=_E_Constituent_SuspendedSolids)
 """X_S: slowly biodegradable particulate substrate pool in ASM2d."""
-_E_Constituent_Pathogens = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Pathogens', label='Pathogens', definition='Disease-causing organisms present as constituents of a treatment medium. The constituent disinfection targets.', parent=_E_Medium_Constituent)
+_E_Constituent_Pathogens = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Pathogens', label='Pathogens', definition='Disease-causing organisms present as constituents of a treatment medium. The constituent disinfection targets.', parent=_E_Medium_Constituent, _register_parent=False)
 """Disease-causing organisms present as constituents of a treatment medium. The constituent disinfection targets."""
 _E_Constituent_Bacteria = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Bacteria', label='Bacteria', definition='Bacteria present as constituents of a treatment medium.', parent=_E_Constituent_Pathogens)
 """Bacteria present as constituents of a treatment medium."""
@@ -1600,11 +558,11 @@ _E_Constituent_Protozoa = _EnumValue('https://watermetadata.org/ontology/watr#Co
 """Protozoa present as constituents of a treatment medium, including the cysts and oocysts that resist chlorination."""
 _E_Constituent_Viruses = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Viruses', label='Viruses', definition='Viruses present as constituents of a treatment medium.', parent=_E_Constituent_Pathogens)
 """Viruses present as constituents of a treatment medium."""
-_E_Constituent_Phosphorus = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Phosphorus', label='Phosphorus', definition='Phosphorus present as a constituent of a treatment medium in any form, the constituent a total phosphorus limit is written against.', parent=_E_Medium_Constituent)
+_E_Constituent_Phosphorus = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Phosphorus', label='Phosphorus', definition='Phosphorus present as a constituent of a treatment medium in any form, the constituent a total phosphorus limit is written against.', parent=_E_Medium_Constituent, _register_parent=False)
 """Phosphorus present as a constituent of a treatment medium in any form, the constituent a total phosphorus limit is written against."""
 _E_Constituent_Phosphate = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Phosphate', label='Phosphate', definition='Phosphate present as a dissolved phosphorus-bearing constituent of a treatment medium, the form biological and chemical phosphorus removal act on.', parent=_E_Constituent_Phosphorus)
 """Phosphate present as a dissolved phosphorus-bearing constituent of a treatment medium, the form biological and chemical phosphorus removal act on."""
-_E_WastewaterTreatmentChemical = _EnumValue('https://watermetadata.org/ontology/watr#WastewaterTreatmentChemical', label='Wastewater Treatment Chemical', definition='Base class for all chemicals used in wastewater treatment', parent=_E_Medium_Constituent)
+_E_WastewaterTreatmentChemical = _EnumValue('https://watermetadata.org/ontology/watr#WastewaterTreatmentChemical', label='Wastewater Treatment Chemical', definition='Base class for all chemicals used in wastewater treatment', parent=_E_Medium_Constituent, _register_parent=False)
 """Base class for all chemicals used in wastewater treatment"""
 _E_Coagulant = _EnumValue('https://watermetadata.org/ontology/watr#Coagulant', label='Coagulant', definition='Class for coagulants used in wastewater treatment', parent=_E_WastewaterTreatmentChemical)
 """Class for coagulants used in wastewater treatment"""
@@ -1648,186 +606,48 @@ _E_pHAdjuster_Lime = _EnumValue('https://watermetadata.org/ontology/watr#pHAdjus
 """Calcium hydroxide (lime), used to increase pH"""
 _E_pHAdjuster_SulfuricAcid = _EnumValue('https://watermetadata.org/ontology/watr#pHAdjuster-SulfuricAcid', label='Sulfuric Acid', definition='Sulfuric acid, used to decrease pH', parent=_E_pHAdjuster)
 """Sulfuric acid, used to decrease pH"""
-_E_Medium_MechanicalLinkage = _EnumValue('http://data.ashrae.org/standard223#Medium-MechanicalLinkage', label='Mechanical linkage', definition='This class supports the transfer of mechanical power at `ConnectionPoint`s or through `Connection`s.', parent=_E_Substance_Medium)
-"""This class supports the transfer of mechanical power at `ConnectionPoint`s or through `Connection`s."""
-_E_Medium_Mix = _EnumValue('http://data.ashrae.org/standard223#Medium-Mix', label='Mixed medium', definition='\nThis class and its subclasses represent substances that are composed of constituents. The components of a `Medium-Mix` can be modeled using the relations `composedOf` and `ofConstituent`. See Figure 10-8a and Figure 10-8b.\n\nFigure 10-8a shows `GlycolSolution-30Percent`, itself a subclass of\n`Water-GlycolSolution`, `Fluid-Water`, and `Mix-Fluid`, with a _Water Concentration_\nproperty referencing 70% `Constituent-H2O` by the relation `ofConstituent` and\na _Glycol Concentration_ property referencing 30% `Constituent-Glycol` also\nby the relation `ofConstituent`.\n\nFigure 10-8b shows `PowerAndSignal-PoE`, itself a subclass of `Mix-PowerAndSignal`,\ncomposed of a _Power_ `Property` referencing `Electricity-DC` and a _Communications_\n`Property` referencing `Signal-WiredEthernet`.\n\n![ ](figures/Figure_10-8_Substance.svg)\n\n: Medium-Mix Enumerations\n\n| Enumeration |\n|:-----------|\n| `Mix-Fluid` (see {s223:Mix-Fluid}) |\n| `Mix-PowerAndSignal` (see {s223:Mix-PowerAndSignal}) |', parent=_E_Substance_Medium)
-"""
-This class and its subclasses represent substances that are composed of constituents. The components of a `Medium-Mix` can be modeled using the relations `composedOf` and `ofConstituent`. See Figure 10-8a and Figure 10-8b.
-
-Figure 10-8a shows `GlycolSolution-30Percent`, itself a subclass of
-`Water-GlycolSolution`, `Fluid-Water`, and `Mix-Fluid`, with a _Water Concentration_
-property referencing 70% `Constituent-H2O` by the relation `ofConstituent` and
-a _Glycol Concentration_ property referencing 30% `Constituent-Glycol` also
-by the relation `ofConstituent`.
-
-Figure 10-8b shows `PowerAndSignal-PoE`, itself a subclass of `Mix-PowerAndSignal`,
-composed of a _Power_ `Property` referencing `Electricity-DC` and a _Communications_
-`Property` referencing `Signal-WiredEthernet`.
-
-![ ](figures/Figure_10-8_Substance.svg)
-
-: Medium-Mix Enumerations
-
-| Enumeration |
-|:-----------|
-| `Mix-Fluid` (see {s223:Mix-Fluid}) |
-| `Mix-PowerAndSignal` (see {s223:Mix-PowerAndSignal}) |
-"""
-_E_Mix_Fluid = _EnumValue('http://data.ashrae.org/standard223#Mix-Fluid', label='Fluid mixture', definition='This class and its enumerated subclasses represent substances that are commonly used to convey liquids or gases.\n\n: Mix-Fluid Enumerations\n\n| Enumeration |\n|:-----------|\n| `Fluid-Air` |\n| `Fluid-NaturalGas` |\n| `Fluid-Oil` |\n| `Fluid-Water` (see {s223:Fluid-Water}) |', parent=_E_Medium_Mix)
-"""This class and its enumerated subclasses represent substances that are commonly used to convey liquids or gases.
-
-: Mix-Fluid Enumerations
-
-| Enumeration |
-|:-----------|
-| `Fluid-Air` |
-| `Fluid-NaturalGas` |
-| `Fluid-Oil` |
-| `Fluid-Water` (see {s223:Fluid-Water}) |
-"""
-_E_Fluid_Air = _EnumValue('http://data.ashrae.org/standard223#Fluid-Air', label='Air', definition='Fluid-Air', parent=_E_Mix_Fluid)
-"""Fluid-Air"""
-_E_Fluid_NaturalGas = _EnumValue('http://data.ashrae.org/standard223#Fluid-NaturalGas', label='Natural gas', definition='Fluid-NaturalGas', parent=_E_Mix_Fluid)
-"""Fluid-NaturalGas"""
-_E_Fluid_Oil = _EnumValue('http://data.ashrae.org/standard223#Fluid-Oil', label='Oil', definition='Fluid-Oil', parent=_E_Mix_Fluid)
-"""Fluid-Oil"""
-_E_Fluid_Water = _EnumValue('http://data.ashrae.org/standard223#Fluid-Water', label='Water', definition='This class and its enumerated subclasses represent water and aqueous solutions in various states.\n\n: Fluid-Water Enumerations\n\n| Enumeration |\n|:-----------|\n| `Water-ChilledWater` |\n| `Water-GlycolSolution` (see {s223:Water-GlycolSolution}) |\n| `Water-HotWater` |\n| `Water-Steam` |', parent=_E_Mix_Fluid)
-"""This class and its enumerated subclasses represent water and aqueous solutions in various states.
-
-: Fluid-Water Enumerations
-
-| Enumeration |
-|:-----------|
-| `Water-ChilledWater` |
-| `Water-GlycolSolution` (see {s223:Water-GlycolSolution}) |
-| `Water-HotWater` |
-| `Water-Steam` |
-"""
-_E_Water_ChilledWater = _EnumValue('http://data.ashrae.org/standard223#Water-ChilledWater', label='Chilled water', definition='Water-Chilled water', parent=_E_Fluid_Water)
-"""Water-Chilled water"""
-_E_Water_GlycolSolution = _EnumValue('http://data.ashrae.org/standard223#Water-GlycolSolution', label='Water-Glycol solution', definition='This class and its enumerated subclasses represent common concentrations of water-glycol solution.\n\n: Water-GlycolSolution Enumerations\n\n| Enumeration |\n|:-----------|\n| `GlycolSolution-15Percent` |\n| `GlycolSolution-30Percent` |', parent=_E_Fluid_Water)
-"""This class and its enumerated subclasses represent common concentrations of water-glycol solution.
-
-: Water-GlycolSolution Enumerations
-
-| Enumeration |
-|:-----------|
-| `GlycolSolution-15Percent` |
-| `GlycolSolution-30Percent` |
-"""
-_E_GlycolSolution_15Percent = _EnumValue('http://data.ashrae.org/standard223#GlycolSolution-15Percent', label='15 percent glycol solution', definition='`GlycolSolution-15Percent`', parent=_E_Water_GlycolSolution)
-"""`GlycolSolution-15Percent`"""
-_E_GlycolSolution_30Percent = _EnumValue('http://data.ashrae.org/standard223#GlycolSolution-30Percent', label='30 percent glycol solution', definition='`GlycolSolution-30Percent`', parent=_E_Water_GlycolSolution)
-"""`GlycolSolution-30Percent`"""
-_E_Water_HotWater = _EnumValue('http://data.ashrae.org/standard223#Water-HotWater', label='Hot water', definition='Water-Hot water', parent=_E_Fluid_Water)
-"""Water-Hot water"""
-_E_Water_Steam = _EnumValue('http://data.ashrae.org/standard223#Water-Steam', label='Steam', definition='Water-Steam', parent=_E_Fluid_Water)
-"""Water-Steam"""
-_E_Water_Brackish = _EnumValue('https://watermetadata.org/ontology/watr#Water-Brackish', label='Water-Brackish', definition='Moderately saline water (typical salinity 0.5-3%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water)
+_E_Medium_MechanicalLinkage = _VALUES0.Medium_MechanicalLinkage
+_E_Medium_Mix = _VALUES0.Medium_Mix
+_E_Mix_Fluid = _VALUES0.Mix_Fluid
+_E_Fluid_Air = _VALUES0.Fluid_Air
+_E_Fluid_NaturalGas = _VALUES0.Fluid_NaturalGas
+_E_Fluid_Oil = _VALUES0.Fluid_Oil
+_E_Fluid_Water = _VALUES0.Fluid_Water
+_E_Water_ChilledWater = _VALUES0.Water_ChilledWater
+_E_Water_GlycolSolution = _VALUES0.Water_GlycolSolution
+_E_GlycolSolution_15Percent = _VALUES0.GlycolSolution_15Percent
+_E_GlycolSolution_30Percent = _VALUES0.GlycolSolution_30Percent
+_E_Water_HotWater = _VALUES0.Water_HotWater
+_E_Water_Steam = _VALUES0.Water_Steam
+_E_Water_Brackish = _EnumValue('https://watermetadata.org/ontology/watr#Water-Brackish', label='Water-Brackish', definition='Moderately saline water (typical salinity 0.5-3%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water, _register_parent=False)
 """Moderately saline water (typical salinity 0.5-3%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media."""
-_E_Water_Brine = _EnumValue('https://watermetadata.org/ontology/watr#Water-Brine', label='Water-Brine', definition='Concentrated saline water modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water)
+_E_Water_Brine = _EnumValue('https://watermetadata.org/ontology/watr#Water-Brine', label='Water-Brine', definition='Concentrated saline water modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water, _register_parent=False)
 """Concentrated saline water modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media."""
-_E_Water_Freshwater = _EnumValue('https://watermetadata.org/ontology/watr#Water-Freshwater', label='Water-Freshwater', definition='Low-salinity surface or ground water modeled as a constituent-bearing mixture dominated by the water constituent so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water)
+_E_Water_Freshwater = _EnumValue('https://watermetadata.org/ontology/watr#Water-Freshwater', label='Water-Freshwater', definition='Low-salinity surface or ground water modeled as a constituent-bearing mixture dominated by the water constituent so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water, _register_parent=False)
 """Low-salinity surface or ground water modeled as a constituent-bearing mixture dominated by the water constituent so that S223 can recognize the shared water constituent across aqueous media."""
-_E_Water_Seawater = _EnumValue('https://watermetadata.org/ontology/watr#Water-Seawater', label='Water-Seawater', definition='Saline surface water (typical salinity ~3.5%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water)
+_E_Water_Seawater = _EnumValue('https://watermetadata.org/ontology/watr#Water-Seawater', label='Water-Seawater', definition='Saline surface water (typical salinity ~3.5%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water, _register_parent=False)
 """Saline surface water (typical salinity ~3.5%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media."""
-_E_Fluid_Sludge = _EnumValue('https://watermetadata.org/ontology/watr#Fluid-Sludge', label='Sludge', definition='A semi-solid slurry of water, organic solids and inorganic solids, modeled as a constituent-bearing mixture rather than a kind of water. Sharing s223:Constituent-H2O with the aqueous media keeps sludge compatible with them on S223 connection points in both directions, for example water in and sludge out of a clarifier, or sludge in and supernatant out of a thickener.', parent=_E_Mix_Fluid)
+_E_Fluid_Sludge = _EnumValue('https://watermetadata.org/ontology/watr#Fluid-Sludge', label='Sludge', definition='A semi-solid slurry of water, organic solids and inorganic solids, modeled as a constituent-bearing mixture rather than a kind of water. Sharing s223:Constituent-H2O with the aqueous media keeps sludge compatible with them on S223 connection points in both directions, for example water in and sludge out of a clarifier, or sludge in and supernatant out of a thickener.', parent=_E_Mix_Fluid, _register_parent=False)
 """A semi-solid slurry of water, organic solids and inorganic solids, modeled as a constituent-bearing mixture rather than a kind of water. Sharing s223:Constituent-H2O with the aqueous media keeps sludge compatible with them on S223 connection points in both directions, for example water in and sludge out of a clarifier, or sludge in and supernatant out of a thickener."""
 _E_Sludge_MixedLiquor = _EnumValue('https://watermetadata.org/ontology/watr#Sludge-MixedLiquor', label='Sludge-MixedLiquor', definition='Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water.', parent=_E_Fluid_Sludge)
 """Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water."""
-_E_Mix_PowerAndSignal = _EnumValue('http://data.ashrae.org/standard223#Mix-PowerAndSignal', label='Power and signal mixture', definition='This class and its enumerated subclasses represent substances that are used to convey the combination of electrical power and electrical communication signals.\n\n: Mix-PowerAndSignal Enumerations\n\n| Enumeration |\n|:-----------|\n| `PowerAndSignal-PoE` |', parent=_E_Medium_Mix)
-"""This class and its enumerated subclasses represent substances that are used to convey the combination of electrical power and electrical communication signals.
-
-: Mix-PowerAndSignal Enumerations
-
-| Enumeration |
-|:-----------|
-| `PowerAndSignal-PoE` |
-"""
-_E_PowerAndSignal_PoE = _EnumValue('http://data.ashrae.org/standard223#PowerAndSignal-PoE', label='Power over Ethernet (PoE)', definition='PowerAndSignal-PoE', parent=_E_Mix_PowerAndSignal)
-"""PowerAndSignal-PoE"""
-_E_Medium_ThermalContact = _EnumValue('http://data.ashrae.org/standard223#Medium-ThermalContact', label='Thermal contact', definition='This class supports the transfer of thermodynamic energy at `ConnectionPoint`s or through `Connection`s\nthat does not involve electricity or moving a fluid such as air or water.', parent=_E_Substance_Medium)
-"""This class supports the transfer of thermodynamic energy at `ConnectionPoint`s or through `Connection`s
-that does not involve electricity or moving a fluid such as air or water.
-"""
-_E_Substance_Particulate = _EnumValue('http://data.ashrae.org/standard223#Substance-Particulate', label='Particulate', definition='This class and its enumerated subclasses represent common size thresholds of interest for particulate matter that is suspended in a\nmedium in a way that maintains the physical and chemical properties of the medium.\n\n![Particulate Concentration](figures/Figure_x-y_Particulate_Concentration.svg)\n\nFigure 10-9 shows an instance of a `Connection` with `hasMedium` referencing\n`Fluid-Air` that has a `Property` _Particulate Concentration_ of particles with a\ndiameter of 2.5 micrometres (0.0025 mm) or smaller in units of micrograms per\ncubic meter.\n\n![Carbon Monoxide Concentration](figures/Figure_x-y_Medium_Concentration.svg)\n\nFigure 10-10 shows an instance of a `Property` _CO Concentration_ with `ofSubstance`\nreferencing carbon monoxide `Constituent-CO` and `ofMedium` referencing `Fluid-Air`\nmeasured in parts-per-million.  This figure also shows that the value of this\n`Property` can be obtained by using the BACnet protocol via the external reference\nto get the `present-value` of `analog-value,67` in the device with an instance\nnumber `12345`.\n\n: Substance-Particulate Enumerations\n\n| Enumeration |\n|:-----------|\n| `Particulate-PM1.0` |\n| `Particulate-PM2.5` |\n| `Particulate-PM10.0` |\n| `Particulate-Smoke` |', parent=_E_EnumerationKind_Substance)
-"""This class and its enumerated subclasses represent common size thresholds of interest for particulate matter that is suspended in a
-medium in a way that maintains the physical and chemical properties of the medium.
-
-![Particulate Concentration](figures/Figure_x-y_Particulate_Concentration.svg)
-
-Figure 10-9 shows an instance of a `Connection` with `hasMedium` referencing
-`Fluid-Air` that has a `Property` _Particulate Concentration_ of particles with a
-diameter of 2.5 micrometres (0.0025 mm) or smaller in units of micrograms per
-cubic meter.
-
-![Carbon Monoxide Concentration](figures/Figure_x-y_Medium_Concentration.svg)
-
-Figure 10-10 shows an instance of a `Property` _CO Concentration_ with `ofSubstance`
-referencing carbon monoxide `Constituent-CO` and `ofMedium` referencing `Fluid-Air`
-measured in parts-per-million.  This figure also shows that the value of this
-`Property` can be obtained by using the BACnet protocol via the external reference
-to get the `present-value` of `analog-value,67` in the device with an instance
-number `12345`.
-
-: Substance-Particulate Enumerations
-
-| Enumeration |
-|:-----------|
-| `Particulate-PM1.0` |
-| `Particulate-PM2.5` |
-| `Particulate-PM10.0` |
-| `Particulate-Smoke` |
-"""
-_E_Particulate_PM1_0 = _EnumValue('http://data.ashrae.org/standard223#Particulate-PM1.0', label='PM 1.0', definition='Particulate-PM1.0', parent=_E_Substance_Particulate)
-"""Particulate-PM1.0"""
-_E_Particulate_PM10_0 = _EnumValue('http://data.ashrae.org/standard223#Particulate-PM10.0', label='PM 10.0', definition='Particulate-PM10.0', parent=_E_Substance_Particulate)
-"""Particulate-PM10.0"""
-_E_Particulate_PM2_5 = _EnumValue('http://data.ashrae.org/standard223#Particulate-PM2.5', label='PM 2.5', definition='Particulate-PM2.5', parent=_E_Substance_Particulate)
-"""Particulate-PM2.5"""
-_E_Particulate_Smoke = _EnumValue('http://data.ashrae.org/standard223#Particulate-Smoke', label='Smoke', definition='Smoke as a particulate of unspecified size, but formed as a product of combustion', parent=_E_Substance_Particulate)
-"""Smoke as a particulate of unspecified size, but formed as a product of combustion"""
-_E_Substance_Soot = _EnumValue('http://data.ashrae.org/standard223#Substance-Soot', label='Soot', definition='Carbon particles resulting from the incomplete combustion of hydrocarbons. Soot is considered a hazardous substance with carcinogenic properties.', parent=_E_EnumerationKind_Substance)
-"""Carbon particles resulting from the incomplete combustion of hydrocarbons. Soot is considered a hazardous substance with carcinogenic properties."""
-_E_EnumerationKind_ThermodynamicPhase = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-ThermodynamicPhase', label='Thermodynamic phase', definition='This class and its enumerated subclasses represent thermodynamic phases, also referred to as states of matter.\n\n: EnumerationKind-ThermodynamicPhase Enumerations\n\n| Enumeration |\n|:-----------|\n| `ThermodynamicPhase-Gas` (see {s223:ThermodynamicPhase-Gas}) |\n| `ThermodynamicPhase-Liquid` (see {s223:ThermodynamicPhase-Liquid}) |\n| `ThermodynamicPhase-Solid` |\n| `ThermodynamicPhase-Vapor` |', parent=_E_EnumerationKind)
-"""This class and its enumerated subclasses represent thermodynamic phases, also referred to as states of matter.
-
-: EnumerationKind-ThermodynamicPhase Enumerations
-
-| Enumeration |
-|:-----------|
-| `ThermodynamicPhase-Gas` (see {s223:ThermodynamicPhase-Gas}) |
-| `ThermodynamicPhase-Liquid` (see {s223:ThermodynamicPhase-Liquid}) |
-| `ThermodynamicPhase-Solid` |
-| `ThermodynamicPhase-Vapor` |
-"""
-_E_ThermodynamicPhase_Gas = _EnumValue('http://data.ashrae.org/standard223#ThermodynamicPhase-Gas', label='Gas phase', definition='This class and its enumerated subclasses represent gas in various thermodynamic states.\n\n: ThermodynamicPhase-Gas Enumerations\n\n| Enumeration |\n|:-----------|\n| `Gas-Superheated` |', parent=_E_EnumerationKind_ThermodynamicPhase)
-"""This class and its enumerated subclasses represent gas in various thermodynamic states.
-
-: ThermodynamicPhase-Gas Enumerations
-
-| Enumeration |
-|:-----------|
-| `Gas-Superheated` |
-"""
-_E_Gas_Superheated = _EnumValue('http://data.ashrae.org/standard223#Gas-Superheated', label='Superheated gas', definition='Gas-Superheated', parent=_E_ThermodynamicPhase_Gas)
-"""Gas-Superheated"""
-_E_ThermodynamicPhase_Liquid = _EnumValue('http://data.ashrae.org/standard223#ThermodynamicPhase-Liquid', label='Liquid phase', definition='This class and its enumerated subclasses represent liquid in various thermodynamic states.\n\n: ThermodynamicPhase-Liquid Enumerations\n\n| Enumeration |\n|:-----------|\n| `Liquid-Subcooled` |', parent=_E_EnumerationKind_ThermodynamicPhase)
-"""This class and its enumerated subclasses represent liquid in various thermodynamic states.
-
-: ThermodynamicPhase-Liquid Enumerations
-
-| Enumeration |
-|:-----------|
-| `Liquid-Subcooled` |
-"""
-_E_Liquid_Subcooled = _EnumValue('http://data.ashrae.org/standard223#Liquid-Subcooled', label='Subcooled liquid', definition='Liquid-Subcooled', parent=_E_ThermodynamicPhase_Liquid)
-"""Liquid-Subcooled"""
-_E_ThermodynamicPhase_Solid = _EnumValue('http://data.ashrae.org/standard223#ThermodynamicPhase-Solid', label='Solid phase', definition='`ThermodynamicPhase-Solid`', parent=_E_EnumerationKind_ThermodynamicPhase)
-"""`ThermodynamicPhase-Solid`"""
-_E_ThermodynamicPhase_Vapor = _EnumValue('http://data.ashrae.org/standard223#ThermodynamicPhase-Vapor', label='Vapor phase', definition='`ThermodynamicPhase-Vapor`', parent=_E_EnumerationKind_ThermodynamicPhase)
-"""`ThermodynamicPhase-Vapor`"""
-_E_EnumerationKind_DataProcessing = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-DataProcessing', label='DataProcessing', definition='This EnumerationKind describes methods of data processing, aggregation, or imputation', parent=_E_EnumerationKind)
+_E_Mix_PowerAndSignal = _VALUES0.Mix_PowerAndSignal
+_E_PowerAndSignal_PoE = _VALUES0.PowerAndSignal_PoE
+_E_Medium_ThermalContact = _VALUES0.Medium_ThermalContact
+_E_Substance_Particulate = _VALUES0.Substance_Particulate
+_E_Particulate_PM1_0 = _VALUES0.Particulate_PM1_0
+_E_Particulate_PM10_0 = _VALUES0.Particulate_PM10_0
+_E_Particulate_PM2_5 = _VALUES0.Particulate_PM2_5
+_E_Particulate_Smoke = _VALUES0.Particulate_Smoke
+_E_Substance_Soot = _VALUES0.Substance_Soot
+_E_EnumerationKind_ThermodynamicPhase = _VALUES0.EnumerationKind_ThermodynamicPhase
+_E_ThermodynamicPhase_Gas = _VALUES0.ThermodynamicPhase_Gas
+_E_Gas_Superheated = _VALUES0.Gas_Superheated
+_E_ThermodynamicPhase_Liquid = _VALUES0.ThermodynamicPhase_Liquid
+_E_Liquid_Subcooled = _VALUES0.Liquid_Subcooled
+_E_ThermodynamicPhase_Solid = _VALUES0.ThermodynamicPhase_Solid
+_E_ThermodynamicPhase_Vapor = _VALUES0.ThermodynamicPhase_Vapor
+_E_EnumerationKind_DataProcessing = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-DataProcessing', label='DataProcessing', definition='This EnumerationKind describes methods of data processing, aggregation, or imputation', parent=_E_EnumerationKind, _register_parent=False)
 """This EnumerationKind describes methods of data processing, aggregation, or imputation"""
 _E_DataProcessing_AccuracyMetrics = _EnumValue('https://watermetadata.org/ontology/watr#DataProcessing-AccuracyMetrics', label='Accuracy Metrics', definition='Combined accuracy measures (precision and trueness)', parent=_E_EnumerationKind_DataProcessing)
 """Combined accuracy measures (precision and trueness)"""
@@ -1921,22 +741,14 @@ _E_Synchronization_TimeAlignment = _EnumValue('https://watermetadata.org/ontolog
 """Align data points from different sources to common timestamps"""
 _E_Synchronization_Upsampling = _EnumValue('https://watermetadata.org/ontology/watr#Synchronization-Upsampling', label='Upsampling', definition='Increase the sampling frequency of data to a higher rate', parent=_E_DataProcessing_Synchronization)
 """Increase the sampling frequency of data to a higher rate"""
-_E_EnumerationKind_Runtime = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-Runtime', label='Runtime', definition='An enumeration kind describing the accumulated operating time of a piece of equipment.', parent=_E_EnumerationKind)
+_E_EnumerationKind_Runtime = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-Runtime', label='Runtime', definition='An enumeration kind describing the accumulated operating time of a piece of equipment.', parent=_E_EnumerationKind, _register_parent=False)
 """An enumeration kind describing the accumulated operating time of a piece of equipment."""
-_E_Fluid_Water.constituents = (_E_Constituent_H2O,)
-_E_Water_ChilledWater.constituents = (_E_Constituent_H2O,)
-_E_Water_GlycolSolution.constituents = (_E_Constituent_Glycol, _E_Constituent_H2O,)
-_E_GlycolSolution_15Percent.constituents = (_E_Constituent_Glycol, _E_Constituent_H2O,)
-_E_GlycolSolution_30Percent.constituents = (_E_Constituent_Glycol, _E_Constituent_H2O,)
-_E_Water_HotWater.constituents = (_E_Constituent_H2O,)
-_E_Water_Steam.constituents = (_E_Constituent_H2O,)
 _E_Water_Brackish.constituents = (_E_Constituent_H2O, _E_Salt_NaCl,)
 _E_Water_Brine.constituents = (_E_Constituent_H2O, _E_Salt_NaCl,)
 _E_Water_Freshwater.constituents = (_E_Constituent_H2O,)
 _E_Water_Seawater.constituents = (_E_Constituent_H2O, _E_Salt_NaCl,)
 _E_Fluid_Sludge.constituents = (_E_Constituent_H2O, _E_Constituent_InorganicSolids, _E_Constituent_OrganicSolids,)
 _E_Sludge_MixedLiquor.constituents = (_E_Constituent_H2O, _E_Constituent_SuspendedSolids,)
-_E_PowerAndSignal_PoE.constituents = (_E_DC_PoE, _E_Signal_WiredEthernet,)
 EnumerationKind = _E_EnumerationKind
 Aspect = _E_EnumerationKind_Aspect
 Binary = _E_EnumerationKind_Binary

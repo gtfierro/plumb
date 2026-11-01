@@ -81,7 +81,14 @@ def compile_modules(
         deferred_properties=resolved.deferred_properties if resolved else (),
     )
     bindings = overlays.resolve(resolved, ir, graph) if resolved is not None else None
-    modules = {"__init__.py": emit_module(ir, bindings)}
+    dependency = None
+    if resolved is not None and resolved.base_module:
+        from .linking import link
+        from .symbols import Symbols
+
+        dependency = Symbols.load(resolved.base_module)
+        link(ir, dependency, resolved)
+    modules = {"__init__.py": emit_module(ir, bindings, dependency=dependency)}
     modules[SUPPORT_FILE] = support_report(
         graph,
         ir.classes,

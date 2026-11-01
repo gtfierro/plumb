@@ -32,20 +32,19 @@ def test_extension_terms_keep_public_names():
 
 
 def test_shared_ontology_ranges_work_across_package_boundaries(m):
-    # Exercise runtime semantics. Canonical import linking still needs to
-    # remove the nominal Python typing split between these packages.
+    # Both generated signatures and runtime checks accept canonical types.
     fan = s223.Fan("s223-fan")
     property_ = watr.QuantifiableObservableProperty(
         "watr-temperature", has_quantity_kind=quantity_kinds.Temperature
     )
-    cast(Any, fan.has_property).add(property_)
+    fan.has_property.add(property_)
     assert property_ in fan.has_property
     assert property_.meta.is_a(s223.Property)
     tank = watr.Tank("watr-tank")
     other = s223.QuantifiableObservableProperty(
         "s223-temperature", has_quantity_kind=quantity_kinds.Temperature
     )
-    cast(Any, tank.has_property).add(other)
+    tank.has_property.add(other)
     assert other in tank.has_property
     with pytest.raises(RangeError):
         cast(Any, fan.has_property).add(tank)

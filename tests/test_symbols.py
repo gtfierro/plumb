@@ -6,7 +6,8 @@ import sys
 import pytest
 from rdflib import Graph
 
-from plumb.gen import compile_modules, extract
+from plumb.gen import compile_modules, extract, generate
+from plumb.gen.overlays import Overlay
 from plumb.gen.symbols import FILENAME, FORMAT, Symbols
 
 
@@ -48,6 +49,7 @@ def test_loading_dependency_never_executes_parent_packages(tmp_path, monkeypatch
                 "format": FORMAT,
                 "ontology": {"iri": "urn:base"},
                 "classes": [],
+                "views": [],
                 "enums": [],
                 "properties": {},
             }
@@ -68,3 +70,47 @@ def test_dependency_format_and_missing_exports_are_actionable(tmp_path, monkeypa
     monkeypatch.syspath_prepend(str(tmp_path))
     with pytest.raises(ValueError, match="regenerate the base package"):
         Symbols.load("missing_symbols")
+
+
+def test_linked_closure_classifies_added_properties_without_executing_dependency(
+    tmp_path, monkeypatch
+):
+    source = """
+        @prefix ex: <urn:link#> .
+        @prefix owl: <http://www.w3.org/2002/07/owl#> .
+        @prefix sh: <http://www.w3.org/ns/shacl#> .
+        @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+        @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+        <urn:base> a owl:Ontology .
+        ex:Thing a owl:Class .
+        ex:Owner a owl:Class ; sh:property [
+            sh:path ex:member ; sh:class ex:Thing
+        ] .
+    """
+    package = tmp_path / "unimportable_link_base"
+    generate(Graph().parse(data=source, format="turtle"), package, name="Base")
+    (package / "__init__.py").write_text(
+        "raise AssertionError('compiler must not import')"
+    )
+    monkeypatch.syspath_prepend(str(tmp_path))
+    extension = (
+        source
+        + """
+        <urn:extension> a owl:Ontology .
+        ex:Owner sh:property [ sh:path ex:code ; sh:datatype xsd:string ; sh:maxCount 1 ] .
+        ex:New a owl:Class ; rdfs:subClassOf ex:Owner .
+    """
+    )
+    output = compile_modules(
+        Graph().parse(data=extension, format="turtle"),
+        name="Linked",
+        overlay=Overlay(
+            base_module="unimportable_link_base", ontology_iri="urn:extension"
+        ),
+    )
+    assert "Thing = _BASE.Thing" in output["__init__.py"]
+    assert "class Owner(_BASE.Owner)" in output["__init__.py"]
+    exported = json.loads(output[FILENAME])
+    assert {item["iri"] for item in exported["views"]} == {"urn:link#Owner"}
+    assert {item["iri"] for item in exported["classes"]} == {"urn:link#New"}
+    assert "unimportable_link_base" not in sys.modules

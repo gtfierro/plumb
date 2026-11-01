@@ -19,7 +19,7 @@ from rdflib.util import from_n3
 from .ir import ClassIR, CPConstraintIR, CPSlotIR, EnumIR, PointIR, PropIR, SchemaIR
 
 FILENAME = "_symbols.json"
-FORMAT = 2
+FORMAT = 3
 
 
 @dataclass
@@ -70,13 +70,52 @@ class Symbols:
                 )
             for iri, symbol in dependency.imported_classes().items():
                 if iri in classes and classes[iri] != symbol:
-                    raise ValueError(f"{module}: incompatible dependency symbol {iri}")
+                    previous = classes[iri]
+                    if (symbol.canonical_module, symbol.canonical_name) == (
+                        previous.python_module,
+                        previous.name,
+                    ):
+                        pass
+                    elif (previous.canonical_module, previous.canonical_name) == (
+                        symbol.python_module,
+                        symbol.name,
+                    ):
+                        continue
+                    else:
+                        raise ValueError(
+                            f"{module}: incompatible dependency symbol {iri}"
+                        )
                 classes[iri] = symbol
-            enums.update(dependency.enums)
+            for iri, symbol in dependency.enums.items():
+                imported = replace(
+                    symbol, python_module=symbol.python_module or dependency.module
+                )
+                if iri in enums and enums[iri] != imported:
+                    raise ValueError(f"{module}: incompatible dependency enum {iri}")
+                enums[iri] = imported
             term_types.update(dependency.term_types)
-        if set(classes).intersection(symbols.classes):
+        local = {
+            iri: item
+            for iri, item in symbols.classes.items()
+            if item.canonical_module is None
+        }
+        views = {
+            iri: item
+            for iri, item in symbols.classes.items()
+            if item.canonical_module is not None
+        }
+        if set(classes).intersection(local):
             raise ValueError(f"{module}: cannot redefine an imported class identity")
-        symbols.classes = classes | symbols.classes
+        for iri, view in views.items():
+            canonical = classes.get(iri)
+            if canonical is None or (view.canonical_module, view.canonical_name) != (
+                canonical.canonical_module or canonical.python_module,
+                canonical.canonical_name or canonical.name,
+            ):
+                raise ValueError(f"{module}: unlinked canonical class for view {iri}")
+        symbols.classes = classes | local | views
+        if enums.keys() & symbols.enums.keys():
+            raise ValueError(f"{module}: cannot redefine an imported enum identity")
         symbols.enums = enums | symbols.enums
         symbols.term_types = term_types | symbols.term_types
         return symbols
@@ -94,7 +133,7 @@ class Symbols:
                 key: _property(value) for key, value in data["properties"].items()
             }
             classes = {}
-            for item in data["classes"]:
+            for item in [*data["classes"], *data["views"]]:
                 item = dict(item)
                 item["effective_props"] = {
                     properties[key].name: properties[key]
@@ -141,9 +180,11 @@ class Symbols:
 
 def export_symbols(ir: SchemaIR, *, graph_digest: str) -> str:
     """Emit deterministic dependency symbols; Python classes are not inspected."""
-    classes = []
+    classes, views = [], []
     properties: dict[str, Any] = {}
     for symbol in sorted(ir.classes, key=lambda item: item.iri):
+        if symbol.python_module is not None:
+            continue
         item = asdict(symbol)
         item.pop("own_props")
         item.pop("effective_props")
@@ -159,7 +200,7 @@ def export_symbols(ir: SchemaIR, *, graph_digest: str) -> str:
             key = hashlib.sha256(json.dumps(prop, sort_keys=True).encode()).hexdigest()
             properties[key] = prop
             item["properties"].append(key)
-        classes.append(item)
+        (views if symbol.canonical_module else classes).append(item)
     return (
         json.dumps(
             {
@@ -174,10 +215,12 @@ def export_symbols(ir: SchemaIR, *, graph_digest: str) -> str:
                 "dependencies": ir.dependencies,
                 "term_types": ir.term_types,
                 "classes": classes,
+                "views": views,
                 "properties": properties,
                 "enums": [
                     asdict(symbol)
                     for symbol in sorted(ir.enums, key=lambda item: item.iri)
+                    if symbol.python_module is None
                 ],
             },
             indent=2,

@@ -421,14 +421,23 @@ def compile_configurations(
     profiles = _imported_profiles(graph, dependency)
     imported_modules: dict[str, str] = {}
 
-    def class_reference(iri: str) -> str:
+    def class_reference(iri: str, *, canonical: bool = False) -> str:
         symbol = dependency.classes[iri]
-        module = symbol.python_module
+        module = (
+            symbol.canonical_module
+            if canonical and symbol.canonical_module
+            else symbol.python_module
+        )
+        name = (
+            symbol.canonical_name
+            if canonical and symbol.canonical_module
+            else symbol.name
+        )
         if module is None or module == module_name:
-            return f"_BASE.{symbol.name}"
+            return f"_BASE.{name}"
         if module not in imported_modules:
             imported_modules[module] = f"_DEP{len(imported_modules)}"
-        return f"{imported_modules[module]}.{symbol.name}"
+        return f"{imported_modules[module]}.{name}"
 
     pending = {
         str(iri): iri
@@ -508,10 +517,22 @@ def compile_configurations(
 
     body = []
     quantity_records = []
+
+    def annotation_reference(iri):
+        if iri in dependency.classes:
+            return class_reference(iri, canonical=True)
+        return reference(iri)
+
     for item in configurations:
         body.extend(
             _emit_configuration(
-                item, graph, reference, references, value_reference, class_names
+                item,
+                graph,
+                reference,
+                references,
+                value_reference,
+                class_names,
+                annotation_reference,
             )
         )
     groups = sorted(graph.subjects(CODEGEN.projection, CODEGEN.PropertySchema), key=str)
@@ -824,6 +845,7 @@ def _emit_configuration(
     refs: Any,
     value_ref: Any,
     class_names: dict[str, str],
+    annotation_ref: Any,
 ) -> list[str]:
     lines = [
         f"class {item.name}({item.parent_name}):",
@@ -836,7 +858,7 @@ def _emit_configuration(
         lines.append(
             f"    {symbol} = " + emit_property_spec(spec).replace("\n", "\n    ")
         )
-        target = _value_annotation(spec, ref, class_names)
+        target = _value_annotation(spec, annotation_ref, class_names)
         if spec.kind == "class":
             # emit_descriptor wraps class ranges in type[].
             target = target.removeprefix("type[").removesuffix("]")
@@ -879,7 +901,7 @@ def _emit_configuration(
     for spec in sorted(item.specs.values(), key=lambda spec: spec.name):
         satisfied = bool(spec.required_values or spec.default_values)
         scalar = spec.kind not in {"class", "object", "enum"} or spec.max_count == 1
-        value = _value_annotation(spec, ref, class_names)
+        value = _value_annotation(spec, annotation_ref, class_names)
         annotation = value if scalar else f"_Iterable[{value}]"
         annotation += " | None"
         required = spec.required

@@ -209,16 +209,14 @@ def _context(target: Entity | PortHandle | ConnectionHandle) -> tuple[Registry, 
 
     if isinstance(target, Entity):
         owner = endpoint_owner(target)
-        return Registry.compose(
-            [target.meta.registry, owner.meta.registry]
-        ), target.meta.model
+        return Registry.for_entities([target, owner]), target.meta.model
     if isinstance(target, PortHandle):
-        return target.owner.meta.registry, target._model
-    return Registry.compose(
-        [
-            endpoint_owner(target.source).meta.registry,
-            endpoint_owner(target.target).meta.registry,
-        ]
+        return Registry.for_entities(
+            [target.owner], values=[target.medium]
+        ), target._model
+    return Registry.for_entities(
+        [endpoint_owner(target.source), endpoint_owner(target.target)],
+        values=[target.medium],
     ), target._model
 
 

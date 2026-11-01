@@ -44,6 +44,9 @@ class Overlay:
     rshift: Mapping[Target, Target] = field(default_factory=dict)
     """class name -> property that ``>>`` adds to (e.g. Equipment feeds)."""
 
+    base_module: str | None = None
+    """Compiler symbol dependency for a linked ontology closure."""
+
     containment: tuple[ContainmentRuleSpec, ...] = ()
     """Negotiation table rows for ``with`` scopes and ``contains()``."""
 
@@ -362,6 +365,7 @@ S223 = Overlay(
 _WATR_NS = "https://watermetadata.org/ontology/watr#"
 
 WATR = Overlay(
+    base_module="plumb.s223",
     containment=S223.containment,
     enum_root=S223.enum_root,
     ontology_iri="https://watermetadata.org/ontology/watr",

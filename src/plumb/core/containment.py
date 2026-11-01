@@ -83,7 +83,9 @@ class ContainmentTable:
         edge_from: Literal["container", "child"] = "container",
     ) -> None:
         """Add a rule. Called from generated package setup code."""
-        self.rules.append(ContainmentRule(container, child, prop, edge_from))
+        rule = ContainmentRule(container, child, prop, edge_from)
+        if rule not in self.rules:
+            self.rules.append(rule)
 
     def find(self, container: Entity, child: Entity) -> ContainmentRule | None:
         """Match a rule for this pair, or None.

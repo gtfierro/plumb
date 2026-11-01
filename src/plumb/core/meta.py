@@ -13,8 +13,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Literal
 from collections.abc import Iterable
+from pathlib import Path
 
 if TYPE_CHECKING:
+    import rdflib
     from .containment import ContainmentTable
     from .entity import Entity
     from .enums import EnumValue
@@ -275,12 +277,27 @@ class Registry:
         self.terms_by_iri: dict[str, object] = {}
         self._dependencies: tuple[Registry, ...] = ()
         self.schema_graph = None
+        self._schema_covers_dependencies = False
         #: QUDT quantity kind IRI -> Sensor subclass name, for ``.sensor()``
         self.sensor_classes: dict[str, str] = {}
         # Imported lazily to avoid a module cycle (containment needs Entity).
         from .containment import ContainmentTable
 
         self.containment: ContainmentTable = ContainmentTable(self)
+
+    @property
+    def schema_graph(self) -> rdflib.Graph | None:
+        """The package's bundled schema, parsed once when it is needed."""
+        if self._schema_graph is None and self._schema_path is not None:
+            from rdflib import Graph
+
+            self._schema_graph = Graph().parse(self._schema_path)
+        return self._schema_graph
+
+    @schema_graph.setter
+    def schema_graph(self, graph: rdflib.Graph | None) -> None:
+        self._schema_graph = graph
+        self._schema_path: Path | None = None
 
     def register(self, cls: type[Entity]) -> None:
         """Record a generated class. Called automatically at class creation."""
@@ -345,6 +362,22 @@ class Registry:
             combined.include(registry)
         return combined
 
+    @classmethod
+    def for_entities(
+        cls, entities: Iterable[Entity], *, values: Iterable[object] = ()
+    ) -> Registry:
+        """Select schema context from entities and their vocabulary references."""
+        registries = []
+        references = list(values)
+        for entity in entities:
+            registries.append(entity.meta.registry)
+            references.extend(value for _spec, value in entity._property_values())
+        for value in references:
+            registry = getattr(value, "_registry", None)
+            if isinstance(registry, Registry):
+                registries.append(registry)
+        return cls.compose(registries)
+
     def resolve(self, name: str) -> type[Entity]:
         """Look up a class by its Python name (used for range checking)."""
         try:
@@ -406,6 +439,8 @@ class Registry:
 
         for value in vars(module).values():
             if isinstance(value, EnumValue):
+                if value._registry is None:
+                    value._registry = self
                 self.enums_by_iri[value.iri] = value
 
     def resolve_enum(self, iri: str) -> EnumValue:

@@ -43,6 +43,14 @@ ONTOLOGY = _OntologyInfo(
 _REGISTRY = _Registry(ONTOLOGY)
 REGISTRY = _REGISTRY
 
+import plumb.s223 as _BASE
+
+_REGISTRY.include(_BASE.REGISTRY)
+
+from pathlib import Path as _Path
+_REGISTRY._schema_path = _Path(__file__).with_name('_shapes.ttl')
+_REGISTRY._schema_covers_dependencies = True
+
 from plumb.core import DeferredEndpoint as _DeferredEndpoint
 
 from plumb.core.shape_constraints import ShapeValues as _ShapeValues
@@ -51,104 +59,11 @@ from . import enums as enums
 
 _REGISTRY.register_enums(enums)
 
-_P_Concept_has_property = _PropertySpec(
-    name='has_property',
-    predicate='http://data.ashrae.org/standard223#hasProperty',
-    kind='object',
-    label='has property',
-    definition='A `Relation` that associates a `Concept` with a `Property`.',
-    ranges=('Property',),
-    range_groups=(('http://data.ashrae.org/standard223#Property',),),
-    sources=('b894486338780f2f7730cd6ec',),
-)
+Concept = _BASE.Concept
 
-_P_Concept_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    sources=('b08ea5991a9d595339cdac23a', 'b490b774633a41f304e59947b', 'b5aecdad0a8f3f7f4ac11e130', 'b9c3a652daf6472abbe15c7f2'),
-)
+Class_2 = _BASE.Class
 
-class Concept(_EntityBase):
-    """All classes and relations defined in the 223 standard are subclasses of `Concept`.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#Concept
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#Concept',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Concept',
-        definition='All classes and relations defined in the 223 standard are subclasses of `Concept`.',
-        parent_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
-        ancestor_iris=('http://www.w3.org/2000/01/rdf-schema#Resource',),
-        properties=(_P_Concept_has_property, _P_Concept_medium,),
-    )
-
-    has_property: _Rel[Property] = _Rel(_P_Concept_has_property)
-    """A `Relation` that associates a `Concept` with a `Property`. (http://data.ashrae.org/standard223#hasProperty)"""
-
-    medium: _EnumSet[_EnumValue] = _EnumSet(_P_Concept_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_property: _Iterable[Property] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_property=has_property,
-                medium=medium,
-            ),
-        )
-
-class Class_2(Concept):
-    """This is a modeling construct. All classes defined in the 223 standard are instances of `Class`.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#Class
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#Class',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Class',
-        definition='This is a modeling construct. All classes defined in the 223 standard are instances of `Class`.',
-        parent_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Class'),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Class', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-
-class AbstractClass(Class_2):
-    """This is a modeling construct. Instances of abstract classes cannot be created. All abstract classes in this standard have a more specific subclass.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#AbstractClass
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#AbstractClass',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Abstract class',
-        definition='This is a modeling construct. Instances of abstract classes cannot be created. All abstract classes in this standard have a more specific subclass.',
-        parent_iris=('http://data.ashrae.org/standard223#Class',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Class', 'http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Class', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
+AbstractClass = _BASE.AbstractClass
 
 _P_Concept_2_abbreviation = _PropertySpec(
     name='abbreviation',
@@ -1041,323 +956,11 @@ class AbstractQuantityKind(Concept_2):
             ),
         )
 
-_P_Property_has_aspect = _PropertySpec(
-    name='has_aspect',
-    predicate='http://data.ashrae.org/standard223#hasAspect',
-    kind='enum',
-    label='has aspect',
-    definition='`hasAspect` is used to establish the context of a `Property`. The value must be an instance of `EnumerationKind`. For example, if a `Property` has a temperature value of 45.3, the `hasAspect` relation is used to state what that represents, such as a temperature limit during working hours, etc. A `Property` can have any number of `hasAspect` relations as needed to establish the context.',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind',),),
-    sources=('b7aae26ef63bbb043e563d719',),
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind',),
-)
+Property = _BASE.Property
 
-_P_Property_has_external_reference = _PropertySpec(
-    name='has_external_reference',
-    predicate='http://data.ashrae.org/standard223#hasExternalReference',
-    kind='object',
-    label='has external reference',
-    definition='A `Relation` that associates a `Property` with an external telemetry source.',
-    ranges=('ExternalReference',),
-    range_groups=(('http://data.ashrae.org/standard223#ExternalReference',),),
-    sources=('bb4a11af5339522c2de8f79ac',),
-)
+ActuatableProperty = _BASE.ActuatableProperty
 
-_P_Property_has_internal_reference = _PropertySpec(
-    name='has_internal_reference',
-    predicate='http://data.ashrae.org/standard223#hasInternalReference',
-    kind='object',
-    label='has internal reference',
-    definition='A `Relation` that associates a `Property` with another equivalent `Property`. For example, a `Property` that represents a `Zone`\ntemperature could have one or more `hasInternalReference` relations to another `Property` that is a temperature measurement from one room in the zone (see Figure 11-2).\n\n![Zone Internal Reference.](figures/Figure_11-2_Zone_Internal_Reference.svg)\n\nAnother use of `hasInternalReference` is to make a `Property` of a piece of equipment\nvisible as a `Property` of a piece of containing equipment.\nThis is illustrated in Figure 11-3.\n\n![Equipment Containment.](figures/Figure_11-3_Equipment_Contains_3.svg)\n\nNote that the `hasInternalReference` relation is transitive.',
-    ranges=('Property',),
-    range_groups=(('http://data.ashrae.org/standard223#Property',),),
-    sources=('b127c98e51ab3fa45a5828492', 'b33295a0378a77d0ada611a70', 'b6360bf2ea6267d753a772461'),
-    inverse='is_internal_reference_of',
-)
-
-_P_Property_has_value = _PropertySpec(
-    name='has_value',
-    predicate='http://data.ashrae.org/standard223#hasValue',
-    kind='value',
-    label='has value',
-    definition='A `Relation` that associates something with a fixed value, as opposed to a computed, measured, or externally derived value.',
-    sources=('b94eb7c61639855466de28113', 'bc4f7ae22af7ed3730ac1bac4'),
-    max_count=1,
-)
-
-_P_Property_is_internal_reference_of = _PropertySpec(
-    name='is_internal_reference_of',
-    predicate='http://data.ashrae.org/standard223#isInternalReferenceOf',
-    kind='object',
-    label='is internal reference of',
-    definition='The inverse of the relation `hasInternalReference` (see {s223:hasInternalReference}).',
-    ranges=('Property',),
-    range_groups=(('http://data.ashrae.org/standard223#Property',),),
-    sources=('b7bde08b9f16713c82265df9d',),
-    max_count=1,
-    inverse='has_internal_reference',
-)
-
-_P_Property_of_constituent = _PropertySpec(
-    name='of_constituent',
-    predicate='http://data.ashrae.org/standard223#ofConstituent',
-    kind='object',
-    label='of constituent',
-    definition='A `Relation` that associates a `Property` that characterizes a `Medium-Mix` with one of the constituents of that mix (e.g., `Fluid-Water` `composedOf` `Property` `ofConstituent` `Constituent-H2O`).',
-    sources=('bf24db484d2f3f1f1fffcd2b0',),
-)
-
-_P_Property_of_medium = _PropertySpec(
-    name='of_medium',
-    predicate='http://data.ashrae.org/standard223#ofMedium',
-    kind='enum',
-    label='of medium',
-    definition='A `Relation` that associates a `Property` with the specific Medium it describes. A `Property` corresponding to the temperature of a medium would be associated with this medium using the relation `ofMedium`.',
-    range_groups=(('http://data.ashrae.org/standard223#Substance-Medium',),),
-    sources=('b7f47b631f571b101f621e646',),
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
-    max_count=1,
-)
-
-_P_Property_of_substance = _PropertySpec(
-    name='of_substance',
-    predicate='http://data.ashrae.org/standard223#ofSubstance',
-    kind='enum',
-    label='of substance',
-    definition='A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix.',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Substance',),),
-    sources=('b9ea31a97ca9f035e9e7e247d', 'bebe08be113ec9d15cc2075b3'),
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Substance',),
-    max_count=1,
-)
-
-class Property(Concept):
-    """An attribute, quality, or characteristic of a feature of interest.
-
-    The `Property` class is the parent of all variations of a `Property`, which are:
-
-    - `ActuatableProperty`, a subclass of `Property` that can be modified by a user or machine outside of the model (typically by a command);
-    - `ObservableProperty`, a subclass of `Property` that are observed (typically measures);
-    - `EnumerableProperty`, a subclass of `Property` defined by `EnumerationKind`; and
-    - `QuantifiableProperty`, a subclass of `Property` defined by numerical values.
-
-    And their subclass combinations:
-
-    - `QuantifiableActuatableProperty`,
-    - `QuantifiableObservableProperty`,
-    - `EnumeratedObservableProperty`, and
-    - `EnumeratedActuatableProperty`.
-
-    A `QuantifiableProperty` (or subclass thereof) shall always be associated with a `Unit` and a `QuantityKind`, either explicitly from the `Property`,
-    or through the associated Value. If the `Unit` is defined, the SHACL reasoner (if invoked) will figure out and assert a `QuantityKind` if it is
-    unambiguous.
-
-    Enumerable properties shall be associated with an `EnumerationKind`. Different types of properties are shown in Figure 11-1.
-
-    ![Different types of Properties](figures/Figure_11-1_Flavors_of_Properties.svg)
-
-    A `Property` instance that is not an instance of one of the subclasses is unconstrained with respect to its value.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#Property
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#Property',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Property',
-        definition='An attribute, quality, or characteristic of a feature of interest.\n\nThe `Property` class is the parent of all variations of a `Property`, which are:\n\n- `ActuatableProperty`, a subclass of `Property` that can be modified by a user or machine outside of the model (typically by a command);\n- `ObservableProperty`, a subclass of `Property` that are observed (typically measures);\n- `EnumerableProperty`, a subclass of `Property` defined by `EnumerationKind`; and\n- `QuantifiableProperty`, a subclass of `Property` defined by numerical values.\n\nAnd their subclass combinations:\n\n- `QuantifiableActuatableProperty`,\n- `QuantifiableObservableProperty`,\n- `EnumeratedObservableProperty`, and\n- `EnumeratedActuatableProperty`.\n\nA `QuantifiableProperty` (or subclass thereof) shall always be associated with a `Unit` and a `QuantityKind`, either explicitly from the `Property`,\nor through the associated Value. If the `Unit` is defined, the SHACL reasoner (if invoked) will figure out and assert a `QuantityKind` if it is\nunambiguous.\n\nEnumerable properties shall be associated with an `EnumerationKind`. Different types of properties are shown in Figure 11-1.\n\n![Different types of Properties](figures/Figure_11-1_Flavors_of_Properties.svg)\n\nA `Property` instance that is not an instance of one of the subclasses is unconstrained with respect to its value.',
-        parent_iris=('http://data.ashrae.org/standard223#Concept',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Property_has_aspect, _P_Property_has_external_reference, _P_Property_has_internal_reference, _P_Property_has_value, _P_Property_is_internal_reference_of, _P_Property_of_constituent, _P_Property_of_medium, _P_Property_of_substance,),
-    )
-
-    has_aspect: _EnumSet[_EnumValue] = _EnumSet(_P_Property_has_aspect)
-    """`hasAspect` is used to establish the context of a `Property`. The value must be an instance of `EnumerationKind`. For example, if a `Property` has a temperature value of 45.3, the `hasAspect` relation is used to state what that represents, such as a temperature limit during working hours, etc. A `Property` can have any number of `hasAspect` relations as needed to establish the context. (http://data.ashrae.org/standard223#hasAspect)"""
-
-    has_external_reference: _Rel[ExternalReference] = _Rel(_P_Property_has_external_reference)
-    """A `Relation` that associates a `Property` with an external telemetry source. (http://data.ashrae.org/standard223#hasExternalReference)"""
-
-    has_internal_reference: _Rel[Property] = _Rel(_P_Property_has_internal_reference)
-    """A `Relation` that associates a `Property` with another equivalent `Property`. For example, a `Property` that represents a `Zone`
-    temperature could have one or more `hasInternalReference` relations to another `Property` that is a temperature measurement from one room in the zone (see Figure 11-2).
-
-    ![Zone Internal Reference.](figures/Figure_11-2_Zone_Internal_Reference.svg)
-
-    Another use of `hasInternalReference` is to make a `Property` of a piece of equipment
-    visible as a `Property` of a piece of containing equipment.
-    This is illustrated in Figure 11-3.
-
-    ![Equipment Containment.](figures/Figure_11-3_Equipment_Contains_3.svg)
-
-    Note that the `hasInternalReference` relation is transitive. (http://data.ashrae.org/standard223#hasInternalReference)
-    """
-
-    has_value: _ValueOne[object] = _ValueOne(_P_Property_has_value)
-    """A `Relation` that associates something with a fixed value, as opposed to a computed, measured, or externally derived value. (http://data.ashrae.org/standard223#hasValue)"""
-
-    is_internal_reference_of: _RelOne[Property] = _RelOne(_P_Property_is_internal_reference_of)
-    """The inverse of the relation `hasInternalReference` (see {s223:hasInternalReference}). (http://data.ashrae.org/standard223#isInternalReferenceOf)"""
-
-    of_constituent: _Rel[_EntityBase] = _Rel(_P_Property_of_constituent)
-    """A `Relation` that associates a `Property` that characterizes a `Medium-Mix` with one of the constituents of that mix (e.g., `Fluid-Water` `composedOf` `Property` `ofConstituent` `Constituent-H2O`). (http://data.ashrae.org/standard223#ofConstituent)"""
-
-    of_medium: _EnumOne[_EnumValue] = _EnumOne(_P_Property_of_medium)
-    """A `Relation` that associates a `Property` with the specific Medium it describes. A `Property` corresponding to the temperature of a medium would be associated with this medium using the relation `ofMedium`. (http://data.ashrae.org/standard223#ofMedium)"""
-
-    of_substance: _EnumOne[_EnumValue] = _EnumOne(_P_Property_of_substance)
-    """A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix. (http://data.ashrae.org/standard223#ofSubstance)"""
-    _shape_constraints = (
-        _ShapeValues('has_value', 'b94eb7c61639855466de28113, bc4f7ae22af7ed3730ac1bac4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('of_substance', 'b9ea31a97ca9f035e9e7e247d, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_aspect: _Iterable[_EnumValue] = (),
-        has_external_reference: _Iterable[ExternalReference] = (),
-        has_internal_reference: _Iterable[Property] = (),
-        has_property: _Iterable[Property] = (),
-        has_value: object | None = None,
-        is_internal_reference_of: Property | None = None,
-        medium: _Iterable[_EnumValue] = (),
-        of_constituent: _Iterable[_EntityBase] = (),
-        of_medium: _EnumValue | None = None,
-        of_substance: _EnumValue | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_aspect=has_aspect,
-                has_external_reference=has_external_reference,
-                has_internal_reference=has_internal_reference,
-                has_property=has_property,
-                has_value=has_value,
-                is_internal_reference_of=is_internal_reference_of,
-                medium=medium,
-                of_constituent=of_constituent,
-                of_medium=of_medium,
-                of_substance=of_substance,
-            ),
-        )
-
-class ActuatableProperty(Property):
-    """The term "actuatable" implies that writing to the `ActuatableProperty` value will directly trigger a physical actuation by either an `Actuator` or `Equipment`.
-    In contrast, the term "observable" (see {s223:ObservableProperty}) implies that reading the `ObservableProperty` value will return the result of a physical observation.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#ActuatableProperty
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#ActuatableProperty',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Actuatable property',
-        definition='The term "actuatable" implies that writing to the `ActuatableProperty` value will directly trigger a physical actuation by either an `Actuator` or `Equipment`.\nIn contrast, the term "observable" (see {s223:ObservableProperty}) implies that reading the `ObservableProperty` value will return the result of a physical observation.',
-        parent_iris=('http://data.ashrae.org/standard223#Property',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('has_value', 'b94eb7c61639855466de28113, bc4f7ae22af7ed3730ac1bac4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('of_substance', 'b9ea31a97ca9f035e9e7e247d, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-    )
-
-_P_Connectable_cnx = _PropertySpec(
-    name='cnx',
-    predicate='http://data.ashrae.org/standard223#cnx',
-    kind='object',
-    label='cnx',
-    definition='A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.',
-    ranges=('ConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
-    sources=('b5c7de35b6a913e84096a45d9', 'b7e07cff51177986b8f64bb06'),
-)
-
-_P_Connectable_connected = _PropertySpec(
-    name='connected',
-    predicate='http://data.ashrae.org/standard223#connected',
-    kind='object',
-    label='connected',
-    definition='The relation `connected` indicates that two connectable things are `connected` without regard to the direction of flow.',
-    ranges=('Connectable',),
-    range_groups=(('http://data.ashrae.org/standard223#Connectable',),),
-    sources=('b4378a93760ff413779cb18db',),
-)
-
-_P_Connectable_connected_from = _PropertySpec(
-    name='connected_from',
-    predicate='http://data.ashrae.org/standard223#connectedFrom',
-    kind='object',
-    label='connected from',
-    definition='The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}).',
-    ranges=('Connectable',),
-    range_groups=(('http://data.ashrae.org/standard223#Connectable',),),
-    sources=('b5fe5575d8ff2586af6168548',),
-    inverse='connected_to',
-)
-
-_P_Connectable_connected_through = _PropertySpec(
-    name='connected_through',
-    predicate='http://data.ashrae.org/standard223#connectedThrough',
-    kind='object',
-    label='connected through',
-    definition='A `Relation` that associates a `Connectable` with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things.',
-    ranges=('Connection',),
-    range_groups=(('http://data.ashrae.org/standard223#Connection',),),
-    sources=('b283171481c48b41a4546dad9',),
-)
-
-_P_Connectable_connected_to = _PropertySpec(
-    name='connected_to',
-    predicate='http://data.ashrae.org/standard223#connectedTo',
-    kind='object',
-    label='connected to',
-    definition='The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}).',
-    ranges=('Connectable',),
-    range_groups=(('http://data.ashrae.org/standard223#Connectable',),),
-    sources=('b9831b15fc9bd705787c7d0e2',),
-    inverse='connected_from',
-)
-
-_P_Connectable_has_connection_point = _PropertySpec(
-    name='has_connection_point',
-    predicate='http://data.ashrae.org/standard223#hasConnectionPoint',
-    kind='object',
-    label='has connection point',
-    definition='One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).',
-    ranges=('ConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
-    sources=('be2099568566b78227dcced58',),
-    inverse='owner',
-)
-
-_P_Connectable_has_optional_connection_point = _PropertySpec(
-    name='has_optional_connection_point',
-    predicate='http://data.ashrae.org/standard223#hasOptionalConnectionPoint',
-    kind='object',
-    label='has optional connection point',
-    definition='The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context.',
-    ranges=('ConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
-    sources=('bbf8aaab37aca192eece5eb71',),
-)
-
-class Connectable(Concept):
+class Connectable(_BASE.Connectable):
     """`Connectable` is an abstract class representing `Equipment` (see {s223:Equipment}), a `DomainSpace` (see {s223:DomainSpace}), or a `Junction` (see {s223:Junction}) that can be `connected` to other `Connectable`s via `ConnectionPoint`s and `Connection`s.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Connectable
@@ -1367,116 +970,13 @@ class Connectable(Concept):
         iri='http://data.ashrae.org/standard223#Connectable',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Connectable.meta.canonical,
         label='Connectable',
         definition='`Connectable` is an abstract class representing `Equipment` (see {s223:Equipment}), a `DomainSpace` (see {s223:DomainSpace}), or a `Junction` (see {s223:Junction}) that can be `connected` to other `Connectable`s via `ConnectionPoint`s and `Connection`s.',
         parent_iris=('http://data.ashrae.org/standard223#Concept',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
         abstract=True,
-        properties=(_P_Connectable_cnx, _P_Connectable_connected, _P_Connectable_connected_from, _P_Connectable_connected_through, _P_Connectable_connected_to, _P_Connectable_has_connection_point, _P_Connectable_has_optional_connection_point,),
     )
-
-    cnx: _Rel[ConnectionPoint] = _Rel(_P_Connectable_cnx)
-    """A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences. (http://data.ashrae.org/standard223#cnx)"""
-
-    connected: _Rel[Connectable] = _Rel(_P_Connectable_connected)
-    """The relation `connected` indicates that two connectable things are `connected` without regard to the direction of flow. (http://data.ashrae.org/standard223#connected)"""
-
-    connected_from: _Rel[Connectable] = _Rel(_P_Connectable_connected_from)
-    """The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}). (http://data.ashrae.org/standard223#connectedFrom)"""
-
-    connected_through: _Rel[Connection] = _Rel(_P_Connectable_connected_through)
-    """A `Relation` that associates a `Connectable` with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things. (http://data.ashrae.org/standard223#connectedThrough)"""
-
-    connected_to: _Rel[Connectable] = _Rel(_P_Connectable_connected_to)
-    """The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}). (http://data.ashrae.org/standard223#connectedTo)"""
-
-    has_connection_point: _Rel[ConnectionPoint] = _Rel(_P_Connectable_has_connection_point)
-    """One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}). (http://data.ashrae.org/standard223#hasConnectionPoint)"""
-
-    has_optional_connection_point: _Rel[ConnectionPoint] = _Rel(_P_Connectable_has_optional_connection_point)
-    """The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context. (http://data.ashrae.org/standard223#hasOptionalConnectionPoint)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_property: _Iterable[Property] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_property=has_property,
-                medium=medium,
-            ),
-        )
-
-_P_Equipment_actuated_by_property = _PropertySpec(
-    name='actuated_by_property',
-    predicate='http://data.ashrae.org/standard223#actuatedByProperty',
-    kind='object',
-    label='actuated by property',
-    definition='A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`\nis an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of\n`Equipment` being actuated (see {s223:actuates}).',
-    ranges=('ActuatableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#ActuatableProperty',),),
-    sources=('b244bc874756dd5dc97be3617',),
-)
-
-_P_Equipment_contains_ = _PropertySpec(
-    name='contains_',
-    predicate='http://data.ashrae.org/standard223#contains',
-    kind='object',
-    label='contains',
-    definition='A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s.',
-    ranges=('Equipment', 'Junction'),
-    range_groups=(('http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Junction'),),
-    sources=('b69091e8dfe0a9f3725f14148', 'b834e4d184f741a712a18dabc'),
-)
-
-_P_Equipment_executes = _PropertySpec(
-    name='executes',
-    predicate='http://data.ashrae.org/standard223#executes',
-    kind='object',
-    label='executes',
-    definition='A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes.',
-    ranges=('Function',),
-    range_groups=(('http://data.ashrae.org/standard223#Function',),),
-    sources=('bc10aa2950c93e29291717e55',),
-)
-
-_P_Equipment_has_physical_location = _PropertySpec(
-    name='has_physical_location',
-    predicate='http://data.ashrae.org/standard223#hasPhysicalLocation',
-    kind='object',
-    label='has physical location',
-    definition='A `Relation` that associates a piece of `Equipment` with its physical location (i.e., in a `PhysicalSpace`). The physical location of a piece of `Equipment` is not necessarily the same as the location affected by the operation of the `Equipment`. For example, an air handler may physically be located on the roof, but its effect is to provide conditioned air to a `Zone` or `DomainSpace` within the building. By following the path of connections, it can be determined what other equipment or spaces are possibly impacted by the `Equipment`.',
-    ranges=('PhysicalSpace',),
-    range_groups=(('http://data.ashrae.org/standard223#PhysicalSpace',),),
-    sources=('b67b0f96d7708f79624e4fe0b',),
-)
 
 _P_Equipment_has_process = _PropertySpec(
     name='has_process',
@@ -1487,17 +987,6 @@ _P_Equipment_has_process = _PropertySpec(
     ranges=('Process',),
     range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
     sources=('https://watermetadata.org/ontology/watr#hasProcess',),
-)
-
-_P_Equipment_has_role = _PropertySpec(
-    name='has_role',
-    predicate='http://data.ashrae.org/standard223#hasRole',
-    kind='enum',
-    label='has role',
-    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
-    sources=('be7260e57dcb51463c8fc48d4',),
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
 )
 
 _P_Equipment_has_treatment_objective = _PropertySpec(
@@ -1511,7 +1000,7 @@ _P_Equipment_has_treatment_objective = _PropertySpec(
     sources=('https://watermetadata.org/ontology/watr#hasTreatmentObjective',),
 )
 
-class Equipment(Connectable):
+class Equipment(Connectable, _BASE.Equipment):
     """`Equipment` is the modeling construct used to represent a thing designed to accomplish a specific task, or a complex thing
     that contains component pieces of `Equipment` that are connected to each other and work together to accomplish a task. `Equipment` can have
     `Connection`s and `ConnectionPoint`s through which one or more kinds of medium (see {s223:Substance-Medium}) might flow. Examples of `Equipment` defined in this ontology include `Pump`, `Fan`, `AirHeatExchanger`, `Luminaire`, and `Sensor`. `Equipment` can be connected to other `Connectable`s such as other `Equipment` or `DomainSpace`s.
@@ -1527,33 +1016,16 @@ class Equipment(Connectable):
         iri='http://data.ashrae.org/standard223#Equipment',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Equipment.meta.canonical,
         label='Equipment',
         definition='`Equipment` is the modeling construct used to represent a thing designed to accomplish a specific task, or a complex thing\nthat contains component pieces of `Equipment` that are connected to each other and work together to accomplish a task. `Equipment` can have\n`Connection`s and `ConnectionPoint`s through which one or more kinds of medium (see {s223:Substance-Medium}) might flow. Examples of `Equipment` defined in this ontology include `Pump`, `Fan`, `AirHeatExchanger`, `Luminaire`, and `Sensor`. `Equipment` can be connected to other `Connectable`s such as other `Equipment` or `DomainSpace`s.\n\nThe graphical depiction of Equipment used in this document is a round-cornered rectangle as shown in Figure 5-1.\n\n![Graphical Depiction of Equipment.](figures/Figure_5-1_Graphical_Depiciton_of_Equipment.svg)',
         parent_iris=('http://data.ashrae.org/standard223#Connectable',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Equipment_actuated_by_property, _P_Equipment_contains_, _P_Equipment_executes, _P_Equipment_has_physical_location, _P_Equipment_has_process, _P_Equipment_has_role, _P_Equipment_has_treatment_objective,),
+        properties=(_P_Equipment_has_process, _P_Equipment_has_treatment_objective,),
     )
-
-    actuated_by_property: _Rel[ActuatableProperty] = _Rel(_P_Equipment_actuated_by_property)
-    """A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`
-    is an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of
-    `Equipment` being actuated (see {s223:actuates}). (http://data.ashrae.org/standard223#actuatedByProperty)
-    """
-
-    contains_: _Rel[Equipment | Junction] = _Rel(_P_Equipment_contains_)
-    """A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s. (http://data.ashrae.org/standard223#contains)"""
-
-    executes: _Rel[Function] = _Rel(_P_Equipment_executes)
-    """A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes. (http://data.ashrae.org/standard223#executes)"""
-
-    has_physical_location: _Rel[PhysicalSpace] = _Rel(_P_Equipment_has_physical_location)
-    """A `Relation` that associates a piece of `Equipment` with its physical location (i.e., in a `PhysicalSpace`). The physical location of a piece of `Equipment` is not necessarily the same as the location affected by the operation of the `Equipment`. For example, an air handler may physically be located on the roof, but its effect is to provide conditioned air to a `Zone` or `DomainSpace` within the building. By following the path of connections, it can be determined what other equipment or spaces are possibly impacted by the `Equipment`. (http://data.ashrae.org/standard223#hasPhysicalLocation)"""
 
     has_process: _Rel[type[Process]] = _Rel(_P_Equipment_has_process)
     """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
-
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_Equipment_has_role)
-    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
 
     has_treatment_objective: _Rel[type[TreatmentObjective]] = _Rel(_P_Equipment_has_treatment_objective)
     """Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess. (https://watermetadata.org/ontology/watr#hasTreatmentObjective)"""
@@ -1564,11 +1036,11 @@ class Equipment(Connectable):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -1610,31 +1082,7 @@ class Equipment(Connectable):
             ),
         )
 
-_P_Actuator_actuated_by_property = _PropertySpec(
-    name='actuated_by_property',
-    predicate='http://data.ashrae.org/standard223#actuatedByProperty',
-    kind='object',
-    label='actuated by property',
-    definition='A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`\nis an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of\n`Equipment` being actuated (see {s223:actuates}).',
-    ranges=('ActuatableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#ActuatableProperty',),),
-    sources=('b244bc874756dd5dc97be3617', 'bb12f7647c7a4f02d88af0ad0'),
-    min_count=1,
-    required=True,
-)
-
-_P_Actuator_actuates = _PropertySpec(
-    name='actuates',
-    predicate='http://data.ashrae.org/standard223#actuates',
-    kind='object',
-    label='actuates',
-    definition='A `Relation` that associates an `Actuator` with the `Equipment` that it actuates.',
-    ranges=('Equipment',),
-    range_groups=(('http://data.ashrae.org/standard223#Equipment',),),
-    sources=('bdc357ed939aca87e4f495835',),
-)
-
-class Actuator(Equipment):
+class Actuator(Equipment, _BASE.Actuator):
     """A piece of `Equipment` that receives control signals and electrically, pneumatically, or hydraulically makes changes in the
     physical world, such as the position of a valve or damper.
 
@@ -1645,21 +1093,12 @@ class Actuator(Equipment):
         iri='http://data.ashrae.org/standard223#Actuator',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Actuator.meta.canonical,
         label='Actuator',
         definition='A piece of `Equipment` that receives control signals and electrically, pneumatically, or hydraulically makes changes in the\nphysical world, such as the position of a valve or damper.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Actuator_actuated_by_property, _P_Actuator_actuates,),
     )
-
-    actuated_by_property: _Rel[ActuatableProperty] = _Rel(_P_Actuator_actuated_by_property)
-    """A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`
-    is an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of
-    `Equipment` being actuated (see {s223:actuates}). (http://data.ashrae.org/standard223#actuatedByProperty)
-    """
-
-    actuates: _Rel[Equipment] = _Rel(_P_Actuator_actuates)
-    """A `Relation` that associates an `Actuator` with the `Equipment` that it actuates. (http://data.ashrae.org/standard223#actuates)"""
     _shape_constraints = (
         _ShapeValues('actuated_by_property', 'b244bc874756dd5dc97be3617, bb12f7647c7a4f02d88af0ad0', required=(), defaults=(), choices=None, minimum=1, maximum=None),
     )
@@ -1669,13 +1108,13 @@ class Actuator(Equipment):
         name: str | None = None,
         *,
         actuated_by_property: _Iterable[ActuatableProperty],
-        actuates: _Iterable[Equipment] = (),
+        actuates: _Iterable[_BASE.Equipment] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -1777,11 +1216,11 @@ class UnitProcess(Equipment):
         has_process: _Iterable[type[Process]],
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -1871,11 +1310,11 @@ class AerationBasin(Reactor):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -1943,11 +1382,11 @@ class Digester(Reactor):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -2117,7 +1556,7 @@ class AerospaceCoordinateSystem(CoordinateSystem):
         _ShapeValues('type__2', 'http://qudt.org/schema/qudt/Concept-type', required=(), defaults=(), choices=None, minimum=1, maximum=None),
     )
 
-class AirHandlingUnit(Equipment):
+class AirHandlingUnit(Equipment, _BASE.AirHandlingUnit):
     """A piece of `Equipment` consisting of a fan or fans and other equipment necessary to perform one or more of the following functions:
     circulating, filtration, heating, cooling, heat recovery, humidifying, dehumidifying, and mixing of air.
 
@@ -2128,17 +1567,14 @@ class AirHandlingUnit(Equipment):
         iri='http://data.ashrae.org/standard223#AirHandlingUnit',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.AirHandlingUnit.meta.canonical,
         label='Air handling unit',
         definition='A piece of `Equipment` consisting of a fan or fans and other equipment necessary to perform one or more of the following functions:\ncirculating, filtration, heating, cooling, heat recovery, humidifying, dehumidifying, and mixing of air.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class AirHeatExchanger(Equipment):
+class AirHeatExchanger(Equipment, _BASE.AirHeatExchanger):
     """A piece of `Equipment` that transfers heat from one air stream to another while keeping the two media separate.
 
     Ontology: WATR — http://data.ashrae.org/standard223#AirHeatExchanger
@@ -2148,16 +1584,14 @@ class AirHeatExchanger(Equipment):
         iri='http://data.ashrae.org/standard223#AirHeatExchanger',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.AirHeatExchanger.meta.canonical,
         label='Air heat exchanger',
         definition='A piece of `Equipment` that transfers heat from one air stream to another while keeping the two media separate.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=0, max_count=0),
-        ),
     )
 
-class Valve_2(Equipment):
+class Valve_2(Equipment, _BASE.Valve):
     """A piece of `Equipment` that can be adjusted to allow, regulate, or stop the flow of fluid in a pipe or a duct.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Valve
@@ -2167,19 +1601,11 @@ class Valve_2(Equipment):
         iri='http://data.ashrae.org/standard223#Valve',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Valve.meta.canonical,
         label='Valve',
         definition='A piece of `Equipment` that can be adjusted to allow, regulate, or stop the flow of fluid in a pipe or a duct.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_constraints=(
-            _CPConstraint(operator='or', children=(
-                _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None)),
-                )),
-                _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=2, max_count=None)),
-            )),
-        ),
     )
 
 class AirReleaseValve(Valve_2):
@@ -2227,11 +1653,11 @@ class SeparationTank(Tank, UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -2293,7 +1719,7 @@ class AirStripper(SeparationTank):
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess', required=(), defaults=(), choices=None, minimum=1, maximum=None),
     )
 
-class HeatPump(Equipment):
+class HeatPump(Equipment, _BASE.HeatPump):
     """A piece of `Equipment` that heats or cools spaces by transferring thermal energy from one thermal environment to another using a reversible refrigeration cycle.
 
     Ontology: WATR — http://data.ashrae.org/standard223#HeatPump
@@ -2303,13 +1729,14 @@ class HeatPump(Equipment):
         iri='http://data.ashrae.org/standard223#HeatPump',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.HeatPump.meta.canonical,
         label='Heat pump',
         definition='A piece of `Equipment` that heats or cools spaces by transferring thermal energy from one thermal environment to another using a reversible refrigeration cycle.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class AirToAirHeatPump(HeatPump):
+class AirToAirHeatPump(HeatPump, _BASE.AirToAirHeatPump):
     """A `HeatPump` that transfers thermal energy between two bodies of air.
 
     Ontology: WATR — http://data.ashrae.org/standard223#AirToAirHeatPump
@@ -2319,14 +1746,11 @@ class AirToAirHeatPump(HeatPump):
         iri='http://data.ashrae.org/standard223#AirToAirHeatPump',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.AirToAirHeatPump.meta.canonical,
         label='Air-to-air heat pump',
         definition='A `HeatPump` that transfers thermal energy between two bodies of air.',
         parent_iris=('http://data.ashrae.org/standard223#HeatPump',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatPump', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
-        ),
     )
 
 class AlgebraicDatatype(StructuredDatatype):
@@ -4317,191 +3741,9 @@ class AxialOrientationType(EnumeratedValue):
         _ShapeValues('wikidata_match', 'http://qudt.org/schema/qudt/Verifiable-wikidataMatch', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-class ExternalReference(Concept):
-    """`ExternalReference` is an abstract class that represents application programming interface or protocol parameter values necessary to associate a `Property` with information external to the model, such as BACnet objects or telemetry values.
+ExternalReference = _BASE.ExternalReference
 
-    Ontology: WATR — http://data.ashrae.org/standard223#ExternalReference
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#ExternalReference',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='External reference',
-        definition='`ExternalReference` is an abstract class that represents application programming interface or protocol parameter values necessary to associate a `Property` with information external to the model, such as BACnet objects or telemetry values.',
-        parent_iris=('http://data.ashrae.org/standard223#Concept',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        abstract=True,
-    )
-
-_P_BACnetExternalReference_device_identifier = _PropertySpec(
-    name='device_identifier',
-    predicate='http://data.ashrae.org/bacnet/2020#device-identifier',
-    kind='literal',
-    label='Device identifier',
-    definition='The Object_Identifier property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.1.',
-    sources=('b1a900c8cd314611fa217ec20',),
-    datatype=str,
-    max_count=1,
-)
-
-_P_BACnetExternalReference_device_name = _PropertySpec(
-    name='device_name',
-    predicate='http://data.ashrae.org/bacnet/2020#device-name',
-    kind='literal',
-    label='Device name',
-    definition='The name of the BACnet device being referenced, more formally the Object_Name property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.2.',
-    sources=('be33b0e747a136e0fc72bb73c',),
-    datatype=str,
-    max_count=1,
-)
-
-_P_BACnetExternalReference_object_identifier = _PropertySpec(
-    name='object_identifier',
-    predicate='http://data.ashrae.org/bacnet/2020#object-identifier',
-    kind='literal',
-    label='Object identifier',
-    definition='The Object_Identifier property of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1.',
-    sources=('b07d17670e222bead75c11fc1',),
-    datatype=str,
-    max_count=1,
-)
-
-_P_BACnetExternalReference_object_name = _PropertySpec(
-    name='object_name',
-    predicate='http://data.ashrae.org/bacnet/2020#object-name',
-    kind='literal',
-    label='Object name',
-    definition='The Object_Name property of the object being referenced.  For example, for the object name of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.2.',
-    sources=('bba37523c93e38be4ede2e364',),
-    datatype=str,
-    max_count=1,
-)
-
-_P_BACnetExternalReference_priority_for_writing = _PropertySpec(
-    name='priority_for_writing',
-    predicate='http://data.ashrae.org/bacnet/2020#priority-for-writing',
-    kind='literal',
-    label='Priority for writing',
-    definition='This parameter shall be an integer in the range 1..16, which indicates the priority assigned to the WriteProperty service. If an attempt\nis made to write to a commandable property without specifying the bacnet:priority-for-writing, a default priority of 16 (the lowest priority) shall\nbe assumed. If an attempt is made to write to a property that is not commandable with a specified priority, the priority shall be\nignored.  See ASHRAE 135-2024 Clause 15.9.1.1.5.',
-    sources=('bb1db1615b4c880bcd2cbc8c9',),
-    datatype=int,
-    max_count=1,
-)
-
-_P_BACnetExternalReference_property_array_index = _PropertySpec(
-    name='property_array_index',
-    predicate='http://data.ashrae.org/bacnet/2020#property-array-index',
-    kind='literal',
-    label='Property array index',
-    definition='If the property identified is of datatype array, this optional property of type Unsigned shall indicate the array index of\nthe element of the `Property` referenced by the ReadProperty service or the Read Access Specification of the ReadPropertyMultiple service. If the bacnet:property-array-index is omitted, this shall mean that the entire\narray shall be referenced.  See ASHRAE 135-2024 Clause 15.5.1.1.3 and Clause 15.7.1.1.1.',
-    sources=('b6f23479914a488e0faf05368',),
-    datatype=int,
-    max_count=1,
-)
-
-_P_BACnetExternalReference_property_identifier = _PropertySpec(
-    name='property_identifier',
-    predicate='http://data.ashrae.org/bacnet/2020#property-identifier',
-    kind='literal',
-    label='Property identifier',
-    definition='The Object_Identifier `Property` of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1.',
-    sources=('b51af76b24f3d1335988cfaf2',),
-    datatype=str,
-    max_count=1,
-)
-
-class BACnetExternalReference(ExternalReference):
-    """An `ExternalReference` that contains BACnet protocol parameter values necessary to associate a `Property` with a value.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#BACnetExternalReference
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#BACnetExternalReference',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='BACnet external reference',
-        definition='An `ExternalReference` that contains BACnet protocol parameter values necessary to associate a `Property` with a value.',
-        parent_iris=('http://data.ashrae.org/standard223#ExternalReference',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ExternalReference', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_BACnetExternalReference_device_identifier, _P_BACnetExternalReference_device_name, _P_BACnetExternalReference_object_identifier, _P_BACnetExternalReference_object_name, _P_BACnetExternalReference_priority_for_writing, _P_BACnetExternalReference_property_array_index, _P_BACnetExternalReference_property_identifier,),
-    )
-
-    device_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_device_identifier)
-    """The Object_Identifier property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.1. (http://data.ashrae.org/bacnet/2020#device-identifier)"""
-
-    device_name: _Lit[str] = _Lit(_P_BACnetExternalReference_device_name)
-    """The name of the BACnet device being referenced, more formally the Object_Name property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.2. (http://data.ashrae.org/bacnet/2020#device-name)"""
-
-    object_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_object_identifier)
-    """The Object_Identifier property of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1. (http://data.ashrae.org/bacnet/2020#object-identifier)"""
-
-    object_name: _Lit[str] = _Lit(_P_BACnetExternalReference_object_name)
-    """The Object_Name property of the object being referenced.  For example, for the object name of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.2. (http://data.ashrae.org/bacnet/2020#object-name)"""
-
-    priority_for_writing: _Lit[int] = _Lit(_P_BACnetExternalReference_priority_for_writing)
-    """This parameter shall be an integer in the range 1..16, which indicates the priority assigned to the WriteProperty service. If an attempt
-    is made to write to a commandable property without specifying the bacnet:priority-for-writing, a default priority of 16 (the lowest priority) shall
-    be assumed. If an attempt is made to write to a property that is not commandable with a specified priority, the priority shall be
-    ignored.  See ASHRAE 135-2024 Clause 15.9.1.1.5. (http://data.ashrae.org/bacnet/2020#priority-for-writing)
-    """
-
-    property_array_index: _Lit[int] = _Lit(_P_BACnetExternalReference_property_array_index)
-    """If the property identified is of datatype array, this optional property of type Unsigned shall indicate the array index of
-    the element of the `Property` referenced by the ReadProperty service or the Read Access Specification of the ReadPropertyMultiple service. If the bacnet:property-array-index is omitted, this shall mean that the entire
-    array shall be referenced.  See ASHRAE 135-2024 Clause 15.5.1.1.3 and Clause 15.7.1.1.1. (http://data.ashrae.org/bacnet/2020#property-array-index)
-    """
-
-    property_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_property_identifier)
-    """The Object_Identifier `Property` of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1. (http://data.ashrae.org/bacnet/2020#property-identifier)"""
-    _shape_constraints = (
-        _ShapeValues('device_identifier', 'b1a900c8cd314611fa217ec20', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('device_name', 'be33b0e747a136e0fc72bb73c', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('object_identifier', 'b07d17670e222bead75c11fc1', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('object_name', 'bba37523c93e38be4ede2e364', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('priority_for_writing', 'bb1db1615b4c880bcd2cbc8c9', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('property_array_index', 'b6f23479914a488e0faf05368', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('property_identifier', 'b51af76b24f3d1335988cfaf2', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        device_identifier: str | None = None,
-        device_name: str | None = None,
-        has_property: _Iterable[Property] = (),
-        medium: _Iterable[_EnumValue] = (),
-        object_identifier: str | None = None,
-        object_name: str | None = None,
-        priority_for_writing: int | None = None,
-        property_array_index: int | None = None,
-        property_identifier: str | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                device_identifier=device_identifier,
-                device_name=device_name,
-                has_property=has_property,
-                medium=medium,
-                object_identifier=object_identifier,
-                object_name=object_name,
-                priority_for_writing=priority_for_writing,
-                property_array_index=property_array_index,
-                property_identifier=property_identifier,
-            ),
-        )
+BACnetExternalReference = _BASE.BACnetExternalReference
 
 class Graph(DataItem):
     """Graph Type
@@ -4763,7 +4005,7 @@ class BaseDimensionMagnitude(Concept_2):
             ),
         )
 
-class Bathtub(Equipment):
+class Bathtub(Equipment, _BASE.Bathtub):
     """A piece of `Equipment` for bathing that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Bathtub
@@ -4773,17 +4015,14 @@ class Bathtub(Equipment):
         iri='http://data.ashrae.org/standard223#Bathtub',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Bathtub.meta.canonical,
         label='Bathtub',
         definition='A piece of `Equipment` for bathing that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class Battery_2(Equipment):
+class Battery_2(Equipment, _BASE.Battery):
     """A piece of `Equipment` that stores a defined amount of chemical energy that can be converted to electrical energy via a chemical process. This process, typically referred to as discharging, produces a specific electrical voltage and current.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Battery
@@ -4793,16 +4032,11 @@ class Battery_2(Equipment):
         iri='http://data.ashrae.org/standard223#Battery',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Battery.meta.canonical,
         label='Battery',
         definition='A piece of `Equipment` that stores a defined amount of chemical energy that can be converted to electrical energy via a chemical process. This process, typically referred to as discharging, produces a specific electrical voltage and current.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_constraints=(
-            _CPConstraint(operator='or', children=(
-                _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None)),
-                _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None)),
-            )),
-        ),
     )
 
 class Battery(Battery_2):
@@ -4867,11 +4101,11 @@ class BeltFilterPress(DewateringUnit):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -4959,11 +4193,11 @@ class BeltThickener(Thickener):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -5005,263 +4239,9 @@ class BeltThickener(Thickener):
             ),
         )
 
-_P_ConnectionPoint_connection = _PropertySpec(
-    name='connection',
-    predicate='http://data.ashrae.org/standard223#connectsThrough',
-    kind='object',
-    label='connects through',
-    definition='A `Relation` that associates a `ConnectionPoint` with a `Connection`, without regard to the direction of flow.',
-    ranges=('Connection',),
-    range_groups=(('http://data.ashrae.org/standard223#Connection',),),
-    sources=('b45e5b28f4870913fb56aa255', 'bf34e91b5b4ffadb3428bcf8e'),
-    max_count=1,
-    inverse='connects_at',
-)
+ConnectionPoint = _BASE.ConnectionPoint
 
-_P_ConnectionPoint_has_electrical_phase = _PropertySpec(
-    name='has_electrical_phase',
-    predicate='http://data.ashrae.org/standard223#hasElectricalPhase',
-    kind='enum',
-    label='has electrical phase',
-    definition='A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`.',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-ElectricalPhaseIdentifier',),),
-    sources=('b0c1fffe312fa41f8bd4a2137',),
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-ElectricalPhaseIdentifier',),
-    max_count=1,
-)
-
-_P_ConnectionPoint_has_role = _PropertySpec(
-    name='has_role',
-    predicate='http://data.ashrae.org/standard223#hasRole',
-    kind='enum',
-    label='has role',
-    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
-    sources=('bef0b92e208ad61a4fb3f8497',),
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
-)
-
-_P_ConnectionPoint_maps_to = _PropertySpec(
-    name='maps_to',
-    predicate='http://data.ashrae.org/standard223#mapsTo',
-    kind='object',
-    label='maps to',
-    definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
-    ranges=('ConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
-    sources=('b33487dbc91b59884232238e0', 'bb034c0077500f468d0b8a00c', 'bcd0844fd5cbcd23016dbbec4', 'be1d4db06086f9ad97cf53289'),
-    max_count=1,
-    deferred=True,
-)
-
-_P_ConnectionPoint_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    range_groups=(('http://data.ashrae.org/standard223#Substance-Medium',),),
-    sources=('b08ea5991a9d595339cdac23a', 'b1b444a3bb99efa738b533c51', 'b490b774633a41f304e59947b', 'b5aecdad0a8f3f7f4ac11e130', 'b9c3a652daf6472abbe15c7f2', 'bcbdbd8352d5e02d426a20e1f'),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
-    required=True,
-    max_count=1,
-)
-
-_P_ConnectionPoint_owner = _PropertySpec(
-    name='owner',
-    predicate='http://data.ashrae.org/standard223#isConnectionPointOf',
-    kind='object',
-    label='is connection point of',
-    definition='One of two `Relation`s that associates a `ConnectionPoint` with a `Connectable`. It is the inverse of the relation `hasConnectionPoint` (see {s223:hasConnectionPoint}).',
-    ranges=('Connectable',),
-    range_groups=(('http://data.ashrae.org/standard223#Connectable',),),
-    sources=('bbbc51213b878601a6b8f0562',),
-    min_count=1,
-    required=True,
-    max_count=1,
-    inverse='has_connection_point',
-)
-
-_P_ConnectionPoint_paired_with = _PropertySpec(
-    name='paired_with',
-    predicate='http://data.ashrae.org/standard223#pairedConnectionPoint',
-    kind='object',
-    label='paired connection point',
-    definition='A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`.',
-    ranges=('ConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
-    sources=('b276ff53b66e82c6d438739d4',),
-    max_count=1,
-)
-
-class ConnectionPoint(Concept):
-    """A `ConnectionPoint` is an abstract modeling construct used to represent the fact that one `Connectable` can be connected to another `Connectable` using a `Connection`. It is the abstract representation of the flange, wire terminal, or other physical feature where a connection is made. `Equipment`, `DomainSpace`s and `Junction`s can have one or more `ConnectionPoint`s (see {s223:Connectable}).
-
-    A `ConnectionPoint` is constrained to relate to a specific medium such as air, water, or electricity which determines what can be connected to it. For example, constraining a `ConnectionPoint` to be for air means it cannot be used for an electrical connection.
-
-    A `ConnectionPoint` belongs to exactly one `Connectable` (see {s223:Connectable}).
-
-    `ConnectionPoint`s are represented graphically in this standard by a triangle with the point indicating a direction of flow, or a diamond in the case of a bidirectional flow as shown in Figure 6-1.
-
-    ![Graphical Representation of a ConnectionPoint](figures/Figure_5-2_Graphical_Depiciton_of_Connection_Points.svg)
-
-    Ontology: WATR — http://data.ashrae.org/standard223#ConnectionPoint
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#ConnectionPoint',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Connection point',
-        definition='A `ConnectionPoint` is an abstract modeling construct used to represent the fact that one `Connectable` can be connected to another `Connectable` using a `Connection`. It is the abstract representation of the flange, wire terminal, or other physical feature where a connection is made. `Equipment`, `DomainSpace`s and `Junction`s can have one or more `ConnectionPoint`s (see {s223:Connectable}).\n\nA `ConnectionPoint` is constrained to relate to a specific medium such as air, water, or electricity which determines what can be connected to it. For example, constraining a `ConnectionPoint` to be for air means it cannot be used for an electrical connection.\n\nA `ConnectionPoint` belongs to exactly one `Connectable` (see {s223:Connectable}).\n\n`ConnectionPoint`s are represented graphically in this standard by a triangle with the point indicating a direction of flow, or a diamond in the case of a bidirectional flow as shown in Figure 6-1.\n\n![Graphical Representation of a ConnectionPoint](figures/Figure_5-2_Graphical_Depiciton_of_Connection_Points.svg)',
-        parent_iris=('http://data.ashrae.org/standard223#Concept',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        abstract=True,
-        properties=(_P_ConnectionPoint_connection, _P_ConnectionPoint_has_electrical_phase, _P_ConnectionPoint_has_role, _P_ConnectionPoint_maps_to, _P_ConnectionPoint_medium, _P_ConnectionPoint_owner, _P_ConnectionPoint_paired_with,),
-    )
-
-    connection: _RelOne[Connection] = _RelOne(_P_ConnectionPoint_connection)
-    """A `Relation` that associates a `ConnectionPoint` with a `Connection`, without regard to the direction of flow. (http://data.ashrae.org/standard223#connectsThrough)"""
-
-    has_electrical_phase: _EnumOne[_EnumValue] = _EnumOne(_P_ConnectionPoint_has_electrical_phase)
-    """A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`. (http://data.ashrae.org/standard223#hasElectricalPhase)"""
-
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_ConnectionPoint_has_role)
-    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
-
-    maps_to: _RelOne[ConnectionPoint | _DeferredEndpoint] = _RelOne(_P_ConnectionPoint_maps_to)
-    """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
-
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_ConnectionPoint_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-
-    owner: _RelOne[Connectable] = _RelOne(_P_ConnectionPoint_owner)
-    """One of two `Relation`s that associates a `ConnectionPoint` with a `Connectable`. It is the inverse of the relation `hasConnectionPoint` (see {s223:hasConnectionPoint}). (http://data.ashrae.org/standard223#isConnectionPointOf)"""
-
-    paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_ConnectionPoint_paired_with)
-    """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
-    _shape_constraints = (
-        _ShapeValues('connection', 'b45e5b28f4870913fb56aa255, bf34e91b5b4ffadb3428bcf8e', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_electrical_phase', 'b0c1fffe312fa41f8bd4a2137', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('maps_to', 'b33487dbc91b59884232238e0, bb034c0077500f468d0b8a00c, bcd0844fd5cbcd23016dbbec4, be1d4db06086f9ad97cf53289', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b1b444a3bb99efa738b533c51, b490b774633a41f304e59947b, b5aecdad0a8f3f7f4ac11e130, b9c3a652daf6472abbe15c7f2, bcbdbd8352d5e02d426a20e1f', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-        _ShapeValues('owner', 'bbbc51213b878601a6b8f0562', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-        _ShapeValues('paired_with', 'b276ff53b66e82c6d438739d4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        medium: _EnumValue | None,
-        owner: Connectable | None,
-        connection: Connection | None = None,
-        has_electrical_phase: _EnumValue | None = None,
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        maps_to: ConnectionPoint | _DeferredEndpoint | None = None,
-        paired_with: ConnectionPoint | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                medium=medium,
-                owner=owner,
-                connection=connection,
-                has_electrical_phase=has_electrical_phase,
-                has_property=has_property,
-                has_role=has_role,
-                maps_to=maps_to,
-                paired_with=paired_with,
-            ),
-        )
-
-_P_BidirectionalConnectionPoint_maps_to = _PropertySpec(
-    name='maps_to',
-    predicate='http://data.ashrae.org/standard223#mapsTo',
-    kind='object',
-    label='maps to',
-    definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
-    ranges=('BidirectionalConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#BidirectionalConnectionPoint',), ('http://data.ashrae.org/standard223#ConnectionPoint',)),
-    sources=('b2eb0e0cfa158479c1b81512a', 'b33487dbc91b59884232238e0', 'bb034c0077500f468d0b8a00c', 'bcd0844fd5cbcd23016dbbec4', 'be1d4db06086f9ad97cf53289'),
-    max_count=1,
-    deferred=True,
-)
-
-class BidirectionalConnectionPoint(ConnectionPoint):
-    """A `BidirectionalConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow either into or out of the associated `Connectable`.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#BidirectionalConnectionPoint
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#BidirectionalConnectionPoint',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Bidirectional connection point',
-        definition='A `BidirectionalConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow either into or out of the associated `Connectable`.',
-        parent_iris=('http://data.ashrae.org/standard223#ConnectionPoint',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ConnectionPoint', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_BidirectionalConnectionPoint_maps_to,),
-    )
-
-    maps_to: _RelOne[BidirectionalConnectionPoint | _DeferredEndpoint] = _RelOne(_P_BidirectionalConnectionPoint_maps_to)
-    """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
-    _shape_constraints = (
-        _ShapeValues('connection', 'b45e5b28f4870913fb56aa255, bf34e91b5b4ffadb3428bcf8e', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_electrical_phase', 'b0c1fffe312fa41f8bd4a2137', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('maps_to', 'b2eb0e0cfa158479c1b81512a, b33487dbc91b59884232238e0, bb034c0077500f468d0b8a00c, bcd0844fd5cbcd23016dbbec4, be1d4db06086f9ad97cf53289', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b1b444a3bb99efa738b533c51, b490b774633a41f304e59947b, b5aecdad0a8f3f7f4ac11e130, b9c3a652daf6472abbe15c7f2, bcbdbd8352d5e02d426a20e1f', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-        _ShapeValues('owner', 'bbbc51213b878601a6b8f0562', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-        _ShapeValues('paired_with', 'b05f9060fd85b998fa2c7a8e3, b276ff53b66e82c6d438739d4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        medium: _EnumValue | None,
-        owner: Connectable | None,
-        connection: Connection | None = None,
-        has_electrical_phase: _EnumValue | None = None,
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        maps_to: BidirectionalConnectionPoint | _DeferredEndpoint | None = None,
-        paired_with: ConnectionPoint | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                medium=medium,
-                owner=owner,
-                connection=connection,
-                has_electrical_phase=has_electrical_phase,
-                has_property=has_property,
-                has_role=has_role,
-                maps_to=maps_to,
-                paired_with=paired_with,
-            ),
-        )
+BidirectionalConnectionPoint = _BASE.BidirectionalConnectionPoint
 
 _P_ScalarDatatype_bit_order = _PropertySpec(
     name='bit_order',
@@ -6136,7 +5116,7 @@ class BinaryTree(Tree):
         _ShapeValues('value', 'http://qudt.org/schema/qudt/DataItem-value', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-class Filter_2(Equipment):
+class Filter_2(Equipment, _BASE.Filter):
     """A piece of `Equipment` that removes contaminants from gases or liquids. See {s223:Substance-Medium} for
     more details on validating compatible mediums upstream and downstream of a `Filter`.
 
@@ -6147,14 +5127,11 @@ class Filter_2(Equipment):
         iri='http://data.ashrae.org/standard223#Filter',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Filter.meta.canonical,
         label='Filter',
         definition='A piece of `Equipment` that removes contaminants from gases or liquids. See {s223:Substance-Medium} for\nmore details on validating compatible mediums upstream and downstream of a `Filter`.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class Filter(Filter_2, UnitProcess):
@@ -6183,11 +5160,11 @@ class Filter(Filter_2, UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -6340,7 +5317,7 @@ class BitEncodingType(Encoding):
         _ShapeValues('bytes', 'http://qudt.org/schema/qudt/Encoding-bytes', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-class Boiler_2(Equipment):
+class Boiler_2(Equipment, _BASE.Boiler):
     """A piece of `Equipment` that uses fuel or electricity to heat water or other fluids and supply steam or hot water for heating, humidification, or other applications.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Boiler
@@ -6350,14 +5327,11 @@ class Boiler_2(Equipment):
         iri='http://data.ashrae.org/standard223#Boiler',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Boiler.meta.canonical,
         label='Boiler',
         definition='A piece of `Equipment` that uses fuel or electricity to heat water or other fluids and supply steam or hot water for heating, humidification, or other applications.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class Boiler(Boiler_2, UnitProcess):
@@ -6386,11 +5360,11 @@ class Boiler(Boiler_2, UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -7114,11 +6088,11 @@ class CentrifugalDewateringUnit(DewateringUnit):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -7186,11 +6160,11 @@ class CentrifugalThickener(Thickener):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -7319,7 +6293,7 @@ class CheckValve(Valve_2):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class ChilledBeam(Equipment):
+class ChilledBeam(Equipment, _BASE.ChilledBeam):
     """A piece of `Equipment` with a colder surface temperature where air passes through, and air movement is induced in the room to achieve cooling. Cooling medium is generally water.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ChilledBeam
@@ -7329,18 +6303,14 @@ class ChilledBeam(Equipment):
         iri='http://data.ashrae.org/standard223#ChilledBeam',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ChilledBeam.meta.canonical,
         label='Chilled beam',
         definition='A piece of `Equipment` with a colder surface temperature where air passes through, and air movement is induced in the room to achieve cooling. Cooling medium is generally water.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class Coil(Equipment):
+class Coil(Equipment, _BASE.Coil):
     """A piece of `Equipment` consisting of a pipe or tube that is formed into a helical or serpentine shape, may or may not be finned, and is used in cooling or heating equipment.
 
     A `Coil` shall conform to exactly one of the following patterns:
@@ -7364,29 +6334,14 @@ class Coil(Equipment):
         iri='http://data.ashrae.org/standard223#Coil',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Coil.meta.canonical,
         label='Coil',
         definition='A piece of `Equipment` consisting of a pipe or tube that is formed into a helical or serpentine shape, may or may not be finned, and is used in cooling or heating equipment.\n\nA `Coil` shall conform to exactly one of the following patterns:\n\n- **Pattern 1:**\n  - The `Coil` has exactly two inlet connection points using the medium `Mix-Fluid`, with exactly one being `Fluid-Air`.\n  - The `Coil` has exactly two outlet connection points using the medium `Mix-Fluid`, with exactly one being `Fluid-Air`.\n\n- **Pattern 2:**\n  - The Coil has exactly one inlet connection point using the medium `Mix-Fluid`.\n  - The Coil has exactly one outlet connection point using the medium `Mix-Fluid`.\n  - The Coil has one or two bidirectional connection points using the medium `Mix-Fluid` or `Medium-ThermalContact`.\n\n- **Pattern 3:**\n  - The Coil has exactly three bidirectional connection points using the medium `Mix-Fluid` or `Medium-ThermalContact`.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_constraints=(
-            _CPConstraint(operator='xone', children=(
-                _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=1)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=1)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=2)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=2)),
-                )),
-                _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=('http://data.ashrae.org/standard223#Medium-ThermalContact', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=1, max_count=2)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=1)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=1)),
-                )),
-                _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=('http://data.ashrae.org/standard223#Medium-ThermalContact', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=3, max_count=3)),
-            )),
-        ),
     )
 
-class CoolingCoil(Coil):
+class CoolingCoil(Coil, _BASE.CoolingCoil):
     """A `Coil` that is specifically used to cool air.
 
     Ontology: WATR — http://data.ashrae.org/standard223#CoolingCoil
@@ -7396,13 +6351,14 @@ class CoolingCoil(Coil):
         iri='http://data.ashrae.org/standard223#CoolingCoil',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.CoolingCoil.meta.canonical,
         label='Cooling coil',
         definition='A `Coil` that is specifically used to cool air.',
         parent_iris=('http://data.ashrae.org/standard223#Coil',),
         ancestor_iris=('http://data.ashrae.org/standard223#Coil', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class ChilledWaterCoil(CoolingCoil):
+class ChilledWaterCoil(CoolingCoil, _BASE.ChilledWaterCoil):
     """A cooling coil with a connected chilled water valve.
 
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#ChilledWaterCoil
@@ -7412,13 +6368,14 @@ class ChilledWaterCoil(CoolingCoil):
         iri='http://data.ashrae.org/standard223/1.0/extensions/g36#ChilledWaterCoil',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ChilledWaterCoil.meta.canonical,
         label='ChilledWaterCoil',
         definition='A cooling coil with a connected chilled water valve.',
         parent_iris=('http://data.ashrae.org/standard223#CoolingCoil',),
         ancestor_iris=('http://data.ashrae.org/standard223#Coil', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#CoolingCoil', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class ChilledWaterValve(Valve_2):
+class ChilledWaterValve(Valve_2, _BASE.ChilledWaterValve):
     """A valve that controls the flow of chilled water through a chilled water coil.
 
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#ChilledWaterValve
@@ -7428,19 +6385,14 @@ class ChilledWaterValve(Valve_2):
         iri='http://data.ashrae.org/standard223/1.0/extensions/g36#ChilledWaterValve',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ChilledWaterValve.meta.canonical,
         label='Chilled Water Valve',
         definition='A valve that controls the flow of chilled water through a chilled water coil.',
         parent_iris=('http://data.ashrae.org/standard223#Valve',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_constraints=(
-            _CPConstraint(operator='or', children=(
-                _CPConstraint(operator='opaque'),
-                _CPConstraint(operator='opaque'),
-            )),
-        ),
     )
 
-class Chiller(Equipment):
+class Chiller(Equipment, _BASE.Chiller):
     """A piece of `Equipment` that removes heat from a liquid coolant via a vapor-compression, adsorption refrigeration, or absorption refrigeration cycles.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Chiller
@@ -7450,14 +6402,11 @@ class Chiller(Equipment):
         iri='http://data.ashrae.org/standard223#Chiller',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Chiller.meta.canonical,
         label='Chiller',
         definition='A piece of `Equipment` that removes heat from a liquid coolant via a vapor-compression, adsorption refrigeration, or absorption refrigeration cycles.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class DisinfectionUnit(Reactor):
@@ -7506,11 +6455,11 @@ class ChlorinationUnit(DisinfectionUnit):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -7767,7 +6716,7 @@ class Class(_EntityBase):
             ),
         )
 
-class ClothesWasher(Equipment):
+class ClothesWasher(Equipment, _BASE.ClothesWasher):
     """A piece of `Equipment` that automatically cleans a load of textiles (e.g., clothing, bedding).
 
     Ontology: WATR — http://data.ashrae.org/standard223#ClothesWasher
@@ -7777,15 +6726,11 @@ class ClothesWasher(Equipment):
         iri='http://data.ashrae.org/standard223#ClothesWasher',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ClothesWasher.meta.canonical,
         label='Clothes washer',
         definition='A piece of `Equipment` that automatically cleans a load of textiles (e.g., clothing, bedding).',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class CoagulationBasin(Reactor):
@@ -7814,11 +6759,11 @@ class CoagulationBasin(Reactor):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -7860,286 +6805,11 @@ class CoagulationBasin(Reactor):
             ),
         )
 
-_P_Connection_cnx = _PropertySpec(
-    name='cnx',
-    predicate='http://data.ashrae.org/standard223#cnx',
-    kind='object',
-    label='cnx',
-    definition='A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.',
-    ranges=('ConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
-    sources=('b4479e0a22cb783423fa8fdf8', 'b454110a4c1b1cf380dd5154a'),
-)
+Connection = _BASE.Connection
 
-_P_Connection_connects_at = _PropertySpec(
-    name='connects_at',
-    predicate='http://data.ashrae.org/standard223#connectsAt',
-    kind='object',
-    label='connects at',
-    definition='A `Relation` that associates a `Connection` with a specific `ConnectionPoint`.',
-    ranges=('ConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
-    sources=('bcc0554fe27774b293d04f8f7',),
-    min_count=2,
-    required=True,
-    inverse='connection',
-)
+Waveguide = _BASE.Waveguide
 
-_P_Connection_connects_from = _PropertySpec(
-    name='connects_from',
-    predicate='http://data.ashrae.org/standard223#connectsFrom',
-    kind='object',
-    label='connects from',
-    definition='A `Relation` that associates a `Connectable` with a `Connection`, with an implied direction of flow. B `connectsFrom` A indicates a flow from A to B.',
-    ranges=('Connectable',),
-    range_groups=(('http://data.ashrae.org/standard223#Connectable',),),
-    sources=('b0b1e21915d1f88d732ca9ea7',),
-)
-
-_P_Connection_connects_to = _PropertySpec(
-    name='connects_to',
-    predicate='http://data.ashrae.org/standard223#connectsTo',
-    kind='object',
-    label='connects to',
-    definition='A `Relation` that associates a `Connection` with a `Connectable`, with an implied direction of flow. A `connectsTo` B indicates a flow from A to B.',
-    ranges=('Connectable',),
-    range_groups=(('http://data.ashrae.org/standard223#Connectable',),),
-    sources=('b53ad55b56d04aab26e0e0bf7',),
-)
-
-_P_Connection_has_role = _PropertySpec(
-    name='has_role',
-    predicate='http://data.ashrae.org/standard223#hasRole',
-    kind='enum',
-    label='has role',
-    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
-    sources=('b0c62568a80ac0452c05ed1db',),
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
-)
-
-_P_Connection_has_thermodynamic_phase = _PropertySpec(
-    name='has_thermodynamic_phase',
-    predicate='http://data.ashrae.org/standard223#hasThermodynamicPhase',
-    kind='enum',
-    label='has thermodynamic phase',
-    definition='A `Relation` that associates a Medium with its thermodynamic phases.',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-ThermodynamicPhase',),),
-    sources=('beb8f86d7a6cb7b66f442c436',),
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-ThermodynamicPhase',),
-    max_count=1,
-)
-
-_P_Connection_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    range_groups=(('http://data.ashrae.org/standard223#Substance-Medium',),),
-    sources=('b08ea5991a9d595339cdac23a', 'b12ca976aa7f6ff2f39104dba', 'b490b774633a41f304e59947b', 'b4dc0d1658287df40e921ad35', 'b59c7af6a2db2bd70f0dac26a', 'b5aecdad0a8f3f7f4ac11e130', 'b73706e6130865d1a05507c79', 'b779b3e6d70bca0b584bb320c', 'b9c3a652daf6472abbe15c7f2', 'ba0b040374feef1cc9f970b08', 'bb2dc6068ee4797c8be4b9372', 'be44de150b3c396415bd19166'),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
-    required=True,
-    max_count=1,
-)
-
-class Connection(Concept):
-    """A `Connection` is the modeling construct used to represent the thing (e.g., pipe, duct, conductor, or free space) that is used to convey
-    some Medium (e.g., water, air, electricity, light, Wi-Fi) between two connectable things. All connections have two or more connection points bound
-    to either `Equipment` (see {s223:Equipment}), `DomainSpace` (see {s223:DomainSpace}), or `Junction` (see {s223:Junction}). See Figure 6-2. If the direction
-    of flow is constrained, that constraint is indicated by using one or more `InletConnectionPoint`s (see {s223:InletConnectionPoint}) to represent the
-    inflow points and `OutletConnectionPoint`s (see {s223:OutletConnectionPoint}) to represent the outflow points.
-
-    A `Connection` may contain branches or intersections. These may be modeled using `Junction`s if it is necessary to identify a specific intersection
-    (see {s223:Junction}).
-
-    The constraint to maintain compatible mediums among a `Connection` and all of its associated `ConnectionPoint`s gives rise to multiple
-    validation test cases, where the specified medium might be a pure medium, or a mixture with constituents. See {s223:Substance-Medium} for
-    more details.
-
-    ![Graphical Depiction of Connection.](figures/Figure_5-3_Connection.svg)
-
-    Ontology: WATR — http://data.ashrae.org/standard223#Connection
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#Connection',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Connection',
-        definition='A `Connection` is the modeling construct used to represent the thing (e.g., pipe, duct, conductor, or free space) that is used to convey\nsome Medium (e.g., water, air, electricity, light, Wi-Fi) between two connectable things. All connections have two or more connection points bound\nto either `Equipment` (see {s223:Equipment}), `DomainSpace` (see {s223:DomainSpace}), or `Junction` (see {s223:Junction}). See Figure 6-2. If the direction\nof flow is constrained, that constraint is indicated by using one or more `InletConnectionPoint`s (see {s223:InletConnectionPoint}) to represent the\ninflow points and `OutletConnectionPoint`s (see {s223:OutletConnectionPoint}) to represent the outflow points.\n\nA `Connection` may contain branches or intersections. These may be modeled using `Junction`s if it is necessary to identify a specific intersection\n(see {s223:Junction}).\n\nThe constraint to maintain compatible mediums among a `Connection` and all of its associated `ConnectionPoint`s gives rise to multiple\nvalidation test cases, where the specified medium might be a pure medium, or a mixture with constituents. See {s223:Substance-Medium} for\nmore details.\n\n![Graphical Depiction of Connection.](figures/Figure_5-3_Connection.svg)',
-        parent_iris=('http://data.ashrae.org/standard223#Concept',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Connection_cnx, _P_Connection_connects_at, _P_Connection_connects_from, _P_Connection_connects_to, _P_Connection_has_role, _P_Connection_has_thermodynamic_phase, _P_Connection_medium,),
-        cp_constraints=(
-            _CPConstraint(operator='or', children=(
-                _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='opaque'),
-                    _CPConstraint(operator='opaque'),
-                )),
-                _CPConstraint(operator='opaque'),
-            )),
-        ),
-    )
-
-    cnx: _Rel[ConnectionPoint] = _Rel(_P_Connection_cnx)
-    """A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences. (http://data.ashrae.org/standard223#cnx)"""
-
-    connects_at: _Rel[ConnectionPoint] = _Rel(_P_Connection_connects_at)
-    """A `Relation` that associates a `Connection` with a specific `ConnectionPoint`. (http://data.ashrae.org/standard223#connectsAt)"""
-
-    connects_from: _Rel[Connectable] = _Rel(_P_Connection_connects_from)
-    """A `Relation` that associates a `Connectable` with a `Connection`, with an implied direction of flow. B `connectsFrom` A indicates a flow from A to B. (http://data.ashrae.org/standard223#connectsFrom)"""
-
-    connects_to: _Rel[Connectable] = _Rel(_P_Connection_connects_to)
-    """A `Relation` that associates a `Connection` with a `Connectable`, with an implied direction of flow. A `connectsTo` B indicates a flow from A to B. (http://data.ashrae.org/standard223#connectsTo)"""
-
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_Connection_has_role)
-    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
-
-    has_thermodynamic_phase: _EnumOne[_EnumValue] = _EnumOne(_P_Connection_has_thermodynamic_phase)
-    """A `Relation` that associates a Medium with its thermodynamic phases. (http://data.ashrae.org/standard223#hasThermodynamicPhase)"""
-
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_Connection_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        connects_at: _Iterable[ConnectionPoint],
-        medium: _EnumValue | None,
-        cnx: _Iterable[ConnectionPoint] = (),
-        connects_from: _Iterable[Connectable] = (),
-        connects_to: _Iterable[Connectable] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        has_thermodynamic_phase: _EnumValue | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                connects_at=connects_at,
-                medium=medium,
-                cnx=cnx,
-                connects_from=connects_from,
-                connects_to=connects_to,
-                has_property=has_property,
-                has_role=has_role,
-                has_thermodynamic_phase=has_thermodynamic_phase,
-            ),
-        )
-
-_P_Waveguide_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    range_groups=(('http://data.ashrae.org/standard223#Constituent-EM',), ('http://data.ashrae.org/standard223#Substance-Medium',)),
-    sources=('b08ea5991a9d595339cdac23a', 'b12ca976aa7f6ff2f39104dba', 'b490b774633a41f304e59947b', 'b4dc0d1658287df40e921ad35', 'b59c7af6a2db2bd70f0dac26a', 'b5aecdad0a8f3f7f4ac11e130', 'b73706e6130865d1a05507c79', 'b779b3e6d70bca0b584bb320c', 'b9c3a652daf6472abbe15c7f2', 'ba0b040374feef1cc9f970b08', 'bb2dc6068ee4797c8be4b9372', 'be44de150b3c396415bd19166', 'be4fd28291eae62cab922e936'),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#Constituent-EM',),
-    required=True,
-    max_count=1,
-)
-
-class Waveguide(Connection):
-    """A type of `Connection` the represents structures, such as fiber optic or coaxial cables, used to convey electromagnetic energy (i.e., `Constituent-EM`) in a specific direction. Without the physical constraint of a waveguide, waves would expand into three-dimensional space and their intensities would decrease according to the inverse square law.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#Waveguide
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#Waveguide',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Waveguide',
-        definition='A type of `Connection` the represents structures, such as fiber optic or coaxial cables, used to convey electromagnetic energy (i.e., `Constituent-EM`) in a specific direction. Without the physical constraint of a waveguide, waves would expand into three-dimensional space and their intensities would decrease according to the inverse square law.',
-        parent_iris=('http://data.ashrae.org/standard223#Connection',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Waveguide_medium,),
-    )
-
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_Waveguide_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, be4fd28291eae62cab922e936', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        connects_at: _Iterable[ConnectionPoint],
-        medium: _EnumValue | None,
-        cnx: _Iterable[ConnectionPoint] = (),
-        connects_from: _Iterable[Connectable] = (),
-        connects_to: _Iterable[Connectable] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        has_thermodynamic_phase: _EnumValue | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                connects_at=connects_at,
-                medium=medium,
-                cnx=cnx,
-                connects_from=connects_from,
-                connects_to=connects_to,
-                has_property=has_property,
-                has_role=has_role,
-                has_thermodynamic_phase=has_thermodynamic_phase,
-            ),
-        )
-
-class CoaxialCable(Waveguide):
-    """A type of `Waveguide` that consists of a central conductor, surrounded by an insulator, a metallic shield, and an outer jacket, all sharing the same geometric axis - which allows it to efficiently transmit high-frequency signals over long distances with minimal interference - and is used for `Wideband-DOCSIS` and `Wideband-CATV` communication.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#CoaxialCable
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#CoaxialCable',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Coaxial cable',
-        definition='A type of `Waveguide` that consists of a central conductor, surrounded by an insulator, a metallic shield, and an outer jacket, all sharing the same geometric axis - which allows it to efficiently transmit high-frequency signals over long distances with minimal interference - and is used for `Wideband-DOCSIS` and `Wideband-CATV` communication.',
-        parent_iris=('http://data.ashrae.org/standard223#Waveguide',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b4fff8fdf92b2f0c0e36509ae, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, be4fd28291eae62cab922e936', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
+CoaxialCable = _BASE.CoaxialCable
 
 class Enumeration_2(_EntityBase):
     """DTYPE Enumeration
@@ -8173,7 +6843,7 @@ class CodeList(Enumeration_2):
         ancestor_iris=('http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
-class CoffeeMaker(Equipment):
+class CoffeeMaker(Equipment, _BASE.CoffeeMaker):
     """A piece of `Equipment` that automatically brews coffee.
 
     Ontology: WATR — http://data.ashrae.org/standard223#CoffeeMaker
@@ -8183,13 +6853,11 @@ class CoffeeMaker(Equipment):
         iri='http://data.ashrae.org/standard223#CoffeeMaker',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.CoffeeMaker.meta.canonical,
         label='Coffee maker',
         definition='A piece of `Equipment` that automatically brews coffee.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class Cogenerator(UnitProcess):
@@ -8218,11 +6886,11 @@ class Cogenerator(UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -9029,7 +7697,7 @@ class CompositionTree(Tree):
             ),
         )
 
-class Compressor_2(Equipment):
+class Compressor_2(Equipment, _BASE.Compressor):
     """A piece of `Equipment` that mechanically increases the pressure of a gas.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Compressor
@@ -9039,14 +7707,11 @@ class Compressor_2(Equipment):
         iri='http://data.ashrae.org/standard223#Compressor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Compressor.meta.canonical,
         label='Compressor',
         definition='A piece of `Equipment` that mechanically increases the pressure of a gas.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class Compressor(Compressor_2):
@@ -9065,7 +7730,7 @@ class Compressor(Compressor_2):
         ancestor_iris=('http://data.ashrae.org/standard223#Compressor', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class Computer(Equipment):
+class Computer(Equipment, _BASE.Computer):
     """A piece of `Equipment` that can be programmed to automatically carry out sequences of arithmetic or logical operations (computation).
     Modern digital electronic computers can perform generic sets of operations known as programs. These programs enable computers to perform a
     wide range of tasks.
@@ -9077,16 +7742,14 @@ class Computer(Equipment):
         iri='http://data.ashrae.org/standard223#Computer',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Computer.meta.canonical,
         label='Computer',
         definition='A piece of `Equipment` that can be programmed to automatically carry out sequences of arithmetic or logical operations (computation).\nModern digital electronic computers can perform generic sets of operations known as programs. These programs enable computers to perform a\nwide range of tasks.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class ComputerPrinter(Equipment):
+class ComputerPrinter(Equipment, _BASE.ComputerPrinter):
     """A piece of `Equipment` that processes an input electrical or RF signal, typically from a `Computer`, and outputs a durable representation of information, typically text and/or graphics, typically on paper.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ComputerPrinter
@@ -9096,14 +7759,11 @@ class ComputerPrinter(Equipment):
         iri='http://data.ashrae.org/standard223#ComputerPrinter',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ComputerPrinter.meta.canonical,
         label='Computer printer',
         definition='A piece of `Equipment` that processes an input electrical or RF signal, typically from a `Computer`, and outputs a durable representation of information, typically text and/or graphics, typically on paper.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-RF', 'http://data.ashrae.org/standard223#Electricity-Signal'), min_count=1, max_count=None),
-        ),
     )
 
 _P_Sensor_has_measurement_range = _PropertySpec(
@@ -9117,54 +7777,7 @@ _P_Sensor_has_measurement_range = _PropertySpec(
     sources=('bd202b41a3347d7115dceb941',),
 )
 
-_P_Sensor_has_measurement_resolution = _PropertySpec(
-    name='has_measurement_resolution',
-    predicate='http://data.ashrae.org/standard223#hasMeasurementResolution',
-    kind='object',
-    label='has measurement resolution',
-    definition='A `Relation` that associates a `Sensor` with the `QuantifiableProperty` whose value indicates the smallest recognizable change in engineering units that the `Sensor` is able to measure.',
-    ranges=('QuantifiableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
-    sources=('ba86af95482aa527fbcd94669',),
-)
-
-_P_Sensor_has_observation_location = _PropertySpec(
-    name='has_observation_location',
-    predicate='http://data.ashrae.org/standard223#hasObservationLocation',
-    kind='object',
-    label='has observation location',
-    definition='A `Relation` that associates a `Sensor` with the topological location where it is observing a `Property` (see {s223:observes}). The observation location shall be a `Connectable` (see {s223:Connectable}), `Connection` (see {s223:Connection}), or `ConnectionPoint` (see {s223:ConnectionPoint}).',
-    sources=('b505c4deb2367e4945adda6fc',),
-    min_count=1,
-    required=True,
-    max_count=1,
-    deferred=True,
-)
-
-_P_Sensor_has_reference_location = _PropertySpec(
-    name='has_reference_location',
-    predicate='http://data.ashrae.org/standard223#hasReferenceLocation',
-    kind='object',
-    label='has reference location',
-    definition='A `Relation` that associates  a differential sensor with the topological location of the baseline (reference) `Property` (see {s223:observes}).',
-    sources=('b29179c01ba87f1629fdbb637',),
-    max_count=1,
-    deferred=True,
-)
-
-_P_Sensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    sources=('bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class Sensor(Equipment):
+class Sensor(Equipment, _BASE.Sensor):
     """
     A piece of `Equipment` that `observes` an `ObservableProperty` (see {s223:ObservableProperty})
     which may be quantifiable (see {s223:QuantifiableObservableProperty}), such as a
@@ -9205,30 +7818,16 @@ class Sensor(Equipment):
         iri='http://data.ashrae.org/standard223#Sensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Sensor.meta.canonical,
         label='Sensor',
         definition='\nA piece of `Equipment` that `observes` an `ObservableProperty` (see {s223:ObservableProperty})\nwhich may be quantifiable (see {s223:QuantifiableObservableProperty}), such as a\ntemperature, flow, or concentration, or enumerable (see {s223:EnumeratedObservableProperty}),\nsuch as an occupancy state.\n\nIf a `Sensor` observes a `QuantifiableObservableProperty` relative to an assumed\nor common reference point, it can be modeled with only an observation location.\nFor example:\n\n```turtle\n@prefix : <http://example.com/> .\n\n:example1 a s223:TemperatureSensor ;\n    s223:hasObservationLocation :location1 ;\n    qudt:hasQuantityKind quantitykind:Temperature .\n```\n\nIf a `Sensor` observes a `QuantifiableObservableProperty` relative to a unique\nor specified reference point, it can be modeled with an observation location and\na reference location.  The difference between two values can be indicated by setting `qudt:isDeltaQuantity` to `true`. For example:\n\n```turtle\n@prefix : <http://example.com/> .\n\n:example2 a s223:TemperatureSensor ;\n    s223:hasObservationLocation :location1 ;\n    s223:hasReferenceLocation :location2 ;\n    qudt:hasQuantityKind quantitykind:Temperature ;\n    qudt:isDeltaQuantity true .\n```\n',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Sensor_has_measurement_range, _P_Sensor_has_measurement_resolution, _P_Sensor_has_observation_location, _P_Sensor_has_reference_location, _P_Sensor_observes,),
+        properties=(_P_Sensor_has_measurement_range,),
     )
 
-    has_measurement_range: _Rel[QuantifiableProperty] = _Rel(_P_Sensor_has_measurement_range)
+    has_measurement_range: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_Sensor_has_measurement_range)
     """The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor. (https://watermetadata.org/ontology/watr#hasMeasurementRange)"""
-
-    has_measurement_resolution: _Rel[QuantifiableProperty] = _Rel(_P_Sensor_has_measurement_resolution)
-    """A `Relation` that associates a `Sensor` with the `QuantifiableProperty` whose value indicates the smallest recognizable change in engineering units that the `Sensor` is able to measure. (http://data.ashrae.org/standard223#hasMeasurementResolution)"""
-
-    has_observation_location: _RelOne[_EntityBase | _DeferredEndpoint] = _RelOne(_P_Sensor_has_observation_location)
-    """A `Relation` that associates a `Sensor` with the topological location where it is observing a `Property` (see {s223:observes}). The observation location shall be a `Connectable` (see {s223:Connectable}), `Connection` (see {s223:Connection}), or `ConnectionPoint` (see {s223:ConnectionPoint}). (http://data.ashrae.org/standard223#hasObservationLocation)"""
-
-    has_reference_location: _RelOne[_EntityBase | _DeferredEndpoint] = _RelOne(_P_Sensor_has_reference_location)
-    """A `Relation` that associates  a differential sensor with the topological location of the baseline (reference) `Property` (see {s223:observes}). (http://data.ashrae.org/standard223#hasReferenceLocation)"""
-
-    observes: _RelOne[_EntityBase] = _RelOne(_P_Sensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
@@ -9243,15 +7842,15 @@ class Sensor(Equipment):
         observes: _EntityBase | None,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
+        has_measurement_range: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_measurement_resolution: _Iterable[_BASE.QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
         has_process: _Iterable[type[Process]] = (),
@@ -9297,21 +7896,7 @@ class Sensor(Equipment):
             ),
         )
 
-_P_ConcentrationSensor_2_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
-    sources=('bba2526521d93118bfa382b7e', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class ConcentrationSensor_2(Sensor):
+class ConcentrationSensor_2(Sensor, _BASE.ConcentrationSensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a concentration of a miscible constituent in a medium,
     in contrast to a `ParticulateSensor` that `observes` a `QuantifiableObservableProperty` that represents an amount of a particulate in a medium
     (see {s223:ParticulateSensor}). The 223 standard does not constrain the `Unit` or `QuantityKind` reported by a `ConcentrationSensor`, but possible
@@ -9324,85 +7909,17 @@ class ConcentrationSensor_2(Sensor):
         iri='http://data.ashrae.org/standard223#ConcentrationSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ConcentrationSensor.meta.canonical,
         label='Concentration sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a concentration of a miscible constituent in a medium,\nin contrast to a `ParticulateSensor` that `observes` a `QuantifiableObservableProperty` that represents an amount of a particulate in a medium\n(see {s223:ParticulateSensor}). The 223 standard does not constrain the `Unit` or `QuantityKind` reported by a `ConcentrationSensor`, but possible\n`QuantityKind`s include `Concentration` (moles per volume), `Density` (mass per volume), `MoleFraction`, and `VolumeFraction`.',
         parent_iris=('http://data.ashrae.org/standard223#Sensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_ConcentrationSensor_2_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_ConcentrationSensor_2_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('observes', 'bba2526521d93118bfa382b7e, bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
 
 class ConcentrationSensor(ConcentrationSensor_2):
     """A sensor used to measure the concentration of specific substances (e.g., Total Dissolved Solids)
@@ -9467,11 +7984,11 @@ class Condenser(HeatExchanger, UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -9550,98 +8067,7 @@ class ConductivitySensor(Sensor):
         _ShapeValues('observes', 'bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-_P_Conductor_has_electrical_phase = _PropertySpec(
-    name='has_electrical_phase',
-    predicate='http://data.ashrae.org/standard223#hasElectricalPhase',
-    kind='enum',
-    label='has electrical phase',
-    definition='A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`.',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-ElectricalPhaseIdentifier',),),
-    sources=('b77fd01effefeb8667a24bef5', 'b7c1fd5bdb8242d06002b2f0d'),
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-ElectricalPhaseIdentifier',),
-    max_count=1,
-)
-
-_P_Conductor_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    range_groups=(('http://data.ashrae.org/standard223#Constituent-Electricity',), ('http://data.ashrae.org/standard223#Substance-Medium',)),
-    sources=('b08ea5991a9d595339cdac23a', 'b12ca976aa7f6ff2f39104dba', 'b490b774633a41f304e59947b', 'b4dc0d1658287df40e921ad35', 'b59c7af6a2db2bd70f0dac26a', 'b5aecdad0a8f3f7f4ac11e130', 'b73706e6130865d1a05507c79', 'b779b3e6d70bca0b584bb320c', 'b9c3a652daf6472abbe15c7f2', 'ba0b040374feef1cc9f970b08', 'bb2dc6068ee4797c8be4b9372', 'be44de150b3c396415bd19166', 'bf23cebcd33cb5adb3d3b263d'),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#Constituent-Electricity',),
-    required=True,
-    max_count=1,
-)
-
-class Conductor(Connection):
-    """A `Connection` that represents one or more wires used to convey `Constituent-Electricity`. Each instance of `Conductor` applies to no more than one electrical circuit.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#Conductor
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#Conductor',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Conductor',
-        definition='A `Connection` that represents one or more wires used to convey `Constituent-Electricity`. Each instance of `Conductor` applies to no more than one electrical circuit.',
-        parent_iris=('http://data.ashrae.org/standard223#Connection',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Conductor_has_electrical_phase, _P_Conductor_medium,),
-    )
-
-    has_electrical_phase: _EnumOne[_EnumValue] = _EnumOne(_P_Conductor_has_electrical_phase)
-    """A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`. (http://data.ashrae.org/standard223#hasElectricalPhase)"""
-
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_Conductor_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        connects_at: _Iterable[ConnectionPoint],
-        medium: _EnumValue | None,
-        cnx: _Iterable[ConnectionPoint] = (),
-        connects_from: _Iterable[Connectable] = (),
-        connects_to: _Iterable[Connectable] = (),
-        has_electrical_phase: _EnumValue | None = None,
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        has_thermodynamic_phase: _EnumValue | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                connects_at=connects_at,
-                medium=medium,
-                cnx=cnx,
-                connects_from=connects_from,
-                connects_to=connects_to,
-                has_electrical_phase=has_electrical_phase,
-                has_property=has_property,
-                has_role=has_role,
-                has_thermodynamic_phase=has_thermodynamic_phase,
-            ),
-        )
+Conductor = _BASE.Conductor
 
 _P_Quantifiable_data_encoding = _PropertySpec(
     name='data_encoding',
@@ -10236,7 +8662,7 @@ class ContinuouslyStirredTankReactor(Reactor):
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess', required=(), defaults=(), choices=None, minimum=1, maximum=None),
     )
 
-class Controller_2(Equipment):
+class Controller_2(Equipment, _BASE.Controller):
     """A piece of `Equipment` that regulates the normal operation of other `Equipment` by executing one or more `Function`s.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Controller
@@ -10246,6 +8672,7 @@ class Controller_2(Equipment):
         iri='http://data.ashrae.org/standard223#Controller',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Controller.meta.canonical,
         label='Controller',
         definition='A piece of `Equipment` that regulates the normal operation of other `Equipment` by executing one or more `Function`s.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
@@ -10268,7 +8695,7 @@ class Controller(Controller_2):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Controller', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class CoolingTower(Equipment):
+class CoolingTower(Equipment, _BASE.CoolingTower):
     """A piece of `Equipment` that uses atmospheric air to cool warm water, generally by direct contact via evaporation.
 
     Ontology: WATR — http://data.ashrae.org/standard223#CoolingTower
@@ -10278,14 +8705,11 @@ class CoolingTower(Equipment):
         iri='http://data.ashrae.org/standard223#CoolingTower',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.CoolingTower.meta.canonical,
         label='Cooling tower',
         definition='A piece of `Equipment` that uses atmospheric air to cool warm water, generally by direct contact via evaporation.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 _P_Scale_data_structure = _PropertySpec(
@@ -11395,7 +9819,7 @@ class Coordinates_3D_Type(CartesianCoordinatesType, ThreeTuple):
         _ShapeValues('vb_name', 'http://qudt.org/schema/qudt/Datatype-vbName', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-class CopyMachine(Equipment):
+class CopyMachine(Equipment, _BASE.CopyMachine):
     """A piece of `Equipment` that processes an input of one or more durable representation(s) of information, typically text and/or graphics and typically on paper, and outputs one or more reproductions of the information for each input, typically on paper.
 
     Ontology: WATR — http://data.ashrae.org/standard223#CopyMachine
@@ -11405,30 +9829,14 @@ class CopyMachine(Equipment):
         iri='http://data.ashrae.org/standard223#CopyMachine',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.CopyMachine.meta.canonical,
         label='Copy machine',
         definition='A piece of `Equipment` that processes an input of one or more durable representation(s) of information, typically text and/or graphics and typically on paper, and outputs one or more reproductions of the information for each input, typically on paper.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-_P_LightSensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
-    sources=('bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156', 'bfd71067e4cb2fb6356addde6'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class LightSensor(Sensor):
+class LightSensor(Sensor, _BASE.LightSensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents an attribute of light, as specified by the `QuantityKind` of the `Property` being observed, as described in Clauses 5.6.5.1 through 5.6.5.3.
 
     Ontology: WATR — http://data.ashrae.org/standard223#LightSensor
@@ -11438,87 +9846,19 @@ class LightSensor(Sensor):
         iri='http://data.ashrae.org/standard223#LightSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.LightSensor.meta.canonical,
         label='Light sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents an attribute of light, as specified by the `QuantityKind` of the `Property` being observed, as described in Clauses 5.6.5.1 through 5.6.5.3.',
         parent_iris=('http://data.ashrae.org/standard223#Sensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_LightSensor_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_LightSensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('observes', 'bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156, bfd71067e4cb2fb6356addde6', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
-
-class CorrelatedColorTemperatureSensor(LightSensor):
+class CorrelatedColorTemperatureSensor(LightSensor, _BASE.CorrelatedColorTemperatureSensor):
     """A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a correlated color temperature (CCT) of a
     light source, defined as the absolute temperature of a blackbody whose chromaticity most nearly resembles that of the light source.
 
@@ -11529,6 +9869,7 @@ class CorrelatedColorTemperatureSensor(LightSensor):
         iri='http://data.ashrae.org/standard223#CorrelatedColorTemperatureSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.CorrelatedColorTemperatureSensor.meta.canonical,
         label='Correlated color temperature sensor',
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a correlated color temperature (CCT) of a\nlight source, defined as the absolute temperature of a blackbody whose chromaticity most nearly resembles that of the light source.',
         parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
@@ -11606,11 +9947,11 @@ class Crystallizer(UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -11875,7 +10216,7 @@ class DMERecoverySystem(Equipment):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class Damper(Equipment):
+class Damper(Equipment, _BASE.Damper):
     """A piece of `Equipment` inserted into an air distribution system permitting modification of the air resistance of the system and consequently changing the airflow rate or shutting off the airflow.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Damper
@@ -11885,17 +10226,14 @@ class Damper(Equipment):
         iri='http://data.ashrae.org/standard223#Damper',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Damper.meta.canonical,
         label='Damper',
         definition='A piece of `Equipment` inserted into an air distribution system permitting modification of the air resistance of the system and consequently changing the airflow rate or shutting off the airflow.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class Damper_2(Damper):
+class Damper_2(Damper, _BASE.Damper_2):
     """A damper with an analog or two binary position command properties.
 
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#Damper
@@ -11905,16 +10243,11 @@ class Damper_2(Damper):
         iri='http://data.ashrae.org/standard223/1.0/extensions/g36#Damper',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Damper_2.meta.canonical,
         label='Damper',
         definition='A damper with an analog or two binary position command properties.',
         parent_iris=('http://data.ashrae.org/standard223#Damper',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Damper', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_constraints=(
-            _CPConstraint(operator='or', children=(
-                _CPConstraint(operator='opaque'),
-                _CPConstraint(operator='opaque'),
-            )),
-        ),
     )
 
 _P_DataEncoding_bit_order = _PropertySpec(
@@ -13275,7 +11608,7 @@ class DiscreteState(EnumeratedValue):
             ),
         )
 
-class Dishwasher(Equipment):
+class Dishwasher(Equipment, _BASE.Dishwasher):
     """A piece of `Equipment` that automatically cleans dishware, cookware, and cutlery.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Dishwasher
@@ -13285,15 +11618,11 @@ class Dishwasher(Equipment):
         iri='http://data.ashrae.org/standard223#Dishwasher',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Dishwasher.meta.canonical,
         label='Dishwasher',
         definition='A piece of `Equipment` that automatically cleans dishware, cookware, and cutlery.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class DissolvedAirFlotationThickener(Thickener):
@@ -13322,11 +11651,11 @@ class DissolvedAirFlotationThickener(Thickener):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -13384,84 +11713,9 @@ class Domain(Dimension):
         ancestor_iris=('http://www.linkedmodel.org/schema/vaem#Dimension', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
-_P_DomainSpace_has_domain = _PropertySpec(
-    name='has_domain',
-    predicate='http://data.ashrae.org/standard223#hasDomain',
-    kind='enum',
-    label='has domain',
-    definition='A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`).',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Domain',),),
-    sources=('ba3cb9d654fa531a9f0ca4633',),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Domain',),
-    required=True,
-    max_count=1,
-)
+DomainSpace = _BASE.DomainSpace
 
-class DomainSpace(Connectable):
-    """A portion of a `PhysicalSpace` that is affected by a building service associated with a domain. `DomainSpace`s may represent an entire `PhysicalSpace` or any portion of a `PhysicalSpace` (see {s223:PhysicalSpace}). Multiple `DomainSpace`s of the same domain may overlap, and `DomainSpace`s of different domains may also overlap, but `DomainSpace`s can not overlap multiple `PhysicalSpace`s. `DomainSpace`s may be grouped into `Zone`s using the relation `hasDomainSpace` (see {s223:hasDomainSpace}).
-
-    Ontology: WATR — http://data.ashrae.org/standard223#DomainSpace
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#DomainSpace',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Domain space',
-        definition='A portion of a `PhysicalSpace` that is affected by a building service associated with a domain. `DomainSpace`s may represent an entire `PhysicalSpace` or any portion of a `PhysicalSpace` (see {s223:PhysicalSpace}). Multiple `DomainSpace`s of the same domain may overlap, and `DomainSpace`s of different domains may also overlap, but `DomainSpace`s can not overlap multiple `PhysicalSpace`s. `DomainSpace`s may be grouped into `Zone`s using the relation `hasDomainSpace` (see {s223:hasDomainSpace}).',
-        parent_iris=('http://data.ashrae.org/standard223#Connectable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_DomainSpace_has_domain,),
-    )
-
-    has_domain: _EnumOne[_EnumValue] = _EnumOne(_P_DomainSpace_has_domain)
-    """A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`). (http://data.ashrae.org/standard223#hasDomain)"""
-    _shape_constraints = (
-        _ShapeValues('has_domain', 'ba3cb9d654fa531a9f0ca4633', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_domain: _EnumValue | None,
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_property: _Iterable[Property] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_domain=has_domain,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_property=has_property,
-                medium=medium,
-            ),
-        )
-
-class Door(Equipment):
+class Door(Equipment, _BASE.Door):
     """A piece of `Equipment` consisting of hinged, sliding, or revolving barrier at the entrance to a building or room.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Door
@@ -13471,13 +11725,11 @@ class Door(Equipment):
         iri='http://data.ashrae.org/standard223#Door',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Door.meta.canonical,
         label='Door',
         definition='A piece of `Equipment` consisting of hinged, sliding, or revolving barrier at the entrance to a building or room.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
-        ),
     )
 
 class DoublePrecisionType(NumericType):
@@ -13533,7 +11785,7 @@ class DoublePrecisionType(NumericType):
         _ShapeValues('vb_name', 'http://qudt.org/schema/qudt/Datatype-vbName', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-class Drain(Valve_2):
+class Drain(Valve_2, _BASE.Drain):
     """A `Valve` that allows, regulates, or stops the flow of water from a `Sink`, `Shower`, `Bathtub`, or other plumbing service equipment into a plumbing drainage system that typically carries the mixture to a sewer system or septic tank.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Drain
@@ -13543,17 +11795,14 @@ class Drain(Valve_2):
         iri='http://data.ashrae.org/standard223#Drain',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Drain.meta.canonical,
         label='Drain',
         definition='A `Valve` that allows, regulates, or stops the flow of water from a `Sink`, `Shower`, `Bathtub`, or other plumbing service equipment into a plumbing drainage system that typically carries the mixture to a sewer system or septic tank.',
         parent_iris=('http://data.ashrae.org/standard223#Valve',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class TerminalUnit(Equipment):
+class TerminalUnit(Equipment, _BASE.TerminalUnit):
     """A piece of `Equipment` that modulates the volume of air delivered to a space.
 
     Ontology: WATR — http://data.ashrae.org/standard223#TerminalUnit
@@ -13563,17 +11812,14 @@ class TerminalUnit(Equipment):
         iri='http://data.ashrae.org/standard223#TerminalUnit',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.TerminalUnit.meta.canonical,
         label='Terminal unit',
         definition='A piece of `Equipment` that modulates the volume of air delivered to a space.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class DualDuctTerminal(TerminalUnit):
+class DualDuctTerminal(TerminalUnit, _BASE.DualDuctTerminal):
     """A `TerminalUnit` that mixes two independent sources of primary air.
 
     Ontology: WATR — http://data.ashrae.org/standard223#DualDuctTerminal
@@ -13583,37 +11829,16 @@ class DualDuctTerminal(TerminalUnit):
         iri='http://data.ashrae.org/standard223#DualDuctTerminal',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.DualDuctTerminal.meta.canonical,
         label='Dual duct terminal',
         definition='A `TerminalUnit` that mixes two independent sources of primary air.',
         parent_iris=('http://data.ashrae.org/standard223#TerminalUnit',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#TerminalUnit', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
-        ),
     )
 
-class Duct(Connection):
-    """A `Connection` that is used to transport air such as supply, return, and exhaust in HVAC (Heating, Ventilation, and Air Conditioning) systems.
+Duct = _BASE.Duct
 
-    Ontology: WATR — http://data.ashrae.org/standard223#Duct
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#Duct',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Duct',
-        definition='A `Connection` that is used to transport air such as supply, return, and exhaust in HVAC (Heating, Ventilation, and Air Conditioning) systems.',
-        parent_iris=('http://data.ashrae.org/standard223#Connection',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class DuvSensor(LightSensor):
+class DuvSensor(LightSensor, _BASE.DuvSensor):
     """A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a Duv of a light source, defined as the
     distance between the chromaticity of the light source and a blackbody radiator of equal correlated color temperature (CCT).
 
@@ -13624,6 +11849,7 @@ class DuvSensor(LightSensor):
         iri='http://data.ashrae.org/standard223#DuvSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.DuvSensor.meta.canonical,
         label='Duv sensor',
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents a Duv of a light source, defined as the\ndistance between the chromaticity of the light source and a blackbody radiator of equal correlated color temperature (CCT).',
         parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
@@ -13635,80 +11861,7 @@ class DuvSensor(LightSensor):
         _ShapeValues('observes', 'b311bd280cfc5df87193290b8, bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156, bfd71067e4cb2fb6356addde6', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-_P_EM_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    range_groups=(('http://data.ashrae.org/standard223#Constituent-EM',), ('http://data.ashrae.org/standard223#Substance-Medium',)),
-    sources=('b08ea5991a9d595339cdac23a', 'b12ca976aa7f6ff2f39104dba', 'b490b774633a41f304e59947b', 'b4dc0d1658287df40e921ad35', 'b59c7af6a2db2bd70f0dac26a', 'b5aecdad0a8f3f7f4ac11e130', 'b73706e6130865d1a05507c79', 'b779b3e6d70bca0b584bb320c', 'b9c3a652daf6472abbe15c7f2', 'ba0b040374feef1cc9f970b08', 'bb2dc6068ee4797c8be4b9372', 'be44de150b3c396415bd19166', 'beebbb4c5b0712b03c867ce9c'),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#Constituent-EM',),
-    required=True,
-    max_count=1,
-)
-
-class EM(Connection):
-    """A type of `Connection` that represents air, a vacuum, outer space, or a similar environment used to convey electromagnetic energy (i.e., `Constituent-EM`), without the use of a solid materials such as fiber optic cables or other such `Waveguide`s.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#EM
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EM',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='EM connection',
-        definition='A type of `Connection` that represents air, a vacuum, outer space, or a similar environment used to convey electromagnetic energy (i.e., `Constituent-EM`), without the use of a solid materials such as fiber optic cables or other such `Waveguide`s.',
-        parent_iris=('http://data.ashrae.org/standard223#Connection',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_EM_medium,),
-    )
-
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_EM_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, beebbb4c5b0712b03c867ce9c', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        connects_at: _Iterable[ConnectionPoint],
-        medium: _EnumValue | None,
-        cnx: _Iterable[ConnectionPoint] = (),
-        connects_from: _Iterable[Connectable] = (),
-        connects_to: _Iterable[Connectable] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        has_thermodynamic_phase: _EnumValue | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                connects_at=connects_at,
-                medium=medium,
-                cnx=cnx,
-                connects_from=connects_from,
-                connects_to=connects_to,
-                has_property=has_property,
-                has_role=has_role,
-                has_thermodynamic_phase=has_thermodynamic_phase,
-            ),
-        )
+EM = _BASE.EM
 
 class TrajectoryCoordinateSystem(AerospaceCoordinateSystem):
     """Trajectory Coordinate System
@@ -13779,7 +11932,7 @@ class EfficiencySensor(Sensor):
         _ShapeValues('observes', 'bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-class ElectricClothesDryer(Equipment):
+class ElectricClothesDryer(Equipment, _BASE.ElectricClothesDryer):
     """A piece of `Equipment` that automatically removes moisture from a load of textiles (e.g., clothing, bedding), typically after they are washed in a `ClothesWasher`.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricClothesDryer
@@ -13789,16 +11942,14 @@ class ElectricClothesDryer(Equipment):
         iri='http://data.ashrae.org/standard223#ElectricClothesDryer',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricClothesDryer.meta.canonical,
         label='Electric clothes dryer',
         definition='A piece of `Equipment` that automatically removes moisture from a load of textiles (e.g., clothing, bedding), typically after they are washed in a `ClothesWasher`.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class ElectricCooktop(Equipment):
+class ElectricCooktop(Equipment, _BASE.ElectricCooktop):
     """A piece of `Equipment` with a flat surface containing one or more heat sources designed for cooking with pots and pans.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricCooktop
@@ -13808,30 +11959,14 @@ class ElectricCooktop(Equipment):
         iri='http://data.ashrae.org/standard223#ElectricCooktop',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricCooktop.meta.canonical,
         label='Electric cooktop',
         definition='A piece of `Equipment` with a flat surface containing one or more heat sources designed for cooking with pots and pans.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-_P_ElectricCurrentSensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
-    sources=('bd08797a7c86eae8c1d79a47f', 'be50f6020cf881de854cd1c39', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class ElectricCurrentSensor(Sensor):
+class ElectricCurrentSensor(Sensor, _BASE.ElectricCurrentSensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of electric current.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricCurrentSensor
@@ -13841,87 +11976,19 @@ class ElectricCurrentSensor(Sensor):
         iri='http://data.ashrae.org/standard223#ElectricCurrentSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricCurrentSensor.meta.canonical,
         label='Electric current sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of electric current.',
         parent_iris=('http://data.ashrae.org/standard223#Sensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_ElectricCurrentSensor_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_ElectricCurrentSensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('observes', 'bd08797a7c86eae8c1d79a47f, be50f6020cf881de854cd1c39, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
-
-class ElectricEnergyConverter(Equipment):
+class ElectricEnergyConverter(Equipment, _BASE.ElectricEnergyConverter):
     """A piece of `Equipment` that converts one form of electric power to another form of electric power.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricEnergyConverter
@@ -13931,13 +11998,14 @@ class ElectricEnergyConverter(Equipment):
         iri='http://data.ashrae.org/standard223#ElectricEnergyConverter',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricEnergyConverter.meta.canonical,
         label='Electric energy converter',
         definition='A piece of `Equipment` that converts one form of electric power to another form of electric power.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class ElectricEnergyDCDCConverter(ElectricEnergyConverter):
+class ElectricEnergyDCDCConverter(ElectricEnergyConverter, _BASE.ElectricEnergyDCDCConverter):
     """An `ElectricEnergyConverter` that transforms direct current (DC) electric power from one voltage to another voltage.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricEnergyDCDCConverter
@@ -13947,13 +12015,14 @@ class ElectricEnergyDCDCConverter(ElectricEnergyConverter):
         iri='http://data.ashrae.org/standard223#ElectricEnergyDCDCConverter',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricEnergyDCDCConverter.meta.canonical,
         label='DC-DC converter',
         definition='An `ElectricEnergyConverter` that transforms direct current (DC) electric power from one voltage to another voltage.',
         parent_iris=('http://data.ashrae.org/standard223#ElectricEnergyConverter',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricEnergyConverter', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class ElectricEnergyInverter(ElectricEnergyConverter):
+class ElectricEnergyInverter(ElectricEnergyConverter, _BASE.ElectricEnergyInverter):
     """An `ElectricEnergyConverter` that tranforms direct current (DC) electric power to alternating current (AC) electric power, or vice versa.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricEnergyInverter
@@ -13963,13 +12032,14 @@ class ElectricEnergyInverter(ElectricEnergyConverter):
         iri='http://data.ashrae.org/standard223#ElectricEnergyInverter',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricEnergyInverter.meta.canonical,
         label='Electric energy inverter',
         definition='An `ElectricEnergyConverter` that tranforms direct current (DC) electric power to alternating current (AC) electric power, or vice versa.',
         parent_iris=('http://data.ashrae.org/standard223#ElectricEnergyConverter',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricEnergyConverter', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class ElectricEnergyTransformer(ElectricEnergyConverter):
+class ElectricEnergyTransformer(ElectricEnergyConverter, _BASE.ElectricEnergyTransformer):
     """An `ElectricEnergyConverter` that transforms alternating current (AC) electric power from one voltage to another voltage.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricEnergyTransformer
@@ -13979,13 +12049,14 @@ class ElectricEnergyTransformer(ElectricEnergyConverter):
         iri='http://data.ashrae.org/standard223#ElectricEnergyTransformer',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricEnergyTransformer.meta.canonical,
         label='Electric energy transformer',
         definition='An `ElectricEnergyConverter` that transforms alternating current (AC) electric power from one voltage to another voltage.',
         parent_iris=('http://data.ashrae.org/standard223#ElectricEnergyConverter',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricEnergyConverter', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class ElectricResistanceElement(Equipment):
+class ElectricResistanceElement(Equipment, _BASE.ElectricResistanceElement):
     """A piece of `Equipment` that provides electrical resistance heating, for example an electric heating coil within a Fan Coil Unit.
     It shall have one electricity `InletConnectionPoint`, and fit one of the following two patterns:
 
@@ -13999,25 +12070,14 @@ class ElectricResistanceElement(Equipment):
         iri='http://data.ashrae.org/standard223#ElectricResistanceElement',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricResistanceElement.meta.canonical,
         label='Electric resistance element',
         definition='A piece of `Equipment` that provides electrical resistance heating, for example an electric heating coil within a Fan Coil Unit.\nIt shall have one electricity `InletConnectionPoint`, and fit one of the following two patterns:\n\n- Pattern 1: An `ElectricResistanceElement` shall have exactly one Bidirectional `ConnectionPoint` using the medium `Mix-Fluid`.\n- Pattern 2: An `ElectricResistanceElement` shall have one inlet and one outlet using the medium `Mix-Fluid`.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
-        cp_constraints=(
-            _CPConstraint(operator='xone', children=(
-                _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=1)),
-                _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=1)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=1)),
-                )),
-            )),
-        ),
     )
 
-class ElectricHeatingCoil(ElectricResistanceElement):
+class ElectricHeatingCoil(ElectricResistanceElement, _BASE.ElectricHeatingCoil):
     """An electrical heating element with an analog heating command.
 
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#ElectricHeatingCoil
@@ -14027,13 +12087,14 @@ class ElectricHeatingCoil(ElectricResistanceElement):
         iri='http://data.ashrae.org/standard223/1.0/extensions/g36#ElectricHeatingCoil',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricHeatingCoil.meta.canonical,
         label='Electric Heating Coil',
         definition='An electrical heating element with an analog heating command.',
         parent_iris=('http://data.ashrae.org/standard223#ElectricResistanceElement',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricResistanceElement', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class ElectricOven(Equipment):
+class ElectricOven(Equipment, _BASE.ElectricOven):
     """A piece of `Equipment` with an enclosed chamber designed for baking, roasting, and other cooking methods that rely on circulating heat.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricOven
@@ -14043,16 +12104,14 @@ class ElectricOven(Equipment):
         iri='http://data.ashrae.org/standard223#ElectricOven',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricOven.meta.canonical,
         label='Electric oven',
         definition='A piece of `Equipment` with an enclosed chamber designed for baking, roasting, and other cooking methods that rely on circulating heat.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class ElectricWaterDispenser(Equipment):
+class ElectricWaterDispenser(Equipment, _BASE.ElectricWaterDispenser):
     """A piece of `Equipment` that dispenses water and optionally heats and/or cools the water prior to dispensing.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricWaterDispenser
@@ -14062,14 +12121,11 @@ class ElectricWaterDispenser(Equipment):
         iri='http://data.ashrae.org/standard223#ElectricWaterDispenser',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricWaterDispenser.meta.canonical,
         label='Electric water dispenser',
         definition='A piece of `Equipment` that dispenses water and optionally heats and/or cools the water prior to dispensing.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class ElectricallyConductingMembrane(Filter):
@@ -14091,7 +12147,7 @@ class ElectricallyConductingMembrane(Filter):
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess', required=(), defaults=(), choices=None, minimum=1, maximum=None),
     )
 
-class ElectricityBreaker(Equipment):
+class ElectricityBreaker(Equipment, _BASE.ElectricityBreaker):
     """A piece of `Equipment` that automatically opens an electric circuit automatically at a predetermined overcurrent, so as to prevent damage to the circuit, the equipment connected to the circuit, and the building containing the circuit.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricityBreaker
@@ -14101,17 +12157,14 @@ class ElectricityBreaker(Equipment):
         iri='http://data.ashrae.org/standard223#ElectricityBreaker',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricityBreaker.meta.canonical,
         label='Electricity breaker',
         definition='A piece of `Equipment` that automatically opens an electric circuit automatically at a predetermined overcurrent, so as to prevent damage to the circuit, the equipment connected to the circuit, and the building containing the circuit.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class ElectricityMeter(Equipment):
+class ElectricityMeter(Equipment, _BASE.ElectricityMeter):
     """A piece of `Equipment` that contains at least one `VoltageSensor` and one `ElectricCurrentSensor`, and reports one or more
     properties of electricity. Example reported properties include the following `QuantityKind`s: `Voltage`, `ElectricCurrent`, `ActiveEnergy`,
     `ActivePower`, `ReactivePower`, `ApparentPower`, `PowerFactor`, and `Frequency` with unit Hertz. An `ElectricityMeter` may optionally contain a `Function` that represents the mathematical calculations of the reported properties of electricity.
@@ -14123,13 +12176,14 @@ class ElectricityMeter(Equipment):
         iri='http://data.ashrae.org/standard223#ElectricityMeter',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricityMeter.meta.canonical,
         label='Electricity meter',
         definition='A piece of `Equipment` that contains at least one `VoltageSensor` and one `ElectricCurrentSensor`, and reports one or more\nproperties of electricity. Example reported properties include the following `QuantityKind`s: `Voltage`, `ElectricCurrent`, `ActiveEnergy`,\n`ActivePower`, `ReactivePower`, `ApparentPower`, `PowerFactor`, and `Frequency` with unit Hertz. An `ElectricityMeter` may optionally contain a `Function` that represents the mathematical calculations of the reported properties of electricity.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class ElectricityOutlet(Equipment):
+class ElectricityOutlet(Equipment, _BASE.ElectricityOutlet):
     """A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to electrical power, typically via a plug and cord. Not to be confused with an `OutletConnectionPoint` with the medium `Constituent-Electricity`.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ElectricityOutlet
@@ -14139,14 +12193,11 @@ class ElectricityOutlet(Equipment):
         iri='http://data.ashrae.org/standard223#ElectricityOutlet',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectricityOutlet.meta.canonical,
         label='Electricity outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to electrical power, typically via a plug and cord. Not to be confused with an `OutletConnectionPoint` with the medium `Constituent-Electricity`.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=1),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class ElectroDialyticCrystallizer(UnitProcess):
@@ -14175,11 +12226,11 @@ class ElectroDialyticCrystallizer(UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -14247,11 +12298,11 @@ class ElectrocoagulationUnit(Reactor):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -14319,11 +12370,11 @@ class ElectrodialysisUnit(UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -14391,11 +12442,11 @@ class Electrolyzer(UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -14453,7 +12504,7 @@ class ElectromagneticFieldDevice(Equipment):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class ElectronicDisplay(Equipment):
+class ElectronicDisplay(Equipment, _BASE.ElectronicDisplay):
     """A piece of `Equipment` that receives an input electrical signal and outputs information, typically text and/or graphics, in a visual form.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ElectronicDisplay
@@ -14463,13 +12514,14 @@ class ElectronicDisplay(Equipment):
         iri='http://data.ashrae.org/standard223#ElectronicDisplay',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ElectronicDisplay.meta.canonical,
         label='Electronic display',
         definition='A piece of `Equipment` that receives an input electrical signal and outputs information, typically text and/or graphics, in a visual form.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class Elevator(Equipment):
+class Elevator(Equipment, _BASE.Elevator):
     """A piece of `Equipment` that vertically transports people or freight between floors or levels of a building via a vertical shaft commonly referred to as a hoistway. The people or freight are typically situated on a platform, or in a container commonly referred to as a car, cab, cabin, cage, or carriage.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Elevator
@@ -14479,13 +12531,11 @@ class Elevator(Equipment):
         iri='http://data.ashrae.org/standard223#Elevator',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Elevator.meta.canonical,
         label='Elevator',
         definition='A piece of `Equipment` that vertically transports people or freight between floors or levels of a building via a vertical shaft commonly referred to as a hoistway. The people or freight are typically situated on a platform, or in a container commonly referred to as a car, cab, cabin, cage, or carriage.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class EndianType(EnumeratedValue):
@@ -14654,157 +12704,13 @@ class EngineeringValueTupleMember(TupleMember):
             ),
         )
 
-_P_EnumerableProperty_has_enumeration_kind = _PropertySpec(
-    name='has_enumeration_kind',
-    predicate='http://data.ashrae.org/standard223#hasEnumerationKind',
-    kind='enum',
-    label='has enumeration kind',
-    definition='A `Relation` that associates an `EnumerableProperty` with a class of enumeration values. This is used to, for example, identify what kind of substance is transported along a `Connection` or which day of the week a setpoint is active.',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind',),),
-    sources=('baf7e64b302199795068b3c52',),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind',),
-    required=True,
-    max_count=1,
-)
+EnumerableProperty = _BASE.EnumerableProperty
 
-class EnumerableProperty(Property):
-    """An `EnumerableProperty` is a `Property` with an enumerated (fixed) set of possible values.
+EnumeratedActuatableProperty = _BASE.EnumeratedActuatableProperty
 
-    Ontology: WATR — http://data.ashrae.org/standard223#EnumerableProperty
-    """
+ObservableProperty = _BASE.ObservableProperty
 
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EnumerableProperty',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Enumerable property',
-        definition='An `EnumerableProperty` is a `Property` with an enumerated (fixed) set of possible values.',
-        parent_iris=('http://data.ashrae.org/standard223#Property',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_EnumerableProperty_has_enumeration_kind,),
-    )
-
-    has_enumeration_kind: _EnumOne[_EnumValue] = _EnumOne(_P_EnumerableProperty_has_enumeration_kind)
-    """A `Relation` that associates an `EnumerableProperty` with a class of enumeration values. This is used to, for example, identify what kind of substance is transported along a `Connection` or which day of the week a setpoint is active. (http://data.ashrae.org/standard223#hasEnumerationKind)"""
-    _shape_constraints = (
-        _ShapeValues('has_enumeration_kind', 'baf7e64b302199795068b3c52', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-        _ShapeValues('has_value', 'b94eb7c61639855466de28113, bc4f7ae22af7ed3730ac1bac4, bccc657538495b21366876bce', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('of_substance', 'b9ea31a97ca9f035e9e7e247d, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_enumeration_kind: _EnumValue | None,
-        has_aspect: _Iterable[_EnumValue] = (),
-        has_external_reference: _Iterable[ExternalReference] = (),
-        has_internal_reference: _Iterable[Property] = (),
-        has_property: _Iterable[Property] = (),
-        has_value: object | None = None,
-        is_internal_reference_of: Property | None = None,
-        medium: _Iterable[_EnumValue] = (),
-        of_constituent: _Iterable[_EntityBase] = (),
-        of_medium: _EnumValue | None = None,
-        of_substance: _EnumValue | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_enumeration_kind=has_enumeration_kind,
-                has_aspect=has_aspect,
-                has_external_reference=has_external_reference,
-                has_internal_reference=has_internal_reference,
-                has_property=has_property,
-                has_value=has_value,
-                is_internal_reference_of=is_internal_reference_of,
-                medium=medium,
-                of_constituent=of_constituent,
-                of_medium=of_medium,
-                of_substance=of_substance,
-            ),
-        )
-
-class EnumeratedActuatableProperty(ActuatableProperty, EnumerableProperty):
-    """An `EnumeratedActuatableProperty` is a `Property` with an enumerated (fixed) set of possible values that can be changed (actuated).
-
-    Ontology: WATR — http://data.ashrae.org/standard223#EnumeratedActuatableProperty
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EnumeratedActuatableProperty',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Enumerated actuatable property',
-        definition='An `EnumeratedActuatableProperty` is a `Property` with an enumerated (fixed) set of possible values that can be changed (actuated).',
-        parent_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#EnumerableProperty'),
-        ancestor_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#EnumerableProperty', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('has_enumeration_kind', 'baf7e64b302199795068b3c52', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-        _ShapeValues('has_value', 'b94eb7c61639855466de28113, bc4f7ae22af7ed3730ac1bac4, bccc657538495b21366876bce', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('of_substance', 'b9ea31a97ca9f035e9e7e247d, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-    )
-
-class ObservableProperty(Property):
-    """The term "observable" implies that reading the `ObservableProperty` value will return the result of a physical observation, usually by a `Sensor`.
-    In contrast, the term "actuatable" (see {s223:ActuatableProperty}) implies that writing to the `ActuatableProperty` value will directly trigger a physical actuation.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#ObservableProperty
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#ObservableProperty',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Observable property',
-        definition='The term "observable" implies that reading the `ObservableProperty` value will return the result of a physical observation, usually by a `Sensor`.\nIn contrast, the term "actuatable" (see {s223:ActuatableProperty}) implies that writing to the `ActuatableProperty` value will directly trigger a physical actuation.',
-        parent_iris=('http://data.ashrae.org/standard223#Property',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('has_value', 'b94eb7c61639855466de28113, bc4f7ae22af7ed3730ac1bac4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('of_substance', 'b9ea31a97ca9f035e9e7e247d, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-    )
-
-class EnumeratedObservableProperty(EnumerableProperty, ObservableProperty):
-    """An `EnumeratedObservableProperty` is a `Property` with an enumerated (fixed) set of possible values that cannot be changed (can only be observed).
-
-    Ontology: WATR — http://data.ashrae.org/standard223#EnumeratedObservableProperty
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EnumeratedObservableProperty',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Enumerated observable property',
-        definition='An `EnumeratedObservableProperty` is a `Property` with an enumerated (fixed) set of possible values that cannot be changed (can only be observed).',
-        parent_iris=('http://data.ashrae.org/standard223#EnumerableProperty', 'http://data.ashrae.org/standard223#ObservableProperty'),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#EnumerableProperty', 'http://data.ashrae.org/standard223#ObservableProperty', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('has_enumeration_kind', 'baf7e64b302199795068b3c52', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-        _ShapeValues('has_value', 'b94eb7c61639855466de28113, bc4f7ae22af7ed3730ac1bac4, bccc657538495b21366876bce', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('is_internal_reference_of', 'b7bde08b9f16713c82265df9d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('of_medium', 'b7f47b631f571b101f621e646', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('of_substance', 'b9ea31a97ca9f035e9e7e247d, bebe08be113ec9d15cc2075b3', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-    )
+EnumeratedObservableProperty = _BASE.EnumeratedObservableProperty
 
 _P_EnumeratedQuantity_enumerated_value = _PropertySpec(
     name='enumerated_value',
@@ -15214,11 +13120,11 @@ class EquipmentRegion(Equipment):
         has_process: _Iterable[type[Process]],
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -15259,7 +13165,7 @@ class EquipmentRegion(Equipment):
             ),
         )
 
-class Escalator(Equipment):
+class Escalator(Equipment, _BASE.Escalator):
     """A piece of `Equipment` that vertically transports people between floors or levels of a building via a moving staircase.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Escalator
@@ -15269,352 +13175,38 @@ class Escalator(Equipment):
         iri='http://data.ashrae.org/standard223#Escalator',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Escalator.meta.canonical,
         label='Escalator',
         definition='A piece of `Equipment` that vertically transports people between floors or levels of a building via a moving staircase.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-_P_EthernetCable_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    range_groups=(('http://data.ashrae.org/standard223#Constituent-Electricity',), ('http://data.ashrae.org/standard223#Signal-WiredEthernet',), ('http://data.ashrae.org/standard223#Substance-Medium',)),
-    sources=('b08ea5991a9d595339cdac23a', 'b12ca976aa7f6ff2f39104dba', 'b490b774633a41f304e59947b', 'b4dc0d1658287df40e921ad35', 'b59c7af6a2db2bd70f0dac26a', 'b5aecdad0a8f3f7f4ac11e130', 'b73706e6130865d1a05507c79', 'b779b3e6d70bca0b584bb320c', 'b8e4fe72cf0c46e702d4ab09f', 'b9c3a652daf6472abbe15c7f2', 'ba0b040374feef1cc9f970b08', 'bb2dc6068ee4797c8be4b9372', 'be44de150b3c396415bd19166', 'bf23cebcd33cb5adb3d3b263d'),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#Signal-WiredEthernet',),
-    required=True,
-    max_count=1,
-)
+EthernetCable = _BASE.EthernetCable
 
-class EthernetCable(Conductor):
-    """A type of `Conductor` that consists of 1, 2 or 4 pairs of twisted wire and is used for `Signal-WiredEthernet` communication. Subclasses of `EthernetCable` represent common types used in buildings.
+EthernetCable_Cat1 = _BASE.EthernetCable_Cat1
 
-    : EthernetCable Subclasses
+EthernetCable_Cat2 = _BASE.EthernetCable_Cat2
 
-    | Subclass |
-    |:-----------|
-    | `EthernetCable-Cat1` |
-    | `EthernetCable-Cat2` |
-    | `EthernetCable-Cat3` |
-    | `EthernetCable-Cat4` |
-    | `EthernetCable-Cat5` |
-    | `EthernetCable-Cat5e` |
-    | `EthernetCable-Cat6` |
-    | `EthernetCable-Cat6a` |
-    | `EthernetCable-Cat7` |
-    | `EthernetCable-Cat7a` |
-    | `EthernetCable-Cat8` |
+EthernetCable_Cat3 = _BASE.EthernetCable_Cat3
 
-    Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable
-    """
+EthernetCable_Cat4 = _BASE.EthernetCable_Cat4
 
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EthernetCable',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Ethernet cable',
-        definition='A type of `Conductor` that consists of 1, 2 or 4 pairs of twisted wire and is used for `Signal-WiredEthernet` communication. Subclasses of `EthernetCable` represent common types used in buildings.\n\n: EthernetCable Subclasses\n\n| Subclass |\n|:-----------|\n| `EthernetCable-Cat1` |\n| `EthernetCable-Cat2` |\n| `EthernetCable-Cat3` |\n| `EthernetCable-Cat4` |\n| `EthernetCable-Cat5` |\n| `EthernetCable-Cat5e` |\n| `EthernetCable-Cat6` |\n| `EthernetCable-Cat6a` |\n| `EthernetCable-Cat7` |\n| `EthernetCable-Cat7a` |\n| `EthernetCable-Cat8` |',
-        parent_iris=('http://data.ashrae.org/standard223#Conductor',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_EthernetCable_medium,),
-    )
+EthernetCable_Cat5 = _BASE.EthernetCable_Cat5
 
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_EthernetCable_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b8e4fe72cf0c46e702d4ab09f, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
+EthernetCable_Cat5e = _BASE.EthernetCable_Cat5e
 
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        connects_at: _Iterable[ConnectionPoint],
-        medium: _EnumValue | None,
-        cnx: _Iterable[ConnectionPoint] = (),
-        connects_from: _Iterable[Connectable] = (),
-        connects_to: _Iterable[Connectable] = (),
-        has_electrical_phase: _EnumValue | None = None,
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        has_thermodynamic_phase: _EnumValue | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                connects_at=connects_at,
-                medium=medium,
-                cnx=cnx,
-                connects_from=connects_from,
-                connects_to=connects_to,
-                has_electrical_phase=has_electrical_phase,
-                has_property=has_property,
-                has_role=has_role,
-                has_thermodynamic_phase=has_thermodynamic_phase,
-            ),
-        )
+EthernetCable_Cat6 = _BASE.EthernetCable_Cat6
 
-class EthernetCable_Cat1(EthernetCable):
-    """EthernetCable-Cat1
+EthernetCable_Cat6a = _BASE.EthernetCable_Cat6a
 
-    Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat1
-    """
+EthernetCable_Cat7 = _BASE.EthernetCable_Cat7
 
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EthernetCable-Cat1',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Ethernet Cable Cat1',
-        definition='EthernetCable-Cat1',
-        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b8e4fe72cf0c46e702d4ab09f, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
+EthernetCable_Cat7a = _BASE.EthernetCable_Cat7a
 
-class EthernetCable_Cat2(EthernetCable):
-    """EthernetCable-Cat2
+EthernetCable_Cat8 = _BASE.EthernetCable_Cat8
 
-    Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat2
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EthernetCable-Cat2',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Ethernet Cable Cat2',
-        definition='EthernetCable-Cat2',
-        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b8e4fe72cf0c46e702d4ab09f, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class EthernetCable_Cat3(EthernetCable):
-    """EthernetCable-Cat3
-
-    Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat3
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EthernetCable-Cat3',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Ethernet Cable Cat3',
-        definition='EthernetCable-Cat3',
-        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b8e4fe72cf0c46e702d4ab09f, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class EthernetCable_Cat4(EthernetCable):
-    """EthernetCable-Cat4
-
-    Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat4
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EthernetCable-Cat4',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Ethernet Cable Cat4',
-        definition='EthernetCable-Cat4',
-        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b8e4fe72cf0c46e702d4ab09f, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class EthernetCable_Cat5(EthernetCable):
-    """EthernetCable-Cat5
-
-    Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat5
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EthernetCable-Cat5',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Ethernet Cable Cat5',
-        definition='EthernetCable-Cat5',
-        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b8e4fe72cf0c46e702d4ab09f, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class EthernetCable_Cat5e(EthernetCable):
-    """EthernetCable-Cat5e
-
-    Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat5e
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EthernetCable-Cat5e',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Ethernet Cable Cat5e',
-        definition='EthernetCable-Cat5e',
-        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b8e4fe72cf0c46e702d4ab09f, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class EthernetCable_Cat6(EthernetCable):
-    """EthernetCable-Cat6
-
-    Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat6
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EthernetCable-Cat6',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Ethernet Cable Cat6',
-        definition='EthernetCable-Cat6',
-        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b8e4fe72cf0c46e702d4ab09f, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class EthernetCable_Cat6a(EthernetCable):
-    """EthernetCable-Cat6a
-
-    Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat6a
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EthernetCable-Cat6a',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Ethernet Cable Cat6a',
-        definition='EthernetCable-Cat6a',
-        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b8e4fe72cf0c46e702d4ab09f, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class EthernetCable_Cat7(EthernetCable):
-    """EthernetCable-Cat7
-
-    Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat7
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EthernetCable-Cat7',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Ethernet Cable Cat7',
-        definition='EthernetCable-Cat7',
-        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b8e4fe72cf0c46e702d4ab09f, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class EthernetCable_Cat7a(EthernetCable):
-    """EthernetCable-Cat7a
-
-    Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat7a
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EthernetCable-Cat7a',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Ethernet Cable Cat7a',
-        definition='EthernetCable-Cat7a',
-        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b8e4fe72cf0c46e702d4ab09f, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class EthernetCable_Cat8(EthernetCable):
-    """EthernetCable-Cat8
-
-    Ontology: WATR — http://data.ashrae.org/standard223#EthernetCable-Cat8
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#EthernetCable-Cat8',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Ethernet Cable Cat8',
-        definition='EthernetCable-Cat8',
-        parent_iris=('http://data.ashrae.org/standard223#EthernetCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#EthernetCable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b8e4fe72cf0c46e702d4ab09f, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class EthernetPort(Equipment):
+class EthernetPort(Equipment, _BASE.EthernetPort):
     """A piece of `Equipment` that connects a single instance of electrical equipment, such as `Computer`s and Wi-Fi access points,
     to an Ethernet network so it can communicate with other equipment and, optionally, with the Internet.
 
@@ -15625,17 +13217,14 @@ class EthernetPort(Equipment):
         iri='http://data.ashrae.org/standard223#EthernetPort',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.EthernetPort.meta.canonical,
         label='Ethernet port',
         definition='A piece of `Equipment` that connects a single instance of electrical equipment, such as `Computer`s and Wi-Fi access points,\nto an Ethernet network so it can communicate with other equipment and, optionally, with the Internet.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=('http://data.ashrae.org/standard223#Signal-FiberEthernet', 'http://data.ashrae.org/standard223#Signal-WiredEthernet'), min_count=2, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Electricity-DC', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class EthernetSwitch(Equipment):
+class EthernetSwitch(Equipment, _BASE.EthernetSwitch):
     """A piece of `Equipment` that connects one or more instances of electrical equipment, such as `Computer`s and Wi-Fi access points,
     to an Ethernet network so they can communicate with each other and, optionally, to the Internet.
 
@@ -15646,14 +13235,11 @@ class EthernetSwitch(Equipment):
         iri='http://data.ashrae.org/standard223#EthernetSwitch',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.EthernetSwitch.meta.canonical,
         label='Ethernet switch',
         definition='A piece of `Equipment` that connects one or more instances of electrical equipment, such as `Computer`s and Wi-Fi access points,\nto an Ethernet network so they can communicate with each other and, optionally, to the Internet.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=('http://data.ashrae.org/standard223#Signal-FiberEthernet', 'http://data.ashrae.org/standard223#Signal-WiredEthernet'), min_count=2, max_count=None),
-        ),
     )
 
 class Evaporator(HeatExchanger, UnitProcess):
@@ -15682,11 +13268,11 @@ class Evaporator(HeatExchanger, UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -15833,7 +13419,7 @@ class FactorUnit(Concept_2):
             ),
         )
 
-class Fan(Equipment):
+class Fan(Equipment, _BASE.Fan):
     """A piece of `Equipment` that causes a gas (e.g., air) to flow.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Fan
@@ -15843,17 +13429,14 @@ class Fan(Equipment):
         iri='http://data.ashrae.org/standard223#Fan',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Fan.meta.canonical,
         label='Fan',
         definition='A piece of `Equipment` that causes a gas (e.g., air) to flow.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class FanCoilUnit(Equipment):
+class FanCoilUnit(Equipment, _BASE.FanCoilUnit):
     """A piece of `Equipment` consisting of a `Coil` and a `Fan` that regulates the temperature of one or more spaces.
 
     Ontology: WATR — http://data.ashrae.org/standard223#FanCoilUnit
@@ -15863,17 +13446,14 @@ class FanCoilUnit(Equipment):
         iri='http://data.ashrae.org/standard223#FanCoilUnit',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.FanCoilUnit.meta.canonical,
         label='Fan coil unit',
         definition='A piece of `Equipment` consisting of a `Coil` and a `Fan` that regulates the temperature of one or more spaces.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class FanPoweredTerminal(TerminalUnit):
+class FanPoweredTerminal(TerminalUnit, _BASE.FanPoweredTerminal):
     """A `TerminalUnit` that contains a fan, and optionally has supplemental heating or cooling. Airflow may pass through or be parallel to the fan.
 
     Ontology: WATR — http://data.ashrae.org/standard223#FanPoweredTerminal
@@ -15883,13 +13463,14 @@ class FanPoweredTerminal(TerminalUnit):
         iri='http://data.ashrae.org/standard223#FanPoweredTerminal',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.FanPoweredTerminal.meta.canonical,
         label='Fan-powered terminal',
         definition='A `TerminalUnit` that contains a fan, and optionally has supplemental heating or cooling. Airflow may pass through or be parallel to the fan.',
         parent_iris=('http://data.ashrae.org/standard223#TerminalUnit',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#TerminalUnit', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class Fan_2(Fan):
+class Fan_2(Fan, _BASE.Fan_2):
     """A fan with a start/stop command.
 
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#Fan
@@ -15899,13 +13480,14 @@ class Fan_2(Fan):
         iri='http://data.ashrae.org/standard223/1.0/extensions/g36#Fan',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Fan_2.meta.canonical,
         label='Fan',
         definition='A fan with a start/stop command.',
         parent_iris=('http://data.ashrae.org/standard223#Fan',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Fan', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class FanWithVFD(Fan_2):
+class FanWithVFD(Fan_2, _BASE.FanWithVFD):
     """A fan controlled by a VFD.
 
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#FanWithVFD
@@ -15915,13 +13497,14 @@ class FanWithVFD(Fan_2):
         iri='http://data.ashrae.org/standard223/1.0/extensions/g36#FanWithVFD',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.FanWithVFD.meta.canonical,
         label='FanWithVFD',
         definition='A fan controlled by a VFD.',
         parent_iris=('http://data.ashrae.org/standard223/1.0/extensions/g36#Fan',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Fan', 'http://data.ashrae.org/standard223/1.0/extensions/g36#Fan', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class Faucet(Valve_2):
+class Faucet(Valve_2, _BASE.Faucet):
     """A `Valve` that allows, regulates, or stops the flow of hot or cold water from a plumbing supply system into a `Sink`, `Shower`, `Bathtub`, or other plumbing service equipment.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Faucet
@@ -15931,17 +13514,14 @@ class Faucet(Valve_2):
         iri='http://data.ashrae.org/standard223#Faucet',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Faucet.meta.canonical,
         label='Faucet',
         definition='A `Valve` that allows, regulates, or stops the flow of hot or cold water from a plumbing supply system into a `Sink`, `Shower`, `Bathtub`, or other plumbing service equipment.',
         parent_iris=('http://data.ashrae.org/standard223#Valve',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class FiberEthernetOutlet(Equipment):
+class FiberEthernetOutlet(Equipment, _BASE.FiberEthernetOutlet):
     """A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a fiber Ethernet communication network, typically via a fiber Ethernet cable.
 
     Ontology: WATR — http://data.ashrae.org/standard223#FiberEthernetOutlet
@@ -15951,195 +13531,28 @@ class FiberEthernetOutlet(Equipment):
         iri='http://data.ashrae.org/standard223#FiberEthernetOutlet',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.FiberEthernetOutlet.meta.canonical,
         label='Fiber Ethernet outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a fiber Ethernet communication network, typically via a fiber Ethernet cable.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-FiberEthernet', medium_options=(), min_count=1, max_count=1),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-FiberEthernet', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class FiberOpticCable(Waveguide):
-    """A type of `Waveguide` that consists of thin, flexible strands of glass or plastic fibers that transmit data as pulses of light and is used for `Signal-FiberEthernet` or `Wideband-CATV` communication. Subclasses of `FiberOpticCable` represent common types used in buildings.
+FiberOpticCable = _BASE.FiberOpticCable
 
-    : FiberOpticCable Subclasses
+FiberOpticCable_OM1 = _BASE.FiberOpticCable_OM1
 
-    | Subclass |
-    |:-----------|
-    | `FiberOpticCable-OM1` |
-    | `FiberOpticCable-OM2` |
-    | `FiberOpticCable-OM3` |
-    | `FiberOpticCable-OM4` |
-    | `FiberOpticCable-OM5` |
-    | `FiberOpticCable-OS1` |
-    | `FiberOpticCable-OS2` |
+FiberOpticCable_OM2 = _BASE.FiberOpticCable_OM2
 
-    Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable
-    """
+FiberOpticCable_OM3 = _BASE.FiberOpticCable_OM3
 
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#FiberOpticCable',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Fiber optic cable',
-        definition='A type of `Waveguide` that consists of thin, flexible strands of glass or plastic fibers that transmit data as pulses of light and is used for `Signal-FiberEthernet` or `Wideband-CATV` communication. Subclasses of `FiberOpticCable` represent common types used in buildings.\n\n: FiberOpticCable Subclasses\n\n| Subclass |\n|:-----------|\n| `FiberOpticCable-OM1` |\n| `FiberOpticCable-OM2` |\n| `FiberOpticCable-OM3` |\n| `FiberOpticCable-OM4` |\n| `FiberOpticCable-OM5` |\n| `FiberOpticCable-OS1` |\n| `FiberOpticCable-OS2` |',
-        parent_iris=('http://data.ashrae.org/standard223#Waveguide',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b11b471a08e958fd0e464cec3, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, be4fd28291eae62cab922e936', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
+FiberOpticCable_OM4 = _BASE.FiberOpticCable_OM4
 
-class FiberOpticCable_OM1(FiberOpticCable):
-    """FiberOpticCable-OM1
+FiberOpticCable_OM5 = _BASE.FiberOpticCable_OM5
 
-    Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OM1
-    """
+FiberOpticCable_OS1 = _BASE.FiberOpticCable_OS1
 
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#FiberOpticCable-OM1',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Fiber Optic Cable OM1',
-        definition='FiberOpticCable-OM1',
-        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b11b471a08e958fd0e464cec3, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, be4fd28291eae62cab922e936', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class FiberOpticCable_OM2(FiberOpticCable):
-    """FiberOpticCable-OM2
-
-    Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OM2
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#FiberOpticCable-OM2',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Fiber Optic Cable OM2',
-        definition='FiberOpticCable-OM2',
-        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b11b471a08e958fd0e464cec3, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, be4fd28291eae62cab922e936', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class FiberOpticCable_OM3(FiberOpticCable):
-    """FiberOpticCable-OM3
-
-    Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OM3
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#FiberOpticCable-OM3',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Fiber Optic Cable OM3',
-        definition='FiberOpticCable-OM3',
-        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b11b471a08e958fd0e464cec3, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, be4fd28291eae62cab922e936', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class FiberOpticCable_OM4(FiberOpticCable):
-    """FiberOpticCable-OM4
-
-    Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OM4
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#FiberOpticCable-OM4',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Fibe Optic Cable OM4',
-        definition='FiberOpticCable-OM4',
-        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b11b471a08e958fd0e464cec3, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, be4fd28291eae62cab922e936', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class FiberOpticCable_OM5(FiberOpticCable):
-    """FiberOpticCable-OM5
-
-    Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OM5
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#FiberOpticCable-OM5',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Fiber Optic Cable OM5',
-        definition='FiberOpticCable-OM5',
-        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b11b471a08e958fd0e464cec3, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, be4fd28291eae62cab922e936', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class FiberOpticCable_OS1(FiberOpticCable):
-    """FiberOpticCable-OS1
-
-    Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OS1
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#FiberOpticCable-OS1',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Fiber Optic Cable OS1',
-        definition='FiberOpticCable-OS1',
-        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b11b471a08e958fd0e464cec3, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, be4fd28291eae62cab922e936', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-class FiberOpticCable_OS2(FiberOpticCable):
-    """FiberOpticCable-OS2
-
-    Ontology: WATR — http://data.ashrae.org/standard223#FiberOpticCable-OS2
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#FiberOpticCable-OS2',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Fiber Optic Cable OS2',
-        definition='FiberOpticCable-OS2',
-        parent_iris=('http://data.ashrae.org/standard223#FiberOpticCable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#FiberOpticCable', 'http://data.ashrae.org/standard223#Waveguide', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b11b471a08e958fd0e464cec3, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, be4fd28291eae62cab922e936', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
+FiberOpticCable_OS2 = _BASE.FiberOpticCable_OS2
 
 _P_FieldType_element_name = _PropertySpec(
     name='element_name',
@@ -16891,11 +14304,11 @@ class FlocculationBasin(Reactor):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -16937,21 +14350,7 @@ class FlocculationBasin(Reactor):
             ),
         )
 
-_P_FlowSensor_2_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
-    sources=('b59d36af7a21597b917046ed1', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class FlowSensor_2(Sensor):
+class FlowSensor_2(Sensor, _BASE.FlowSensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of flow of fluid, typically with a `QuantityKind` of `VolumeFlowRate`.
 
     Ontology: WATR — http://data.ashrae.org/standard223#FlowSensor
@@ -16961,85 +14360,17 @@ class FlowSensor_2(Sensor):
         iri='http://data.ashrae.org/standard223#FlowSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.FlowSensor.meta.canonical,
         label='Flow sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of flow of fluid, typically with a `QuantityKind` of `VolumeFlowRate`.',
         parent_iris=('http://data.ashrae.org/standard223#Sensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_FlowSensor_2_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_FlowSensor_2_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('observes', 'b59d36af7a21597b917046ed1, bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
 
 class FlowSensor(FlowSensor_2):
     """A sensor used to measure the flow rate of liquids or gases
@@ -17062,7 +14393,7 @@ class FlowSensor(FlowSensor_2):
         _ShapeValues('observes', 'b59d36af7a21597b917046ed1, bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-class FlushToilet(Equipment):
+class FlushToilet(Equipment, _BASE.FlushToilet):
     """A piece of `Equipment` that collects human waste (i.e., urine and/or feces, and sometimes toilet paper) in a chamber containing water,
     and contains an integral manual or automatic actuator that triggers the release of an additional volume of water that flushes everything from the chamber into
     a drainage system that typically carries the mixture to a sewer system or septic tank.
@@ -17074,14 +14405,11 @@ class FlushToilet(Equipment):
         iri='http://data.ashrae.org/standard223#FlushToilet',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.FlushToilet.meta.canonical,
         label='Flush toilet',
         definition='A piece of `Equipment` that collects human waste (i.e., urine and/or feces, and sometimes toilet paper) in a chamber containing water,\nand contains an integral manual or automatic actuator that triggers the release of an additional volume of water that flushes everything from the chamber into\na drainage system that typically carries the mixture to a sewer system or septic tank.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class FrameType(EnumeratedValue):
@@ -17106,7 +14434,7 @@ class FrameType(EnumeratedValue):
         _ShapeValues('wikidata_match', 'http://qudt.org/schema/qudt/Verifiable-wikidataMatch', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-class Freezer(Equipment):
+class Freezer(Equipment, _BASE.Freezer):
     """A piece of `Equipment` that maintains an internal temperature below the freezing point of water.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Freezer
@@ -17116,13 +14444,11 @@ class Freezer(Equipment):
         iri='http://data.ashrae.org/standard223#Freezer',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Freezer.meta.canonical,
         label='Freezer',
         definition='A piece of `Equipment` that maintains an internal temperature below the freezing point of water.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class FrequencySensor(Sensor):
@@ -17146,7 +14472,7 @@ class FrequencySensor(Sensor):
         _ShapeValues('observes', 'bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-class FumeHood(Equipment):
+class FumeHood(Equipment, _BASE.FumeHood):
     """A piece of `Equipment` that is typically mounted over a work area (e.g., a space, table, or shelf) and conducts unwanted gases away from the area.
 
     Ontology: WATR — http://data.ashrae.org/standard223#FumeHood
@@ -17156,94 +14482,14 @@ class FumeHood(Equipment):
         iri='http://data.ashrae.org/standard223#FumeHood',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.FumeHood.meta.canonical,
         label='Fume hood',
         definition='A piece of `Equipment` that is typically mounted over a work area (e.g., a space, table, or shelf) and conducts unwanted gases away from the area.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-_P_Function_has_input = _PropertySpec(
-    name='has_input',
-    predicate='http://data.ashrae.org/standard223#hasInput',
-    kind='object',
-    label='has input',
-    definition='A `Relation` that associates a `Function` (see {s223:Function}) with a `Property` (see {s223:Property}) that is used as input to the `Function`.',
-    ranges=('Property',),
-    range_groups=(('http://data.ashrae.org/standard223#Property',),),
-    sources=('bcde7ccbf350ec21b927bdeca',),
-)
-
-_P_Function_has_output = _PropertySpec(
-    name='has_output',
-    predicate='http://data.ashrae.org/standard223#hasOutput',
-    kind='object',
-    label='has output',
-    definition='A `Relation` that associates a `Function` (see {s223:Function}) with a `Property` (see {s223:Property}) that is calculated by the `Function`.',
-    ranges=('Property',),
-    range_groups=(('http://data.ashrae.org/standard223#Property',),),
-    sources=('b964cef95584d81665d6991dd',),
-)
-
-class Function(Concept):
-    """A `Function` is used to model transfer and/or transformation of information (i.e., `Property`). It has relations to input Properties and output Properties. The actual algorithms that perform the transformations are described in CDL and are out of scope of the 223 standard.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#Function
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#Function',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Function',
-        definition='A `Function` is used to model transfer and/or transformation of information (i.e., `Property`). It has relations to input Properties and output Properties. The actual algorithms that perform the transformations are described in CDL and are out of scope of the 223 standard.',
-        parent_iris=('http://data.ashrae.org/standard223#Concept',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Function_has_input, _P_Function_has_output,),
-        cp_constraints=(
-            _CPConstraint(operator='or', children=(
-                _CPConstraint(operator='opaque'),
-                _CPConstraint(operator='opaque'),
-            )),
-        ),
-    )
-
-    has_input: _Rel[Property] = _Rel(_P_Function_has_input)
-    """A `Relation` that associates a `Function` (see {s223:Function}) with a `Property` (see {s223:Property}) that is used as input to the `Function`. (http://data.ashrae.org/standard223#hasInput)"""
-
-    has_output: _Rel[Property] = _Rel(_P_Function_has_output)
-    """A `Relation` that associates a `Function` (see {s223:Function}) with a `Property` (see {s223:Property}) that is calculated by the `Function`. (http://data.ashrae.org/standard223#hasOutput)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_input: _Iterable[Property] = (),
-        has_output: _Iterable[Property] = (),
-        has_property: _Iterable[Property] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_input=has_input,
-                has_output=has_output,
-                has_property=has_property,
-                medium=medium,
-            ),
-        )
+Function = _BASE.Function
 
 _P_FunctionDatatype_arg_type = _PropertySpec(
     name='arg_type',
@@ -17417,7 +14663,7 @@ class FunctionDatatype(StructuredDatatype):
             ),
         )
 
-class Furnace(Equipment):
+class Furnace(Equipment, _BASE.Furnace):
     """A piece of `Equipment` that converts fuel or electrical energy into heat.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Furnace
@@ -17427,14 +14673,11 @@ class Furnace(Equipment):
         iri='http://data.ashrae.org/standard223#Furnace',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Furnace.meta.canonical,
         label='Furnace',
         definition='A piece of `Equipment` that converts fuel or electrical energy into heat.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class Gate(Valve_2):
@@ -17453,21 +14696,7 @@ class Gate(Valve_2):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_PressureSensor_2_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
-    sources=('bd08797a7c86eae8c1d79a47f', 'bd7b82cb90a3efeb37092a50f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class PressureSensor_2(Sensor):
+class PressureSensor_2(Sensor, _BASE.PressureSensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of pressure.
 
     Ontology: WATR — http://data.ashrae.org/standard223#PressureSensor
@@ -17477,87 +14706,19 @@ class PressureSensor_2(Sensor):
         iri='http://data.ashrae.org/standard223#PressureSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.PressureSensor.meta.canonical,
         label='Pressure sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of pressure.',
         parent_iris=('http://data.ashrae.org/standard223#Sensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_PressureSensor_2_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_PressureSensor_2_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('observes', 'bd08797a7c86eae8c1d79a47f, bd7b82cb90a3efeb37092a50f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
-
-class GaugePressureSensor(PressureSensor_2):
+class GaugePressureSensor(PressureSensor_2, _BASE.GaugePressureSensor):
     """A `PressureSensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of pressure relative to atmospheric pressure.
     Such sensors are commonly used to monitor compressed gas cylinders, for example, where a gauge reading of zero signifies that the measured pressure
     is equal to the atmospheric pressure, not a vacuum.
@@ -17569,6 +14730,7 @@ class GaugePressureSensor(PressureSensor_2):
         iri='http://data.ashrae.org/standard223#GaugePressureSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.GaugePressureSensor.meta.canonical,
         label='Gauge pressure sensor',
         definition='A `PressureSensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of pressure relative to atmospheric pressure.\nSuch sensors are commonly used to monitor compressed gas cylinders, for example, where a gauge reading of zero signifies that the measured pressure\nis equal to the atmospheric pressure, not a vacuum.',
         parent_iris=('http://data.ashrae.org/standard223#PressureSensor',),
@@ -17580,7 +14742,7 @@ class GaugePressureSensor(PressureSensor_2):
         _ShapeValues('observes', 'b0593b8956d2cb10f4c22ba5e, bd08797a7c86eae8c1d79a47f, bd7b82cb90a3efeb37092a50f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-class Generator(Equipment):
+class Generator(Equipment, _BASE.Generator):
     """A piece of `Equipment` that converts non-electric energy into electric energy.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Generator
@@ -17590,13 +14752,11 @@ class Generator(Equipment):
         iri='http://data.ashrae.org/standard223#Generator',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Generator.meta.canonical,
         label='Generator',
         definition='A piece of `Equipment` that converts non-electric energy into electric energy.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class GlobeValve(Valve_2):
@@ -17641,11 +14801,11 @@ class GranularActivatedCarbonAdsorber(UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -17770,11 +14930,11 @@ class GravityThickener(Thickener):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -17842,11 +15002,11 @@ class Grinder(UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -17914,11 +15074,11 @@ class GritChamber(UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -17984,7 +15144,7 @@ class GroundCoordinateSystem(AerospaceCoordinateSystem):
         _ShapeValues('type__2', 'http://qudt.org/schema/qudt/Concept-type', required=(), defaults=(), choices=None, minimum=1, maximum=None),
     )
 
-class GroundToAirHeatPump(HeatPump):
+class GroundToAirHeatPump(HeatPump, _BASE.GroundToAirHeatPump):
     """A `HeatPump` that transfers thermal energy between air and the ground.
 
     Ontology: WATR — http://data.ashrae.org/standard223#GroundToAirHeatPump
@@ -17994,15 +15154,11 @@ class GroundToAirHeatPump(HeatPump):
         iri='http://data.ashrae.org/standard223#GroundToAirHeatPump',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.GroundToAirHeatPump.meta.canonical,
         label='Ground-to-air heat pump',
         definition='A `HeatPump` that transfers thermal energy between air and the ground.',
         parent_iris=('http://data.ashrae.org/standard223#HeatPump',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatPump', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Medium-ThermalContact', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 _P_OrderedCollection_ordering_relation = _PropertySpec(
@@ -18313,7 +15469,7 @@ class Heap(OrderedTree):
         _ShapeValues('vb_name', 'http://qudt.org/schema/qudt/Datatype-vbName', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-class HeatingCoil(Coil):
+class HeatingCoil(Coil, _BASE.HeatingCoil):
     """A `Coil` that is specifically used to heat air.
 
     Ontology: WATR — http://data.ashrae.org/standard223#HeatingCoil
@@ -18323,6 +15479,7 @@ class HeatingCoil(Coil):
         iri='http://data.ashrae.org/standard223#HeatingCoil',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.HeatingCoil.meta.canonical,
         label='Heating coil',
         definition='A `Coil` that is specifically used to heat air.',
         parent_iris=('http://data.ashrae.org/standard223#Coil',),
@@ -18664,7 +15821,7 @@ class HomogeneousArray(Array):
         _ShapeValues('vb_name', 'http://qudt.org/schema/qudt/Datatype-vbName', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-class HotWaterCoil(HeatingCoil):
+class HotWaterCoil(HeatingCoil, _BASE.HotWaterCoil):
     """A hot water coil connected to a control valve.
 
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#HotWaterCoil
@@ -18674,13 +15831,14 @@ class HotWaterCoil(HeatingCoil):
         iri='http://data.ashrae.org/standard223/1.0/extensions/g36#HotWaterCoil',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.HotWaterCoil.meta.canonical,
         label='HotWater/ReheatCoil',
         definition='A hot water coil connected to a control valve.',
         parent_iris=('http://data.ashrae.org/standard223#HeatingCoil',),
         ancestor_iris=('http://data.ashrae.org/standard223#Coil', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatingCoil', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class HotWaterValve(Valve_2):
+class HotWaterValve(Valve_2, _BASE.HotWaterValve):
     """A valve that controls the flow of hot water through a hot water coil.
 
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#HotWaterValve
@@ -18690,19 +15848,14 @@ class HotWaterValve(Valve_2):
         iri='http://data.ashrae.org/standard223/1.0/extensions/g36#HotWaterValve',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.HotWaterValve.meta.canonical,
         label='Hot Water Valve',
         definition='A valve that controls the flow of hot water through a hot water coil.',
         parent_iris=('http://data.ashrae.org/standard223#Valve',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_constraints=(
-            _CPConstraint(operator='or', children=(
-                _CPConstraint(operator='opaque'),
-                _CPConstraint(operator='opaque'),
-            )),
-        ),
     )
 
-class Humidifier(Equipment):
+class Humidifier(Equipment, _BASE.Humidifier):
     """A piece of `Equipment` that adds moisture to a gas (e.g., air).
 
     Ontology: WATR — http://data.ashrae.org/standard223#Humidifier
@@ -18712,13 +15865,14 @@ class Humidifier(Equipment):
         iri='http://data.ashrae.org/standard223#Humidifier',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Humidifier.meta.canonical,
         label='Humidifier',
         definition='A piece of `Equipment` that adds moisture to a gas (e.g., air).',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class Humidistat(Equipment):
+class Humidistat(Equipment, _BASE.Humidistat):
     """A piece of `Equipment` that measures the relative humidity of the air and then uses this information to automatically adjust the amount of moisture in air.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Humidistat
@@ -18728,27 +15882,14 @@ class Humidistat(Equipment):
         iri='http://data.ashrae.org/standard223#Humidistat',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Humidistat.meta.canonical,
         label='Humidistat',
         definition='A piece of `Equipment` that measures the relative humidity of the air and then uses this information to automatically adjust the amount of moisture in air.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_HumiditySensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
-    sources=('b35dbf06577bbe234c8e1c078', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class HumiditySensor(Sensor):
+class HumiditySensor(Sensor, _BASE.HumiditySensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of relative or absolute humidity.
 
     Ontology: WATR — http://data.ashrae.org/standard223#HumiditySensor
@@ -18758,87 +15899,19 @@ class HumiditySensor(Sensor):
         iri='http://data.ashrae.org/standard223#HumiditySensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.HumiditySensor.meta.canonical,
         label='Humidity sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of relative or absolute humidity.',
         parent_iris=('http://data.ashrae.org/standard223#Sensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_HumiditySensor_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_HumiditySensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('observes', 'b35dbf06577bbe234c8e1c078, bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
-
-class HydronicHeatExchanger(Equipment):
+class HydronicHeatExchanger(Equipment, _BASE.HydronicHeatExchanger):
     """A piece of `Equipment` that transfers heat from one liquid stream to another while keeping the two media separate.
 
     Ontology: WATR — http://data.ashrae.org/standard223#HydronicHeatExchanger
@@ -18848,16 +15921,14 @@ class HydronicHeatExchanger(Equipment):
         iri='http://data.ashrae.org/standard223#HydronicHeatExchanger',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.HydronicHeatExchanger.meta.canonical,
         label='Hydronic heat exchanger',
         definition='A piece of `Equipment` that transfers heat from one liquid stream to another while keeping the two media separate.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=0, max_count=0),
-        ),
     )
 
-class IceMaker(Equipment):
+class IceMaker(Equipment, _BASE.IceMaker):
     """A piece of `Equipment` that makes ice.
 
     Ontology: WATR — http://data.ashrae.org/standard223#IceMaker
@@ -18867,14 +15938,11 @@ class IceMaker(Equipment):
         iri='http://data.ashrae.org/standard223#IceMaker',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.IceMaker.meta.canonical,
         label='Ice maker',
         definition='A piece of `Equipment` that makes ice.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 _P_IconicCue_image = _PropertySpec(
@@ -18958,7 +16026,7 @@ class IconicCue(ModalCue):
             ),
         )
 
-class IlluminanceSensor(LightSensor):
+class IlluminanceSensor(LightSensor, _BASE.IlluminanceSensor):
     """A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents an illuminance, defined as the areal density of the
     luminous flux incident at a point on a surface.
 
@@ -18969,6 +16037,7 @@ class IlluminanceSensor(LightSensor):
         iri='http://data.ashrae.org/standard223#IlluminanceSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.IlluminanceSensor.meta.canonical,
         label='Illuminance sensor',
         definition='A `LightSensor` that `observes` a `QuantifiableObservableProperty` that represents an illuminance, defined as the areal density of the\nluminous flux incident at a point on a surface.',
         parent_iris=('http://data.ashrae.org/standard223#LightSensor',),
@@ -19090,82 +16159,7 @@ class InertialCoordinateFrame(InertialReferenceFrame):
         _ShapeValues('type__2', 'http://qudt.org/schema/qudt/Concept-type', required=(), defaults=(), choices=None, minimum=1, maximum=None),
     )
 
-_P_InletConnectionPoint_maps_to = _PropertySpec(
-    name='maps_to',
-    predicate='http://data.ashrae.org/standard223#mapsTo',
-    kind='object',
-    label='maps to',
-    definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
-    ranges=('InletConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',), ('http://data.ashrae.org/standard223#InletConnectionPoint',)),
-    sources=('b33487dbc91b59884232238e0', 'b5035e70a40377a902155de4e', 'b9836a3846d271eb3c01b5838', 'bb034c0077500f468d0b8a00c', 'bcd0844fd5cbcd23016dbbec4', 'be1d4db06086f9ad97cf53289'),
-    max_count=1,
-    deferred=True,
-)
-
-class InletConnectionPoint(ConnectionPoint):
-    """An `InletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow into the associated `Connectable`.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#InletConnectionPoint
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#InletConnectionPoint',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Inlet connection point',
-        definition='An `InletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow into the associated `Connectable`.',
-        parent_iris=('http://data.ashrae.org/standard223#ConnectionPoint',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ConnectionPoint', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_InletConnectionPoint_maps_to,),
-    )
-
-    maps_to: _RelOne[InletConnectionPoint | _DeferredEndpoint] = _RelOne(_P_InletConnectionPoint_maps_to)
-    """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
-    _shape_constraints = (
-        _ShapeValues('connection', 'b45e5b28f4870913fb56aa255, bf34e91b5b4ffadb3428bcf8e', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_electrical_phase', 'b0c1fffe312fa41f8bd4a2137', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('maps_to', 'b33487dbc91b59884232238e0, b5035e70a40377a902155de4e, b9836a3846d271eb3c01b5838, bb034c0077500f468d0b8a00c, bcd0844fd5cbcd23016dbbec4, be1d4db06086f9ad97cf53289', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b1b444a3bb99efa738b533c51, b490b774633a41f304e59947b, b5aecdad0a8f3f7f4ac11e130, b9c3a652daf6472abbe15c7f2, bcbdbd8352d5e02d426a20e1f', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-        _ShapeValues('owner', 'bbbc51213b878601a6b8f0562', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-        _ShapeValues('paired_with', 'b276ff53b66e82c6d438739d4, ba6ab42b86250afdca394ea9b', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        medium: _EnumValue | None,
-        owner: Connectable | None,
-        connection: Connection | None = None,
-        has_electrical_phase: _EnumValue | None = None,
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        maps_to: InletConnectionPoint | _DeferredEndpoint | None = None,
-        paired_with: ConnectionPoint | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                medium=medium,
-                owner=owner,
-                connection=connection,
-                has_electrical_phase=has_electrical_phase,
-                has_property=has_property,
-                has_role=has_role,
-                maps_to=maps_to,
-                paired_with=paired_with,
-            ),
-        )
+InletConnectionPoint = _BASE.InletConnectionPoint
 
 class IntegerEncodingType(Encoding):
     """Integer Encoding
@@ -19391,11 +16385,11 @@ class IonExchangeMembrane(UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -19437,114 +16431,7 @@ class IonExchangeMembrane(UnitProcess):
             ),
         )
 
-_P_Junction_has_connection_point = _PropertySpec(
-    name='has_connection_point',
-    predicate='http://data.ashrae.org/standard223#hasConnectionPoint',
-    kind='object',
-    label='has connection point',
-    definition='One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).',
-    ranges=('ConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
-    sources=('b8ad8d8b7d7a41f55c0bc4138', 'be2099568566b78227dcced58'),
-    min_count=2,
-    inverse='owner',
-)
-
-_P_Junction_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    range_groups=(('http://data.ashrae.org/standard223#Substance-Medium',),),
-    sources=('b0070bb08b6715a4e7a32e88c', 'b08ea5991a9d595339cdac23a', 'b114c42d9256c0b70b09fad9c', 'b2b77f818aaa5e179e6cb3872', 'b490b774633a41f304e59947b', 'b5aecdad0a8f3f7f4ac11e130', 'b67b7bcfa9dd137bb3bc07a54', 'b7b6e8b6b692e00280f1836e8', 'b84423396b6605606439f6e08', 'b9c3a652daf6472abbe15c7f2', 'bb16c0d83de406776e044c163', 'bee798fa46491f095cadd03d0'),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
-    required=True,
-    max_count=1,
-)
-
-class Junction(Connectable):
-    """A `Junction` is a modeling construct used when a branching point within a `Connection` (see {s223:Connection}) is of significance,
-    such as specifying the observation location of a `Sensor`, or when a modeler wants to expose a branch point within a containing piece of `Equipment`.
-    When a `Junction` is used, what might have been modeled as a single, branched `Connection`
-    is separated into three or more separate connections, all tied together with the `Junction` and its associated connection points.
-
-    `Junction` is a subclass of `Connectable`, which gives it the ability to have connection points, but unlike `Equipment` (and like `Connection`)
-    it is not allowed to change the `Substance-Medium` that passes through it. This is why `Junction` is a sibling class to `Equipment` and not a subclass.
-    This constraint to maintain compatible mediums among a `Junction` and all of its associated `ConnectionPoint`s gives rise to multiple
-    validation test cases, where the specified medium might be a pure medium, or a mixture with constituents (see {s223:Substance-Medium}).
-
-    Ontology: WATR — http://data.ashrae.org/standard223#Junction
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#Junction',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Junction',
-        definition='A `Junction` is a modeling construct used when a branching point within a `Connection` (see {s223:Connection}) is of significance,\nsuch as specifying the observation location of a `Sensor`, or when a modeler wants to expose a branch point within a containing piece of `Equipment`.\nWhen a `Junction` is used, what might have been modeled as a single, branched `Connection`\nis separated into three or more separate connections, all tied together with the `Junction` and its associated connection points.\n\n`Junction` is a subclass of `Connectable`, which gives it the ability to have connection points, but unlike `Equipment` (and like `Connection`)\nit is not allowed to change the `Substance-Medium` that passes through it. This is why `Junction` is a sibling class to `Equipment` and not a subclass.\nThis constraint to maintain compatible mediums among a `Junction` and all of its associated `ConnectionPoint`s gives rise to multiple\nvalidation test cases, where the specified medium might be a pure medium, or a mixture with constituents (see {s223:Substance-Medium}).',
-        parent_iris=('http://data.ashrae.org/standard223#Connectable',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Junction_has_connection_point, _P_Junction_medium,),
-        cp_constraints=(
-            _CPConstraint(operator='or', children=(
-                _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None)),
-                )),
-                _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=1, max_count=None)),
-            )),
-        ),
-    )
-
-    has_connection_point: _Rel[ConnectionPoint] = _Rel(_P_Junction_has_connection_point)
-    """One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}). (http://data.ashrae.org/standard223#hasConnectionPoint)"""
-
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_Junction_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-    _shape_constraints = (
-        _ShapeValues('has_connection_point', 'b8ad8d8b7d7a41f55c0bc4138, be2099568566b78227dcced58', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('medium', 'b0070bb08b6715a4e7a32e88c, b08ea5991a9d595339cdac23a, b114c42d9256c0b70b09fad9c, b2b77f818aaa5e179e6cb3872, b490b774633a41f304e59947b, b5aecdad0a8f3f7f4ac11e130, b67b7bcfa9dd137bb3bc07a54, b7b6e8b6b692e00280f1836e8, b84423396b6605606439f6e08, b9c3a652daf6472abbe15c7f2, bb16c0d83de406776e044c163, bee798fa46491f095cadd03d0', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        medium: _EnumValue | None,
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_property: _Iterable[Property] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                medium=medium,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_property=has_property,
-            ),
-        )
+Junction = _BASE.Junction
 
 _P_KinestheticCue_code = _PropertySpec(
     name='code',
@@ -19888,7 +16775,7 @@ class LongIntegerType(IntegerDatatype):
         _ShapeValues('vb_name', 'http://qudt.org/schema/qudt/Datatype-vbName', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-class Luminaire(Equipment):
+class Luminaire(Equipment, _BASE.Luminaire):
     """A piece of `Equipment` consisting of a light source(s) and ballast(s) or driver(s) (when applicable), together with the parts designed to distribute the light, to position and protect the light source(s), and to connect the light source(s) to the power supply. Also known as a light fixture.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Luminaire
@@ -19898,14 +16785,11 @@ class Luminaire(Equipment):
         iri='http://data.ashrae.org/standard223#Luminaire',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Luminaire.meta.canonical,
         label='Luminaire',
         definition='A piece of `Equipment` consisting of a light source(s) and ballast(s) or driver(s) (when applicable), together with the parts designed to distribute the light, to position and protect the light source(s), and to connect the light source(s) to the power supply. Also known as a light fixture.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#EM-Light', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class LunarCoordinateSystem(TrajectoryCoordinateSystem):
@@ -20399,11 +17283,11 @@ class MembraneAeratedBiofilmReaactor(Reactor):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -20507,7 +17391,7 @@ class MicrofiltrationUnit(Filter):
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess', required=(), defaults=(), choices=None, minimum=1, maximum=None),
     )
 
-class MicrowaveOven(ElectricOven):
+class MicrowaveOven(ElectricOven, _BASE.MicrowaveOven):
     """An `ElectricOven` that cooks food by exposing it to electromagnetic radiation in the microwave frequency range.
 
     Ontology: WATR — http://data.ashrae.org/standard223#MicrowaveOven
@@ -20517,13 +17401,11 @@ class MicrowaveOven(ElectricOven):
         iri='http://data.ashrae.org/standard223#MicrowaveOven',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.MicrowaveOven.meta.canonical,
         label='Microwave oven',
         definition='An `ElectricOven` that cooks food by exposing it to electromagnetic radiation in the microwave frequency range.',
         parent_iris=('http://data.ashrae.org/standard223#ElectricOven',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectricOven', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class MixingBasin(Reactor):
@@ -20552,11 +17434,11 @@ class MixingBasin(Reactor):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -20768,7 +17650,7 @@ class MolybdenumSulfideBasedMembrane(Filter):
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess', required=(), defaults=(), choices=None, minimum=1, maximum=None),
     )
 
-class Monitor(ElectronicDisplay):
+class Monitor(ElectronicDisplay, _BASE.Monitor):
     """An `ElectronicDisplay` designed primarily for the output of visual information supplied by a `Computer`.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Monitor
@@ -20778,13 +17660,14 @@ class Monitor(ElectronicDisplay):
         iri='http://data.ashrae.org/standard223#Monitor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Monitor.meta.canonical,
         label='Monitor',
         definition='An `ElectronicDisplay` designed primarily for the output of visual information supplied by a `Computer`.',
         parent_iris=('http://data.ashrae.org/standard223#ElectronicDisplay',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectronicDisplay', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class Motor(Equipment):
+class Motor(Equipment, _BASE.Motor):
     """A piece of `Equipment` that converts electrical energy into mechanical energy.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Motor
@@ -20794,13 +17677,11 @@ class Motor(Equipment):
         iri='http://data.ashrae.org/standard223#Motor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Motor.meta.canonical,
         label='Motor',
         definition='A piece of `Equipment` that converts electrical energy into mechanical energy.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class MovingBedBioreactor(Filter, Reactor):
@@ -21585,7 +18466,7 @@ class NumericListShape(_EntityBase):
             ),
         )
 
-class OccupancySensor(Sensor):
+class OccupancySensor(Sensor, _BASE.OccupancySensor):
     """A `Sensor` that `observes` an `ObservableProperty` that represents an attribute of occupancy in a space.
 
     Ontology: WATR — http://data.ashrae.org/standard223#OccupancySensor
@@ -21595,6 +18476,7 @@ class OccupancySensor(Sensor):
         iri='http://data.ashrae.org/standard223#OccupancySensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.OccupancySensor.meta.canonical,
         label='Occupancy sensor',
         definition='A `Sensor` that `observes` an `ObservableProperty` that represents an attribute of occupancy in a space.',
         parent_iris=('http://data.ashrae.org/standard223#Sensor',),
@@ -21606,21 +18488,7 @@ class OccupancySensor(Sensor):
         _ShapeValues('observes', 'bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-_P_OccupantCountSensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
-    sources=('ba25a7d80394b4c33a438406c', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class OccupantCountSensor(OccupancySensor):
+class OccupantCountSensor(OccupancySensor, _BASE.OccupantCountSensor):
     """An `OccupancySensor` that `observes` a `QuantifiableObservableProperty` that represents a population, usually of humans, within
       a sensing region.
 
@@ -21631,101 +18499,19 @@ class OccupantCountSensor(OccupancySensor):
         iri='http://data.ashrae.org/standard223#OccupantCountSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.OccupantCountSensor.meta.canonical,
         label='Occupant count sensor',
         definition='An `OccupancySensor` that `observes` a `QuantifiableObservableProperty` that represents a population, usually of humans, within\n  a sensing region.',
         parent_iris=('http://data.ashrae.org/standard223#OccupancySensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#OccupancySensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_OccupantCountSensor_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_OccupantCountSensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('observes', 'ba25a7d80394b4c33a438406c, bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
-
-_P_OccupantMotionSensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('EnumeratedObservableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#EnumeratedObservableProperty',),),
-    sources=('bd08797a7c86eae8c1d79a47f', 'bd5a51094841e3cbea54021f0', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class OccupantMotionSensor(OccupancySensor):
+class OccupantMotionSensor(OccupancySensor, _BASE.OccupantMotionSensor):
     """An `OccupancySensor` that `observes` an `EnumeratedObservableProperty` that represents motion within a sensing region.
 
     Ontology: WATR — http://data.ashrae.org/standard223#OccupantMotionSensor
@@ -21735,101 +18521,19 @@ class OccupantMotionSensor(OccupancySensor):
         iri='http://data.ashrae.org/standard223#OccupantMotionSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.OccupantMotionSensor.meta.canonical,
         label='Occupant motion sensor',
         definition='An `OccupancySensor` that `observes` an `EnumeratedObservableProperty` that represents motion within a sensing region.',
         parent_iris=('http://data.ashrae.org/standard223#OccupancySensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#OccupancySensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_OccupantMotionSensor_observes,),
     )
-
-    observes: _RelOne[EnumeratedObservableProperty] = _RelOne(_P_OccupantMotionSensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('observes', 'bd08797a7c86eae8c1d79a47f, bd5a51094841e3cbea54021f0, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: EnumeratedObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
-
-_P_OccupantPresenceSensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('EnumeratedObservableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#EnumeratedObservableProperty',),),
-    sources=('bd08797a7c86eae8c1d79a47f', 'bd69289dbadd77dd6a8abbeec', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class OccupantPresenceSensor(OccupancySensor):
+class OccupantPresenceSensor(OccupancySensor, _BASE.OccupantPresenceSensor):
     """An `OccupancySensor` that `observes` an `EnumeratedObservableProperty` that represents presence within a sensing region.
 
     Ontology: WATR — http://data.ashrae.org/standard223#OccupantPresenceSensor
@@ -21839,85 +18543,17 @@ class OccupantPresenceSensor(OccupancySensor):
         iri='http://data.ashrae.org/standard223#OccupantPresenceSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.OccupantPresenceSensor.meta.canonical,
         label='Occupant presence sensor',
         definition='An `OccupancySensor` that `observes` an `EnumeratedObservableProperty` that represents presence within a sensing region.',
         parent_iris=('http://data.ashrae.org/standard223#OccupancySensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#OccupancySensor', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_OccupantPresenceSensor_observes,),
     )
-
-    observes: _RelOne[EnumeratedObservableProperty] = _RelOne(_P_OccupantPresenceSensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('observes', 'bd08797a7c86eae8c1d79a47f, bd69289dbadd77dd6a8abbeec, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: EnumeratedObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
 
 _P_UnsignedType_signedness = _PropertySpec(
     name='signedness',
@@ -22579,171 +19215,11 @@ class Organization(Concept_2):
             ),
         )
 
-_P_PhysicalSpace_contains_ = _PropertySpec(
-    name='contains_',
-    predicate='http://data.ashrae.org/standard223#contains',
-    kind='object',
-    label='contains',
-    definition='A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s.',
-    ranges=('PhysicalSpace',),
-    range_groups=(('http://data.ashrae.org/standard223#PhysicalSpace',),),
-    sources=('b148703f78a1ded802228a6b4',),
-)
+PhysicalSpace = _BASE.PhysicalSpace
 
-_P_PhysicalSpace_encloses = _PropertySpec(
-    name='encloses',
-    predicate='http://data.ashrae.org/standard223#encloses',
-    kind='object',
-    label='encloses',
-    definition='A `Relation` that associates a `PhysicalSpace` with one or more `DomainSpace`s.',
-    ranges=('DomainSpace',),
-    range_groups=(('http://data.ashrae.org/standard223#DomainSpace',),),
-    sources=('b0338d09325a602bd7ef41e2c',),
-)
+OutdoorPhysicalSpace = _BASE.OutdoorPhysicalSpace
 
-class PhysicalSpace(Concept):
-    """An architectural concept representing a room, a part of a room, a collection of rooms, or any other physical region in a building. PhysicalSpaces may be grouped to define larger `PhysicalSpace`s using the relation `contains` (see {s223:contains}).
-
-    Ontology: WATR — http://data.ashrae.org/standard223#PhysicalSpace
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#PhysicalSpace',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Physical space',
-        definition='An architectural concept representing a room, a part of a room, a collection of rooms, or any other physical region in a building. PhysicalSpaces may be grouped to define larger `PhysicalSpace`s using the relation `contains` (see {s223:contains}).',
-        parent_iris=('http://data.ashrae.org/standard223#Concept',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_PhysicalSpace_contains_, _P_PhysicalSpace_encloses,),
-    )
-
-    contains_: _Rel[PhysicalSpace] = _Rel(_P_PhysicalSpace_contains_)
-    """A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s. (http://data.ashrae.org/standard223#contains)"""
-
-    encloses: _Rel[DomainSpace] = _Rel(_P_PhysicalSpace_encloses)
-    """A `Relation` that associates a `PhysicalSpace` with one or more `DomainSpace`s. (http://data.ashrae.org/standard223#encloses)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        contains_: _Iterable[PhysicalSpace] = (),
-        encloses: _Iterable[DomainSpace] = (),
-        has_property: _Iterable[Property] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                contains_=contains_,
-                encloses=encloses,
-                has_property=has_property,
-                medium=medium,
-            ),
-        )
-
-class OutdoorPhysicalSpace(PhysicalSpace):
-    """A `PhysicalSpace` that is outside of the building where, for example, outdoor ambient properties might be measured, within a suitably defined `DomainSpace`.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#OutdoorPhysicalSpace
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#OutdoorPhysicalSpace',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Outdoor physical space',
-        definition='A `PhysicalSpace` that is outside of the building where, for example, outdoor ambient properties might be measured, within a suitably defined `DomainSpace`.',
-        parent_iris=('http://data.ashrae.org/standard223#PhysicalSpace',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#PhysicalSpace', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-
-_P_OutletConnectionPoint_maps_to = _PropertySpec(
-    name='maps_to',
-    predicate='http://data.ashrae.org/standard223#mapsTo',
-    kind='object',
-    label='maps to',
-    definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
-    ranges=('OutletConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',), ('http://data.ashrae.org/standard223#OutletConnectionPoint',)),
-    sources=('b0d13994dfb2300c9e5295e50', 'b33487dbc91b59884232238e0', 'b398e8ae8d13bd06b4e8e26ce', 'bb034c0077500f468d0b8a00c', 'bcd0844fd5cbcd23016dbbec4', 'be1d4db06086f9ad97cf53289'),
-    max_count=1,
-    deferred=True,
-)
-
-class OutletConnectionPoint(ConnectionPoint):
-    """An `OutletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow out of the associated `Connectable`.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#OutletConnectionPoint
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#OutletConnectionPoint',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Outlet connection point',
-        definition='An `OutletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow out of the associated `Connectable`.',
-        parent_iris=('http://data.ashrae.org/standard223#ConnectionPoint',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#ConnectionPoint', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_OutletConnectionPoint_maps_to,),
-    )
-
-    maps_to: _RelOne[OutletConnectionPoint | _DeferredEndpoint] = _RelOne(_P_OutletConnectionPoint_maps_to)
-    """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
-    _shape_constraints = (
-        _ShapeValues('connection', 'b45e5b28f4870913fb56aa255, bf34e91b5b4ffadb3428bcf8e', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_electrical_phase', 'b0c1fffe312fa41f8bd4a2137', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('maps_to', 'b0d13994dfb2300c9e5295e50, b33487dbc91b59884232238e0, b398e8ae8d13bd06b4e8e26ce, bb034c0077500f468d0b8a00c, bcd0844fd5cbcd23016dbbec4, be1d4db06086f9ad97cf53289', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b1b444a3bb99efa738b533c51, b490b774633a41f304e59947b, b5aecdad0a8f3f7f4ac11e130, b9c3a652daf6472abbe15c7f2, bcbdbd8352d5e02d426a20e1f', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-        _ShapeValues('owner', 'bbbc51213b878601a6b8f0562', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-        _ShapeValues('paired_with', 'b0cf918f9bc217d2c825c273a, b276ff53b66e82c6d438739d4', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        medium: _EnumValue | None,
-        owner: Connectable | None,
-        connection: Connection | None = None,
-        has_electrical_phase: _EnumValue | None = None,
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        maps_to: OutletConnectionPoint | _DeferredEndpoint | None = None,
-        paired_with: ConnectionPoint | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                medium=medium,
-                owner=owner,
-                connection=connection,
-                has_electrical_phase=has_electrical_phase,
-                has_property=has_property,
-                has_role=has_role,
-                maps_to=maps_to,
-                paired_with=paired_with,
-            ),
-        )
+OutletConnectionPoint = _BASE.OutletConnectionPoint
 
 class OxidationDitch(Reactor):
     """Modified activated sludge process that uses a ring-shaped channel to biologically remove pollutants
@@ -22771,11 +19247,11 @@ class OxidationDitch(Reactor):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -22885,11 +19361,11 @@ class OzonationUnit(UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -23019,32 +19495,7 @@ class PartialArray(Array):
         _ShapeValues('vb_name', 'http://qudt.org/schema/qudt/Datatype-vbName', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-_P_ParticulateSensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
-    sources=('b5fb805ffd07c4c73ab7d8316', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-_P_ParticulateSensor_of_substance = _PropertySpec(
-    name='of_substance',
-    predicate='http://data.ashrae.org/standard223#ofSubstance',
-    kind='enum',
-    label='of substance',
-    definition='A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix.',
-    range_groups=(('http://data.ashrae.org/standard223#Substance-Particulate',),),
-    sources=('b4e9ca7782b94f6a025928dec',),
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Particulate',),
-)
-
-class ParticulateSensor(Sensor):
+class ParticulateSensor(Sensor, _BASE.ParticulateSensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents an amount of a particulate in a medium, in contrast
     to a `ConcentrationSensor` that `observes` a `QuantifiableObservableProperty` that represents a concentration of a miscible constituent in a medium
     (see {s223:ConcentrationSensor}).
@@ -23063,21 +19514,12 @@ class ParticulateSensor(Sensor):
         iri='http://data.ashrae.org/standard223#ParticulateSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ParticulateSensor.meta.canonical,
         label='Particulate sensor',
         definition="A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents an amount of a particulate in a medium, in contrast\nto a `ConcentrationSensor` that `observes` a `QuantifiableObservableProperty` that represents a concentration of a miscible constituent in a medium\n(see {s223:ConcentrationSensor}).\n\nThe 223 standard does not constrain the `Unit` or `QuantityKind` reported by a `ParticulateSensor`, but possible\n`QuantityKind`s include `Density` (mass per volume), `ParticleNumberDensity` (count per volume), and `DimensionlessRatio` (with units such as `PPM` or\n`PPB`). Some particulate sensors may claim to report a raw count of particles, for which a `QuantityKind` of `Count` could be used, but the required\ncontext for such a measurement should be provided in the sensor's documentation to specify if it in fact measures a count per volume (e.g., `ParticleNumberDensity`),\ntime (e.g., `CountRate` or `ParticleCurrent`), or some\nother combination. Explicitly declaring the `QuantityKind` of a sensor's output is preferable to relying on implicit assumptions.",
         parent_iris=('http://data.ashrae.org/standard223#Sensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_ParticulateSensor_observes, _P_ParticulateSensor_of_substance,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_ParticulateSensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
-
-    of_substance: _EnumSet[_EnumValue] = _EnumSet(_P_ParticulateSensor_of_substance)
-    """A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix. (http://data.ashrae.org/standard223#ofSubstance)"""
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
@@ -23089,18 +19531,18 @@ class ParticulateSensor(Sensor):
         name: str | None = None,
         *,
         has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
+        observes: _BASE.QuantifiableObservableProperty | None,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
+        has_measurement_range: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_measurement_resolution: _Iterable[_BASE.QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
         has_process: _Iterable[type[Process]] = (),
@@ -23164,7 +19606,7 @@ class Party(_EntityBase):
         ancestor_iris=('http://www.w3.org/2002/07/owl#Thing',),
     )
 
-class PersonalComputer(Computer):
+class PersonalComputer(Computer, _BASE.PersonalComputer):
     """A `Computer` designed primarily for use by a single person.
 
     Ontology: WATR — http://data.ashrae.org/standard223#PersonalComputer
@@ -23174,16 +19616,14 @@ class PersonalComputer(Computer):
         iri='http://data.ashrae.org/standard223#PersonalComputer',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.PersonalComputer.meta.canonical,
         label='Personal computer',
         definition='A `Computer` designed primarily for use by a single person.',
         parent_iris=('http://data.ashrae.org/standard223#Computer',),
         ancestor_iris=('http://data.ashrae.org/standard223#Computer', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class PhotovoltaicModule(Equipment):
+class PhotovoltaicModule(Equipment, _BASE.PhotovoltaicModule):
     """A piece of `Equipment` that converts sunlight into electricity.
 
     Ontology: WATR — http://data.ashrae.org/standard223#PhotovoltaicModule
@@ -23193,14 +19633,11 @@ class PhotovoltaicModule(Equipment):
         iri='http://data.ashrae.org/standard223#PhotovoltaicModule',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.PhotovoltaicModule.meta.canonical,
         label='Photovoltaic module',
         definition='A piece of `Equipment` that converts sunlight into electricity.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#EM-Light', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class PhysicalAddress(CompositeDatatype):
@@ -23691,26 +20128,7 @@ class PhysicalConstant(Quantity):
             ),
         )
 
-class Pipe(Connection):
-    """A `Connection` that is used primarily to transport liquids and gases such as water, sewage, natural gas, and compressed air.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#Pipe
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#Pipe',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Pipe',
-        definition='A `Connection` that is used primarily to transport liquids and gases such as water, sewage, natural gas, and compressed air.',
-        parent_iris=('http://data.ashrae.org/standard223#Connection',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
+Pipe = _BASE.Pipe
 
 class PlaneAngleUnit(AngleUnit):
     """Plane Angle Unit
@@ -24002,7 +20420,7 @@ class PositiveIntegerType(IntegerDatatype, UnsignedType):
         _ShapeValues('vb_name', 'http://qudt.org/schema/qudt/Datatype-vbName', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-class PowerOverEthernetPort(Equipment):
+class PowerOverEthernetPort(Equipment, _BASE.PowerOverEthernetPort):
     """A piece of `Equipment` that connects and is capable of powering one instance of electrical equipment, such as computers and Wi-Fi access points, as well as connect it to an Ethernet network so it can communicate with other equipment and, optionally, with the Internet.
 
     Ontology: WATR — http://data.ashrae.org/standard223#PowerOverEthernetPort
@@ -24012,17 +20430,14 @@ class PowerOverEthernetPort(Equipment):
         iri='http://data.ashrae.org/standard223#PowerOverEthernetPort',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.PowerOverEthernetPort.meta.canonical,
         label='Power over ethernet port',
         definition='A piece of `Equipment` that connects and is capable of powering one instance of electrical equipment, such as computers and Wi-Fi access points, as well as connect it to an Ethernet network so it can communicate with other equipment and, optionally, with the Internet.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Electricity-DC', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#PowerAndSignal-PoE', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class PowerOverEthernetSwitch(Equipment):
+class PowerOverEthernetSwitch(Equipment, _BASE.PowerOverEthernetSwitch):
     """A piece of `Equipment` that connects and is capable of powering one or more instances of electrical equipment, such as computers and Wi-Fi access points, as well as connect the equipment to an Ethernet network so they can communicate with each other and, optionally, to the Internet.
 
     Ontology: WATR — http://data.ashrae.org/standard223#PowerOverEthernetSwitch
@@ -24032,14 +20447,11 @@ class PowerOverEthernetSwitch(Equipment):
         iri='http://data.ashrae.org/standard223#PowerOverEthernetSwitch',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.PowerOverEthernetSwitch.meta.canonical,
         label='Power over Ethernet (PoE) switch',
         definition='A piece of `Equipment` that connects and is capable of powering one or more instances of electrical equipment, such as computers and Wi-Fi access points, as well as connect the equipment to an Ethernet network so they can communicate with each other and, optionally, to the Internet.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#PowerAndSignal-PoE', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class PressureExchanger(Equipment):
@@ -25699,7 +22111,7 @@ class Pump(Equipment):
         ),
     )
 
-class Pump_2(Pump):
+class Pump_2(Pump, _BASE.Pump):
     """A piece of `Equipment` that imparts energy to a fluid, drawing a fluid into itself through an inlet port, and forcing the fluid out through an outlet port.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Pump
@@ -25709,14 +22121,11 @@ class Pump_2(Pump):
         iri='http://data.ashrae.org/standard223#Pump',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Pump.meta.canonical,
         label='Pump',
         definition='A piece of `Equipment` that imparts energy to a fluid, drawing a fluid into itself through an inlet port, and forcing the fluid out through an outlet port.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment', 'https://watermetadata.org/ontology/watr#Pump'),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Pump'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Fluid-Oil', 'http://data.ashrae.org/standard223#Fluid-Water'), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Fluid-Oil', 'http://data.ashrae.org/standard223#Fluid-Water'), min_count=1, max_count=None),
-        ),
     )
 
 _P_QuantifiableProperty_has_accuracy = _PropertySpec(
@@ -25742,17 +22151,6 @@ _P_QuantifiableProperty_has_aggregation = _PropertySpec(
     max_count=1,
 )
 
-_P_QuantifiableProperty_has_alarm_status = _PropertySpec(
-    name='has_alarm_status',
-    predicate='http://data.ashrae.org/standard223#hasAlarmStatus',
-    kind='object',
-    label='has alarm status',
-    definition='A `Relation` that associates an `EnumerableProperty` that describes an Alarm or Status with a `QuantifiableProperty`.',
-    ranges=('EnumerableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#EnumerableProperty',),),
-    sources=('b7caed860597ca70be010aa4d',),
-)
-
 _P_QuantifiableProperty_has_bias = _PropertySpec(
     name='has_bias',
     predicate='https://watermetadata.org/ontology/watr#hasBias',
@@ -25773,17 +22171,6 @@ _P_QuantifiableProperty_has_calibration_curve = _PropertySpec(
     ranges=('QuantifiableProperty',),
     range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
     sources=('b65a4c43828a57106014bc859',),
-)
-
-_P_QuantifiableProperty_has_deadband = _PropertySpec(
-    name='has_deadband',
-    predicate='http://data.ashrae.org/standard223#hasDeadband',
-    kind='object',
-    label='has deadband',
-    definition='This relation binds a control setpoint to the `QuantifiableProperty` indicating the range of values within which a sensed variable can vary without indicating a condition has changed.',
-    ranges=('QuantifiableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
-    sources=('b1dba9e9705092adb170a0b94',),
 )
 
 _P_QuantifiableProperty_has_drop_rate = _PropertySpec(
@@ -25852,20 +22239,6 @@ _P_QuantifiableProperty_has_processed_data = _PropertySpec(
     sources=('b343f892b7a4681c65ea66b11',),
 )
 
-_P_QuantifiableProperty_has_quantity_kind = _PropertySpec(
-    name='has_quantity_kind',
-    predicate='http://qudt.org/schema/qudt/hasQuantityKind',
-    kind='object',
-    label='has quantity kind',
-    definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
-    ranges=('QuantityKind',),
-    range_groups=(('http://qudt.org/schema/qudt/QuantityKind',),),
-    sources=('b6b3083fdc249c756a0564b36', 'b702d66f8c2dfad4ecf14d7e2', 'bc33a11cbee837eadd4a95eb9', 'bf89b287cc123ad89dce05a4b'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
 _P_QuantifiableProperty_has_response_time = _PropertySpec(
     name='has_response_time',
     predicate='https://watermetadata.org/ontology/watr#hasResponseTime',
@@ -25875,17 +22248,6 @@ _P_QuantifiableProperty_has_response_time = _PropertySpec(
     ranges=('QuantifiableProperty',),
     range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
     sources=('b56521785e50d65d8aefbebb7',),
-)
-
-_P_QuantifiableProperty_has_setpoint = _PropertySpec(
-    name='has_setpoint',
-    predicate='http://data.ashrae.org/standard223#hasSetpoint',
-    kind='object',
-    label='has setpoint',
-    definition='A `Relation` that associates a control setpoint with the `QuantifiableProperty` indicating the desired value which the control process is trying to maintain.',
-    ranges=('QuantifiableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
-    sources=('b7156bf5d4cf54f79d6f330eb',),
 )
 
 _P_QuantifiableProperty_has_temporal_range = _PropertySpec(
@@ -25908,17 +22270,6 @@ _P_QuantifiableProperty_has_temporal_resolution = _PropertySpec(
     ranges=('QuantifiableProperty',),
     range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
     sources=('bd8446a7831e5415a7600d424',),
-)
-
-_P_QuantifiableProperty_has_threshold = _PropertySpec(
-    name='has_threshold',
-    predicate='http://data.ashrae.org/standard223#hasThreshold',
-    kind='object',
-    label='has threshold',
-    definition='A `Relation` that associates a threshold with the `QuantifiableProperty` indicating a specific value at which an action may be taken, distinguished from an offset or a range.',
-    ranges=('QuantifiableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableProperty',),),
-    sources=('b5a03d41737cc945ed90dbb5b',),
 )
 
 _P_QuantifiableProperty_has_unit = _PropertySpec(
@@ -25945,36 +22296,7 @@ _P_QuantifiableProperty_has_variable_range = _PropertySpec(
     sources=('b95e14df552f943bf95c7f6cf',),
 )
 
-_P_QuantifiableProperty_is_delta_quantity = _PropertySpec(
-    name='is_delta_quantity',
-    predicate='http://qudt.org/schema/qudt/isDeltaQuantity',
-    kind='literal',
-    label='is Delta Quantity',
-    sources=('be248f5eac5f95ea50748c45f',),
-    datatype=bool,
-    max_count=1,
-)
-
-_P_QuantifiableProperty_quantity_value = _PropertySpec(
-    name='quantity_value',
-    predicate='http://qudt.org/schema/qudt/quantityValue',
-    kind='object',
-    label='quantity value',
-    ranges=('QuantityValue',),
-    range_groups=(('http://qudt.org/schema/qudt/QuantityValue',),),
-    sources=('bd77c9e9d4d33b5efd8072a0d',),
-)
-
-_P_QuantifiableProperty_value = _PropertySpec(
-    name='value',
-    predicate='http://qudt.org/schema/qudt/value',
-    kind='object',
-    label='value',
-    sources=('b61fd8f37714fab39b3996515',),
-    max_count=0,
-)
-
-class QuantifiableProperty(Property):
+class QuantifiableProperty(_BASE.QuantifiableProperty):
     """This class is for quantifiable values that describe an object (`System`, `Equipment`, etc.) that are typically static (`hasValue`). That is, they are neither measured nor specified in the course of operations.
 
     Ontology: WATR — http://data.ashrae.org/standard223#QuantifiableProperty
@@ -25984,81 +22306,58 @@ class QuantifiableProperty(Property):
         iri='http://data.ashrae.org/standard223#QuantifiableProperty',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.QuantifiableProperty.meta.canonical,
         label='Quantifiable property',
         definition='This class is for quantifiable values that describe an object (`System`, `Equipment`, etc.) that are typically static (`hasValue`). That is, they are neither measured nor specified in the course of operations.',
         parent_iris=('http://data.ashrae.org/standard223#Property',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_QuantifiableProperty_has_accuracy, _P_QuantifiableProperty_has_aggregation, _P_QuantifiableProperty_has_alarm_status, _P_QuantifiableProperty_has_bias, _P_QuantifiableProperty_has_calibration_curve, _P_QuantifiableProperty_has_deadband, _P_QuantifiableProperty_has_drop_rate, _P_QuantifiableProperty_has_measurement_range, _P_QuantifiableProperty_has_numeric_range, _P_QuantifiableProperty_has_numeric_resolution, _P_QuantifiableProperty_has_precision, _P_QuantifiableProperty_has_processed_data, _P_QuantifiableProperty_has_quantity_kind, _P_QuantifiableProperty_has_response_time, _P_QuantifiableProperty_has_setpoint, _P_QuantifiableProperty_has_temporal_range, _P_QuantifiableProperty_has_temporal_resolution, _P_QuantifiableProperty_has_threshold, _P_QuantifiableProperty_has_unit, _P_QuantifiableProperty_has_variable_range, _P_QuantifiableProperty_is_delta_quantity, _P_QuantifiableProperty_quantity_value, _P_QuantifiableProperty_value,),
+        properties=(_P_QuantifiableProperty_has_accuracy, _P_QuantifiableProperty_has_aggregation, _P_QuantifiableProperty_has_bias, _P_QuantifiableProperty_has_calibration_curve, _P_QuantifiableProperty_has_drop_rate, _P_QuantifiableProperty_has_measurement_range, _P_QuantifiableProperty_has_numeric_range, _P_QuantifiableProperty_has_numeric_resolution, _P_QuantifiableProperty_has_precision, _P_QuantifiableProperty_has_processed_data, _P_QuantifiableProperty_has_response_time, _P_QuantifiableProperty_has_temporal_range, _P_QuantifiableProperty_has_temporal_resolution, _P_QuantifiableProperty_has_unit, _P_QuantifiableProperty_has_variable_range,),
     )
 
-    has_accuracy: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_accuracy)
+    has_accuracy: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_accuracy)
     """The `hasAccuracy` relation is used to link to a numerical `Property` whose value indicates the maximum expected deviation between the measured value and the true value in engineering units. (https://watermetadata.org/ontology/watr#hasAccuracy)"""
 
     has_aggregation: _EnumOne[_EnumValue] = _EnumOne(_P_QuantifiableProperty_has_aggregation)
     """The `hasAggregation` relation associates a property with water-specific aggregation semantics such as total, mean, maximum, or minimum. (https://watermetadata.org/ontology/watr#hasAggregation)"""
 
-    has_alarm_status: _Rel[EnumerableProperty] = _Rel(_P_QuantifiableProperty_has_alarm_status)
-    """A `Relation` that associates an `EnumerableProperty` that describes an Alarm or Status with a `QuantifiableProperty`. (http://data.ashrae.org/standard223#hasAlarmStatus)"""
-
-    has_bias: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_bias)
+    has_bias: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_bias)
     """The `hasBias` relation is used to link to a numerical `Property` whose value indicates the systematic offset or drift in measurements relative to the true value. (https://watermetadata.org/ontology/watr#hasBias)"""
 
-    has_calibration_curve: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_calibration_curve)
+    has_calibration_curve: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_calibration_curve)
     """The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units. (https://watermetadata.org/ontology/watr#hasCalibrationCurve)"""
 
-    has_deadband: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_deadband)
-    """This relation binds a control setpoint to the `QuantifiableProperty` indicating the range of values within which a sensed variable can vary without indicating a condition has changed. (http://data.ashrae.org/standard223#hasDeadband)"""
-
-    has_drop_rate: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_drop_rate)
+    has_drop_rate: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_drop_rate)
     """The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors. (https://watermetadata.org/ontology/watr#hasDropRate)"""
 
-    has_measurement_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_measurement_range)
+    has_measurement_range: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_measurement_range)
     """The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor. (https://watermetadata.org/ontology/watr#hasMeasurementRange)"""
 
-    has_numeric_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_numeric_range)
+    has_numeric_range: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_numeric_range)
     """The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measurable values in engineering units. (https://watermetadata.org/ontology/watr#hasNumericRange)"""
 
-    has_numeric_resolution: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_numeric_resolution)
+    has_numeric_resolution: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_numeric_resolution)
     """The `hasNumericResolution` relation is used to link to a numerical `Property` whose value indicates the smallest distinguishable difference between two measured values in engineering units. (https://watermetadata.org/ontology/watr#hasNumericResolution)"""
 
-    has_precision: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_precision)
+    has_precision: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_precision)
     """The `hasPrecision` relation is used to link to a numerical `Property` whose value indicates the repeatability or reproducibility of measurements under identical conditions. (https://watermetadata.org/ontology/watr#hasPrecision)"""
 
-    has_processed_data: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_processed_data)
+    has_processed_data: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_processed_data)
     """The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values. (https://watermetadata.org/ontology/watr#hasProcessedData)"""
 
-    has_quantity_kind: _RelOne[QuantityKind | _TermValue] = _RelOne(_P_QuantifiableProperty_has_quantity_kind)
-    """A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`. (http://qudt.org/schema/qudt/hasQuantityKind)"""
-
-    has_response_time: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_response_time)
+    has_response_time: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_response_time)
     """The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable. (https://watermetadata.org/ontology/watr#hasResponseTime)"""
 
-    has_setpoint: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_setpoint)
-    """A `Relation` that associates a control setpoint with the `QuantifiableProperty` indicating the desired value which the control process is trying to maintain. (http://data.ashrae.org/standard223#hasSetpoint)"""
-
-    has_temporal_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_temporal_range)
+    has_temporal_range: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_temporal_range)
     """The `hasTemporalRange` relation is used to link to a numerical `Property` whose value indicates the start and end times for which data has been recorded. (https://watermetadata.org/ontology/watr#hasTemporalRange)"""
 
-    has_temporal_resolution: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_temporal_resolution)
+    has_temporal_resolution: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_temporal_resolution)
     """The `hasTemporalResolution` relation is used to link to a numerical `Property` whose value indicates the minimum time interval between successive measurements or data points. (https://watermetadata.org/ontology/watr#hasTemporalResolution)"""
-
-    has_threshold: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_threshold)
-    """A `Relation` that associates a threshold with the `QuantifiableProperty` indicating a specific value at which an action may be taken, distinguished from an offset or a range. (http://data.ashrae.org/standard223#hasThreshold)"""
 
     has_unit: _RelOne[Unit | _TermValue] = _RelOne(_P_QuantifiableProperty_has_unit)
     """A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`. (http://qudt.org/schema/qudt/hasUnit)"""
 
-    has_variable_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_variable_range)
+    has_variable_range: _Rel[_BASE.QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_variable_range)
     """The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions. (https://watermetadata.org/ontology/watr#hasVariableRange)"""
-
-    is_delta_quantity: _Lit[bool] = _Lit(_P_QuantifiableProperty_is_delta_quantity)
-    """is Delta Quantity (http://qudt.org/schema/qudt/isDeltaQuantity)"""
-
-    quantity_value: _Rel[QuantityValue] = _Rel(_P_QuantifiableProperty_quantity_value)
-    """quantity value (http://qudt.org/schema/qudt/quantityValue)"""
-
-    value: _Rel[_EntityBase] = _Rel(_P_QuantifiableProperty_value)
-    """value (http://qudt.org/schema/qudt/value)"""
     _shape_constraints = (
         _ShapeValues('has_aggregation', 'b1fea6dfb1a500281186ecd42', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('has_quantity_kind', 'b6b3083fdc249c756a0564b36, b702d66f8c2dfad4ecf14d7e2, bc33a11cbee837eadd4a95eb9, bf89b287cc123ad89dce05a4b', required=(), defaults=(), choices=None, minimum=1, maximum=1),
@@ -26076,30 +22375,30 @@ class QuantifiableProperty(Property):
         name: str | None = None,
         *,
         has_quantity_kind: QuantityKind | _TermValue | None,
-        has_accuracy: _Iterable[QuantifiableProperty] = (),
+        has_accuracy: _Iterable[_BASE.QuantifiableProperty] = (),
         has_aggregation: _EnumValue | None = None,
         has_alarm_status: _Iterable[EnumerableProperty] = (),
         has_aspect: _Iterable[_EnumValue] = (),
-        has_bias: _Iterable[QuantifiableProperty] = (),
-        has_calibration_curve: _Iterable[QuantifiableProperty] = (),
-        has_deadband: _Iterable[QuantifiableProperty] = (),
-        has_drop_rate: _Iterable[QuantifiableProperty] = (),
+        has_bias: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_calibration_curve: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_deadband: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_drop_rate: _Iterable[_BASE.QuantifiableProperty] = (),
         has_external_reference: _Iterable[ExternalReference] = (),
         has_internal_reference: _Iterable[Property] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_numeric_range: _Iterable[QuantifiableProperty] = (),
-        has_numeric_resolution: _Iterable[QuantifiableProperty] = (),
-        has_precision: _Iterable[QuantifiableProperty] = (),
-        has_processed_data: _Iterable[QuantifiableProperty] = (),
+        has_measurement_range: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_numeric_range: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_numeric_resolution: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_precision: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_processed_data: _Iterable[_BASE.QuantifiableProperty] = (),
         has_property: _Iterable[Property] = (),
-        has_response_time: _Iterable[QuantifiableProperty] = (),
-        has_setpoint: _Iterable[QuantifiableProperty] = (),
-        has_temporal_range: _Iterable[QuantifiableProperty] = (),
-        has_temporal_resolution: _Iterable[QuantifiableProperty] = (),
-        has_threshold: _Iterable[QuantifiableProperty] = (),
+        has_response_time: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_setpoint: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_temporal_range: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_temporal_resolution: _Iterable[_BASE.QuantifiableProperty] = (),
+        has_threshold: _Iterable[_BASE.QuantifiableProperty] = (),
         has_unit: Unit | _TermValue | None = None,
         has_value: object | None = None,
-        has_variable_range: _Iterable[QuantifiableProperty] = (),
+        has_variable_range: _Iterable[_BASE.QuantifiableProperty] = (),
         is_delta_quantity: bool | None = None,
         is_internal_reference_of: Property | None = None,
         medium: _Iterable[_EnumValue] = (),
@@ -26157,7 +22456,7 @@ class QuantifiableProperty(Property):
             ),
         )
 
-class QuantifiableActuatableProperty(ActuatableProperty, QuantifiableProperty):
+class QuantifiableActuatableProperty(QuantifiableProperty, _BASE.QuantifiableActuatableProperty):
     """This class is for instances of `QuantifiableProperty` for which numerical values are specified to be modifiable by a user or a machine outside of the model, like a setpoint.
 
     Ontology: WATR — http://data.ashrae.org/standard223#QuantifiableActuatableProperty
@@ -26167,6 +22466,7 @@ class QuantifiableActuatableProperty(ActuatableProperty, QuantifiableProperty):
         iri='http://data.ashrae.org/standard223#QuantifiableActuatableProperty',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.QuantifiableActuatableProperty.meta.canonical,
         label='Quantifiable actuatable property',
         definition='This class is for instances of `QuantifiableProperty` for which numerical values are specified to be modifiable by a user or a machine outside of the model, like a setpoint.',
         parent_iris=('http://data.ashrae.org/standard223#ActuatableProperty', 'http://data.ashrae.org/standard223#QuantifiableProperty'),
@@ -26184,7 +22484,7 @@ class QuantifiableActuatableProperty(ActuatableProperty, QuantifiableProperty):
         _ShapeValues('value', 'b61fd8f37714fab39b3996515', required=(), defaults=(), choices=None, minimum=0, maximum=0),
     )
 
-class QuantifiableObservableProperty(ObservableProperty, QuantifiableProperty):
+class QuantifiableObservableProperty(QuantifiableProperty, _BASE.QuantifiableObservableProperty):
     """This class is for instances of `QuantifiableProperty` for which numerical values are observed, like a temperature reading or a voltage measure.
 
     Ontology: WATR — http://data.ashrae.org/standard223#QuantifiableObservableProperty
@@ -26194,6 +22494,7 @@ class QuantifiableObservableProperty(ObservableProperty, QuantifiableProperty):
         iri='http://data.ashrae.org/standard223#QuantifiableObservableProperty',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.QuantifiableObservableProperty.meta.canonical,
         label='Quantifiable observable property',
         definition='This class is for instances of `QuantifiableProperty` for which numerical values are observed, like a temperature reading or a voltage measure.',
         parent_iris=('http://data.ashrae.org/standard223#ObservableProperty', 'http://data.ashrae.org/standard223#QuantifiableProperty'),
@@ -27504,7 +23805,7 @@ class QuantityValueType(DimensionalDatatype):
             ),
         )
 
-class RFOutlet(Equipment):
+class RFOutlet(Equipment, _BASE.RFOutlet):
     """A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a radio frequency (RF) communication network, via, for example, a coaxial cable.
 
     Ontology: WATR — http://data.ashrae.org/standard223#RFOutlet
@@ -27514,17 +23815,14 @@ class RFOutlet(Equipment):
         iri='http://data.ashrae.org/standard223#RFOutlet',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.RFOutlet.meta.canonical,
         label='Radio frequency outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a radio frequency (RF) communication network, via, for example, a coaxial cable.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#RF-Signal', medium_options=(), min_count=1, max_count=1),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#RF-Signal', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class RadiantHeater(Equipment):
+class RadiantHeater(Equipment, _BASE.RadiantHeater):
     """
     A piece of `Equipment` with heating or cooling surface that delivers 50% or more of its heat transfer by radiation.
     A `RadiantHeater` shall:
@@ -27548,25 +23846,14 @@ class RadiantHeater(Equipment):
         iri='http://data.ashrae.org/standard223#RadiantHeater',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.RadiantHeater.meta.canonical,
         label='Radiant heater',
         definition='\nA piece of `Equipment` with heating or cooling surface that delivers 50% or more of its heat transfer by radiation.\nA `RadiantHeater` shall:\n\n- Have the role `Role-Heating`.\n\n- Have at least one outlet connection point using the medium `Light-Infrared`.\n\n- Conform to exactly one of the following patterns:\n  - **Pattern 1:**\n    - Exactly one inlet connection point using the medium `Constituent-Electricity` or `Fluid-NaturalGas`.\n  - **Pattern 2:**\n    - Exactly one inlet connection point using the medium `Fluid-Water`.\n    - Exactly one outlet connection point using the medium `Fluid-Water`.\n',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Light-Infrared', medium_options=(), min_count=1, max_count=None),
-        ),
-        cp_constraints=(
-            _CPConstraint(operator='xone', children=(
-                _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Electricity', 'http://data.ashrae.org/standard223#Fluid-NaturalGas'), min_count=1, max_count=None)),
-                _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None)),
-                )),
-            )),
-        ),
     )
 
-class Radiator(Equipment):
+class Radiator(Equipment, _BASE.Radiator):
     """A piece of `Equipment` that provides primarily convective heating to a room using electricity, steam, or water
     (e.g., electric baseboard heaters, heated floors, or traditional radiators).
 
@@ -27577,22 +23864,11 @@ class Radiator(Equipment):
         iri='http://data.ashrae.org/standard223#Radiator',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Radiator.meta.canonical,
         label='Radiator',
         definition='A piece of `Equipment` that provides primarily convective heating to a room using electricity, steam, or water\n(e.g., electric baseboard heaters, heated floors, or traditional radiators).',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-        ),
-        cp_constraints=(
-            _CPConstraint(operator='xone', children=(
-                _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None)),
-                _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None)),
-                )),
-            )),
-        ),
     )
 
 class RapidSandFilter(MediaFiltrationUnit):
@@ -28476,7 +24752,7 @@ class ReferenceDatatype(StructuredDatatype):
         _ShapeValues('vb_name', 'http://qudt.org/schema/qudt/Datatype-vbName', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-class Refrigerator(Equipment):
+class Refrigerator(Equipment, _BASE.Refrigerator):
     """A piece of `Equipment` that maintains an internal temperature below the surrounding ambient temperature but above the freezing point of water.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Refrigerator
@@ -28486,94 +24762,16 @@ class Refrigerator(Equipment):
         iri='http://data.ashrae.org/standard223#Refrigerator',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Refrigerator.meta.canonical,
         label='Refrigerator',
         definition='A piece of `Equipment` that maintains an internal temperature below the surrounding ambient temperature but above the freezing point of water.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class Relation(Concept):
-    """A `Relation` associates the subject and the object in an RDF triple, the *predicate* portion of a *(subject, predicate, object)* triple.
+Relation = _BASE.Relation
 
-    Ontology: WATR — http://data.ashrae.org/standard223#Relation
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#Relation',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Relation',
-        definition='A `Relation` associates the subject and the object in an RDF triple, the *predicate* portion of a *(subject, predicate, object)* triple.',
-        parent_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property'),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
-
-_P_RelationWithInverse_inverse_of = _PropertySpec(
-    name='inverse_of',
-    predicate='http://data.ashrae.org/standard223#inverseOf',
-    kind='object',
-    label='inverse of',
-    definition='A `Relation` that associates `Relation`s that are inverses of one another, such as `connectedTo` and `connectedFrom`.',
-    ranges=('RelationWithInverse',),
-    range_groups=(('http://data.ashrae.org/standard223#RelationWithInverse',),),
-    sources=('b9a0a3ac284ed8ba313c7f70f',),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class RelationWithInverse(Relation):
-    """An `RelationWithInverse` is modeling construct used to define symmetric behavior
-    for certain relations in the standard such as `connectedTo` and `connectedFrom`.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#RelationWithInverse
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#RelationWithInverse',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Relation with inverse',
-        definition='An `RelationWithInverse` is modeling construct used to define symmetric behavior\nfor certain relations in the standard such as `connectedTo` and `connectedFrom`.',
-        parent_iris=('http://data.ashrae.org/standard223#Relation',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Relation', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_RelationWithInverse_inverse_of,),
-    )
-
-    inverse_of: _RelOne[RelationWithInverse] = _RelOne(_P_RelationWithInverse_inverse_of)
-    """A `Relation` that associates `Relation`s that are inverses of one another, such as `connectedTo` and `connectedFrom`. (http://data.ashrae.org/standard223#inverseOf)"""
-    _shape_constraints = (
-        _ShapeValues('inverse_of', 'b9a0a3ac284ed8ba313c7f70f', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        inverse_of: RelationWithInverse | None,
-        has_property: _Iterable[Property] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                inverse_of=inverse_of,
-                has_property=has_property,
-                medium=medium,
-            ),
-        )
+RelationWithInverse = _BASE.RelationWithInverse
 
 class Reservoir(Equipment):
     """A large natural or artificial body of water used for water supply
@@ -28717,11 +24915,11 @@ class RotaryDrumThickener(Thickener):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -29310,11 +25508,11 @@ class Screen(UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -29420,7 +25618,7 @@ class SequencingBatchReactor(Reactor, SeparationTank):
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess', required=(), defaults=(), choices=None, minimum=1, maximum=None),
     )
 
-class ServerComputer(Computer):
+class ServerComputer(Computer, _BASE.ServerComputer):
     """A `Computer` that is primarily for use by multiple people, or for the execution of tasks not directly coupled to human interaction.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ServerComputer
@@ -29430,13 +25628,11 @@ class ServerComputer(Computer):
         iri='http://data.ashrae.org/standard223#ServerComputer',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ServerComputer.meta.canonical,
         label='Server computer',
         definition='A `Computer` that is primarily for use by multiple people, or for the execution of tasks not directly coupled to human interaction.',
         parent_iris=('http://data.ashrae.org/standard223#Computer',),
         ancestor_iris=('http://data.ashrae.org/standard223#Computer', 'http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class Set(Collection):
@@ -29533,7 +25729,7 @@ class ShortIntegerType(IntegerDatatype):
         _ShapeValues('vb_name', 'http://qudt.org/schema/qudt/Datatype-vbName', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-class Shower(Equipment):
+class Shower(Equipment, _BASE.Shower):
     """A piece of `Equipment` for showering that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Shower
@@ -29543,14 +25739,11 @@ class Shower(Equipment):
         iri='http://data.ashrae.org/standard223#Shower',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Shower.meta.canonical,
         label='Shower',
         definition='A piece of `Equipment` for showering that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class SignedType(NumericType):
@@ -30390,7 +26583,7 @@ class SimpleCodeList(CodeList):
         ancestor_iris=('http://www.linkedmodel.org/schema/dtype#CodeList', 'http://www.linkedmodel.org/schema/dtype#Enumeration', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
-class SingleDuctTerminal(TerminalUnit):
+class SingleDuctTerminal(TerminalUnit, _BASE.SingleDuctTerminal):
     """A `TerminalUnit` unit that has one ducted air inlet and a damper for regulating the flow of air.
 
     Ontology: WATR — http://data.ashrae.org/standard223#SingleDuctTerminal
@@ -30400,13 +26593,14 @@ class SingleDuctTerminal(TerminalUnit):
         iri='http://data.ashrae.org/standard223#SingleDuctTerminal',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.SingleDuctTerminal.meta.canonical,
         label='Single duct terminal',
         definition='A `TerminalUnit` unit that has one ducted air inlet and a damper for regulating the flow of air.',
         parent_iris=('http://data.ashrae.org/standard223#TerminalUnit',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#TerminalUnit', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class Sink(Equipment):
+class Sink(Equipment, _BASE.Sink):
     """A piece of `Equipment` for manually washing hands, dishes, or other items that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Sink
@@ -30416,14 +26610,11 @@ class Sink(Equipment):
         iri='http://data.ashrae.org/standard223#Sink',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Sink.meta.canonical,
         label='Sink',
         definition='A piece of `Equipment` for manually washing hands, dishes, or other items that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class SluiceGate(Gate):
@@ -30442,7 +26633,7 @@ class SluiceGate(Gate):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Gate'),
     )
 
-class SolarThermalCollector(Equipment):
+class SolarThermalCollector(Equipment, _BASE.SolarThermalCollector):
     """A piece of `Equipment` that converts sunlight into thermal energy.
 
     Ontology: WATR — http://data.ashrae.org/standard223#SolarThermalCollector
@@ -30452,14 +26643,11 @@ class SolarThermalCollector(Equipment):
         iri='http://data.ashrae.org/standard223#SolarThermalCollector',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.SolarThermalCollector.meta.canonical,
         label='Solar thermal collector',
         definition='A piece of `Equipment` that converts sunlight into thermal energy.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#EM-Light', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class SolidAngleUnit(AngleUnit):
@@ -30528,11 +26716,11 @@ class SolventExtractionSystem(UnitProcess):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -31012,11 +27200,11 @@ class StaticMixer(Reactor):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -31058,7 +27246,7 @@ class StaticMixer(Reactor):
             ),
         )
 
-class SteamInjector(Equipment):
+class SteamInjector(Equipment, _BASE.SteamInjector):
     """A piece of `Equipment` for increasing the humidity of an air stream by injecting steam into the air stream.
 
     Ontology: WATR — http://data.ashrae.org/standard223#SteamInjector
@@ -31068,15 +27256,11 @@ class SteamInjector(Equipment):
         iri='http://data.ashrae.org/standard223#SteamInjector',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.SteamInjector.meta.canonical,
         label='Steam injector',
         definition='A piece of `Equipment` for increasing the humidity of an air stream by injecting steam into the air stream.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Water-Steam', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 _P_StringUTF16_member_datatype = _PropertySpec(
@@ -31455,22 +27639,7 @@ class Symbol(Concept_2):
         _ShapeValues('type__2', 'http://qudt.org/schema/qudt/Concept-type', required=(), defaults=(), choices=None, minimum=1, maximum=None),
     )
 
-class SymmetricRelation(Relation):
-    """A modeling construct used to define symmetric behavior
-    for certain relations in the standard such as `cnx`, `connected`, and `pairedConnectionPoint`.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#SymmetricRelation
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#SymmetricRelation',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Symmetric relation',
-        definition='A modeling construct used to define symmetric behavior\nfor certain relations in the standard such as `cnx`, `connected`, and `pairedConnectionPoint`.',
-        parent_iris=('http://data.ashrae.org/standard223#Relation',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Relation', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-    )
+SymmetricRelation = _BASE.SymmetricRelation
 
 class SymmetricRelation_2(_EntityBase):
     """A `SymmetricRelation` is modeling construct used to define symmetric behavior for appropriate relations.
@@ -31488,41 +27657,6 @@ class SymmetricRelation_2(_EntityBase):
         ancestor_iris=('http://www.w3.org/1999/02/22-rdf-syntax-ns#Property',),
     )
 
-_P_System_has_boundary_connection_point = _PropertySpec(
-    name='has_boundary_connection_point',
-    predicate='http://data.ashrae.org/standard223#hasBoundaryConnectionPoint',
-    kind='object',
-    label='has boundary connection point',
-    definition='The `hasBoundaryConnectionPoint` relation means the `ConnectionPoint` represents the boundary of a `System` (see {s223:System}) defined by the modeler, such as a model fragment provided by the vendor of a collection of equipment intended for integration with another model. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in a non-integrated context but should generate an error in an integrated context.',
-    ranges=('ConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
-    sources=('b40694b1c54af785de198f4f1',),
-)
-
-_P_System_has_member = _PropertySpec(
-    name='has_member',
-    predicate='http://data.ashrae.org/standard223#hasMember',
-    kind='object',
-    label='has member',
-    definition='A `Relation` that associates a `System` with its component `Equipment` and/or `System`s.',
-    ranges=('Equipment', 'Junction', 'System'),
-    range_groups=(('http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Junction', 'http://data.ashrae.org/standard223#System'),),
-    sources=('b2c9296fcc86520151daa281a',),
-    min_count=1,
-    required=True,
-)
-
-_P_System_has_optional_connection_point = _PropertySpec(
-    name='has_optional_connection_point',
-    predicate='http://data.ashrae.org/standard223#hasOptionalConnectionPoint',
-    kind='object',
-    label='has optional connection point',
-    definition='The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context.',
-    ranges=('ConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
-    sources=('b8c8a17a584f004ecade507f5',),
-)
-
 _P_System_has_process = _PropertySpec(
     name='has_process',
     predicate='https://watermetadata.org/ontology/watr#hasProcess',
@@ -31532,17 +27666,6 @@ _P_System_has_process = _PropertySpec(
     ranges=('Process',),
     range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
     sources=('https://watermetadata.org/ontology/watr#hasProcess',),
-)
-
-_P_System_has_role = _PropertySpec(
-    name='has_role',
-    predicate='http://data.ashrae.org/standard223#hasRole',
-    kind='enum',
-    label='has role',
-    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
-    sources=('bf91022481d8768d7ebb0fb13',),
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
 )
 
 _P_System_has_treatment_objective = _PropertySpec(
@@ -31556,7 +27679,7 @@ _P_System_has_treatment_objective = _PropertySpec(
     sources=('https://watermetadata.org/ontology/watr#hasTreatmentObjective',),
 )
 
-class System(Concept):
+class System(_BASE.System):
     """A logical grouping of one or more pieces of `Equipment`, `Junction`s, or other `System`s for some functional purpose.
 
     Ontology: WATR — http://data.ashrae.org/standard223#System
@@ -31566,27 +27689,16 @@ class System(Concept):
         iri='http://data.ashrae.org/standard223#System',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.System.meta.canonical,
         label='System',
         definition='A logical grouping of one or more pieces of `Equipment`, `Junction`s, or other `System`s for some functional purpose.',
         parent_iris=('http://data.ashrae.org/standard223#Concept',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_System_has_boundary_connection_point, _P_System_has_member, _P_System_has_optional_connection_point, _P_System_has_process, _P_System_has_role, _P_System_has_treatment_objective,),
+        properties=(_P_System_has_process, _P_System_has_treatment_objective,),
     )
-
-    has_boundary_connection_point: _Rel[ConnectionPoint] = _Rel(_P_System_has_boundary_connection_point)
-    """The `hasBoundaryConnectionPoint` relation means the `ConnectionPoint` represents the boundary of a `System` (see {s223:System}) defined by the modeler, such as a model fragment provided by the vendor of a collection of equipment intended for integration with another model. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in a non-integrated context but should generate an error in an integrated context. (http://data.ashrae.org/standard223#hasBoundaryConnectionPoint)"""
-
-    has_member: _Rel[Equipment | Junction | System] = _Rel(_P_System_has_member)
-    """A `Relation` that associates a `System` with its component `Equipment` and/or `System`s. (http://data.ashrae.org/standard223#hasMember)"""
-
-    has_optional_connection_point: _Rel[ConnectionPoint] = _Rel(_P_System_has_optional_connection_point)
-    """The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context. (http://data.ashrae.org/standard223#hasOptionalConnectionPoint)"""
 
     has_process: _Rel[type[Process]] = _Rel(_P_System_has_process)
     """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
-
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_System_has_role)
-    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
 
     has_treatment_objective: _Rel[type[TreatmentObjective]] = _Rel(_P_System_has_treatment_objective)
     """Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess. (https://watermetadata.org/ontology/watr#hasTreatmentObjective)"""
@@ -31598,7 +27710,7 @@ class System(Concept):
         self,
         name: str | None = None,
         *,
-        has_member: _Iterable[Equipment | Junction | System],
+        has_member: _Iterable[_BASE.Equipment | Junction | _BASE.System],
         has_boundary_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_process: _Iterable[type[Process]] = (),
@@ -32164,7 +28276,7 @@ class TaggedEnumeration(Enumeration):
             ),
         )
 
-class Television(ElectronicDisplay):
+class Television(ElectronicDisplay, _BASE.Television):
     """An `ElectronicDisplay` that is designed primarily for the output of visual information supplied by a media broadcaster, and that typically has an integral tuner that is capable of selecting a single channel for display from the available input channel range.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Television
@@ -32174,27 +28286,14 @@ class Television(ElectronicDisplay):
         iri='http://data.ashrae.org/standard223#Television',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Television.meta.canonical,
         label='Television',
         definition='An `ElectronicDisplay` that is designed primarily for the output of visual information supplied by a media broadcaster, and that typically has an integral tuner that is capable of selecting a single channel for display from the available input channel range.',
         parent_iris=('http://data.ashrae.org/standard223#ElectronicDisplay',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#ElectronicDisplay', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_TemperatureSensor_2_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
-    sources=('b53c6512873aa6502e79da13c', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class TemperatureSensor_2(Sensor):
+class TemperatureSensor_2(Sensor, _BASE.TemperatureSensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of temperature.
 
     Ontology: WATR — http://data.ashrae.org/standard223#TemperatureSensor
@@ -32204,85 +28303,17 @@ class TemperatureSensor_2(Sensor):
         iri='http://data.ashrae.org/standard223#TemperatureSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.TemperatureSensor.meta.canonical,
         label='Temperature sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of temperature.',
         parent_iris=('http://data.ashrae.org/standard223#Sensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_TemperatureSensor_2_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_TemperatureSensor_2_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('observes', 'b53c6512873aa6502e79da13c, bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
 
 class TemperatureSensor(TemperatureSensor_2):
     """A sensor used to measure temperature
@@ -32305,20 +28336,7 @@ class TemperatureSensor(TemperatureSensor_2):
         _ShapeValues('observes', 'b53c6512873aa6502e79da13c, bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-_P_ThermalEnergyStorageUnit_has_connection_point = _PropertySpec(
-    name='has_connection_point',
-    predicate='http://data.ashrae.org/standard223#hasConnectionPoint',
-    kind='object',
-    label='has connection point',
-    definition='One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).',
-    ranges=('ConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
-    sources=('bbb2761f6fb9b3e8ae6caad14', 'be2099568566b78227dcced58'),
-    min_count=2,
-    inverse='owner',
-)
-
-class ThermalEnergyStorageUnit(Equipment):
+class ThermalEnergyStorageUnit(Equipment, _BASE.ThermalEnergyStorageUnit):
     """A piece of `Equipment` that stores thermal energy.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ThermalEnergyStorageUnit
@@ -32328,72 +28346,17 @@ class ThermalEnergyStorageUnit(Equipment):
         iri='http://data.ashrae.org/standard223#ThermalEnergyStorageUnit',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ThermalEnergyStorageUnit.meta.canonical,
         label='Thermal energy storage unit',
         definition='A piece of `Equipment` that stores thermal energy.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_ThermalEnergyStorageUnit_has_connection_point,),
     )
-
-    has_connection_point: _Rel[ConnectionPoint] = _Rel(_P_ThermalEnergyStorageUnit_has_connection_point)
-    """One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}). (http://data.ashrae.org/standard223#hasConnectionPoint)"""
     _shape_constraints = (
         _ShapeValues('has_connection_point', 'bbb2761f6fb9b3e8ae6caad14, be2099568566b78227dcced58', required=(), defaults=(), choices=None, minimum=2, maximum=None),
     )
 
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
-
-class Thermostat(Equipment):
+class Thermostat(Equipment, _BASE.Thermostat):
     """A piece of `Equipment` that maintains temperature at a fixed or adjustable setpoint.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Thermostat
@@ -32403,6 +28366,7 @@ class Thermostat(Equipment):
         iri='http://data.ashrae.org/standard223#Thermostat',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Thermostat.meta.canonical,
         label='Thermostat',
         definition='A piece of `Equipment` that maintains temperature at a fixed or adjustable setpoint.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
@@ -32449,20 +28413,7 @@ class ThreeWayValve(Valve_2):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_ThreeWayValve_2_has_connection_point = _PropertySpec(
-    name='has_connection_point',
-    predicate='http://data.ashrae.org/standard223#hasConnectionPoint',
-    kind='object',
-    label='has connection point',
-    definition='One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}).',
-    ranges=('ConnectionPoint',),
-    range_groups=(('http://data.ashrae.org/standard223#ConnectionPoint',),),
-    sources=('b9cc2897cb59d5170cbce70a8', 'be2099568566b78227dcced58'),
-    min_count=3,
-    inverse='owner',
-)
-
-class ThreeWayValve_2(Valve_2):
+class ThreeWayValve_2(Valve_2, _BASE.ThreeWayValve):
     """A `Valve` that can divert a fluid in one of three directions.
 
     Ontology: WATR — http://data.ashrae.org/standard223#ThreeWayValve
@@ -32472,70 +28423,15 @@ class ThreeWayValve_2(Valve_2):
         iri='http://data.ashrae.org/standard223#ThreeWayValve',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.ThreeWayValve.meta.canonical,
         label='Three-way valve',
         definition='A `Valve` that can divert a fluid in one of three directions.',
         parent_iris=('http://data.ashrae.org/standard223#Valve',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_ThreeWayValve_2_has_connection_point,),
     )
-
-    has_connection_point: _Rel[ConnectionPoint] = _Rel(_P_ThreeWayValve_2_has_connection_point)
-    """One of two `Relation`s that associates `Connectable` with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}). (http://data.ashrae.org/standard223#hasConnectionPoint)"""
     _shape_constraints = (
         _ShapeValues('has_connection_point', 'b9cc2897cb59d5170cbce70a8, be2099568566b78227dcced58', required=(), defaults=(), choices=None, minimum=3, maximum=None),
     )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
 
 _P_Time_type_ = _PropertySpec(
     name='type_',
@@ -33815,7 +29711,7 @@ class TurbidityMeter(Sensor):
         _ShapeValues('observes', 'bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-class Turbine(Equipment):
+class Turbine(Equipment, _BASE.Turbine):
     """A piece of `Equipment` that converts mechanical energy into electric energy.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Turbine
@@ -33825,16 +29721,14 @@ class Turbine(Equipment):
         iri='http://data.ashrae.org/standard223#Turbine',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Turbine.meta.canonical,
         label='Turbine',
         definition='A piece of `Equipment` that converts mechanical energy into electric energy.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class TwoPositionDamper(Damper):
+class TwoPositionDamper(Damper, _BASE.TwoPositionDamper):
     """A damper that can take two positions: fully open and fully closed.
 
     Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#TwoPositionDamper
@@ -33844,6 +29738,7 @@ class TwoPositionDamper(Damper):
         iri='http://data.ashrae.org/standard223/1.0/extensions/g36#TwoPositionDamper',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.TwoPositionDamper.meta.canonical,
         label='Two Position Damper',
         definition='A damper that can take two positions: fully open and fully closed.',
         parent_iris=('http://data.ashrae.org/standard223#Damper',),
@@ -33995,7 +29890,7 @@ class TwoTupleType(N_TupleType):
             ),
         )
 
-class TwoWayValve(Valve_2):
+class TwoWayValve(Valve_2, _BASE.TwoWayValve):
     """A `Valve` that can divert a fluid in one of two directions.
 
     Ontology: WATR — http://data.ashrae.org/standard223#TwoWayValve
@@ -34005,14 +29900,11 @@ class TwoWayValve(Valve_2):
         iri='http://data.ashrae.org/standard223#TwoWayValve',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.TwoWayValve.meta.canonical,
         label='Two-way valve',
         definition='A `Valve` that can divert a fluid in one of two directions.',
         parent_iris=('http://data.ashrae.org/standard223#Valve',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
 class TypeList(Datatype):
@@ -34160,85 +30052,9 @@ class UCUMcs(_EntityBase):
         ancestor_iris=('http://www.w3.org/2001/XMLSchema#string',),
     )
 
-_P_USBCable_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
-    kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    range_groups=(('http://data.ashrae.org/standard223#Constituent-Electricity',), ('http://data.ashrae.org/standard223#Signal-USB',), ('http://data.ashrae.org/standard223#Substance-Medium',)),
-    sources=('b08ea5991a9d595339cdac23a', 'b12ca976aa7f6ff2f39104dba', 'b208da37448a026418d05c49c', 'b490b774633a41f304e59947b', 'b4dc0d1658287df40e921ad35', 'b59c7af6a2db2bd70f0dac26a', 'b5aecdad0a8f3f7f4ac11e130', 'b73706e6130865d1a05507c79', 'b779b3e6d70bca0b584bb320c', 'b9c3a652daf6472abbe15c7f2', 'ba0b040374feef1cc9f970b08', 'bb2dc6068ee4797c8be4b9372', 'be44de150b3c396415bd19166', 'bf23cebcd33cb5adb3d3b263d'),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#Signal-USB',),
-    required=True,
-    max_count=1,
-)
+USBCable = _BASE.USBCable
 
-class USBCable(Conductor):
-    """A type of `Conductor` that consists of 1 to 5 pairs of twisted wire and is used for `Signal-USB` communication.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#USBCable
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#USBCable',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='USB cable',
-        definition='A type of `Conductor` that consists of 1 to 5 pairs of twisted wire and is used for `Signal-USB` communication.',
-        parent_iris=('http://data.ashrae.org/standard223#Conductor',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Conductor', 'http://data.ashrae.org/standard223#Connection', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_USBCable_medium,),
-    )
-
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_USBCable_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-    _shape_constraints = (
-        _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
-        _ShapeValues('has_electrical_phase', 'b77fd01effefeb8667a24bef5, b7c1fd5bdb8242d06002b2f0d', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
-        _ShapeValues('medium', 'b08ea5991a9d595339cdac23a, b12ca976aa7f6ff2f39104dba, b208da37448a026418d05c49c, b490b774633a41f304e59947b, b4dc0d1658287df40e921ad35, b59c7af6a2db2bd70f0dac26a, b5aecdad0a8f3f7f4ac11e130, b73706e6130865d1a05507c79, b779b3e6d70bca0b584bb320c, b9c3a652daf6472abbe15c7f2, ba0b040374feef1cc9f970b08, bb2dc6068ee4797c8be4b9372, be44de150b3c396415bd19166, bf23cebcd33cb5adb3d3b263d', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        connects_at: _Iterable[ConnectionPoint],
-        medium: _EnumValue | None,
-        cnx: _Iterable[ConnectionPoint] = (),
-        connects_from: _Iterable[Connectable] = (),
-        connects_to: _Iterable[Connectable] = (),
-        has_electrical_phase: _EnumValue | None = None,
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        has_thermodynamic_phase: _EnumValue | None = None,
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                connects_at=connects_at,
-                medium=medium,
-                cnx=cnx,
-                connects_from=connects_from,
-                connects_to=connects_to,
-                has_electrical_phase=has_electrical_phase,
-                has_property=has_property,
-                has_role=has_role,
-                has_thermodynamic_phase=has_thermodynamic_phase,
-            ),
-        )
-
-class USBOutlet(Equipment):
+class USBOutlet(Equipment, _BASE.USBOutlet):
     """A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a USB communication network, typically via a USB cable.
 
     Ontology: WATR — http://data.ashrae.org/standard223#USBOutlet
@@ -34248,14 +30064,11 @@ class USBOutlet(Equipment):
         iri='http://data.ashrae.org/standard223#USBOutlet',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.USBOutlet.meta.canonical,
         label='USB outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a USB communication network, typically via a USB cable.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-USB', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-USB', medium_options=(), min_count=1, max_count=1),
-        ),
     )
 
 class UVH2O2Reactor(Reactor):
@@ -34284,11 +30097,11 @@ class UVH2O2Reactor(Reactor):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -34376,11 +30189,11 @@ class UltravioletLightUnit(DisinfectionUnit):
         *,
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
+        connected: _Iterable[_BASE.Connectable] = (),
+        connected_from: _Iterable[_BASE.Connectable] = (),
         connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
+        connected_to: _Iterable[_BASE.Connectable] = (),
+        contains_: _Iterable[_BASE.Equipment | Junction] = (),
         executes: _Iterable[Function] = (),
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
@@ -35251,19 +31064,7 @@ class Valve(Valve_2):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Valve', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-_P_VariableFrequencyDrive_2_connected_to = _PropertySpec(
-    name='connected_to',
-    predicate='http://data.ashrae.org/standard223#connectedTo',
-    kind='object',
-    label='connected to',
-    definition='The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}).',
-    ranges=('Equipment',),
-    range_groups=(('http://data.ashrae.org/standard223#Connectable',), ('http://data.ashrae.org/standard223#Equipment',)),
-    sources=('b9831b15fc9bd705787c7d0e2', 'ba8bd416e0aea9b22a4d0c786', 'bbee37e23a0e63de45b6ebc5a'),
-    inverse='connected_from',
-)
-
-class VariableFrequencyDrive_2(Equipment):
+class VariableFrequencyDrive_2(Equipment, _BASE.VariableFrequencyDrive):
     """A piece of `Equipment` that varies its output frequency to vary the rotating speed and torque of a motor, given a fixed input frequency. Used with fans or pumps to vary the flow in the system as a function of a maintained pressure.
 
     Ontology: WATR — http://data.ashrae.org/standard223#VariableFrequencyDrive
@@ -35273,71 +31074,12 @@ class VariableFrequencyDrive_2(Equipment):
         iri='http://data.ashrae.org/standard223#VariableFrequencyDrive',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.VariableFrequencyDrive.meta.canonical,
         label='Variable frequency drive',
         definition='A piece of `Equipment` that varies its output frequency to vary the rotating speed and torque of a motor, given a fixed input frequency. Used with fans or pumps to vary the flow in the system as a function of a maintained pressure.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_VariableFrequencyDrive_2_connected_to,),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-        ),
     )
-
-    connected_to: _Rel[Equipment] = _Rel(_P_VariableFrequencyDrive_2_connected_to)
-    """The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}). (http://data.ashrae.org/standard223#connectedTo)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Equipment] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
 
 class VariableFrequencyDrive(VariableFrequencyDrive_2):
     """A type of AC motor drive that controls speed and torque by varying the frequency of the input electricity.
@@ -35483,21 +31225,7 @@ class Viewpoint(Dimension):
         ancestor_iris=('http://www.linkedmodel.org/schema/vaem#Dimension', 'http://www.w3.org/2002/07/owl#Thing'),
     )
 
-_P_VoltageSensor_observes = _PropertySpec(
-    name='observes',
-    predicate='http://data.ashrae.org/standard223#observes',
-    kind='object',
-    label='observes',
-    definition='A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})\nwhich is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus\ncausing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on).',
-    ranges=('QuantifiableObservableProperty',),
-    range_groups=(('http://data.ashrae.org/standard223#QuantifiableObservableProperty',),),
-    sources=('b8441d6ef400bc61d0bcbb7a4', 'bd08797a7c86eae8c1d79a47f', 'bec9ccd2b9f148289a0b8ef8e', 'bf09558d4ee6cbdf4ad01f156'),
-    min_count=1,
-    required=True,
-    max_count=1,
-)
-
-class VoltageSensor(Sensor):
+class VoltageSensor(Sensor, _BASE.VoltageSensor):
     """A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of voltage.
 
     Ontology: WATR — http://data.ashrae.org/standard223#VoltageSensor
@@ -35507,85 +31235,17 @@ class VoltageSensor(Sensor):
         iri='http://data.ashrae.org/standard223#VoltageSensor',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.VoltageSensor.meta.canonical,
         label='Voltage sensor',
         definition='A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents a measure of voltage.',
         parent_iris=('http://data.ashrae.org/standard223#Sensor',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Sensor', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_VoltageSensor_observes,),
     )
-
-    observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_VoltageSensor_observes)
-    """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
-    which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
-    causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
-    """
     _shape_constraints = (
         _ShapeValues('has_observation_location', 'b505c4deb2367e4945adda6fc', required=(), defaults=(), choices=None, minimum=1, maximum=1),
         _ShapeValues('has_reference_location', 'b29179c01ba87f1629fdbb637', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('observes', 'b8441d6ef400bc61d0bcbb7a4, bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_observation_location: _EntityBase | _DeferredEndpoint | None,
-        observes: QuantifiableObservableProperty | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[Equipment | Junction] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_measurement_range: _Iterable[QuantifiableProperty] = (),
-        has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_process: _Iterable[type[Process]] = (),
-        has_property: _Iterable[Property] = (),
-        has_reference_location: _EntityBase | _DeferredEndpoint | None = None,
-        has_role: _Iterable[_EnumValue] = (),
-        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_observation_location=has_observation_location,
-                observes=observes,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_measurement_range=has_measurement_range,
-                has_measurement_resolution=has_measurement_resolution,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_process=has_process,
-                has_property=has_property,
-                has_reference_location=has_reference_location,
-                has_role=has_role,
-                has_treatment_objective=has_treatment_objective,
-                medium=medium,
-            ),
-        )
 
 class VolumeSensor(Sensor):
     """A sensor used to measure the volume of a substance
@@ -35608,7 +31268,7 @@ class VolumeSensor(Sensor):
         _ShapeValues('observes', 'bd08797a7c86eae8c1d79a47f, bec9ccd2b9f148289a0b8ef8e, bf09558d4ee6cbdf4ad01f156', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
 
-class WaterOutlet(Equipment):
+class WaterOutlet(Equipment, _BASE.WaterOutlet):
     """A piece of `Equipment` that contains one or more pipe fittings for connecting plumbing equipment (e.g., `Faucet`) to a plumbing system.
 
     Ontology: WATR — http://data.ashrae.org/standard223#WaterOutlet
@@ -35618,17 +31278,14 @@ class WaterOutlet(Equipment):
         iri='http://data.ashrae.org/standard223#WaterOutlet',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.WaterOutlet.meta.canonical,
         label='Water outlet',
         definition='A piece of `Equipment` that contains one or more pipe fittings for connecting plumbing equipment (e.g., `Faucet`) to a plumbing system.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1),
-        ),
     )
 
-class WaterToAirHeatPump(HeatPump):
+class WaterToAirHeatPump(HeatPump, _BASE.WaterToAirHeatPump):
     """A `HeatPump` that transfers thermal energy between air and a body of water.
 
     Ontology: WATR — http://data.ashrae.org/standard223#WaterToAirHeatPump
@@ -35638,19 +31295,14 @@ class WaterToAirHeatPump(HeatPump):
         iri='http://data.ashrae.org/standard223#WaterToAirHeatPump',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.WaterToAirHeatPump.meta.canonical,
         label='Water-to-air heat pump',
         definition='A `HeatPump` that transfers thermal energy between air and a body of water.',
         parent_iris=('http://data.ashrae.org/standard223#HeatPump',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatPump', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-        ),
     )
 
-class WaterToWaterHeatPump(HeatPump):
+class WaterToWaterHeatPump(HeatPump, _BASE.WaterToWaterHeatPump):
     """A `HeatPump` that transfers thermal energy between two flows of water.
 
     Ontology: WATR — http://data.ashrae.org/standard223#WaterToWaterHeatPump
@@ -35660,14 +31312,11 @@ class WaterToWaterHeatPump(HeatPump):
         iri='http://data.ashrae.org/standard223#WaterToWaterHeatPump',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.WaterToWaterHeatPump.meta.canonical,
         label='Water-to-water heat pump',
         definition='A `HeatPump` that transfers thermal energy between two flows of water.',
         parent_iris=('http://data.ashrae.org/standard223#HeatPump',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#HeatPump', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=2, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=2, max_count=None),
-        ),
     )
 
 class WetDryStateType(DiscreteState):
@@ -35709,7 +31358,7 @@ class Wetland(Equipment):
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class Window(Equipment):
+class Window(Equipment, _BASE.Window):
     """A piece of `Equipment` that provides a pathway for `EM-Light` or `Fluid-Air` (or both) to flow from a room to another room or the building exterior through a vertical or nearly vertical area of the room envelope.
 
     Ontology: WATR — http://data.ashrae.org/standard223#Window
@@ -35719,17 +31368,14 @@ class Window(Equipment):
         iri='http://data.ashrae.org/standard223#Window',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.Window.meta.canonical,
         label='Window',
         definition='A piece of `Equipment` that provides a pathway for `EM-Light` or `Fluid-Air` (or both) to flow from a room to another room or the building exterior through a vertical or nearly vertical area of the room envelope.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-Light', 'http://data.ashrae.org/standard223#Fluid-Air'), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-Light', 'http://data.ashrae.org/standard223#Fluid-Air'), min_count=1, max_count=None),
-        ),
     )
 
-class WindowShade(Equipment):
+class WindowShade(Equipment, _BASE.WindowShade):
     """A piece of `Equipment` that can be adjusted to allow, regulate, or stop the flow of light through a `Window`.
 
     Ontology: WATR — http://data.ashrae.org/standard223#WindowShade
@@ -35739,13 +31385,14 @@ class WindowShade(Equipment):
         iri='http://data.ashrae.org/standard223#WindowShade',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.WindowShade.meta.canonical,
         label='Window shade',
         definition='A piece of `Equipment` that can be adjusted to allow, regulate, or stop the flow of light through a `Window`.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
     )
 
-class WiredEthernetOutlet(Equipment):
+class WiredEthernetOutlet(Equipment, _BASE.WiredEthernetOutlet):
     """A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a wired Ethernet communication network, typically via a wired Ethernet cable.
 
     Ontology: WATR — http://data.ashrae.org/standard223#WiredEthernetOutlet
@@ -35755,14 +31402,11 @@ class WiredEthernetOutlet(Equipment):
         iri='http://data.ashrae.org/standard223#WiredEthernetOutlet',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
+        canonical=_BASE.WiredEthernetOutlet.meta.canonical,
         label='Wired Ethernet outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a wired Ethernet communication network, typically via a wired Ethernet cable.',
         parent_iris=('http://data.ashrae.org/standard223#Equipment',),
         ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-WiredEthernet', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-WiredEthernet', medium_options=(), min_count=1, max_count=1),
-        ),
     )
 
 class YesNoType(EnumeratedValue):
@@ -35787,253 +31431,11 @@ class YesNoType(EnumeratedValue):
         _ShapeValues('wikidata_match', 'http://qudt.org/schema/qudt/Verifiable-wikidataMatch', required=(), defaults=(), choices=None, minimum=0, maximum=1),
     )
 
-_P_Zone_has_domain = _PropertySpec(
-    name='has_domain',
-    predicate='http://data.ashrae.org/standard223#hasDomain',
-    kind='enum',
-    label='has domain',
-    definition='A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`).',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Domain',),),
-    sources=('b2c26dcb2ddd4cbd1dafd2b84', 'bcb01f73894e511a4bbf3d167'),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Domain',),
-    required=True,
-    max_count=1,
-)
+Zone = _BASE.Zone
 
-_P_Zone_has_domain_space = _PropertySpec(
-    name='has_domain_space',
-    predicate='http://data.ashrae.org/standard223#hasDomainSpace',
-    kind='object',
-    label='has domain space',
-    definition='A `Relation` that associates a `Zone` with its component `DomainSpace`s.',
-    ranges=('DomainSpace',),
-    range_groups=(('http://data.ashrae.org/standard223#DomainSpace',),),
-    sources=('b66f6df5fc2f9d70fc401af60',),
-)
+ZoneGroup = _BASE.ZoneGroup
 
-_P_Zone_has_zone = _PropertySpec(
-    name='has_zone',
-    predicate='http://data.ashrae.org/standard223#hasZone',
-    kind='object',
-    label='has zone',
-    definition='A `Relation` that associates a `Zone` with component `Zone`s.',
-    ranges=('Zone',),
-    range_groups=(('http://data.ashrae.org/standard223#Zone',),),
-    sources=('b32c09016618c84bbfaf1944b', 'bb66292ca6999016885a47b4e'),
-)
-
-class Zone(Concept):
-    """A logical grouping of one or more `DomainSpace`s or other `Zone`s for some building service or control-related purpose. `Zone`s can have properties that are inputs or outputs to a `Function` (see {s223:Function}), which can be executed by `Controller`s (see {s223:Controller}) or other `Equipment`.
-
-    Ontology: WATR — http://data.ashrae.org/standard223#Zone
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223#Zone',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Zone',
-        definition='A logical grouping of one or more `DomainSpace`s or other `Zone`s for some building service or control-related purpose. `Zone`s can have properties that are inputs or outputs to a `Function` (see {s223:Function}), which can be executed by `Controller`s (see {s223:Controller}) or other `Equipment`.',
-        parent_iris=('http://data.ashrae.org/standard223#Concept',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Zone_has_domain, _P_Zone_has_domain_space, _P_Zone_has_zone,),
-    )
-
-    has_domain: _EnumOne[_EnumValue] = _EnumOne(_P_Zone_has_domain)
-    """A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`). (http://data.ashrae.org/standard223#hasDomain)"""
-
-    has_domain_space: _Rel[DomainSpace] = _Rel(_P_Zone_has_domain_space)
-    """A `Relation` that associates a `Zone` with its component `DomainSpace`s. (http://data.ashrae.org/standard223#hasDomainSpace)"""
-
-    has_zone: _Rel[Zone] = _Rel(_P_Zone_has_zone)
-    """A `Relation` that associates a `Zone` with component `Zone`s. (http://data.ashrae.org/standard223#hasZone)"""
-    _shape_constraints = (
-        _ShapeValues('has_domain', 'b2c26dcb2ddd4cbd1dafd2b84, bcb01f73894e511a4bbf3d167', required=(), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_domain: _EnumValue | None,
-        has_domain_space: _Iterable[DomainSpace] = (),
-        has_property: _Iterable[Property] = (),
-        has_zone: _Iterable[Zone] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_domain=has_domain,
-                has_domain_space=has_domain_space,
-                has_property=has_property,
-                has_zone=has_zone,
-                medium=medium,
-            ),
-        )
-
-_P_ZoneGroup_contains_ = _PropertySpec(
-    name='contains_',
-    predicate='http://data.ashrae.org/standard223#contains',
-    kind='object',
-    label='contains',
-    definition='A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s.',
-    ranges=('Zone_2',),
-    range_groups=(('http://data.ashrae.org/standard223/1.0/extensions/g36#Zone',),),
-    sources=('b3b625cc4a73e7dea252d5a42',),
-    min_count=1,
-    required=True,
-)
-
-_P_ZoneGroup_has_domain = _PropertySpec(
-    name='has_domain',
-    predicate='http://data.ashrae.org/standard223#hasDomain',
-    kind='enum',
-    label='has domain',
-    definition='A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`).',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Domain',),),
-    sources=('b2c26dcb2ddd4cbd1dafd2b84', 'bcb01f73894e511a4bbf3d167', 'bcfc7fb858a1d6ea0a8b48742'),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Domain',),
-    required=True,
-    max_count=1,
-)
-
-class ZoneGroup(Zone):
-    """A ZoneGroup is a grouping of zones that may be scheduled together. Zone groupings must be assigned based on rules in Clause 3.1.3 of Guideline 36.
-
-    Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#ZoneGroup
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223/1.0/extensions/g36#ZoneGroup',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Zone Group',
-        definition='A ZoneGroup is a grouping of zones that may be scheduled together. Zone groupings must be assigned based on rules in Clause 3.1.3 of Guideline 36.',
-        parent_iris=('http://data.ashrae.org/standard223#Zone',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Zone', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_ZoneGroup_contains_, _P_ZoneGroup_has_domain,),
-    )
-
-    contains_: _Rel[Zone_2] = _Rel(_P_ZoneGroup_contains_)
-    """A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s. (http://data.ashrae.org/standard223#contains)"""
-
-    has_domain: _EnumOne[_EnumValue] = _EnumOne(_P_ZoneGroup_has_domain)
-    """A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`). (http://data.ashrae.org/standard223#hasDomain)"""
-    _shape_constraints = (
-        _ShapeValues('contains_', 'b3b625cc4a73e7dea252d5a42', required=(), defaults=(), choices=None, minimum=1, maximum=None),
-        _ShapeValues('has_domain', 'b2c26dcb2ddd4cbd1dafd2b84, bcb01f73894e511a4bbf3d167, bcfc7fb858a1d6ea0a8b48742', required=(_TermValue('http://data.ashrae.org/standard223#Domain-HVAC', types=('http://data.ashrae.org/standard223#Class', 'http://data.ashrae.org/standard223#Domain-HVAC', 'http://www.w3.org/ns/shacl#NodeShape')),), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        contains_: _Iterable[Zone_2],
-        has_domain: _EnumValue | None = None,
-        has_domain_space: _Iterable[DomainSpace] = (),
-        has_property: _Iterable[Property] = (),
-        has_zone: _Iterable[Zone] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                contains_=contains_,
-                has_domain=has_domain,
-                has_domain_space=has_domain_space,
-                has_property=has_property,
-                has_zone=has_zone,
-                medium=medium,
-            ),
-        )
-
-_P_Zone_2_has_domain = _PropertySpec(
-    name='has_domain',
-    predicate='http://data.ashrae.org/standard223#hasDomain',
-    kind='enum',
-    label='has domain',
-    definition='A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`).',
-    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Domain',),),
-    sources=('b2c26dcb2ddd4cbd1dafd2b84', 'bbb1d059cd35bf6183f82d0ef', 'bcb01f73894e511a4bbf3d167'),
-    min_count=1,
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Domain',),
-    required=True,
-    max_count=1,
-)
-
-class Zone_2(Zone):
-    """A thermal zone with the points required for Guideline 36 control sequences. It is a collection of s223:DomainSpace instances.
-
-    Ontology: WATR — http://data.ashrae.org/standard223/1.0/extensions/g36#Zone
-    """
-
-    _classinfo = _ClassInfo(
-        iri='http://data.ashrae.org/standard223/1.0/extensions/g36#Zone',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Zone',
-        definition='A thermal zone with the points required for Guideline 36 control sequences. It is a collection of s223:DomainSpace instances.',
-        parent_iris=('http://data.ashrae.org/standard223#Zone',),
-        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Zone', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
-        properties=(_P_Zone_2_has_domain,),
-    )
-
-    has_domain: _EnumOne[_EnumValue] = _EnumOne(_P_Zone_2_has_domain)
-    """A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`). (http://data.ashrae.org/standard223#hasDomain)"""
-    _shape_constraints = (
-        _ShapeValues('has_domain', 'b2c26dcb2ddd4cbd1dafd2b84, bbb1d059cd35bf6183f82d0ef, bcb01f73894e511a4bbf3d167', required=(_TermValue('http://data.ashrae.org/standard223#Domain-HVAC', types=('http://data.ashrae.org/standard223#Class', 'http://data.ashrae.org/standard223#Domain-HVAC', 'http://www.w3.org/ns/shacl#NodeShape')),), defaults=(), choices=None, minimum=1, maximum=1),
-    )
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_domain: _EnumValue | None = None,
-        has_domain_space: _Iterable[DomainSpace] = (),
-        has_property: _Iterable[Property] = (),
-        has_zone: _Iterable[Zone] = (),
-        medium: _Iterable[_EnumValue] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_domain=has_domain,
-                has_domain_space=has_domain_space,
-                has_property=has_property,
-                has_zone=has_zone,
-                medium=medium,
-            ),
-        )
+Zone_2 = _BASE.Zone_2
 
 class hexbinary(_EntityBase):
     """hexbinary

@@ -7,7 +7,8 @@
 
 <urn:example/treatment> a owl:Ontology ;
     rdfs:label "Conventional surface-water treatment train" ;
-    owl:imports <https://watermetadata.org/ontology/watr>,
+    owl:imports <http://data.ashrae.org/standard223/1.0/model/all>,
+        <https://watermetadata.org/ontology/watr>,
         drinking-water: .
 
 :treatment-system a s223:System ;
@@ -22,6 +23,8 @@
         :coagulation,
         :flocculation,
         :sand-filter .
+
+<http://data.ashrae.org/standard223/1.0/model/all> owl:versionInfo "git:master@6fdc11c60b930ccb042d775b66a9115547fd22a7 date:2026-10-06 20:01:58 UTC" .
 
 <https://watermetadata.org/ontology/watr> owl:versionInfo "0.3.rc1" .
 

@@ -9,7 +9,7 @@ from importlib import resources
 from pathlib import Path
 
 import plumb
-from plumb import Model, connect, watr
+from plumb import Model, connect, s223, watr
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGES = (
@@ -43,6 +43,19 @@ def main() -> None:
         ):
             if not (resources.files(f"plumb.{name}") / filename).is_file():
                 raise SystemExit(f"plumb.{name} is missing {filename}")
+
+    if watr.Pipe is not s223.Pipe:
+        raise SystemExit("unchanged S223 imports lost canonical identity")
+    if (
+        watr.QuantifiableObservableProperty.meta.canonical
+        is not s223.QuantifiableObservableProperty
+    ):
+        raise SystemExit("WaTr authoring view lost its canonical S223 class")
+    if watr.enums.values.Fluid_Water is not s223.enums.values.Fluid_Water:
+        raise SystemExit("imported enum values lost canonical identity")
+    from plumb.gen.symbols import Symbols
+
+    Symbols.load("plumb.watr")  # Also verify the installed dependency digest.
 
     with Model("urn:example/dist-check#") as model:
         clarifier = watr.Clarifier("clarifier")

@@ -10,7 +10,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:example/watertap/seawater-ro/pretreatment> a owl:Ontology ;
-    owl:imports <http://qudt.org/3.4.0/qudt-all>,
+    owl:imports <http://data.ashrae.org/standard223/1.0/model/all>,
+        <http://qudt.org/3.4.0/qudt-all>,
         <https://watermetadata.org/ontology/watr>,
         seawater-ro: .
 
@@ -28,6 +29,8 @@
         :media-filtration,
         :static-mixer,
         :storage-tank-1 .
+
+<http://data.ashrae.org/standard223/1.0/model/all> owl:versionInfo "git:master@6fdc11c60b930ccb042d775b66a9115547fd22a7 date:2026-10-06 20:01:58 UTC" .
 
 <https://watermetadata.org/ontology/watr> owl:versionInfo "0.3.rc1" .
 

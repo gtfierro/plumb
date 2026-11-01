@@ -280,7 +280,16 @@ def _solve_component(
 ) -> _ComponentResult:
     entities = {_owner(endpoint) for h in handles for endpoint in (h.source, h.target)}
     entities.update(standalone or ())
-    registry = Registry.compose(entity.meta.registry for entity in entities)
+    registry = Registry.for_entities(
+        entities,
+        values=[handle.medium for handle in handles]
+        + [
+            port.medium
+            for entity in entities
+            for port in entity.meta.model._port_intents
+            if port.owner is entity
+        ],
+    )
     connector = registry.resolve("Connectable")._CONNECTOR
     assert connector is not None
     enum_values = _relevant_media(entities, handles)
