@@ -140,17 +140,17 @@ def shapes_for(classes: Iterable[type], registries: Iterable[Registry]) -> rdfli
     """
     package_files: set[Path] = set()
     sources: set[str] = set()
-    selected: set[Registry] = set()
     pending = list(registries)
-    while pending:
-        registry = pending.pop()
-        if registry in selected:
-            continue
-        selected.add(registry)
-        pending.extend(registry._dependencies)
     for entity_type in classes:
         for cls in entity_type.__mro__:
             if "_classinfo" not in cls.__dict__:
+                continue
+            registry = cls.__dict__["_classinfo"].registry
+            pending.append(registry)
+            if registry.schema_graph is not None:
+                # This is the authoritative bundle, already parsed by the
+                # package. Parsing its file again would duplicate anonymous
+                # shape/list nodes rather than simply deduplicating triples.
                 continue
             module = sys.modules.get(cls.__module__)
             module_file = getattr(module, "__file__", None)
@@ -162,6 +162,13 @@ def shapes_for(classes: Iterable[type], registries: Iterable[Registry]) -> rdfli
             source = cls.__dict__["_classinfo"].ontology.source
             if source is not None and (bundled is None or not bundled.exists()):
                 sources.add(source)
+    selected: set[Registry] = set()
+    while pending:
+        registry = pending.pop()
+        if registry in selected:
+            continue
+        selected.add(registry)
+        pending.extend(registry._dependencies)
     schemas = [
         schema
         for registry in selected

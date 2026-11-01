@@ -9,6 +9,7 @@ import sys
 
 import pytest
 from rdflib import Graph, URIRef
+from rdflib.namespace import SH
 
 from plumb import Model, connect, s223
 from plumb.core.errors import RangeError
@@ -401,3 +402,29 @@ def test_incompatible_shared_class_identities_fail_before_inference(monkeypatch)
     ):
         Model.from_graph(graph, registries=[first, second], infer=True)
     assert not graph
+
+
+def test_selected_shape_bundle_is_loaded_once_with_anonymous_lists(profile, tmp_path):
+    from plumb.core.validation import shapes_for
+
+    source = (
+        PREFIXES
+        + PROFILE
+        + """
+        water:TemperatureLimit sh:and ([ sh:class s223:ObservableProperty ]) .
+    """
+    )
+    generate(
+        Graph().parse(data=source, format="turtle"),
+        tmp_path / "prototype_boolean",
+        name="BooleanProfile",
+    )
+    boolean = importlib.import_module("prototype_boolean")
+    selected = shapes_for([boolean.WaterTemperature], [boolean.REGISTRY])
+    lists = list(
+        selected.objects(URIRef("urn:profile:water#TemperatureLimit"), SH["and"])
+    )
+    assert len(lists) == 1
+    with Model("urn:profile:boolean#") as model:
+        temperature(boolean.WaterTemperature, "temperature", 20.0)
+    assert model.validate(infer=False)

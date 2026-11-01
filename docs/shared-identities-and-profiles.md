@@ -41,6 +41,8 @@ classes. Hydration also retains the registries explicitly selected by
 `Model.from_graph(..., registries=...)`, even if the graph contains only shared
 class instances. Selection and dependency shapes survive snapshot creation.
 Transitive profiles compose by conjunction; there is no import-order winner.
+Validation loads each selected shape bundle once, preserving anonymous SHACL
+lists rather than duplicating them through both registry and file loading.
 Importing a module alone does not activate its profile in unrelated models.
 For a custom profile with no local instances, use the existing explicit
 hydration registry argument. A graph without an installed package mapping must
@@ -71,7 +73,10 @@ rather than Python aliases and anonymous source labels, reveals additions:
 These changes cannot be handled by discarding every repeated class definition
 and assuming their authoring surfaces are identical. The migration must decide
 how to expose the added properties on imported terms and represent the Pump
-ancestry change. If typed Python views are necessary, they need explicit
+ancestry change. New enum branches and adapter policy also need extension-local
+selection without mutating dependency enum trees or connector registrations;
+the prototype covers imported enum identity and the existing S223 backend.
+If typed Python views are necessary, they need explicit
 canonical identity, registry selection, hydration, and profile semantics before
 they are generated. This prototype deliberately does not introduce an untested
 view mechanism or modify the pinned ontology to conceal those differences.
