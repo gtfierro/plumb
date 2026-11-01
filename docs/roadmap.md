@@ -1,8 +1,8 @@
 # Implementation roadmap
 
-## Next: compiler and runtime hardening
+## Completed: compiler and runtime hardening
 
-The [compiler hardening plan](compiler-hardening-plan.md) defines the active
+The [compiler hardening plan](compiler-hardening-plan.md) records the completed
 sequence for making S223/223P and WaTr updates reproducible and predictable:
 
 1. Pin source documents and import closures; gate offline regeneration in CI.
@@ -34,7 +34,10 @@ terms, and static typing are covered in both package/registry orders.
 Core owns immutable snapshots and transactions, with bounded plan caching and
 an optional internal domain hook. Plain and loaded RDF bypass native planning;
 S223/WaTr share domain authoring, topology, and connection resolution. The
-remaining phase is semantic upgrade reports and ontology-evolution coverage.
+upgrade report now separates normalized contracts from build/source provenance
+without executing saved packages. The
+[maintenance workflow](ontology-upgrades.md) and evolution tests cover supported
+locked-source updates through regeneration, validation, typing, and RDF round trips.
 
 Design criterion: deep modules with simple interfaces. These phases assign
 ownership of complexity; they should reduce caller coordination and keep

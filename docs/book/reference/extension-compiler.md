@@ -25,6 +25,21 @@ output is a package directory with:
 - `_shapes.ttl`: the exact graph used for compilation, which `validate()`
   checks against.
 
+The package also carries `_symbols.json` for compiler linking and `_support.json`
+for constraint enforcement and source diagnostics. To review an upgrade, save the
+old generated package before regenerating, then compare the two directories:
+
+```bash
+plumb diff saved-pumps pumps
+plumb diff saved-pumps pumps --json > pumps-upgrade.json
+```
+
+The report separates compiled contract changes from source, version, compiler,
+and dependency identity changes. It reads metadata without importing either
+package. Both versions must use the current compiler's metadata formats.
+Differences return exit status zero; invalid or missing metadata returns status
+two. Review and validation decide whether an update is acceptable.
+
 Generation is deterministic. Compiling unchanged input gives byte-identical
 output, so ontology changes show up as reviewable diffs.
 
@@ -163,9 +178,9 @@ guess. No unit conversion takes place.
   `meta`, `model`, `contains`, `ports`, `describe_ports`) or with Python
   keywords get a trailing `_`.
 - Different IRIs with the same name get `_2`, `_3`, and so on, in sorted IRI
-  order. A deprecated term is suffixed before a current one. When WaTr and S223
-  share a name, the WaTr class keeps it: `Pump` is WaTr's, and S223's is
-  `Pump_2`.
+  order. A deprecated term is suffixed before a current one. WaTr reuses
+  unchanged S223 imports and provides typed views for added authoring surfaces;
+  `watr.Pump` is a view of `s223.Pump` with the same ontology IRI.
 - Enumeration values are under `enums.values` with flat names (`Fluid-Water`
   becomes `Fluid_Water`), and under their branch for completion, such as
   `enums.Substance.Medium.Mix.Fluid.Water`.

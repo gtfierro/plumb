@@ -114,8 +114,12 @@ new identities separate from these projections; shared enums retain identity.
 The [identity/profile decision](shared-identities-and-profiles.md) records the
 implementation, shape-bundle coverage, and selection rules.
 
-The [hardening plan](compiler-hardening-plan.md) tracks the remaining semantic
-upgrade reports and ontology-evolution workflow.
+`review.py` compares saved symbol and support exports through `plumb diff`,
+without executing either package or resolving historical dependencies. Normalized
+contract changes and enforcement are separate from source/build provenance.
+Anonymous constraint fingerprints retain executable text and value semantics
+independently of source labels. The [upgrade workflow](ontology-upgrades.md)
+and [hardening plan](compiler-hardening-plan.md) record maintenance and acceptance.
 
 `tests/toy.py` is a hand-written module in exactly the emitter's shape; the
 core test suite runs against it so runtime and compiler stay independently

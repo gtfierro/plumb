@@ -1,6 +1,6 @@
 # Compiler and runtime hardening plan
 
-Status: implementation in progress, 2026-10-31. Phase 1 has an offline build
+Status: phases 1–6 implemented, 2026-11-01. Phase 1 has an offline build
 and CI gate. Effective property composition, semantic ancestry, numeric counts,
 predicate name disambiguation, and atomic relationship updates have landed.
 The ontology and configuration fronts now share effective property refinement,
@@ -21,7 +21,9 @@ The user has explicitly authorized
 breaking changes: prefer the coherent final interfaces over compatibility
 wrappers or preservation of the previous generated API.
 
-Still pending: semantic upgrade reports and the complete ontology-evolution workflow.
+Saved-package semantic upgrade reports and the
+[ontology-upgrade workflow](ontology-upgrades.md) now cover source/lock updates,
+contract and provenance review, regeneration, and end-to-end evolution checks.
 The initial source lock intentionally
 captures historical closures rather than claiming recovered import boundaries.
 Configuration named ports and scalar quantity schemas remain distinct Python
@@ -300,6 +302,24 @@ workloads against the pre-refactor baseline to catch substantial regressions.
 Dependency: phases 3–4 stabilize metadata and registry contracts.
 
 ### 6. Make ontology upgrades a tested maintenance workflow
+
+Implemented: `plumb diff BEFORE AFTER [--json]` reads versioned compiler exports
+without executing packages. It reports normalized contracts and constraint
+enforcement separately from source, compiler, ontology, and dependency identity.
+Support format 2 fingerprints anonymous constraint contents independently of
+source labels. Evolution fixtures cover locked source updates, added subclasses,
+range/count/default changes, equivalent syntax, alias collisions, removed policy
+targets, unsupported constructive values, generated typing, validation, mixed
+S223/WaTr ports, and RDF round trips. Fresh parses and reversed triple insertion
+are checked for byte determinism and RDF isomorphism. Existing CI runs these
+tests and the offline regeneration gate. The maintainer procedure and the
+rewritten DESIGN.md describe the implemented boundaries and report limitations.
+
+Verification on 2026-11-01: all 433 tests passed, including generated positive
+and negative typing fixtures. Ruff, formatting, type checking, offline
+regeneration, installed-wheel review/runtime smoke tests, and executable
+documentation passed. This phase changes generated support/build metadata;
+generated classes and bundled ontology graphs remain unchanged.
 
 Deliverables:
 

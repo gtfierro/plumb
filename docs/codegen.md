@@ -30,6 +30,12 @@ identify approximations, such as Python type checks that leave exact RDF
 datatype validation to SHACL.
 Anonymous source identifiers name content/context groups; target and path retain
 their scope when equivalent anonymous RDF nodes have interchangeable labels.
+Support format 2 additionally records `value_key`, a source-context-independent
+fingerprint of each constraint value. Anonymous subgraphs and named shape/query
+references include their contents. At each reported finite-choice or boolean
+list parameter, member order is normalized while repeated `xone` branches remain
+significant. This supports comparing saved outputs without
+reconstructing their source graphs or importing historical packages.
 
 This makes omitted qualifiers visible: the paired-point qualifier on heat
 exchangers remains in SHACL validation rather than becoming an unconditional
@@ -172,6 +178,12 @@ list of duplicated classes. See the
 typing, validation, enum-tree ownership, and Pump ancestry semantics.
 
 ## Regenerating the committed packages
+
+For an ontology update, follow the [review and verification workflow](ontology-upgrades.md).
+`plumb diff BEFORE AFTER [--json]` compares saved package directories, separating
+compiled contract and enforcement changes from source/build provenance. Both
+sides must use current compiler metadata formats; this is a review tool rather
+than an automatic compatibility gate.
 
 ```bash
 uv run python scripts/generate_brick.py
