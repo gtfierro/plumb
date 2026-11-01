@@ -22,7 +22,7 @@ from .core import (
     UnsatisfiableModelError,
 )
 from .core.enums import _local
-from .core.relations import RelSet
+from .core.snapshot import Snapshot
 
 if TYPE_CHECKING:
     from .connect223 import S223Connector
@@ -1100,11 +1100,11 @@ def _connection_class(connector: S223Connector, medium: EnumValue) -> type[Entit
 
 
 def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
-    snapshot, mapping = _clone_model(model)
-    snapshot._resolving = True
+    build = Snapshot(model)
+    snapshot, mapping = build.model, build.entities
     point_entities: dict[tuple[int, str], Entity] = {}
-    connection_entities: dict[int, Entity] = {}
-    explanations: dict[int, ResolutionExplanation] = {}
+    connection_entities = build.connections
+    explanations = build.explanations
     authored_points: dict[PortHandle, Entity] = {}
     for plan in plans:
         for point in plan.points:
@@ -1138,7 +1138,7 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
                 model=snapshot,
             )
             for name, value in intent.handle._assignments.items():
-                setattr(connection, name, _map_value(value, mapping))
+                setattr(connection, name, build.copy(value))
             connection_entities[intent.handle.identifier] = connection
             explanations[intent.handle.identifier] = _explain_intent(intent)
     for handle, point in authored_points.items():
@@ -1174,19 +1174,7 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
                 getattr(system, "has_boundary_connection_point").add(point)
     _place_deferred_links(snapshot, authored_points, connection_entities)
     _fill_property_media(snapshot)
-    snapshot._resolving = False
-    from .core.query import _restore_named_points
-
-    for entity in snapshot.entities:
-        if type(entity)._point_declarations:
-            _restore_named_points(entity, type(entity)._point_declarations, strict=True)
-    return ResolvedModel(
-        snapshot,
-        connection_entities,
-        explanations,
-        model._revision,
-        authored_model=model,
-    )
+    return build.finish()
 
 
 def _explain_intent(intent: _IntentResult) -> ResolutionExplanation:
@@ -1291,43 +1279,6 @@ def _owner(endpoint: Entity | PortHandle | PointGroupRef) -> Entity:
     return endpoint_owner(endpoint)
 
 
-def _clone_model(model: Model) -> tuple[Model, dict[Entity, Entity]]:
-    from .core.model import Model
-
-    clone = Model(
-        model.namespace,
-        name=model.name,
-        ontology_iri=model.ontology_iri,
-        imports=model.imports,
-        prefixes=model.prefixes,
-    )
-    clone._resolving = True
-    clone._loaded_registries = model._loaded_registries
-    mapping: dict[Entity, Entity] = {}
-    for entity in model.entities:
-        copied = object.__new__(type(entity))
-        copied._name = entity.name
-        copied._label = entity.label
-        copied._comment = entity.comment
-        copied._data = {}
-        copied._rels = {}
-        copied._named_points = {}
-        copied._iri = ""
-        copied._model = clone
-        clone._bind(copied)
-        mapping[entity] = copied
-    for entity, copied in mapping.items():
-        copied._data = {
-            name: _map_value(value, mapping) for name, value in entity._data.items()
-        }
-        for name, store in entity._rels.items():
-            new_store = RelSet(copied, store._spec)
-            new_store._items = [_map_value(item, mapping) for item in store._items]
-            copied._rels[name] = new_store
-    clone._resolving = False
-    return clone, mapping
-
-
 def _place_deferred_links(
     snapshot: Model,
     points: dict[PortHandle, Entity],
@@ -1355,24 +1306,6 @@ def _place_deferred_links(
             entity._data[name] = concrete(entity, name, value)
         for name, store in entity._rels.items():
             store._items = [concrete(entity, name, item) for item in store._items]
-
-
-def _map_value(value: Any, mapping: dict[Entity, Entity]) -> Any:
-    if value in mapping if _hashable(value) else False:
-        return mapping[value]
-    if isinstance(value, list):
-        return [_map_value(item, mapping) for item in value]
-    if isinstance(value, tuple):
-        return tuple(_map_value(item, mapping) for item in value)
-    return value
-
-
-def _hashable(value: Any) -> bool:
-    try:
-        hash(value)
-    except TypeError:
-        return False
-    return True
 
 
 def _all_slots(cls: type[Entity]) -> list[CPSlot]:

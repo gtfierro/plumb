@@ -666,4 +666,6 @@ class ResolvedModel:
             ) from None
 
     def graph(self) -> rdflib.Graph:
+        if self._model._loaded_graph is not None:
+            return self._model.graph()
         return self._model._graph_unresolved()
