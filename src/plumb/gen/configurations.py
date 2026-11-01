@@ -25,11 +25,9 @@ from .constraints import (
     refine_property,
 )
 from .emit import (
-    emit_descriptor,
-    emit_property_spec,
-    emit_shape_values,
+    emit_class,
+    emit_constructor,
     constant_source,
-    range_annotation,
 )
 from .ir import ClassIR, CPSlotIR, PointIR, PropIR, SchemaIR
 from .symbols import FILENAME, Symbols, export_symbols
@@ -40,18 +38,6 @@ import hashlib
 CODEGEN = rdflib.Namespace("https://watermetadata.org/plumb/codegen#")
 S223 = rdflib.Namespace("http://data.ashrae.org/standard223#")
 QUDT = rdflib.Namespace("http://qudt.org/schema/qudt/")
-
-
-@dataclass
-class ConfigurationIR:
-    iri: str
-    name: str
-    base: ClassIR
-    parent_name: str
-    specs: dict[str, PropIR]
-    new_specs: list[PropIR]
-    points: list[PointIR]
-    maximum_ports: int | None
 
 
 @dataclass
@@ -233,25 +219,17 @@ def _configuration(
     graph: rdflib.Graph,
     iri: URIRef,
     dependency: Symbols,
-    known: dict[str, ConfigurationIR],
+    known: dict[str, ClassIR],
     local_names: dict[str, str],
-    ref: Any,
-) -> ConfigurationIR:
+) -> ClassIR:
     parents = list(graph.objects(iri, RDFS.subClassOf))
     if len(parents) != 1:
         raise ValueError(f"{iri}: configuration needs one constructive parent class")
     parent = str(parents[0])
-    inherited = known.get(parent)
-    if inherited is not None:
-        base = inherited.base
-        specs = dict(inherited.specs)
-        parent_name = inherited.name
-    else:
-        if parent not in dependency.classes:
-            raise ValueError(f"{iri}: unlinked parent {parent}")
-        base = dependency.classes[parent]
-        specs = dict(base.effective_props)
-        parent_name = ref(parent)
+    base = known.get(parent) or dependency.classes.get(parent)
+    if base is None:
+        raise ValueError(f"{iri}: unlinked parent {parent}")
+    specs = dict(base.effective_props)
     # Refine inherited PropIR records by replacement to preserve the dependency.
     original = dict(specs)
     by_predicate = {spec.predicate: spec for spec in specs.values()}
@@ -367,9 +345,7 @@ def _configuration(
         specs[spec.name] = spec
     if len({point.name for point in points}) != len(points):
         raise ValueError(f"{iri}: duplicate point names")
-    inherited_points = {
-        point.name: point for point in (inherited.points if inherited else base.points)
-    }
+    inherited_points = {point.name: point for point in base.points}
     for point in points:
         previous = inherited_points.get(point.name)
         if previous is not None and replace(previous, source=point.source) != point:
@@ -380,7 +356,7 @@ def _configuration(
             )
         inherited_points[point.name] = point
     points = list(inherited_points.values())
-    inherited_maximum = inherited.maximum_ports if inherited else base.maximum_ports
+    inherited_maximum = base.maximum_ports
     if inherited_maximum is not None:
         maximum_ports = (
             min(maximum_ports, inherited_maximum)
@@ -392,15 +368,35 @@ def _configuration(
         and sum(point.count for point in points) > maximum_ports
     ):
         raise ValueError(f"{iri}: named points exceed inherited maximum")
-    return ConfigurationIR(
-        str(iri),
-        local_names[str(iri)],
-        base,
-        parent_name,
-        specs,
-        [prop for name, prop in specs.items() if original.get(name) != prop],
-        points,
-        maximum_ports,
+    return ClassIR(
+        iri=str(iri),
+        name=local_names[str(iri)],
+        label=str(graph.value(iri, RDFS.label) or "") or None,
+        definition=str(graph.value(iri, RDFS.comment) or "") or None,
+        parents=(base.name,),
+        parent_iris=(parent,),
+        ancestor_iris=tuple(sorted({parent, *base.ancestor_iris})),
+        own_props=[prop for name, prop in specs.items() if original.get(name) != prop],
+        effective_props=specs,
+        cp_slots=[
+            *base.cp_slots,
+            *(
+                CPSlotIR(
+                    cp_class=point.cp_class,
+                    direction=point.direction,
+                    medium=point.medium,
+                    min_count=point.count,
+                    max_count=point.count,
+                    name=point.name,
+                    label=point.label,
+                )
+                for point in points
+            ),
+        ],
+        cp_constraints=list(base.cp_constraints),
+        class_defaults=list(base.class_defaults),
+        points=points,
+        maximum_ports=maximum_ports,
     )
 
 
@@ -456,7 +452,7 @@ def compile_configurations(
     if len(set(local_names.values())) != len(local_names):
         raise ValueError("configuration class name collision")
     # Compile parents first so each child receives effective inherited metadata.
-    known: dict[str, ConfigurationIR] = {}
+    known: dict[str, ClassIR] = {}
     while pending:
         ready = sorted(
             iri
@@ -470,7 +466,7 @@ def compile_configurations(
             raise ValueError("cyclic configuration class inheritance")
         for iri in ready:
             known[iri] = _configuration(
-                graph, pending.pop(iri), dependency, known, local_names, class_reference
+                graph, pending.pop(iri), dependency, known, local_names
             )
     configurations = list(known.values())
     local_names = {item.iri: item.name for item in configurations}
@@ -520,6 +516,24 @@ def compile_configurations(
             return constant_source(node)
         return reference(node)
 
+    ir = SchemaIR(
+        name,
+        str(ontology),
+        None,
+        source,
+        configurations,
+        dependencies=[
+            {
+                "module": module_name,
+                "sha256": dependency.digest,
+                "ontology": dependency.ontology,
+            }
+        ],
+    )
+    by_name = {
+        symbol.name: symbol
+        for symbol in [*dependency.classes.values(), *configurations]
+    }
     body = []
     quantity_records = []
 
@@ -529,15 +543,21 @@ def compile_configurations(
         return reference(iri)
 
     for item in configurations:
-        body.extend(
-            _emit_configuration(
+        annotations = {
+            name: annotation_reference(class_names[name])
+            for prop in item.effective_props.values()
+            for name in prop.ranges
+        }
+        body.append(
+            emit_class(
                 item,
-                graph,
-                reference,
-                references,
-                value_reference,
-                class_names,
-                annotation_reference,
+                ir,
+                emit_constructor(
+                    item, by_name, by_name[item.parents[0]], annotations=annotations
+                ),
+                bases=[reference(item.parent_iris[0])],
+                annotations=annotations,
+                reference=value_reference,
             )
         )
     groups = sorted(graph.subjects(CODEGEN.projection, CODEGEN.PropertySchema), key=str)
@@ -609,7 +629,7 @@ def compile_configurations(
                     ),
                     None,
                 )
-                property_specs = config.specs if config else {}
+                property_specs = config.effective_props if config else {}
             else:
                 property_specs = property_cls.effective_props
             for path, values in field.constants.items():
@@ -668,7 +688,7 @@ def compile_configurations(
         "from typing import Iterable as _Iterable",
         f"import {module_name} as _BASE",
         *[f"import {module} as {alias}" for module, alias in imported_modules.items()],
-        "from plumb.core import (Entity as _Entity, ClassInfo as _ClassInfo, CPSlot as _CPSlot,",
+        "from plumb.core import (Entity as _EntityBase, ClassInfo as _ClassInfo, CPSlot as _CPSlot, CPConstraint as _CPConstraint, provided as _provided,",
         "    Model as _Model, Registry as _Registry, OntologyInfo as _OntologyInfo,",
         "    PropertySpec as _PropertySpec, TermOne as _TermOne, Lit as _Lit, Rel as _Rel, RelOne as _RelOne, EnumOne as _EnumOne, EnumSet as _EnumSet, ValueOne as _ValueOne,",
         "    PropertySchema as _PropertySchema, QuantityDefinition as _QuantityDefinition,",
@@ -692,63 +712,15 @@ def compile_configurations(
         *body,
         f"__all__ = {['ONTOLOGY', 'REGISTRY', *local_names.values(), *group_names]!r}",
     ]
-    symbols = dependency.imported_classes()
-    for item in configurations:
-        parent_iri = str(next(graph.objects(URIRef(item.iri), RDFS.subClassOf)))
-        parent = symbols[parent_iri]
-        symbols[item.iri] = ClassIR(
-            name=item.name,
-            iri=item.iri,
-            label=str(graph.value(URIRef(item.iri), RDFS.label) or "") or None,
-            definition=str(graph.value(URIRef(item.iri), RDFS.comment) or "") or None,
-            parents=(parent.name,),
-            parent_iris=(parent_iri,),
-            ancestor_iris=tuple(sorted({parent_iri, *parent.ancestor_iris})),
-            own_props=item.new_specs,
-            effective_props=item.specs,
-            cp_slots=[
-                *parent.cp_slots,
-                *(
-                    CPSlotIR(
-                        cp_class=point.cp_class,
-                        direction=point.direction,
-                        medium=point.medium,
-                        min_count=point.count,
-                        max_count=point.count,
-                        name=point.name,
-                        label=point.label,
-                    )
-                    for point in item.points
-                ),
-            ],
-            cp_constraints=list(parent.cp_constraints),
-            class_defaults=list(parent.class_defaults),
-            points=item.points,
-            maximum_ports=item.maximum_ports,
-        )
-    ir = SchemaIR(
-        name,
-        str(ontology),
-        None,
-        source,
-        [symbols[item.iri] for item in configurations],
-        dependencies=[
-            {
-                "module": module_name,
-                "sha256": dependency.digest,
-                "ontology": dependency.ontology,
-            }
-        ],
-        term_types={
-            iri: tuple(
-                sorted(
-                    {str(value) for value in graph.objects(URIRef(iri), RDF.type)}
-                    | set(dependency.term_types.get(iri, ()))
-                )
+    ir.term_types = {
+        iri: tuple(
+            sorted(
+                {str(value) for value in graph.objects(URIRef(iri), RDF.type)}
+                | set(dependency.term_types.get(iri, ()))
             )
-            for iri in terms
-        },
-    )
+        )
+        for iri in terms
+    }
     shapes = "\n".join(sorted(graph.serialize(format="nt").splitlines())) + "\n"
     return {
         "__init__.py": "\n".join(lines) + "\n",
@@ -826,104 +798,3 @@ def _imported_profiles(graph: rdflib.Graph, dependency: Symbols) -> list[ClassIR
                     pending.extend(graph.items(members))
         profiles.append(symbol)
     return profiles
-
-
-def _value_annotation(spec: PropIR, ref: Any, class_names: dict[str, str]) -> str:
-    if spec.kind == "literal":
-        return spec.datatype
-    if spec.kind in {"term", "value"}:
-        return "_TermValue" if spec.kind == "term" else "object"
-    if spec.kind == "enum":
-        return "_EnumValue"
-    value = range_annotation(
-        spec,
-        entity_base="_Entity",
-        class_names={name: ref(class_names[name]) for name in spec.ranges},
-    )
-    return f"type[{value}]" if spec.kind == "class" else value
-
-
-def _emit_configuration(
-    item: ConfigurationIR,
-    graph: rdflib.Graph,
-    ref: Any,
-    refs: Any,
-    value_ref: Any,
-    class_names: dict[str, str],
-    annotation_ref: Any,
-) -> list[str]:
-    lines = [
-        f"class {item.name}({item.parent_name}):",
-        f"    {str(graph.value(URIRef(item.iri), RDFS.comment) or graph.value(URIRef(item.iri), RDFS.label) or item.name)!r}",
-    ]
-    spec_symbols = []
-    for spec in item.new_specs:
-        symbol = f"_spec_{spec.name}"
-        spec_symbols.append(symbol)
-        lines.append(
-            f"    {symbol} = " + emit_property_spec(spec).replace("\n", "\n    ")
-        )
-        target = _value_annotation(spec, annotation_ref, class_names)
-        if spec.kind == "class":
-            # emit_descriptor wraps class ranges in type[].
-            target = target.removeprefix("type[").removesuffix("]")
-        lines.append("    " + emit_descriptor(spec, symbol, target=target))
-    label = str(graph.value(URIRef(item.iri), RDFS.label) or "") or None
-    description = str(graph.value(URIRef(item.iri), RDFS.comment) or "") or None
-    metadata = [
-        f"iri={item.iri!r}",
-        "ontology=ONTOLOGY",
-        "registry=_REGISTRY",
-        f"label={label!r}",
-        f"definition={description!r}",
-        f"properties=({', '.join(spec_symbols)}{',' if spec_symbols else ''})",
-    ]
-    if item.points:
-        slots = []
-        for point in item.points:
-            cp_class = point.cp_class
-            slots.append(
-                f"_CPSlot(cp_class={cp_class!r}, direction={point.direction!r}, medium={point.medium!r}, min_count={point.count}, max_count={point.count}, name={point.name!r}, label={point.label!r})"
-            )
-        metadata.append("cp_slots=(" + ", ".join(slots) + ",)")
-    lines.append("    _classinfo = _ClassInfo(")
-    lines.extend(f"        {value}," for value in metadata)
-    lines.append("    )")
-    lines.extend(emit_shape_values(item.specs.values(), reference=value_ref))
-    if item.maximum_ports is not None:
-        lines.append(f"    _shape_max_ports = {item.maximum_ports}")
-    if item.points:
-        for point in item.points:
-            annotation = "_PointRef" if point.count == 1 else "_PointGroupRef"
-            label = repr(point.label)
-            lines.append(
-                f"    {point.name} = _PointDeclaration[{annotation}](count={point.count}, medium={ref(point.medium)}, direction={point.direction!r}, label={label})"
-            )
-        lines.append("    _point_declarations = {")
-        lines.extend(f"        {point.name!r}: {point.name}," for point in item.points)
-        lines.append("    }")
-    params = []
-    for spec in sorted(item.specs.values(), key=lambda spec: spec.name):
-        satisfied = bool(spec.required_values or spec.default_values)
-        scalar = spec.kind not in {"class", "object", "enum"} or spec.max_count == 1
-        value = _value_annotation(spec, annotation_ref, class_names)
-        annotation = value if scalar else f"_Iterable[{value}]"
-        annotation += " | None"
-        required = spec.required
-        default = "" if required and not satisfied else " = None"
-        params.append(f"        {spec.name}: {annotation}{default},")
-    lines.extend(
-        [
-            "    def __init__(self, name: str | None = None, *,",
-            *params,
-            "        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:",
-            "        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{",
-            *[
-                f"            {spec.name!r}: {spec.name},"
-                for spec in item.specs.values()
-            ],
-            "        })",
-            "",
-        ]
-    )
-    return lines

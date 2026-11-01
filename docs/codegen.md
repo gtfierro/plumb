@@ -95,11 +95,19 @@ Configuration compilation consumes these symbols rather than installed Python
 classes. Exports record dependency digests and defining modules, including through
 chains of extensions; a stale dependency must be regenerated before reuse.
 
+Both front ends lower classes into `ClassIR` before using the shared class and
+constructor emitters. Named points use `ClassIR.points`; quantity-schema rendering
+remains in the configuration compiler. Runtime metadata and symbol exports read
+the same class records.
+
 Both front ends use the same property refinement and Python descriptor renderer.
 `sh:hasValue` members accumulate, `sh:in` lists intersect (an empty list permits
 no values), and a more specific `sh:defaultValue` replaces an inherited default.
 An inherited default that falls outside a narrowed choice set fails compilation.
 RDF constants retain their lexical/datatype form in dependency metadata.
+
+Optional constructor collections default to `None`. Explicit empty lists and
+tuples remain supplied values and can replace a shape default with no members.
 
 The shared compiler composes property constraints over the RDF parent graph
 before selecting Python bases. Repeated declarations and inheritance intersect

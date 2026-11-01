@@ -1,6 +1,7 @@
 """The ontology and configuration fronts share one effective constraint contract."""
 
 import importlib
+import inspect
 import json
 import sys
 
@@ -266,3 +267,63 @@ def test_named_reference_defaults_preserve_declared_subtype(compiler, configurat
         assert "urn:front#Dog" in owner.favourite.types
     source = (root / api.__name__ / "__init__.py").read_text()
     assert "_TermValue]" in source
+
+
+@pytest.mark.parametrize("configuration", [False, True])
+def test_emitted_class_and_constructor_match_exported_ir(compiler, configuration):
+    build, _ = compiler
+    api = build(
+        """
+        ex:Special a owl:Class ; rdfs:subClassOf ex:Owner ;
+            sh:property [ sh:path ex:pet ; sh:class ex:Dog ;
+                          sh:minCount 2 ; sh:maxCount 2 ],
+                        [ sh:path ex:mode ; sh:defaultValue "b" ; sh:in ("b") ] .
+        """,
+        configuration=configuration,
+    )
+    symbol = Symbols.load(api.__name__).classes["urn:front#Special"]
+    assert (
+        tuple(parent.meta.iri for parent in api.Special.meta.parents)
+        == symbol.parent_iris
+    )
+    actual = {prop.name: prop for prop in api.Special.meta.properties}
+    for name, expected in symbol.effective_props.items():
+        assert actual[name].predicate == expected.predicate
+        assert actual[name].range_groups == expected.range_groups
+        assert actual[name].min_count == expected.min_count
+        assert actual[name].max_count == expected.max_count
+    signature = inspect.signature(api.Special)
+    assert signature.parameters["pet"].default is inspect.Parameter.empty
+    assert signature.parameters["mode"].default is not inspect.Parameter.empty
+
+
+def test_configuration_term_constructor_accepts_compiled_reference(compiler):
+    from plumb import TermValue
+
+    build, _ = compiler
+    api = build("""
+        ex:Special a owl:Class ; rdfs:subClassOf ex:Owner ;
+            sh:property [ sh:path ex:tag ; sh:hasValue ex:Tag ] .
+    """)
+    annotation = inspect.signature(api.Special).parameters["tag"].annotation
+    assert "_TermValue" in annotation
+    with Model("urn:term:"):
+        assert api.Special(tag=TermValue("urn:front#Tag")).tag.iri == "urn:front#Tag"
+
+
+@pytest.mark.parametrize("configuration", [False, True])
+def test_explicit_empty_collection_replaces_shape_default(compiler, configuration):
+    build, _ = compiler
+    api = build(
+        """
+        ex:Rover a ex:Dog .
+        ex:Special a owl:Class ; rdfs:subClassOf ex:Owner ;
+            sh:property [ sh:path ex:pet ; sh:defaultValue ex:Rover ] .
+        """,
+        configuration=configuration,
+    )
+    with Model("urn:defaults:"):
+        assert len(api.Special().pet) == 1
+        assert list(api.Special(pet=()).pet) == []
+        assert list(api.Special(pet=[]).pet) == []
+    assert inspect.signature(api.Special).parameters["pet"].default is None

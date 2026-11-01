@@ -18,7 +18,7 @@ from dataclasses import replace
 from collections.abc import Callable, Iterable, Mapping
 
 from .overlays import ResolvedBindings
-from .ir import CPConstraintIR, ClassIR, PropIR, SchemaIR
+from .ir import CPConstraintIR, CPSlotIR, ClassIR, PropIR, SchemaIR
 from rdflib import Literal, URIRef
 from rdflib.term import Node
 from decimal import Decimal
@@ -130,6 +130,11 @@ def emit_module(
         parts.append(
             "from . import enums as enums\n\n_REGISTRY.register_enums(enums)\n"
         )
+    if any(cls.points and cls.python_module is None for cls in ir.classes):
+        parts.append(
+            "from plumb.core.points import (PointDeclaration as _PointDeclaration, "
+            "PointRef as _PointRef, PointGroupRef as _PointGroupRef)\n"
+        )
     by_name = {c.name: c for c in ir.classes}
     emitted: set[str] = set()
     # Empty stand-ins compute the inherited constructor's MRO without importing
@@ -194,13 +199,12 @@ def emit_module(
             ),
             None,
         )
-        init = _emit_init(cls, by_name, inherited, annotations=annotations)
+        init = emit_constructor(cls, by_name, inherited, annotations=annotations)
         if init:
             with_init.add(cls.name)
         parts.append(
-            _emit_class(
+            emit_class(
                 cls,
-                emitted,
                 ir,
                 init,
                 bases=base_names,
@@ -218,24 +222,22 @@ def emit_module(
     return "\n".join(parts)
 
 
-def _emit_class(
+def emit_class(
     cls: ClassIR,
-    emitted: set[str],
     ir: SchemaIR,
     init: str,
     *,
-    bases: list[str] | None = None,
+    bases: list[str],
     annotations: Mapping[str, str] | None = None,
     canonical: str | None = None,
+    reference: Callable[[Node], str] | None = None,
 ) -> str:
-    # Use emitted Python bases; ClassInfo retains the semantic RDF parents.
-    bases = bases or [p for p in cls.parents if p in emitted] or ["_EntityBase"]
-
+    """Render one ClassIR's metadata, descriptors, points, and constructor."""
     lines: list[str] = []
     for prop in cls.own_props:
         lines.append(_emit_spec(cls, prop))
 
-    lines.append(f"class {cls.name}({', '.join(bases)}):")
+    lines.append(f"class {cls.name}({', '.join(bases) or '_EntityBase'}):")
     lines.append(_docstring(_class_doc(cls, ir), indent="    "))
     lines.append("")
     lines.append("    _classinfo = _ClassInfo(")
@@ -256,12 +258,7 @@ def _emit_class(
     if cls.cp_slots:
         lines.append("        cp_slots=(")
         for slot in cls.cp_slots:
-            lines.append(
-                f"            _CPSlot(cp_class={slot.cp_class!r}, "
-                f"direction={slot.direction!r}, medium={slot.medium!r}, "
-                f"medium_options={slot.medium_options!r}, "
-                f"min_count={slot.min_count}, max_count={slot.max_count!r}),"
-            )
+            lines.append(f"            {_slot_source(slot)},")
         lines.append("        ),")
     if cls.cp_constraints:
         lines.append("        cp_constraints=(")
@@ -287,14 +284,28 @@ def _emit_class(
 
     values = emit_shape_values(
         cls.effective_props.values(),
-        reference=lambda value: constant_source(
-            value, types=ir.term_types.get(str(value), ())
+        reference=reference
+        or (
+            lambda value: constant_source(
+                value, types=ir.term_types.get(str(value), ())
+            )
         ),
     )
     if values:
         lines.extend(values)
     if cls.maximum_ports is not None:
         lines.append(f"    _shape_max_ports = {cls.maximum_ports}")
+    if cls.points:
+        for point in cls.points:
+            annotation = "_PointRef" if point.count == 1 else "_PointGroupRef"
+            lines.append(
+                f"    {point.name} = _PointDeclaration[{annotation}]("
+                f"count={point.count}, medium=_REGISTRY.resolve_enum({point.medium!r}), "
+                f"direction={point.direction!r}, label={point.label!r})"
+            )
+        lines.append("    _point_declarations = {")
+        lines.extend(f"        {point.name!r}: {point.name}," for point in cls.points)
+        lines.append("    }")
 
     if init:
         lines.append("")
@@ -303,17 +314,28 @@ def _emit_class(
     return "\n".join(lines) + "\n"
 
 
+def _slot_source(slot: CPSlotIR) -> str:
+    fields = [
+        f"cp_class={slot.cp_class!r}",
+        f"direction={slot.direction!r}",
+        f"medium={slot.medium!r}",
+        f"medium_options={slot.medium_options!r}",
+        f"min_count={slot.min_count}",
+        f"max_count={slot.max_count!r}",
+    ]
+    if slot.name is not None:
+        fields.append(f"name={slot.name!r}")
+    if slot.label is not None:
+        fields.append(f"label={slot.label!r}")
+    return f"_CPSlot({', '.join(fields)})"
+
+
 def _emit_cp_constraint(constraint: CPConstraintIR, *, indent: str) -> list[str]:
     """Render one recursive connection constraint as generated metadata."""
     if constraint.operator == "slot":
         assert constraint.slot is not None
-        slot = constraint.slot
         return [
-            f"{indent}_CPConstraint(operator='slot', slot=_CPSlot("
-            f"cp_class={slot.cp_class!r}, direction={slot.direction!r}, "
-            f"medium={slot.medium!r}, medium_options={slot.medium_options!r}, "
-            f"min_count={slot.min_count}, "
-            f"max_count={slot.max_count!r})),"
+            f"{indent}_CPConstraint(operator='slot', slot={_slot_source(constraint.slot)}),"
         ]
     if constraint.operator == "opaque":
         return [f"{indent}_CPConstraint(operator='opaque'),"]
@@ -507,7 +529,7 @@ def _signature(props: dict[str, PropIR]) -> set[tuple[str, bool]]:
     return {(name, prop.required) for name, prop in props.items()}
 
 
-def _emit_init(
+def emit_constructor(
     cls: ClassIR,
     by_name: dict[str, ClassIR],
     inherited: ClassIR | None,
@@ -568,15 +590,16 @@ def _param_annotation(
     if prop.kind == "value":
         annotation = "object | None"
         return annotation if prop.required else f"{annotation} = None"
-    if prop.kind == "literal":
-        annotation = f"{prop.datatype} | None"
+    if prop.kind in {"literal", "term"}:
+        target = prop.datatype if prop.kind == "literal" else "_TermValue"
+        annotation = f"{target} | None"
         return annotation if prop.required else f"{annotation} = None"
     if prop.kind == "enum":
         if prop.max_count == 1:
             annotation = "_EnumValue | None"
             return annotation if prop.required else f"{annotation} = None"
         annotation = "_Iterable[_EnumValue]"
-        return annotation if prop.required else f"{annotation} = ()"
+        return annotation if prop.required else f"{annotation} | None = None"
     union = range_annotation(prop, class_names=annotations)
     if prop.kind == "class":
         union = f"type[{union}]"
@@ -584,7 +607,7 @@ def _param_annotation(
         annotation = f"{union} | None"
         return annotation if prop.required else f"{annotation} = None"
     annotation = f"_Iterable[{union}]"
-    return annotation if prop.required else f"{annotation} = ()"
+    return annotation if prop.required else f"{annotation} | None = None"
 
 
 def _class_doc(cls: ClassIR, ir: SchemaIR) -> str:

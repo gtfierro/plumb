@@ -64,6 +64,25 @@ def test_unconnected_named_points_materialize_and_enforce_medium(domain):
     assert len(resolved["pump"].ports) == 3
 
 
+def test_named_point_roles_survive_shared_class_emission(domain):
+    from plumb.gen.symbols import Symbols
+
+    symbols = Symbols.decode(
+        Path(domain.__file__).with_name("_symbols.json").read_text(),
+        module=domain.__name__,
+    )
+    symbol = symbols.classes[domain.BranchedPump.meta.iri]
+    runtime = {
+        (slot.name, slot.label, slot.min_count, slot.max_count)
+        for slot in domain.BranchedPump._classinfo.cp_slots
+    }
+    assert {
+        (slot.name, slot.label, slot.min_count, slot.max_count)
+        for slot in symbol.cp_slots
+    } == runtime
+    assert {slot[0] for slot in runtime} >= {"primary", "secondary", "outlet"}
+
+
 def test_group_connection_rejects_incompatible_medium(domain):
     with Model("urn:test:incompatible#") as model:
         pump = domain.GroupedPump("pump")

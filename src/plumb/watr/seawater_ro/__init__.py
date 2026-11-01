@@ -5,7 +5,7 @@ from dataclasses import dataclass as _dataclass
 from typing import Iterable as _Iterable
 import plumb.watr as _BASE
 import plumb.s223 as _DEP0
-from plumb.core import (Entity as _Entity, ClassInfo as _ClassInfo, CPSlot as _CPSlot,
+from plumb.core import (Entity as _EntityBase, ClassInfo as _ClassInfo, CPSlot as _CPSlot, CPConstraint as _CPConstraint, provided as _provided,
     Model as _Model, Registry as _Registry, OntologyInfo as _OntologyInfo,
     PropertySpec as _PropertySpec, TermOne as _TermOne, Lit as _Lit, Rel as _Rel, RelOne as _RelOne, EnumOne as _EnumOne, EnumSet as _EnumSet, ValueOne as _ValueOne,
     PropertySchema as _PropertySchema, QuantityDefinition as _QuantityDefinition,
@@ -23,44 +23,61 @@ if '__file__' in globals():
     _REGISTRY.schema_graph = _Graph().parse(_Path(__file__).with_name('_shapes.ttl'))
 _REGISTRY.terms_by_iri.update({})
 
+_P_AdvancedOxidationStage_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#AdvancedOxidationStageShape/hasProcess/0'),
+    min_count=1,
+    required=True,
+)
+
+_P_AdvancedOxidationStage_has_property = _PropertySpec(
+    name='has_property',
+    predicate='http://data.ashrae.org/standard223#hasProperty',
+    kind='object',
+    label='has property',
+    definition='A `Relation` that associates a `Concept` with a `Property`.',
+    ranges=('Property',),
+    range_groups=(('http://data.ashrae.org/standard223#Property',),),
+    sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#UVDesignShape/hasProperty/0', 'https://watermetadata.org/plumb/seawater-ro#UVDesignShape/hasProperty/1'),
+)
+
 class AdvancedOxidationStage(_BASE.UVH2O2Reactor):
-    'Advanced Oxidation Stage configuration defined by the seawater RO shapes.'
-    _spec_has_process = _PropertySpec(
-        name='has_process',
-        predicate='https://watermetadata.org/ontology/watr#hasProcess',
-        kind='class',
-        label='has process',
-        definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-        ranges=('Process',),
-        range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
-        sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#AdvancedOxidationStageShape/hasProcess/0'),
-        min_count=1,
-        required=True,
-    )
-    has_process: _Rel[type[_BASE.Process]] = _Rel(_spec_has_process)
-    _spec_has_property = _PropertySpec(
-        name='has_property',
-        predicate='http://data.ashrae.org/standard223#hasProperty',
-        kind='object',
-        label='has property',
-        definition='A `Relation` that associates a `Concept` with a `Property`.',
-        ranges=('Property',),
-        range_groups=(('http://data.ashrae.org/standard223#Property',),),
-        sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#UVDesignShape/hasProperty/0', 'https://watermetadata.org/plumb/seawater-ro#UVDesignShape/hasProperty/1'),
-    )
-    has_property: _Rel[_DEP0.Property] = _Rel(_spec_has_property)
+    """Advanced Oxidation Stage configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#AdvancedOxidationStage
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#AdvancedOxidationStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Advanced Oxidation Stage',
         definition='Advanced Oxidation Stage configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_process, _spec_has_property,),
+        parent_iris=('https://watermetadata.org/ontology/watr#UVH2O2Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UVH2O2Reactor', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        properties=(_P_AdvancedOxidationStage_has_process, _P_AdvancedOxidationStage_has_property,),
+        class_defaults=(('has_process', 'Process_AdvancedOxidation'), ('has_treatment_objective', 'TreatmentObjective_OrganicsRemoval')),
     )
+
+    has_process: _Rel[type[_BASE.Process]] = _Rel(_P_AdvancedOxidationStage_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
+
+    has_property: _Rel[_DEP0.Property] = _Rel(_P_AdvancedOxidationStage_has_property)
+    """A `Relation` that associates a `Concept` with a `Property`. (http://data.ashrae.org/standard223#hasProperty)"""
     _shape_constraints = (
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess, https://watermetadata.org/plumb/seawater-ro#AdvancedOxidationStageShape/hasProcess/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Process-AdvancedOxidation', types=()),), defaults=(), choices=None, minimum=1, maximum=None),
     )
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -77,63 +94,92 @@ class AdvancedOxidationStage(_BASE.UVH2O2Reactor):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_BackwashSeparator_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#BackwashSeparatorShape/hasProcess/0'),
+    min_count=1,
+    required=True,
+)
 
 class BackwashSeparator(_BASE.UnitProcess):
-    'Backwash Separator configuration defined by the seawater RO shapes.'
-    _spec_has_process = _PropertySpec(
-        name='has_process',
-        predicate='https://watermetadata.org/ontology/watr#hasProcess',
-        kind='class',
-        label='has process',
-        definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-        ranges=('Process',),
-        range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
-        sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#BackwashSeparatorShape/hasProcess/0'),
-        min_count=1,
-        required=True,
-    )
-    has_process: _Rel[type[_BASE.Process]] = _Rel(_spec_has_process)
+    """Backwash Separator configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#BackwashSeparator
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#BackwashSeparator',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Backwash Separator',
         definition='Backwash Separator configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_process,),
-        cp_slots=(_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', min_count=1, max_count=1, name='byproduct', label='byproduct'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='treated', label='treated'),),
+        parent_iris=('https://watermetadata.org/ontology/watr#UnitProcess',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        properties=(_P_BackwashSeparator_has_process,),
+        cp_slots=(
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', medium_options=(), min_count=1, max_count=1, name='byproduct', label='byproduct'),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='inlet', label='inlet'),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='treated', label='treated'),
+        ),
     )
+
+    has_process: _Rel[type[_BASE.Process]] = _Rel(_P_BackwashSeparator_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
     _shape_constraints = (
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess, https://watermetadata.org/plumb/seawater-ro#BackwashSeparatorShape/hasProcess/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Process-Separation', types=()),), defaults=(), choices=None, minimum=1, maximum=None),
     )
     _shape_max_ports = 3
-    byproduct = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('https://watermetadata.org/ontology/watr#Fluid-Sludge'), direction='out', label='byproduct')
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='in', label='inlet')
-    treated = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='treated')
+    byproduct = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('https://watermetadata.org/ontology/watr#Fluid-Sludge'), direction='out', label='byproduct')
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='in', label='inlet')
+    treated = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='treated')
     _point_declarations = {
         'byproduct': byproduct,
         'inlet': inlet,
         'treated': treated,
     }
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -150,53 +196,78 @@ class BackwashSeparator(_BASE.UnitProcess):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_BackwashStage_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#BackwashStageShape/hasProcess/0'),
+    min_count=1,
+    required=True,
+)
 
 class BackwashStage(_BASE.UnitProcess):
-    'Backwash Stage configuration defined by the seawater RO shapes.'
-    _spec_has_process = _PropertySpec(
-        name='has_process',
-        predicate='https://watermetadata.org/ontology/watr#hasProcess',
-        kind='class',
-        label='has process',
-        definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-        ranges=('Process',),
-        range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
-        sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#BackwashStageShape/hasProcess/0'),
-        min_count=1,
-        required=True,
-    )
-    has_process: _Rel[type[_BASE.Process]] = _Rel(_spec_has_process)
+    """Backwash Stage configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#BackwashStage
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#BackwashStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Backwash Stage',
         definition='Backwash Stage configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_process,),
+        parent_iris=('https://watermetadata.org/ontology/watr#UnitProcess',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        properties=(_P_BackwashStage_has_process,),
     )
+
+    has_process: _Rel[type[_BASE.Process]] = _Rel(_P_BackwashStage_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
     _shape_constraints = (
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess, https://watermetadata.org/plumb/seawater-ro#BackwashStageShape/hasProcess/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Process-Backwashing', types=()),), defaults=(), choices=None, minimum=1, maximum=None),
     )
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -213,48 +284,77 @@ class BackwashStage(_BASE.UnitProcess):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_BoosterPump_has_property = _PropertySpec(
+    name='has_property',
+    predicate='http://data.ashrae.org/standard223#hasProperty',
+    kind='object',
+    label='has property',
+    definition='A `Relation` that associates a `Concept` with a `Property`.',
+    ranges=('Property',),
+    range_groups=(('http://data.ashrae.org/standard223#Property',),),
+    sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#PumpDesignShape/hasProperty/0'),
+)
 
 class BoosterPump(_BASE.Pump):
-    'Booster Pump configuration defined by the seawater RO shapes.'
-    _spec_has_property = _PropertySpec(
-        name='has_property',
-        predicate='http://data.ashrae.org/standard223#hasProperty',
-        kind='object',
-        label='has property',
-        definition='A `Relation` that associates a `Concept` with a `Property`.',
-        ranges=('Property',),
-        range_groups=(('http://data.ashrae.org/standard223#Property',),),
-        sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#PumpDesignShape/hasProperty/0'),
-    )
-    has_property: _Rel[_DEP0.Property] = _Rel(_spec_has_property)
+    """Booster Pump configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#BoosterPump
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#BoosterPump',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Booster Pump',
         definition='Booster Pump configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_property,),
+        parent_iris=('https://watermetadata.org/ontology/watr#Pump',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Pump'),
+        properties=(_P_BoosterPump_has_property,),
+        cp_slots=(
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=1, max_count=None),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=1, max_count=None),
+        ),
     )
-    def __init__(self, name: str | None = None, *,
+
+    has_property: _Rel[_DEP0.Property] = _Rel(_P_BoosterPump_has_property)
+    """A `Relation` that associates a `Concept` with a `Property`. (http://data.ashrae.org/standard223#hasProperty)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -271,53 +371,78 @@ class BoosterPump(_BASE.Pump):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_CartridgeFiltrationStage_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#CartridgeFiltrationStageShape/hasProcess/0'),
+    min_count=1,
+    required=True,
+)
 
 class CartridgeFiltrationStage(_BASE.CartridgeFiltrationUnit):
-    'Cartridge Filtration Stage configuration defined by the seawater RO shapes.'
-    _spec_has_process = _PropertySpec(
-        name='has_process',
-        predicate='https://watermetadata.org/ontology/watr#hasProcess',
-        kind='class',
-        label='has process',
-        definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-        ranges=('Process',),
-        range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
-        sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#CartridgeFiltrationStageShape/hasProcess/0'),
-        min_count=1,
-        required=True,
-    )
-    has_process: _Rel[type[_BASE.Process]] = _Rel(_spec_has_process)
+    """Cartridge Filtration Stage configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#CartridgeFiltrationStage
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#CartridgeFiltrationStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Cartridge Filtration Stage',
         definition='Cartridge Filtration Stage configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_process,),
+        parent_iris=('https://watermetadata.org/ontology/watr#CartridgeFiltrationUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#CartridgeFiltrationUnit', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        properties=(_P_CartridgeFiltrationStage_has_process,),
     )
+
+    has_process: _Rel[type[_BASE.Process]] = _Rel(_P_CartridgeFiltrationStage_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
     _shape_constraints = (
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess, https://watermetadata.org/plumb/seawater-ro#CartridgeFiltrationStageShape/hasProcess/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Process-Filtration', types=()),), defaults=(), choices=None, minimum=1, maximum=None),
     )
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -334,53 +459,79 @@ class CartridgeFiltrationStage(_BASE.CartridgeFiltrationUnit):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_ChlorinationStage_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#ChlorinationStageShape/hasProcess/0'),
+    min_count=1,
+    required=True,
+)
 
 class ChlorinationStage(_BASE.ChlorinationUnit):
-    'Chlorination Stage configuration defined by the seawater RO shapes.'
-    _spec_has_process = _PropertySpec(
-        name='has_process',
-        predicate='https://watermetadata.org/ontology/watr#hasProcess',
-        kind='class',
-        label='has process',
-        definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-        ranges=('Process',),
-        range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
-        sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#ChlorinationStageShape/hasProcess/0'),
-        min_count=1,
-        required=True,
-    )
-    has_process: _Rel[type[_BASE.Process]] = _Rel(_spec_has_process)
+    """Chlorination Stage configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#ChlorinationStage
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#ChlorinationStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Chlorination Stage',
         definition='Chlorination Stage configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_process,),
+        parent_iris=('https://watermetadata.org/ontology/watr#ChlorinationUnit',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#ChlorinationUnit', 'https://watermetadata.org/ontology/watr#DisinfectionUnit', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        properties=(_P_ChlorinationStage_has_process,),
+        class_defaults=(('has_process', 'Process_Chlorination'),),
     )
+
+    has_process: _Rel[type[_BASE.Process]] = _Rel(_P_ChlorinationStage_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
     _shape_constraints = (
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess, https://watermetadata.org/plumb/seawater-ro#ChlorinationStageShape/hasProcess/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Process-Chlorination', types=()),), defaults=(), choices=None, minimum=1, maximum=None),
     )
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -397,53 +548,79 @@ class ChlorinationStage(_BASE.ChlorinationUnit):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_CoagulationStage_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#CoagulationStageShape/hasProcess/0'),
+    min_count=1,
+    required=True,
+)
 
 class CoagulationStage(_BASE.CoagulationBasin):
-    'Coagulation Stage configuration defined by the seawater RO shapes.'
-    _spec_has_process = _PropertySpec(
-        name='has_process',
-        predicate='https://watermetadata.org/ontology/watr#hasProcess',
-        kind='class',
-        label='has process',
-        definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-        ranges=('Process',),
-        range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
-        sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#CoagulationStageShape/hasProcess/0'),
-        min_count=1,
-        required=True,
-    )
-    has_process: _Rel[type[_BASE.Process]] = _Rel(_spec_has_process)
+    """Coagulation Stage configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#CoagulationStage
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#CoagulationStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Coagulation Stage',
         definition='Coagulation Stage configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_process,),
+        parent_iris=('https://watermetadata.org/ontology/watr#CoagulationBasin',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#CoagulationBasin', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        properties=(_P_CoagulationStage_has_process,),
+        class_defaults=(('has_process', 'Process_Coagulation'),),
     )
+
+    has_process: _Rel[type[_BASE.Process]] = _Rel(_P_CoagulationStage_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
     _shape_constraints = (
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess, https://watermetadata.org/plumb/seawater-ro#CoagulationStageShape/hasProcess/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Process-Coagulation', types=()),), defaults=(), choices=None, minimum=1, maximum=None),
     )
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -460,53 +637,82 @@ class CoagulationStage(_BASE.CoagulationBasin):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_DosingStage_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#DosingStageShape/hasProcess/0'),
+    min_count=1,
+    required=True,
+)
 
 class DosingStage(_BASE.Reactor):
-    'Dosing Stage configuration defined by the seawater RO shapes.'
-    _spec_has_process = _PropertySpec(
-        name='has_process',
-        predicate='https://watermetadata.org/ontology/watr#hasProcess',
-        kind='class',
-        label='has process',
-        definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-        ranges=('Process',),
-        range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
-        sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#DosingStageShape/hasProcess/0'),
-        min_count=1,
-        required=True,
-    )
-    has_process: _Rel[type[_BASE.Process]] = _Rel(_spec_has_process)
+    """Dosing Stage configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#DosingStage
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#DosingStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Dosing Stage',
         definition='Dosing Stage configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_process,),
+        parent_iris=('https://watermetadata.org/ontology/watr#Reactor',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        properties=(_P_DosingStage_has_process,),
+        cp_slots=(
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
+        ),
     )
+
+    has_process: _Rel[type[_BASE.Process]] = _Rel(_P_DosingStage_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
     _shape_constraints = (
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess, https://watermetadata.org/plumb/seawater-ro#DosingStageShape/hasProcess/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Process-Dosing', types=()),), defaults=(), choices=None, minimum=1, maximum=None),
     )
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -523,48 +729,73 @@ class DosingStage(_BASE.Reactor):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_EnergyRecoveryExchanger_has_property = _PropertySpec(
+    name='has_property',
+    predicate='http://data.ashrae.org/standard223#hasProperty',
+    kind='object',
+    label='has property',
+    definition='A `Relation` that associates a `Concept` with a `Property`.',
+    ranges=('Property',),
+    range_groups=(('http://data.ashrae.org/standard223#Property',),),
+    sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#PressureExchangerDesignShape/hasProperty/0'),
+)
 
 class EnergyRecoveryExchanger(_BASE.PressureExchanger):
-    'Energy Recovery Exchanger configuration defined by the seawater RO shapes.'
-    _spec_has_property = _PropertySpec(
-        name='has_property',
-        predicate='http://data.ashrae.org/standard223#hasProperty',
-        kind='object',
-        label='has property',
-        definition='A `Relation` that associates a `Concept` with a `Property`.',
-        ranges=('Property',),
-        range_groups=(('http://data.ashrae.org/standard223#Property',),),
-        sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#PressureExchangerDesignShape/hasProperty/0'),
-    )
-    has_property: _Rel[_DEP0.Property] = _Rel(_spec_has_property)
+    """Energy Recovery Exchanger configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#EnergyRecoveryExchanger
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#EnergyRecoveryExchanger',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Energy Recovery Exchanger',
         definition='Energy Recovery Exchanger configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_property,),
+        parent_iris=('https://watermetadata.org/ontology/watr#PressureExchanger',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#PressureExchanger'),
+        properties=(_P_EnergyRecoveryExchanger_has_property,),
     )
-    def __init__(self, name: str | None = None, *,
+
+    has_property: _Rel[_DEP0.Property] = _Rel(_P_EnergyRecoveryExchanger_has_property)
+    """A `Relation` that associates a `Concept` with a `Property`. (http://data.ashrae.org/standard223#hasProperty)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -581,65 +812,103 @@ class EnergyRecoveryExchanger(_BASE.PressureExchanger):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_FeedSplitter_medium = _PropertySpec(
+    name='medium',
+    predicate='http://data.ashrae.org/standard223#hasMedium',
+    kind='enum',
+    label='has medium',
+    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
+    range_groups=(('http://data.ashrae.org/standard223#Substance-Medium',),),
+    sources=('b27687f66cec843f6f6442183', 'b42897a1302c66ef48c1eb917', 'b668405d00cb3041e9cb292d8', 'b7b6e8b6b692e00280f1836e8', 'b7fcb9534d9769671e8d0b97b', 'b8f0b12dc85f638024437a859', 'b9d6fe703e1f82459a5b8d55b', 'bbbcaeeb178444c2f6593093a', 'bc423102e47022f8fab24adb1', 'be65b6ced07bb4a44f718e9a4', 'bfa6b8152ca8e9eed314182a5', 'bfb8077af53aae66ed43f4c36', 'https://watermetadata.org/plumb/seawater-ro#FeedSplitterShape/hasMedium/0'),
+    min_count=1,
+    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
+    required=True,
+    max_count=1,
+)
 
 class FeedSplitter(_DEP0.Junction):
-    'Feed Splitter configuration defined by the seawater RO shapes.'
-    _spec_medium = _PropertySpec(
-        name='medium',
-        predicate='http://data.ashrae.org/standard223#hasMedium',
-        kind='enum',
-        label='has medium',
-        definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-        range_groups=(('http://data.ashrae.org/standard223#Substance-Medium',),),
-        sources=('b27687f66cec843f6f6442183', 'b42897a1302c66ef48c1eb917', 'b668405d00cb3041e9cb292d8', 'b7b6e8b6b692e00280f1836e8', 'b7fcb9534d9769671e8d0b97b', 'b8f0b12dc85f638024437a859', 'b9d6fe703e1f82459a5b8d55b', 'bbbcaeeb178444c2f6593093a', 'bc423102e47022f8fab24adb1', 'be65b6ced07bb4a44f718e9a4', 'bfa6b8152ca8e9eed314182a5', 'bfb8077af53aae66ed43f4c36', 'https://watermetadata.org/plumb/seawater-ro#FeedSplitterShape/hasMedium/0'),
-        min_count=1,
-        enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
-        required=True,
-        max_count=1,
-    )
-    medium: _EnumOne[_EnumValue] = _EnumOne(_spec_medium)
+    """Feed Splitter configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#FeedSplitter
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#FeedSplitter',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Feed Splitter',
         definition='Feed Splitter configuration defined by the seawater RO shapes.',
-        properties=(_spec_medium,),
-        cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='pressure_exchanger', label='pressure_exchanger'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='pump', label='pump'),),
+        parent_iris=('http://data.ashrae.org/standard223#Junction',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Junction', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+        properties=(_P_FeedSplitter_medium,),
+        cp_slots=(
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='inlet', label='inlet'),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='pressure_exchanger', label='pressure_exchanger'),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='pump', label='pump'),
+        ),
+        cp_constraints=(
+            _CPConstraint(operator='or', children=(
+                _CPConstraint(operator='and', children=(
+                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None)),
+                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None)),
+                )),
+                _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=1, max_count=None)),
+            )),
+        ),
     )
+
+    medium: _EnumOne[_EnumValue] = _EnumOne(_P_FeedSplitter_medium)
+    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
     _shape_constraints = (
         _ShapeValues('has_connection_point', 'b8ad8d8b7d7a41f55c0bc4138, be2099568566b78227dcced58', required=(), defaults=(), choices=None, minimum=2, maximum=None),
         _ShapeValues('medium', 'b27687f66cec843f6f6442183, b42897a1302c66ef48c1eb917, b668405d00cb3041e9cb292d8, b7b6e8b6b692e00280f1836e8, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, b9d6fe703e1f82459a5b8d55b, bbbcaeeb178444c2f6593093a, bc423102e47022f8fab24adb1, be65b6ced07bb4a44f718e9a4, bfa6b8152ca8e9eed314182a5, bfb8077af53aae66ed43f4c36, https://watermetadata.org/plumb/seawater-ro#FeedSplitterShape/hasMedium/0', required=(_TermValue('http://data.ashrae.org/standard223#Fluid-Water', types=()),), defaults=(), choices=None, minimum=1, maximum=1),
     )
     _shape_max_ports = 3
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='in', label='inlet')
-    pressure_exchanger = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='pressure_exchanger')
-    pump = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='pump')
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='in', label='inlet')
+    pressure_exchanger = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='pressure_exchanger')
+    pump = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='pump')
     _point_declarations = {
         'inlet': inlet,
         'pressure_exchanger': pressure_exchanger,
         'pump': pump,
     }
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
         connected_from: _Iterable[_DEP0.Connectable] | None = None,
@@ -649,41 +918,70 @@ class FeedSplitter(_DEP0.Junction):
         has_optional_connection_point: _Iterable[_DEP0.ConnectionPoint] | None = None,
         has_property: _Iterable[_DEP0.Property] | None = None,
         medium: _EnumValue | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_property': has_property,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_property=has_property,
+                medium=medium,
+            ),
+        )
+
+_P_HighPressurePump_has_property = _PropertySpec(
+    name='has_property',
+    predicate='http://data.ashrae.org/standard223#hasProperty',
+    kind='object',
+    label='has property',
+    definition='A `Relation` that associates a `Concept` with a `Property`.',
+    ranges=('Property',),
+    range_groups=(('http://data.ashrae.org/standard223#Property',),),
+    sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#HighPressurePumpDesignShape/hasProperty/0', 'https://watermetadata.org/plumb/seawater-ro#HighPressurePumpDesignShape/hasProperty/1'),
+)
 
 class HighPressurePump(_BASE.Pump):
-    'High Pressure Pump configuration defined by the seawater RO shapes.'
-    _spec_has_property = _PropertySpec(
-        name='has_property',
-        predicate='http://data.ashrae.org/standard223#hasProperty',
-        kind='object',
-        label='has property',
-        definition='A `Relation` that associates a `Concept` with a `Property`.',
-        ranges=('Property',),
-        range_groups=(('http://data.ashrae.org/standard223#Property',),),
-        sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#HighPressurePumpDesignShape/hasProperty/0', 'https://watermetadata.org/plumb/seawater-ro#HighPressurePumpDesignShape/hasProperty/1'),
-    )
-    has_property: _Rel[_DEP0.Property] = _Rel(_spec_has_property)
+    """High Pressure Pump configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#HighPressurePump
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#HighPressurePump',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='High Pressure Pump',
         definition='High Pressure Pump configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_property,),
+        parent_iris=('https://watermetadata.org/ontology/watr#Pump',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Pump'),
+        properties=(_P_HighPressurePump_has_property,),
+        cp_slots=(
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=1, max_count=None),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=1, max_count=None),
+        ),
     )
-    def __init__(self, name: str | None = None, *,
+
+    has_property: _Rel[_DEP0.Property] = _Rel(_P_HighPressurePump_has_property)
+    """A `Relation` that associates a `Concept` with a `Property`. (http://data.ashrae.org/standard223#hasProperty)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -700,51 +998,80 @@ class HighPressurePump(_BASE.Pump):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_IntakePump_has_role = _PropertySpec(
+    name='has_role',
+    predicate='http://data.ashrae.org/standard223#hasRole',
+    kind='enum',
+    label='has role',
+    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
+    sources=('be7260e57dcb51463c8fc48d4', 'https://watermetadata.org/plumb/seawater-ro#IntakePumpShape/hasRole/0'),
+    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
+)
 
 class IntakePump(_BASE.Pump):
-    'Intake Pump configuration defined by the seawater RO shapes.'
-    _spec_has_role = _PropertySpec(
-        name='has_role',
-        predicate='http://data.ashrae.org/standard223#hasRole',
-        kind='enum',
-        label='has role',
-        definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
-        range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
-        sources=('be7260e57dcb51463c8fc48d4', 'https://watermetadata.org/plumb/seawater-ro#IntakePumpShape/hasRole/0'),
-        enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
-    )
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_spec_has_role)
+    """Intake Pump configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#IntakePump
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#IntakePump',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Intake Pump',
         definition='Intake Pump configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_role,),
+        parent_iris=('https://watermetadata.org/ontology/watr#Pump',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Pump'),
+        properties=(_P_IntakePump_has_role,),
+        cp_slots=(
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=1, max_count=None),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=1, max_count=None),
+        ),
     )
+
+    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_IntakePump_has_role)
+    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
     _shape_constraints = (
         _ShapeValues('has_role', 'be7260e57dcb51463c8fc48d4, https://watermetadata.org/plumb/seawater-ro#IntakePumpShape/hasRole/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Role-Feed', types=()),), defaults=(), choices=None, minimum=0, maximum=None),
     )
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -761,118 +1088,119 @@ class IntakePump(_BASE.Pump):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class Landfill(_BASE.Equipment):
-    'Landfill configuration defined by the seawater RO shapes.'
+    """Landfill configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#Landfill
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#Landfill',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Landfill',
         definition='Landfill configuration defined by the seawater RO shapes.',
-        properties=(),
-        cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', min_count=1, max_count=1, name='outlet', label='outlet'),),
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+        cp_slots=(
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', medium_options=(), min_count=1, max_count=1, name='inlet', label='inlet'),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', medium_options=(), min_count=1, max_count=1, name='outlet', label='outlet'),
+        ),
     )
     _shape_max_ports = 2
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('https://watermetadata.org/ontology/watr#Fluid-Sludge'), direction='in', label='inlet')
-    outlet = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('https://watermetadata.org/ontology/watr#Fluid-Sludge'), direction='out', label='outlet')
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('https://watermetadata.org/ontology/watr#Fluid-Sludge'), direction='in', label='inlet')
+    outlet = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('https://watermetadata.org/ontology/watr#Fluid-Sludge'), direction='out', label='outlet')
     _point_declarations = {
         'inlet': inlet,
         'outlet': outlet,
     }
-    def __init__(self, name: str | None = None, *,
-        actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
-        cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
-        connected: _Iterable[_DEP0.Connectable] | None = None,
-        connected_from: _Iterable[_DEP0.Connectable] | None = None,
-        connected_through: _Iterable[_DEP0.Connection] | None = None,
-        connected_to: _Iterable[_DEP0.Connectable] | None = None,
-        contains_: _Iterable[_DEP0.Equipment | _DEP0.Junction] | None = None,
-        executes: _Iterable[_DEP0.Function] | None = None,
-        has_connection_point: _Iterable[_DEP0.ConnectionPoint] | None = None,
-        has_optional_connection_point: _Iterable[_DEP0.ConnectionPoint] | None = None,
-        has_physical_location: _Iterable[_DEP0.PhysicalSpace] | None = None,
-        has_process: _Iterable[type[_BASE.Process]] | None = None,
-        has_property: _Iterable[_DEP0.Property] | None = None,
-        has_role: _Iterable[_EnumValue] | None = None,
-        has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
-        medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+
+_P_MediaFilter_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#MediaFilterShape/hasProcess/0'),
+    min_count=1,
+    required=True,
+)
 
 class MediaFilter(_BASE.UnitProcess):
-    'Media Filter configuration defined by the seawater RO shapes.'
-    _spec_has_process = _PropertySpec(
-        name='has_process',
-        predicate='https://watermetadata.org/ontology/watr#hasProcess',
-        kind='class',
-        label='has process',
-        definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-        ranges=('Process',),
-        range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
-        sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#MediaFilterShape/hasProcess/0'),
-        min_count=1,
-        required=True,
-    )
-    has_process: _Rel[type[_BASE.Process]] = _Rel(_spec_has_process)
+    """Media Filter configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#MediaFilter
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#MediaFilter',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Media Filter',
         definition='Media Filter configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_process,),
-        cp_slots=(_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='backwash', label='backwash'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='product', label='product'),),
+        parent_iris=('https://watermetadata.org/ontology/watr#UnitProcess',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        properties=(_P_MediaFilter_has_process,),
+        cp_slots=(
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='backwash', label='backwash'),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='inlet', label='inlet'),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='product', label='product'),
+        ),
     )
+
+    has_process: _Rel[type[_BASE.Process]] = _Rel(_P_MediaFilter_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
     _shape_constraints = (
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess, https://watermetadata.org/plumb/seawater-ro#MediaFilterShape/hasProcess/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Process-MediaFiltration', types=()),), defaults=(), choices=None, minimum=1, maximum=None),
     )
     _shape_max_ports = 3
-    backwash = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='backwash')
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='in', label='inlet')
-    product = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='product')
+    backwash = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='backwash')
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='in', label='inlet')
+    product = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='product')
     _point_declarations = {
         'backwash': backwash,
         'inlet': inlet,
         'product': product,
     }
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -889,53 +1217,78 @@ class MediaFilter(_BASE.UnitProcess):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_MediaFiltrationStage_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#MediaFiltrationStageShape/hasProcess/0'),
+    min_count=1,
+    required=True,
+)
 
 class MediaFiltrationStage(_BASE.UnitProcess):
-    'Media Filtration Stage configuration defined by the seawater RO shapes.'
-    _spec_has_process = _PropertySpec(
-        name='has_process',
-        predicate='https://watermetadata.org/ontology/watr#hasProcess',
-        kind='class',
-        label='has process',
-        definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-        ranges=('Process',),
-        range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
-        sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#MediaFiltrationStageShape/hasProcess/0'),
-        min_count=1,
-        required=True,
-    )
-    has_process: _Rel[type[_BASE.Process]] = _Rel(_spec_has_process)
+    """Media Filtration Stage configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#MediaFiltrationStage
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#MediaFiltrationStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Media Filtration Stage',
         definition='Media Filtration Stage configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_process,),
+        parent_iris=('https://watermetadata.org/ontology/watr#UnitProcess',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        properties=(_P_MediaFiltrationStage_has_process,),
     )
+
+    has_process: _Rel[type[_BASE.Process]] = _Rel(_P_MediaFiltrationStage_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
     _shape_constraints = (
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess, https://watermetadata.org/plumb/seawater-ro#MediaFiltrationStageShape/hasProcess/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Process-MediaFiltration', types=()),), defaults=(), choices=None, minimum=1, maximum=None),
     )
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -952,53 +1305,79 @@ class MediaFiltrationStage(_BASE.UnitProcess):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_MixingStage_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#MixingStageShape/hasProcess/0'),
+    min_count=1,
+    required=True,
+)
 
 class MixingStage(_BASE.StaticMixer):
-    'Mixing Stage configuration defined by the seawater RO shapes.'
-    _spec_has_process = _PropertySpec(
-        name='has_process',
-        predicate='https://watermetadata.org/ontology/watr#hasProcess',
-        kind='class',
-        label='has process',
-        definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-        ranges=('Process',),
-        range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
-        sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#MixingStageShape/hasProcess/0'),
-        min_count=1,
-        required=True,
-    )
-    has_process: _Rel[type[_BASE.Process]] = _Rel(_spec_has_process)
+    """Mixing Stage configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#MixingStage
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#MixingStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Mixing Stage',
         definition='Mixing Stage configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_process,),
+        parent_iris=('https://watermetadata.org/ontology/watr#StaticMixer',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#StaticMixer', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        properties=(_P_MixingStage_has_process,),
+        class_defaults=(('has_process', 'Process_Mixing'),),
     )
+
+    has_process: _Rel[type[_BASE.Process]] = _Rel(_P_MixingStage_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
     _shape_constraints = (
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess, https://watermetadata.org/plumb/seawater-ro#MixingStageShape/hasProcess/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Process-Mixing', types=()),), defaults=(), choices=None, minimum=1, maximum=None),
     )
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -1015,110 +1394,165 @@ class MixingStage(_BASE.StaticMixer):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_PermeateConnection_has_property = _PropertySpec(
+    name='has_property',
+    predicate='http://data.ashrae.org/standard223#hasProperty',
+    kind='object',
+    label='has property',
+    definition='A `Relation` that associates a `Concept` with a `Property`.',
+    ranges=('Property',),
+    range_groups=(('http://data.ashrae.org/standard223#Property',),),
+    sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#PermeateStateShape/hasProperty/0'),
+)
 
 class PermeateConnection(_DEP0.Pipe):
-    'Permeate Connection configuration defined by the seawater RO shapes.'
-    _spec_has_property = _PropertySpec(
-        name='has_property',
-        predicate='http://data.ashrae.org/standard223#hasProperty',
-        kind='object',
-        label='has property',
-        definition='A `Relation` that associates a `Concept` with a `Property`.',
-        ranges=('Property',),
-        range_groups=(('http://data.ashrae.org/standard223#Property',),),
-        sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#PermeateStateShape/hasProperty/0'),
-    )
-    has_property: _Rel[_DEP0.Property] = _Rel(_spec_has_property)
+    """Permeate Connection configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#PermeateConnection
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#PermeateConnection',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Permeate Connection',
         definition='Permeate Connection configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_property,),
+        parent_iris=('http://data.ashrae.org/standard223#Pipe',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connection', 'http://data.ashrae.org/standard223#Pipe', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+        properties=(_P_PermeateConnection_has_property,),
     )
+
+    has_property: _Rel[_DEP0.Property] = _Rel(_P_PermeateConnection_has_property)
+    """A `Relation` that associates a `Concept` with a `Property`. (http://data.ashrae.org/standard223#hasProperty)"""
     _shape_constraints = (
         _ShapeValues('connects_at', 'bcc0554fe27774b293d04f8f7', required=(), defaults=(), choices=None, minimum=2, maximum=None),
         _ShapeValues('has_thermodynamic_phase', 'beb8f86d7a6cb7b66f442c436', required=(), defaults=(), choices=None, minimum=0, maximum=1),
         _ShapeValues('medium', 'b0131760cbc6e8f22d742dde8, b08013af0fa22636fac5ed53d, b123223c5e01ff28447b865ff, b191b216459fa4b5f132d1672, b27687f66cec843f6f6442183, b44e2ba9901fa7038c51721ff, b59c7af6a2db2bd70f0dac26a, b6af3bcb21b82b70deae5e465, b7fcb9534d9769671e8d0b97b, b8f0b12dc85f638024437a859, bb21b41d9f4b8b32f5821a889, bfa6b8152ca8e9eed314182a5', required=(), defaults=(), choices=None, minimum=1, maximum=1),
     )
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        connects_at: _Iterable[_DEP0.ConnectionPoint],
+        medium: _EnumValue | None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
-        connects_at: _Iterable[_DEP0.ConnectionPoint] | None,
         connects_from: _Iterable[_DEP0.Connectable] | None = None,
         connects_to: _Iterable[_DEP0.Connectable] | None = None,
         has_property: _Iterable[_DEP0.Property] | None = None,
         has_role: _Iterable[_EnumValue] | None = None,
         has_thermodynamic_phase: _EnumValue | None = None,
-        medium: _EnumValue | None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'cnx': cnx,
-            'connects_at': connects_at,
-            'connects_from': connects_from,
-            'connects_to': connects_to,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_thermodynamic_phase': has_thermodynamic_phase,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                connects_at=connects_at,
+                medium=medium,
+                cnx=cnx,
+                connects_from=connects_from,
+                connects_to=connects_to,
+                has_property=has_property,
+                has_role=has_role,
+                has_thermodynamic_phase=has_thermodynamic_phase,
+            ),
+        )
+
+_P_ROFeedMixer_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#ROFeedMixerShape/hasProcess/0'),
+    min_count=1,
+    required=True,
+)
 
 class ROFeedMixer(_BASE.StaticMixer):
-    'ROFeed Mixer configuration defined by the seawater RO shapes.'
-    _spec_has_process = _PropertySpec(
-        name='has_process',
-        predicate='https://watermetadata.org/ontology/watr#hasProcess',
-        kind='class',
-        label='has process',
-        definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-        ranges=('Process',),
-        range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
-        sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#ROFeedMixerShape/hasProcess/0'),
-        min_count=1,
-        required=True,
-    )
-    has_process: _Rel[type[_BASE.Process]] = _Rel(_spec_has_process)
+    """ROFeed Mixer configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#ROFeedMixer
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#ROFeedMixer',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='ROFeed Mixer',
         definition='ROFeed Mixer configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_process,),
-        cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='booster', label='booster'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='high_pressure', label='high_pressure'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='outlet', label='outlet'),),
+        parent_iris=('https://watermetadata.org/ontology/watr#StaticMixer',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Reactor', 'https://watermetadata.org/ontology/watr#StaticMixer', 'https://watermetadata.org/ontology/watr#Tank', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        properties=(_P_ROFeedMixer_has_process,),
+        cp_slots=(
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='booster', label='booster'),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='high_pressure', label='high_pressure'),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='outlet', label='outlet'),
+        ),
+        class_defaults=(('has_process', 'Process_Mixing'),),
     )
+
+    has_process: _Rel[type[_BASE.Process]] = _Rel(_P_ROFeedMixer_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
     _shape_constraints = (
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess, https://watermetadata.org/plumb/seawater-ro#ROFeedMixerShape/hasProcess/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Process-Mixing', types=()),), defaults=(), choices=None, minimum=1, maximum=None),
     )
     _shape_max_ports = 3
-    booster = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='in', label='booster')
-    high_pressure = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='in', label='high_pressure')
-    outlet = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='outlet')
+    booster = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='in', label='booster')
+    high_pressure = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='in', label='high_pressure')
+    outlet = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='outlet')
     _point_declarations = {
         'booster': booster,
         'high_pressure': high_pressure,
         'outlet': outlet,
     }
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -1135,74 +1569,107 @@ class ROFeedMixer(_BASE.StaticMixer):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_ROStage_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+    range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
+    sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#ROStageShape/hasProcess/0'),
+    min_count=1,
+    required=True,
+)
+
+_P_ROStage_has_property = _PropertySpec(
+    name='has_property',
+    predicate='http://data.ashrae.org/standard223#hasProperty',
+    kind='object',
+    label='has property',
+    definition='A `Relation` that associates a `Concept` with a `Property`.',
+    ranges=('Property',),
+    range_groups=(('http://data.ashrae.org/standard223#Property',),),
+    sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/0', 'https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/1', 'https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/2', 'https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/3', 'https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/4'),
+)
 
 class ROStage(_BASE.ReverseOsmosisMembrane):
-    'ROStage configuration defined by the seawater RO shapes.'
-    _spec_has_process = _PropertySpec(
-        name='has_process',
-        predicate='https://watermetadata.org/ontology/watr#hasProcess',
-        kind='class',
-        label='has process',
-        definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
-        ranges=('Process',),
-        range_groups=(('https://watermetadata.org/ontology/watr#Process',),),
-        sources=('bc09fac0c70bc9398630ec2a2', 'https://watermetadata.org/ontology/watr#hasProcess', 'https://watermetadata.org/plumb/seawater-ro#ROStageShape/hasProcess/0'),
-        min_count=1,
-        required=True,
-    )
-    has_process: _Rel[type[_BASE.Process]] = _Rel(_spec_has_process)
-    _spec_has_property = _PropertySpec(
-        name='has_property',
-        predicate='http://data.ashrae.org/standard223#hasProperty',
-        kind='object',
-        label='has property',
-        definition='A `Relation` that associates a `Concept` with a `Property`.',
-        ranges=('Property',),
-        range_groups=(('http://data.ashrae.org/standard223#Property',),),
-        sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/0', 'https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/1', 'https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/2', 'https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/3', 'https://watermetadata.org/plumb/seawater-ro#MembraneDesignShape/hasProperty/4'),
-    )
-    has_property: _Rel[_DEP0.Property] = _Rel(_spec_has_property)
+    """ROStage configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#ROStage
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#ROStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='ROStage',
         definition='ROStage configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_process, _spec_has_property,),
-        cp_slots=(_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='concentrate', label='concentrate'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='permeate', label='permeate'),),
+        parent_iris=('https://watermetadata.org/ontology/watr#ReverseOsmosisMembrane',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://data.ashrae.org/standard223#Filter', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Filter', 'https://watermetadata.org/ontology/watr#ReverseOsmosisMembrane', 'https://watermetadata.org/ontology/watr#UnitProcess'),
+        properties=(_P_ROStage_has_process, _P_ROStage_has_property,),
+        cp_slots=(
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='concentrate', label='concentrate'),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='inlet', label='inlet'),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='permeate', label='permeate'),
+        ),
+        class_defaults=(('has_process', 'Process_ReverseOsmosis'),),
     )
+
+    has_process: _Rel[type[_BASE.Process]] = _Rel(_P_ROStage_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
+
+    has_property: _Rel[_DEP0.Property] = _Rel(_P_ROStage_has_property)
+    """A `Relation` that associates a `Concept` with a `Property`. (http://data.ashrae.org/standard223#hasProperty)"""
     _shape_constraints = (
         _ShapeValues('has_process', 'bc09fac0c70bc9398630ec2a2, https://watermetadata.org/ontology/watr#hasProcess, https://watermetadata.org/plumb/seawater-ro#ROStageShape/hasProcess/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Process-ReverseOsmosis', types=()),), defaults=(), choices=None, minimum=1, maximum=None),
     )
     _shape_max_ports = 3
-    concentrate = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='concentrate')
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='in', label='inlet')
-    permeate = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='permeate')
+    concentrate = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='concentrate')
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='in', label='inlet')
+    permeate = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='permeate')
     _point_declarations = {
         'concentrate': concentrate,
         'inlet': inlet,
         'permeate': permeate,
     }
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -1219,57 +1686,84 @@ class ROStage(_BASE.ReverseOsmosisMembrane):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_SeawaterFeed_has_role = _PropertySpec(
+    name='has_role',
+    predicate='http://data.ashrae.org/standard223#hasRole',
+    kind='enum',
+    label='has role',
+    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
+    sources=('be7260e57dcb51463c8fc48d4', 'https://watermetadata.org/plumb/seawater-ro#SeawaterFeedShape/hasRole/0'),
+    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
+)
 
 class SeawaterFeed(_BASE.Equipment):
-    'Seawater Feed configuration defined by the seawater RO shapes.'
-    _spec_has_role = _PropertySpec(
-        name='has_role',
-        predicate='http://data.ashrae.org/standard223#hasRole',
-        kind='enum',
-        label='has role',
-        definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
-        range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
-        sources=('be7260e57dcb51463c8fc48d4', 'https://watermetadata.org/plumb/seawater-ro#SeawaterFeedShape/hasRole/0'),
-        enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
-    )
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_spec_has_role)
+    """Seawater Feed configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#SeawaterFeed
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#SeawaterFeed',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Seawater Feed',
         definition='Seawater Feed configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_role,),
-        cp_slots=(_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='outlet', label='outlet'),),
+        parent_iris=('http://data.ashrae.org/standard223#Equipment',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource'),
+        properties=(_P_SeawaterFeed_has_role,),
+        cp_slots=(
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=1, name='outlet', label='outlet'),
+        ),
     )
+
+    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_SeawaterFeed_has_role)
+    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
     _shape_constraints = (
         _ShapeValues('has_role', 'be7260e57dcb51463c8fc48d4, https://watermetadata.org/plumb/seawater-ro#SeawaterFeedShape/hasRole/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Role-Feed', types=()),), defaults=(), choices=None, minimum=0, maximum=None),
     )
     _shape_max_ports = 1
-    outlet = _PointDeclaration[_PointRef](count=1, medium=_BASE.REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='outlet')
+    outlet = _PointDeclaration[_PointRef](count=1, medium=_REGISTRY.resolve_enum('http://data.ashrae.org/standard223#Fluid-Water'), direction='out', label='outlet')
     _point_declarations = {
         'outlet': outlet,
     }
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -1286,62 +1780,90 @@ class SeawaterFeed(_BASE.Equipment):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
+
+_P_StorageTank_has_property = _PropertySpec(
+    name='has_property',
+    predicate='http://data.ashrae.org/standard223#hasProperty',
+    kind='object',
+    label='has property',
+    definition='A `Relation` that associates a `Concept` with a `Property`.',
+    ranges=('Property',),
+    range_groups=(('http://data.ashrae.org/standard223#Property',),),
+    sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#ResidenceTimeDesignShape/hasProperty/0'),
+)
+
+_P_StorageTank_has_role = _PropertySpec(
+    name='has_role',
+    predicate='http://data.ashrae.org/standard223#hasRole',
+    kind='enum',
+    label='has role',
+    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
+    range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
+    sources=('be7260e57dcb51463c8fc48d4', 'https://watermetadata.org/plumb/seawater-ro#StorageTankShape/hasRole/0'),
+    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
+)
 
 class StorageTank(_BASE.Tank):
-    'Storage Tank configuration defined by the seawater RO shapes.'
-    _spec_has_property = _PropertySpec(
-        name='has_property',
-        predicate='http://data.ashrae.org/standard223#hasProperty',
-        kind='object',
-        label='has property',
-        definition='A `Relation` that associates a `Concept` with a `Property`.',
-        ranges=('Property',),
-        range_groups=(('http://data.ashrae.org/standard223#Property',),),
-        sources=('b894486338780f2f7730cd6ec', 'https://watermetadata.org/plumb/seawater-ro#ResidenceTimeDesignShape/hasProperty/0'),
-    )
-    has_property: _Rel[_DEP0.Property] = _Rel(_spec_has_property)
-    _spec_has_role = _PropertySpec(
-        name='has_role',
-        predicate='http://data.ashrae.org/standard223#hasRole',
-        kind='enum',
-        label='has role',
-        definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
-        range_groups=(('http://data.ashrae.org/standard223#EnumerationKind-Role',),),
-        sources=('be7260e57dcb51463c8fc48d4', 'https://watermetadata.org/plumb/seawater-ro#StorageTankShape/hasRole/0'),
-        enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
-    )
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_spec_has_role)
+    """Storage Tank configuration defined by the seawater RO shapes.
+
+    Ontology: SeawaterRO — https://watermetadata.org/plumb/seawater-ro#StorageTank
+    """
+
     _classinfo = _ClassInfo(
         iri='https://watermetadata.org/plumb/seawater-ro#StorageTank',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Storage Tank',
         definition='Storage Tank configuration defined by the seawater RO shapes.',
-        properties=(_spec_has_property, _spec_has_role,),
+        parent_iris=('https://watermetadata.org/ontology/watr#Tank',),
+        ancestor_iris=('http://data.ashrae.org/standard223#Concept', 'http://data.ashrae.org/standard223#Connectable', 'http://data.ashrae.org/standard223#Equipment', 'http://www.w3.org/2000/01/rdf-schema#Resource', 'https://watermetadata.org/ontology/watr#Tank'),
+        properties=(_P_StorageTank_has_property, _P_StorageTank_has_role,),
     )
+
+    has_property: _Rel[_DEP0.Property] = _Rel(_P_StorageTank_has_property)
+    """A `Relation` that associates a `Concept` with a `Property`. (http://data.ashrae.org/standard223#hasProperty)"""
+
+    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_StorageTank_has_role)
+    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
     _shape_constraints = (
         _ShapeValues('has_role', 'be7260e57dcb51463c8fc48d4, https://watermetadata.org/plumb/seawater-ro#StorageTankShape/hasRole/0', required=(_TermValue('https://watermetadata.org/ontology/watr#Role-Storage', types=()),), defaults=(), choices=None, minimum=0, maximum=None),
     )
-    def __init__(self, name: str | None = None, *,
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
         actuated_by_property: _Iterable[_DEP0.ActuatableProperty] | None = None,
         cnx: _Iterable[_DEP0.ConnectionPoint] | None = None,
         connected: _Iterable[_DEP0.Connectable] | None = None,
@@ -1358,25 +1880,37 @@ class StorageTank(_BASE.Tank):
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
         medium: _Iterable[_EnumValue] | None = None,
-        label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
-        _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'actuated_by_property': actuated_by_property,
-            'cnx': cnx,
-            'connected': connected,
-            'connected_from': connected_from,
-            'connected_through': connected_through,
-            'connected_to': connected_to,
-            'contains_': contains_,
-            'executes': executes,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
-            'has_physical_location': has_physical_location,
-            'has_process': has_process,
-            'has_property': has_property,
-            'has_role': has_role,
-            'has_treatment_objective': has_treatment_objective,
-            'medium': medium,
-        })
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 @_dataclass(frozen=True, kw_only=True)
 class HighPressurePumpDesign(_PropertySchema):

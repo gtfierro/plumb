@@ -1061,14 +1061,8 @@ class Entity:
 
 
 def provided(**kwargs: Any) -> dict[str, Any]:
-    """Filter constructor kwargs down to the ones the caller actually set.
-
-    Generated ``__init__`` methods pass every parameter through this so that
-    defaults (``None`` / ``()``) don't count as explicit assignments.
-    """
-    return {
-        key: value for key, value in kwargs.items() if value is not None and value != ()
-    }
+    """Omit unset constructor values while preserving explicit empty collections."""
+    return {key: value for key, value in kwargs.items() if value is not None}
 
 
 def _mro_dicts(cls: type) -> dict[str, Any]:

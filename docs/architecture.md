@@ -173,6 +173,11 @@ and semantic symbol decoding. Python imports happen normally in the generated
 runtime package. Registry inclusion is one runtime operation and does not mutate
 the dependency's classes.
 
+Both fronts construct `ClassIR` before emission. `gen/emit.py` renders their
+constructors, descriptors, class metadata, and named points; the configuration
+compiler separately renders quantity schemas. Symbol exports use those same
+class records.
+
 `core/points.py` supplies descriptors and references for shape-defined ports.
 `core/shape_constraints.py` enforces constructive values on equipment.
 `core/property_schema.py` validates quantities and atomically creates independent
