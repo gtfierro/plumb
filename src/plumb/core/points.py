@@ -176,7 +176,7 @@ def endpoint_owner(endpoint: Any) -> Any:
         else endpoint
     )
     if isinstance(owner, Entity):
-        point_owner = getattr(owner, "owner", None)
-        if isinstance(point_owner, Entity):
-            return point_owner
+        domain = owner.meta.registry._domain
+        if domain is not None:
+            return domain.owner(owner)
     return owner

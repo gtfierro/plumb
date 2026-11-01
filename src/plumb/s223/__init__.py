@@ -43,6 +43,9 @@ ONTOLOGY = _OntologyInfo(
 _REGISTRY = _Registry(ONTOLOGY)
 REGISTRY = _REGISTRY
 
+from plumb.domain223 import S223_DOMAIN as _DOMAIN
+_REGISTRY._domain = _DOMAIN
+
 from plumb.core import DeferredEndpoint as _DeferredEndpoint
 
 from plumb.core.shape_constraints import ShapeValues as _ShapeValues

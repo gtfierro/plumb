@@ -11,10 +11,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal, TypeGuard
 
-from .core import CPSlot, ConnectionHandle, EnumValue, PortHandle
+from .core import ConnectionHandle, EnumValue, PortHandle
 from .core.errors import ModelingError
 from .core.points import PointGroupRef, PointRef, endpoint_owner
 from .core import containment as _containment
+from .core.meta import _port_requirements
 
 if TYPE_CHECKING:
     from .core import Entity, Registry
@@ -50,7 +51,7 @@ class S223Connector:
         """
         with _containment.suppressed():
             existing = list(getattr(entity, "has_connection_point"))
-            for slot in self._all_slots(type(entity)):
+            for slot in _port_requirements(type(entity))[0]:
                 if slot.medium is None:
                     continue
                 slot_cls = self.registry.resolve(slot.cp_class)
@@ -136,15 +137,6 @@ class S223Connector:
             return model._defer_connection(
                 a, b, medium=medium, connection=connection, name=name
             )
-
-    def _all_slots(self, cls: type[Entity]) -> list[CPSlot]:
-        """CPSlots declared anywhere along the MRO."""
-        out: list[CPSlot] = []
-        for klass in cls.__mro__:
-            info = klass.__dict__.get("_classinfo")
-            if info is not None:
-                out.extend(info.cp_slots)
-        return out
 
     def _new_port(
         self, entity: Entity, direction: str, medium: EnumValue | None

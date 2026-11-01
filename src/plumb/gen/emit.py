@@ -90,6 +90,10 @@ def emit_module(
             source_r=repr(ir.source),
         )
     ]
+    if overlay is not None and overlay.connector:
+        parts.append(
+            "from plumb.domain223 import S223_DOMAIN as _DOMAIN\n_REGISTRY._domain = _DOMAIN\n"
+        )
     module_aliases = {}
     if dependency is not None:
         module_aliases[dependency.module] = "_BASE"

@@ -30,6 +30,7 @@ from .meta import (
     PortSlot,
     PropertySpec,
     Registry,
+    _port_requirements,
 )
 from .relations import (
     EnumOne,
@@ -185,27 +186,24 @@ class ClassMetaView:
 
         slots: list[PortSlot] = []
         constraints: list[CPConstraint] = []
-        for base in self._cls.__mro__:
-            info = base.__dict__.get("_classinfo")
-            if info is None:
-                continue
-            for slot in info.cp_slots:
-                slots.append(
-                    PortSlot(
-                        point_class=registry.resolve(slot.cp_class),
-                        direction=slot.direction,
-                        medium=medium(slot.medium),
-                        medium_options=tuple(
-                            registry.enums_by_iri.get(iri, iri)
-                            for iri in slot.medium_options
-                        ),
-                        min_count=slot.min_count,
-                        max_count=slot.max_count,
-                        name=slot.name,
-                        label=slot.label,
-                    )
+        raw_slots, raw_constraints = _port_requirements(self._cls)
+        for slot in raw_slots:
+            slots.append(
+                PortSlot(
+                    point_class=registry.resolve(slot.cp_class),
+                    direction=slot.direction,
+                    medium=medium(slot.medium),
+                    medium_options=tuple(
+                        registry.enums_by_iri.get(iri, iri)
+                        for iri in slot.medium_options
+                    ),
+                    min_count=slot.min_count,
+                    max_count=slot.max_count,
+                    name=slot.name,
+                    label=slot.label,
                 )
-            constraints.extend(info.cp_constraints)
+            )
+        constraints.extend(raw_constraints)
         return PortContract(tuple(slots), tuple(constraints))
 
     def describe_ports(self) -> str:
@@ -329,32 +327,17 @@ class Entity:
                 f"no active Model: create entities inside `with Model(...):` "
                 f"or pass model= to {type(self).__name__}(...)"
             )
-        if name is None:
-            name = m._auto_name(type(self))
-        self._name = name
-        self._label = label if label is not None else name
-        self._comment = comment
-        self._data: dict[str, Any] = {}
-        self._rels: dict[str, RelSet[Any]] = {}
-        self._iri: str = ""  # minted by Model._bind below
-        self._model: Model = m
-        original_entities = set(m.entities)
-        original_ports = set(m._port_intents)
-        original_connections = set(m._connection_intents)
-        original_reserved = set(m._reserved_names)
-        original_auto_counters = dict(m._auto_counters)
-        original_data = {item: dict(item._data) for item in m.entities}
-        original_rels = {
-            item: {key: list(value) for key, value in item._rels.items()}
-            for item in m.entities
-        }
-        original_rel_keys = {item: set(item._rels) for item in m.entities}
-        m._bind(self)
-
-        # From here on the entity is registered in the model, so any failure
-        # must unbind it — otherwise a raised constructor leaves a ghost
-        # entity occupying the name.
-        try:
+        with m._atomic():
+            if name is None:
+                name = m._auto_name(type(self))
+            self._name = name
+            self._label = label if label is not None else name
+            self._comment = comment
+            self._data: dict[str, Any] = {}
+            self._rels: dict[str, RelSet[Any]] = {}
+            self._iri: str = ""  # minted by Model._bind below
+            self._model: Model = m
+            m._bind(self)
             self._named_points: dict[str, Any] = {}
             if self._shape_constraints:
                 from .shape_constraints import initial_values
@@ -373,33 +356,11 @@ class Entity:
                     continue
                 setattr(self, key, value)
 
-            declarations = type(self)._point_declarations
-            if declarations:
-                from .points import PointGroupRef, PointRef
-
-                for point_name, declaration in declarations.items():
-                    refs = []
-                    for index in range(declaration.count):
-                        local = (
-                            point_name
-                            if declaration.count == 1
-                            else f"{point_name}-{index + 1}"
-                        )
-                        port = m._defer_port(
-                            self,
-                            f"{self.name}-{local}",
-                            declaration.direction,
-                            medium=declaration.medium,
-                            label=declaration.label,
-                            fixed_medium=True,
-                        )
-                        port.symmetry_key = point_name
-                        refs.append(PointRef(self, local, port))
-                    self._named_points[point_name] = (
-                        refs[0]
-                        if len(refs) == 1
-                        else PointGroupRef(self, point_name, tuple(refs))
-                    )
+            domain = self.meta.registry._domain
+            if domain is not None and not m._resolving:
+                domain.initialize(self)
+            elif domain is None and type(self)._point_declarations:
+                raise ModelingError("named points require a connection domain")
 
             self._apply_class_defaults()
             self._check_required()
@@ -409,25 +370,6 @@ class Entity:
                 # e.g. 223: materialize connection points the class's shapes
                 # require, so a fresh Fan already has its air inlet/outlet.
                 self._CONNECTOR.on_create(self)
-        except BaseException:
-            for item in list(m.entities):
-                if item not in original_entities:
-                    m._unbind(item)
-            m._port_intents[:] = [p for p in m._port_intents if p in original_ports]
-            m._connection_intents[:] = [
-                h for h in m._connection_intents if h in original_connections
-            ]
-            m._reserved_names = original_reserved
-            m._auto_counters = original_auto_counters
-            for item, data in original_data.items():
-                item._data = data
-                for key in set(item._rels) - original_rel_keys[item]:
-                    del item._rels[key]
-                for key, values in original_rels[item].items():
-                    store = item._rels.get(key)
-                    if store is not None:
-                        store._items[:] = values
-            raise
 
     # -- identity ---------------------------------------------------------
 
@@ -828,24 +770,9 @@ class Entity:
 
     def boundary(self, *points: Entity | PortHandle | PointRef) -> Self:
         """Mark concrete or deferred connection points as system boundaries."""
-        if not hasattr(self, "has_boundary_connection_point"):
-            raise TypeError(f"{type(self).__name__} has no boundary connection points")
-        from .resolution import PortHandle
-        from .points import PointRef
+        from .lifecycle import require_domain
 
-        self._model._assert_mutable()
-        boundary_points = getattr(self, "has_boundary_connection_point")
-        for point in points:
-            if isinstance(point, PointRef):
-                point = point._port
-            if isinstance(point, PortHandle):
-                if point._model is not self._model:
-                    raise ValueError("boundary port must belong to the same Model")
-                if self not in point._boundary_systems:
-                    point._boundary_systems.append(self)
-                    self._model._touch(self, point.owner)
-            else:
-                boundary_points.add(point)
+        require_domain(self).boundary(self, points)
         return self
 
     def port(
@@ -857,8 +784,10 @@ class Entity:
         label: str | None = None,
     ) -> PortHandle:
         """Declare a named deferred connection point for solver negotiation."""
-        return self._model._defer_port(
-            self, name, direction, medium=medium, label=label
+        from .lifecycle import require_domain
+
+        return require_domain(self).port(
+            self, name, direction=direction, medium=medium, label=label
         )
 
     @classmethod
@@ -879,11 +808,8 @@ class Entity:
         and PortHandle intentions. A resolved snapshot exposes concrete points
         here after the solver has materialized the deferred ones.
         """
-        concrete = tuple(getattr(self, "has_connection_point", ()))
-        deferred = tuple(
-            port for port in self._model._port_intents if port.owner is self
-        )
-        return concrete + deferred
+        domain = self.meta.registry._domain
+        return domain.ports(self) if domain is not None else ()
 
     def __enter__(self) -> Self:
         """Open a containment scope: entities created inside attach here."""

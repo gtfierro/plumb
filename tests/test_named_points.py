@@ -98,3 +98,40 @@ def test_operator_connection_explanation_uses_authored_endpoints():
     explanation = model.resolve().explain(damper, fan)
     assert explanation.source_point == "damper-out"
     assert explanation.target_point == "fan-in"
+
+
+def test_named_points_restore_semantic_subclasses_instead_of_python_names(domain):
+    from plumb.core import ClassInfo, OntologyInfo, Registry
+    from plumb.s223 import InletConnectionPoint, REGISTRY
+    from rdflib import RDF
+
+    custom = Registry(OntologyInfo("Custom points", "urn:custom-points"))
+    custom.include(REGISTRY)
+
+    class CustomInlet(InletConnectionPoint):
+        _classinfo = ClassInfo("urn:custom-points#Inlet", custom.ontology, custom)
+
+    with Model("urn:test:subclass-points#") as model:
+        pump = domain.GroupedPump("pump")
+    graph = model.graph()
+    point = URIRef(model.namespace + "pump-inlets-1")
+    graph.set((point, RDF.type, URIRef(CustomInlet.meta.iri)))
+    loaded = Model.from_graph(graph, registries=[pump.meta.registry, custom])
+    refs = getattr(loaded["pump"], "inlets")
+    assert len(refs) == 2
+    assert any(type(ref._port) is CustomInlet for ref in refs)
+
+
+def test_loaded_partial_point_projection_is_copied_without_reinterpreting_it(domain):
+    from rdflib import RDFS
+
+    with Model("urn:test:partial-points#") as model:
+        pump = domain.BranchedPump("pump")
+    graph = model.graph()
+    graph.remove((URIRef(model.namespace + "pump-primary"), RDFS.label, None))
+    loaded = Model.from_graph(graph, registries=pump.meta.registry, strict=False)
+    snapshot = loaded.resolve()
+    assert set(snapshot.graph()) == set(graph)
+    assert snapshot["pump"].secondary.owner is snapshot["pump"]
+    assert snapshot["pump"].secondary._port is snapshot["pump-secondary"]
+    assert snapshot["pump"].secondary is not getattr(loaded["pump"], "secondary")

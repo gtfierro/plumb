@@ -43,6 +43,9 @@ ONTOLOGY = _OntologyInfo(
 _REGISTRY = _Registry(ONTOLOGY)
 REGISTRY = _REGISTRY
 
+from plumb.domain223 import S223_DOMAIN as _DOMAIN
+_REGISTRY._domain = _DOMAIN
+
 import plumb.s223 as _BASE
 
 _REGISTRY.include(_BASE.REGISTRY)

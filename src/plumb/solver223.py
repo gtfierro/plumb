@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING, Any, Iterable
 import z3
 
 from .core import (
-    AmbiguousModelError,
     CPConstraint,
     CPSlot,
     ConnectionHandle,
@@ -17,14 +16,14 @@ from .core import (
     ResolutionIssue,
     ResolutionExplanation,
     ResolutionReport,
-    ResolvedModel,
     Registry,
-    UnsatisfiableModelError,
 )
 from .core.enums import _local
-from .core.snapshot import Snapshot
+from .core.meta import _port_requirements
+from .domain223 import S223
 
 if TYPE_CHECKING:
+    from .core.snapshot import Snapshot
     from .connect223 import S223Connector
     from .core import Entity, EnumValue, Model
     from .core.points import PointGroupRef
@@ -72,44 +71,35 @@ class _ComponentResult:
     plan: _Plan | None
 
 
-def check_model(model: Model) -> ResolutionReport:
-    """Check all deferred components without constructing a snapshot."""
-    reports = [
-        _solve_cached(model, handles, standalone).report
+@dataclass(frozen=True)
+class _ConnectionPlan:
+    report: ResolutionReport
+    components: tuple[_Plan, ...]
+
+    def apply(self, build: Snapshot) -> None:
+        _materialize(build, self.components)
+
+
+def plan_model(model: Model) -> _ConnectionPlan:
+    """Plan connections without owning model cloning, publication, or freezing."""
+    results = tuple(
+        _solve_cached(model, handles, standalone)
         for handles, standalone in _components(model)
-    ]
-    if any(report.status == "unsatisfiable" for report in reports):
-        issues = tuple(issue for report in reports for issue in report.issues)
-        return ResolutionReport("unsatisfiable", issues)
-    if any(report.status == "underconstrained" for report in reports):
-        issues = tuple(issue for report in reports for issue in report.issues)
-        return ResolutionReport("underconstrained", issues)
-    return ResolutionReport("complete")
-
-
-def resolve_model(model: Model) -> ResolvedModel:
-    """Solve all components and build a frozen concrete snapshot."""
-    plans: list[_Plan] = []
-    for handles, standalone in _components(model):
-        result = _solve_cached(model, handles, standalone)
-        if result.report.status == "unsatisfiable":
-            labels = tuple(
-                label for issue in result.report.issues for label in issue.labels
-            )
-            # Name the conflicting constraints; the bare issue text is generic.
-            message = "; ".join(issue.message for issue in result.report.issues)
-            raise UnsatisfiableModelError(
-                f"{message}: {'; '.join(labels)}" if labels else message,
-                core=labels,
-            )
-        if result.report.status == "underconstrained":
-            raise AmbiguousModelError(
-                "; ".join(issue.message for issue in result.report.issues),
-                alternatives=tuple(issue.message for issue in result.report.issues),
-            )
-        assert result.plan is not None
-        plans.append(result.plan)
-    return _materialize(model, plans)
+    )
+    status = next(
+        (
+            status
+            for status in ("unsatisfiable", "underconstrained")
+            if any(result.report.status == status for result in results)
+        ),
+        "complete",
+    )
+    report = ResolutionReport(
+        status, tuple(issue for result in results for issue in result.report.issues)
+    )
+    return _ConnectionPlan(
+        report, tuple(result.plan for result in results if result.plan is not None)
+    )
 
 
 def _solve_cached(
@@ -117,16 +107,10 @@ def _solve_cached(
 ) -> _ComponentResult:
     """Reuse plans for unchanged sparse components across authored edits."""
     standalone = standalone or set()
-    key = _component_key(handles, standalone)
-    cached = model._component_cache.get(key)
-    if cached is not None:
-        return cached
-    result = _solve_component(handles, materialize=True, standalone=standalone)
-    # Bound stale plans retained during long interactive authoring sessions.
-    if len(model._component_cache) >= 256:
-        model._component_cache.pop(next(iter(model._component_cache)))
-    model._component_cache[key] = result
-    return result
+    key = ("s223", _component_key(handles, standalone))
+    return model._cached_plan(
+        key, lambda: _solve_component(handles, standalone=standalone)
+    )
 
 
 def _component_key(
@@ -148,10 +132,13 @@ def _component_key(
             points.append(
                 (
                     point.name,
-                    type(point).__name__,
+                    type(point),
                     medium.iri if medium is not None else None,
                     bound.name if bound is not None else None,
                     _mapping_name(_mapped(point)),
+                    point.label,
+                    getattr(getattr(point, "paired_with", None), "name", None),
+                    getattr(point, "_from_shape", False),
                     _property_media_key(getattr(point, "has_property", ())),
                 )
             )
@@ -164,11 +151,23 @@ def _component_key(
                         port.medium.iri if port.medium is not None else None,
                         port.paired_with.name if port.paired_with is not None else None,
                         _mapping_name(port.maps_to),
+                        port.label,
+                        port.symmetry_key,
                         _property_media_key(port._properties),
                     )
                 )
+        vocabularies = {
+            id(value._registry)
+            for _spec, value in endpoint._property_values()
+            if getattr(value, "_registry", None) is not None
+        }
         endpoint_facts.append(
-            (endpoint.name, type(endpoint).__name__, tuple(sorted(points)))
+            (
+                endpoint.name,
+                type(endpoint),
+                tuple(sorted(points)),
+                tuple(sorted(vocabularies)),
+            )
         )
     intent_facts = tuple(
         (
@@ -176,9 +175,7 @@ def _component_key(
             handle.source.name,
             handle.target.name,
             handle.medium.iri if handle.medium is not None else None,
-            handle.connection_class.__name__
-            if handle.connection_class is not None
-            else None,
+            handle.connection_class,
             _property_media_key(handle._assignments.get("has_property", ())),
         )
         for handle in sorted(handles, key=lambda item: item.identifier)
@@ -275,24 +272,14 @@ def _has_named_points(entity: Entity) -> bool:
 def _solve_component(
     handles: list[ConnectionHandle],
     *,
-    materialize: bool,
     standalone: set[Entity] | None = None,
 ) -> _ComponentResult:
     entities = {_owner(endpoint) for h in handles for endpoint in (h.source, h.target)}
     entities.update(standalone or ())
-    registry = Registry.for_entities(
-        entities,
-        values=[handle.medium for handle in handles]
-        + [
-            port.medium
-            for entity in entities
-            for port in entity.meta.model._port_intents
-            if port.owner is entity
-        ],
-    )
-    connector = registry.resolve("Connectable")._CONNECTOR
-    assert connector is not None
     enum_values = _relevant_media(entities, handles)
+    registry = Registry.for_entities(entities, values=enum_values)
+    connector = registry.by_iri[S223 + "Connectable"]._CONNECTOR
+    assert connector is not None
     enum_ids = {value.iri: index for index, value in enumerate(enum_values)}
     by_id = {index: value for index, value in enumerate(enum_values)}
     solver = z3.Solver()
@@ -548,8 +535,6 @@ def _solve_component(
             ),
             None,
         )
-    if not materialize:
-        return _ComponentResult(ResolutionReport("complete"), None)
     return _ComponentResult(
         ResolutionReport("complete"),
         _extract_plan(
@@ -607,19 +592,6 @@ def _property_media_key(properties: Iterable[Entity]) -> tuple[Any, ...]:
             for prop in properties
         )
     )
-
-
-def _fill_property_media(snapshot: Model) -> None:
-    """Give each property without ``ofMedium`` the medium of its host."""
-    from .core import EnumValue
-
-    for entity in snapshot.entities:
-        medium = getattr(entity, "medium", None)
-        if not isinstance(medium, EnumValue):
-            continue
-        for prop in getattr(entity, "has_property", ()):
-            if _has_of_medium(prop) and getattr(prop, "of_medium") is None:
-                setattr(prop, "of_medium", medium)
 
 
 def _relevant_media(
@@ -685,7 +657,7 @@ def _make_points(
             points.append(
                 _Point(
                     entity,
-                    registry.resolve(cls_name),
+                    registry.by_iri[S223 + cls_name],
                     port.name,
                     z3.BoolVal(True)
                     if len(directions) == 1
@@ -719,7 +691,7 @@ def _make_points(
             name = (
                 "InletConnectionPoint" if direction == "in" else "OutletConnectionPoint"
             )
-            classes[registry.resolve(name)] = incident[direction]
+            classes[registry.by_iri[S223 + name]] = incident[direction]
     existing_names = {point.name for point in points}
     for cls, count in sorted(classes.items(), key=lambda item: item[0].__name__):
         existing_count = sum(
@@ -1096,11 +1068,11 @@ def _connection_class(connector: S223Connector, medium: EnumValue) -> type[Entit
         if name is not None:
             return connector.registry.resolve(name)
         node = node.parent
-    return connector.registry.resolve("Connection")
+    return connector.registry.by_iri[S223 + "Connection"]
 
 
-def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
-    build = Snapshot(model)
+def _materialize(build: Snapshot, plans: tuple[_Plan, ...]) -> None:
+    model = build.source
     snapshot, mapping = build.model, build.entities
     point_entities: dict[tuple[int, str], Entity] = {}
     connection_entities = build.connections
@@ -1173,8 +1145,6 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
                 point = point_entities[(id(boundary.owner), boundary.name)]
                 getattr(system, "has_boundary_connection_point").add(point)
     _place_deferred_links(snapshot, authored_points, connection_entities)
-    _fill_property_media(snapshot)
-    return build.finish()
 
 
 def _explain_intent(intent: _IntentResult) -> ResolutionExplanation:
@@ -1309,21 +1279,11 @@ def _place_deferred_links(
 
 
 def _all_slots(cls: type[Entity]) -> list[CPSlot]:
-    return [
-        slot
-        for base in cls.__mro__
-        if (info := base.__dict__.get("_classinfo")) is not None
-        for slot in info.cp_slots
-    ]
+    return list(_port_requirements(cls)[0])
 
 
 def _all_constraints(cls: type[Entity]) -> list[CPConstraint]:
-    return [
-        constraint
-        for base in cls.__mro__
-        if (info := base.__dict__.get("_classinfo")) is not None
-        for constraint in info.cp_constraints
-    ]
+    return list(_port_requirements(cls)[1])
 
 
 def _constraint_slots(cls: type[Entity]) -> list[CPSlot]:
@@ -1354,19 +1314,12 @@ def _slot_roots(slot: CPSlot) -> tuple[str, ...]:
 
 
 def _direction_of(cls: type[Entity]) -> str:
-    namespace = "http://data.ashrae.org/standard223#"
-    directions = {
-        direction
-        for name, direction in (
-            ("BidirectionalConnectionPoint", "bi"),
-            ("InletConnectionPoint", "in"),
-            ("OutletConnectionPoint", "out"),
-        )
-        if cls.meta.is_a(namespace + name)
-    }
-    if len(directions) != 1:
-        raise ModelingError(f"{cls.meta.iri}: missing or ambiguous point direction")
-    return directions.pop()
+    from .domain223 import point_direction
+
+    direction = point_direction(cls)
+    if direction is None:
+        raise ModelingError(f"{cls.meta.iri}: missing point direction")
+    return direction
 
 
 def _safe(value: str) -> str:

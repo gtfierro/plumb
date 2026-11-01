@@ -94,7 +94,9 @@ class PortHandle:
         if isinstance(value, PointRef):
             value = value._port
         if value is not None:
-            _check_mapping(self, value)
+            from .lifecycle import require_domain
+
+            require_domain(self.owner).check_mapping(self, value)
         previous = self._maps_to
         self._maps_to = value
         owners = [self.owner]
@@ -170,32 +172,6 @@ class PortHandle:
 
     def __repr__(self) -> str:
         return f"<PortHandle {self.owner.name}.{self.name}>"
-
-
-def _check_mapping(port: PortHandle, target: object) -> None:
-    """Reject a ``maps_to`` target that cannot be the container's point."""
-    from .entity import Entity
-
-    if isinstance(target, PortHandle):
-        model = target._model
-    elif isinstance(target, Entity) and isinstance(
-        target, port.owner.meta.registry.resolve("ConnectionPoint")
-    ):
-        model = target._model
-    else:
-        raise TypeError(
-            f"{port.owner.name}.{port.name}.maps_to takes a port or connection "
-            f"point, got {type(target).__name__}"
-        )
-    if model is not port._model:
-        raise ValueError(
-            f"{port.owner.name}.{port.name}.maps_to: target belongs to another Model"
-        )
-    if target is port or endpoint_owner(target) is port.owner:
-        raise ModelingError(
-            f"{port.owner.name}.{port.name} cannot map to a point of its own "
-            "equipment; maps_to names a point of the containing equipment"
-        )
 
 
 class ConnectionHandle:
@@ -363,13 +339,9 @@ class ConnectionHandle:
     def _connection_type(self) -> type[Entity]:
         if self._connection_class is not None:
             return self._connection_class
-        from .points import PointGroupRef
+        from .lifecycle import require_domain
 
-        source = self.source
-        owner = (
-            source.owner if isinstance(source, (PortHandle, PointGroupRef)) else source
-        )
-        return owner.meta.registry.resolve("Connection")
+        return require_domain(endpoint_owner(self.source)).connection_type(self)
 
     def __setattr__(self, name: str, value: Any) -> None:
         """Stage assignment to a generated Connection property."""
@@ -410,16 +382,7 @@ class ConnectionHandle:
         return self
 
     def _connection_descriptor(self, name: str) -> object | None:
-        connection_cls = self._connection_class
-        if connection_cls is None:
-            from .points import PointGroupRef
-
-            source = (
-                self.source.owner
-                if isinstance(self.source, (PortHandle, PointGroupRef))
-                else self.source
-            )
-            connection_cls = source.meta.registry.resolve("Connection")
+        connection_cls = self._connection_type()
         for cls in connection_cls.__mro__:
             if name in cls.__dict__:
                 return cls.__dict__[name]
@@ -562,11 +525,26 @@ class ResolvedModel:
         authored_model: Model | None = None,
     ) -> None:
         self._model = model
-        self._authored_model = authored_model or model
-        self._connections = connections
-        self._explanations = explanations
-        self.source_revision = source_revision
+        self._authored_model = model if authored_model is None else authored_model
+        self._connections = dict(connections)
+        self._explanations = dict(explanations)
+        self._source_revision = source_revision
+        self._intent_endpoints = tuple(
+            (
+                handle.identifier,
+                handle.source,
+                handle.target,
+                endpoint_owner(handle.source),
+                endpoint_owner(handle.target),
+            )
+            for handle in self._authored_model._connection_intents
+        )
         self._model._frozen = True
+
+    @property
+    def source_revision(self) -> int:
+        """The authored revision captured by this immutable snapshot."""
+        return self._source_revision
 
     @property
     def entities(self) -> tuple[Entity, ...]:
@@ -591,6 +569,8 @@ class ResolvedModel:
 
     def connection(self, handle: ConnectionHandle) -> Any:
         """Return the concrete connection corresponding to ``handle``."""
+        if handle._model is not self._authored_model:
+            raise KeyError("connection handle does not belong to this snapshot")
         try:
             return self._connections[handle.identifier]
         except KeyError:
@@ -607,6 +587,8 @@ class ResolvedModel:
             return tuple(self.point(item) for item in reference.points)
         if not isinstance(reference, PointRef):
             raise TypeError("point() expects a PointRef or PointGroupRef")
+        if reference.owner.meta.model not in (self._authored_model, self._model):
+            raise KeyError("point reference does not belong to this snapshot")
         owner = self._model[reference.owner.name]
         if isinstance(reference._port, Entity):
             return self._model[reference._port.name]
@@ -634,14 +616,14 @@ class ResolvedModel:
 
             source = handle._port if isinstance(handle, PointRef) else handle
             destination = target._port if isinstance(target, PointRef) else target
-            intents = self._authored_model._connection_intents
+            intents = self._intent_endpoints
             # The exact endpoints pick out one connection among several
             # between the same equipment; otherwise match by owner, as the
             # solver groups connections.
             matches = [
                 candidate
                 for candidate in intents
-                if candidate.source is source and candidate.target is destination
+                if candidate[1] is source and candidate[2] is destination
             ]
             source_owner = endpoint_owner(source)
             target_owner = endpoint_owner(destination)
@@ -649,17 +631,20 @@ class ResolvedModel:
                 matches = [
                     candidate
                     for candidate in intents
-                    if endpoint_owner(candidate.source) is source_owner
-                    and endpoint_owner(candidate.target) is target_owner
+                    if candidate[3] is source_owner and candidate[4] is target_owner
                 ]
             if len(matches) != 1:
                 raise KeyError(
                     f"expected one authored connection from {source_owner.name} "
                     f"to {target_owner.name}, found {len(matches)}"
                 )
-            handle = matches[0]
+            identifier = matches[0][0]
+        else:
+            if handle._model is not self._authored_model:
+                raise KeyError("connection handle does not belong to this snapshot")
+            identifier = handle.identifier
         try:
-            return self._explanations[handle.identifier]
+            return self._explanations[identifier]
         except KeyError:
             raise KeyError(
                 "connection handle does not belong to this snapshot"

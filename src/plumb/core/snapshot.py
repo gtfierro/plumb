@@ -8,6 +8,7 @@ import rdflib
 
 from .entity import Entity
 from .model import Model
+from .points import PointGroupRef, PointRef
 from .relations import RelSet
 from .resolution import ResolutionExplanation, ResolvedModel
 
@@ -44,6 +45,8 @@ class Snapshot:
             self.entities[entity] = copied
         for entity, copied in self.entities.items():
             copied._data = self.copy(entity._data)
+            if source._loaded_graph is not None:
+                copied._named_points = self.copy(entity._named_points)
             for name, store in entity._rels.items():
                 new_store = RelSet(copied, store._spec)
                 new_store._items = self.copy(store._items)
@@ -60,6 +63,12 @@ class Snapshot:
 
     def copy(self, value: Any) -> Any:
         """Copy containers and remap entity references into this snapshot."""
+        if isinstance(value, PointRef):
+            return PointRef(self.copy(value.owner), value.name, self.copy(value._port))
+        if isinstance(value, PointGroupRef):
+            return PointGroupRef(
+                self.copy(value.owner), value.name, self.copy(value.points)
+            )
         if isinstance(value, Entity):
             return self.entities.get(value, value)
         if isinstance(value, dict):
@@ -76,17 +85,15 @@ class Snapshot:
 
     def finish(self) -> ResolvedModel:
         """Restore references and publish a frozen snapshot at the source revision."""
-        from .query import _restore_named_points
         from .errors import ModelingError
+        from .lifecycle import domain_for
 
         if self.source._revision != self._source_revision:
             raise ModelingError("model changed while its snapshot was being built")
 
-        for entity in self.model.entities:
-            if type(entity)._point_declarations:
-                _restore_named_points(
-                    entity, type(entity)._point_declarations, strict=True
-                )
+        domain = domain_for(self.model)
+        if domain is not None:
+            domain.finish_snapshot(self.model)
         self.model._resolving = False
         self.model._revision = self._source_revision
         result = ResolvedModel(

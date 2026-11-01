@@ -7,6 +7,7 @@ rather than from the source tree.
 
 from importlib import resources
 from pathlib import Path
+import sys
 
 import plumb
 from plumb import Model, connect, s223, watr
@@ -56,6 +57,16 @@ def main() -> None:
     from plumb.gen.symbols import Symbols
 
     Symbols.load("plumb.watr")  # Also verify the installed dependency digest.
+
+    from plumb import brick
+
+    with Model("urn:example/plain-dist#") as plain:
+        first, second = brick.Equipment("first"), brick.Equipment("second")
+        connect(first, second)
+    if not plain.check().complete or len(plain.compile(validate=False)) != 2:
+        raise SystemExit("plain model lifecycle failed")
+    if "plumb.solver223" in sys.modules:
+        raise SystemExit("plain RDF model imported the connection planner")
 
     with Model("urn:example/dist-check#") as model:
         clarifier = watr.Clarifier("clarifier")

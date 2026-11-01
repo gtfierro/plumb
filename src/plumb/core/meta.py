@@ -20,6 +20,7 @@ if TYPE_CHECKING:
     from .containment import ContainmentTable
     from .entity import Entity
     from .enums import EnumValue
+    from .lifecycle import Domain
 
 
 @dataclass(frozen=True)
@@ -276,6 +277,7 @@ class Registry:
         self.enums_by_iri: dict[str, EnumValue] = {}
         self.terms_by_iri: dict[str, object] = {}
         self._dependencies: tuple[Registry, ...] = ()
+        self._domain: Domain | None = None
         self.schema_graph = None
         self._schema_covers_dependencies = False
         #: QUDT quantity kind IRI -> Sensor subclass name, for ``.sensor()``
@@ -326,10 +328,17 @@ class Registry:
         for iri, value in dependency.enums_by_iri.items():
             if iri in self.enums_by_iri and self.enums_by_iri[iri] is not value:
                 raise ValueError(f"incompatible imported enum identity {iri}")
+        if (
+            self._domain is not None
+            and dependency._domain is not None
+            and self._domain is not dependency._domain
+        ):
+            raise ValueError("incompatible imported domain capabilities")
         self.by_name.update(dependency.by_name)
         self.by_iri = combined
         self.enums_by_iri.update(dependency.enums_by_iri)
         self.terms_by_iri.update(dependency.terms_by_iri)
+        self._domain = self._domain or dependency._domain
         self.containment.rules.extend(
             rule
             for rule in dependency.containment.rules
@@ -505,3 +514,21 @@ def _select_class(first: type[Entity], second: type[Entity]) -> type[Entity]:
             return second
         raise ValueError(f"incompatible imported views of {first.meta.iri}")
     raise ValueError(f"incompatible imported class identity {first.meta.iri}")
+
+
+def _port_requirements(
+    cls: type[Entity],
+) -> tuple[tuple[CPSlot, ...], tuple[CPConstraint, ...]]:
+    """Aggregate compiled declarations once; identical conjuncts are idempotent."""
+    cached = cls.__dict__.get("_port_requirements_cache")
+    if cached is None:
+        slots: dict[CPSlot, None] = {}
+        constraints: dict[CPConstraint, None] = {}
+        for base in cls.__mro__:
+            info = base.__dict__.get("_classinfo")
+            if info is not None:
+                slots.update(dict.fromkeys(info.cp_slots))
+                constraints.update(dict.fromkeys(info.cp_constraints))
+        cached = tuple(slots), tuple(constraints)
+        setattr(cls, "_port_requirements_cache", cached)
+    return cached

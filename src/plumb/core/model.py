@@ -16,7 +16,7 @@ import re
 from contextlib import contextmanager
 from contextvars import ContextVar, Token
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Iterable, Iterator, Mapping, TypeVar
+from typing import TYPE_CHECKING, Any, Callable, Iterable, Iterator, Mapping, TypeVar
 from urllib.parse import quote
 
 import rdflib
@@ -96,7 +96,7 @@ class Model:
         self._resolved_cache: ResolvedModel | None = None
         #: Containment and topology indexes (``plumb.core.traversal``).
         self._traversal_indexes: dict[str, Any] = {}
-        self._component_cache: dict[tuple[Any, ...], Any] = {}
+        self._plan_cache: dict[tuple[Any, ...], Any] = {}
         self._frozen = False
         self._resolving = False
         self._loaded_graph: rdflib.Graph | None = None
@@ -112,6 +112,10 @@ class Model:
         """Roll back a compound authoring operation, including existing links."""
 
         self._assert_mutable()
+        if self._resolving:
+            # An unpublished snapshot build is discarded as a unit on failure.
+            yield
+            return
         loaded_triples = (
             set(self._loaded_graph) if self._loaded_graph is not None else None
         )
@@ -587,8 +591,8 @@ class Model:
         return graph
 
     def check(self) -> ResolutionReport:
-        """Check deferred S223 constraints without materializing a snapshot."""
-        from plumb.solver223 import check_model
+        """Check domain constraints without materializing a snapshot."""
+        from .lifecycle import check_model
 
         return check_model(self)
 
@@ -599,11 +603,20 @@ class Model:
             and self._resolved_cache.source_revision == self._revision
         ):
             return self._resolved_cache
-        from plumb.solver223 import resolve_model
+        from .lifecycle import resolve_model
 
         snapshot = resolve_model(self)
         self._resolved_cache = snapshot
         return snapshot
+
+    def _cached_plan[T](self, key: tuple[Any, ...], create: Callable[[], T]) -> T:
+        """Reuse domain plans with a bounded cache of authored input fingerprints."""
+        if key not in self._plan_cache:
+            result = create()
+            if len(self._plan_cache) >= 256:
+                self._plan_cache.pop(next(iter(self._plan_cache)))
+            self._plan_cache[key] = result
+        return self._plan_cache[key]
 
     def compile(
         self,
@@ -726,25 +739,14 @@ class _SystemScope:
         candidates = self.model.entities[self._start :]
         if not candidates:
             raise ModelingError(f"system {self.name!r} has no members")
-        from .meta import Registry
+        from .lifecycle import domain_for
 
-        registry = Registry.compose(entity.meta.registry for entity in candidates)
-        equipment_cls = registry.resolve("Connectable")
-        system_cls = registry.resolve("System")
-        members = tuple(
-            entity
-            for entity in candidates
-            if entity.meta.is_a(equipment_cls) or entity.meta.is_a(system_cls)
+        domain = domain_for(self.model)
+        if domain is None:
+            raise TypeError("system scope requires a connection domain")
+        self.entity = domain.create_system(
+            self.model, self.name, self.label, candidates
         )
-        if not members:
-            raise ModelingError(f"system {self.name!r} has no equipment members")
-        self.entity = system_cls(
-            self.name,
-            label=self.label,
-            has_member=members,
-            model=self.model,
-        )
-        self.model._system_intents.append((self.entity, members))
         self.entity.boundary(*self._boundaries)
 
 

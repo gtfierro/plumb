@@ -7,7 +7,7 @@ from collections.abc import Iterable, Mapping
 from importlib import import_module
 from functools import lru_cache
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 from urllib.parse import unquote
 
 import rdflib
@@ -138,7 +138,10 @@ def load_graph(
     for entity in model.entities:
         declarations = getattr(type(entity), "_point_declarations", {})
         if declarations:
-            _restore_named_points(entity, declarations, strict=strict)
+            domain = entity.meta.registry._domain
+            if domain is None:
+                raise ModelingError("named points require a connection domain")
+            domain.restore(entity, strict=strict)
     return model
 
 
@@ -204,56 +207,6 @@ def _discover_registries(graph: rdflib.Graph) -> tuple[Registry, ...]:
             for other in candidates
         )
     )
-
-
-def _restore_named_points(
-    entity: Entity, declarations: Mapping[str, Any], *, strict: bool
-) -> None:
-    """Rebuild generated references from RDF-observable point facts."""
-    from .points import PointGroupRef, PointRef
-
-    candidates = list(getattr(entity, "has_connection_point"))
-    used: set[Entity] = set()
-    direction_classes = {
-        "in": "InletConnectionPoint",
-        "out": "OutletConnectionPoint",
-        "bi": "BidirectionalConnectionPoint",
-    }
-    for name, declaration in declarations.items():
-        direction = direction_classes[declaration.direction]
-        medium = declaration.medium
-        label = declaration.label
-        matching = [
-            point
-            for point in candidates
-            if point not in used
-            and type(point).__name__ == direction
-            and (
-                medium is None
-                or getattr(point, "medium", None) is not None
-                and getattr(point, "medium").iri == medium.iri
-            )
-            and (label is None or point.label == label)
-        ]
-        if len(matching) != declaration.count:
-            if strict and (matching or declaration.count):
-                raise ModelingError(
-                    f"cannot identify named point {entity.name}.{name} uniquely "
-                    f"from RDF facts (expected {declaration.count}, found {len(matching)})"
-                )
-            continue
-        used.update(matching)
-        refs = tuple(
-            PointRef(
-                entity, name if declaration.count == 1 else f"{name}-{index + 1}", point
-            )
-            for index, point in enumerate(
-                sorted(matching, key=lambda point: point.name)
-            )
-        )
-        entity._named_points[name] = (
-            refs[0] if len(refs) == 1 else PointGroupRef(entity, name, refs)
-        )
 
 
 def _read_graph(source: rdflib.Graph | str | Path) -> rdflib.Graph:
