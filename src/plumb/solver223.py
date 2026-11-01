@@ -743,7 +743,10 @@ def _slot_expr(
 ) -> z3.BoolRef:
     slot_cls = points[0].owner.meta.registry.resolve(slot.cp_class)
     matching = [
-        z3.And(point.active, _medium_allowed(point.medium, slot, media, enum_ids))
+        z3.And(
+            point.active,
+            _medium_in_roots(point.medium, _slot_roots(slot), media, enum_ids),
+        )
         for point in points
         if point.cls.meta.is_a(slot_cls)
         and (
@@ -783,23 +786,6 @@ def _constraint_expr(
     if constraint.operator == "xone":
         return z3.PbEq([(child, 1) for child in children], 1)
     raise ValueError("validation-only connection constraints cannot be solved")
-
-
-def _medium_allowed(
-    variable: z3.ArithRef,
-    slot: CPSlot,
-    media: list[EnumValue],
-    enum_ids: dict[str, int],
-) -> z3.BoolRef:
-    roots = _slot_roots(slot)
-    if not roots:
-        return z3.BoolVal(True)
-    allowed = [
-        enum_ids[value.iri]
-        for value in media
-        if any(value.is_a(root) for root in roots)
-    ]
-    return z3.Or([variable == value for value in allowed])
 
 
 def _eligible(
@@ -862,7 +848,7 @@ def _medium_affinity_penalty(
     return z3.Sum(penalties) if penalties else z3.IntVal(0)
 
 
-def _point_roots(point: _Point) -> set[str]:
+def _point_roots(point: _Point | _PointResult) -> set[str]:
     registry = point.owner.meta.registry
     return {
         root
@@ -872,7 +858,7 @@ def _point_roots(point: _Point) -> set[str]:
     }
 
 
-def _stated_medium(point: _Point) -> EnumValue | None:
+def _stated_medium(point: _Point | _PointResult) -> EnumValue | None:
     """The medium the user gave this port or concrete point, if any."""
     if point.authored is not None:
         return point.authored.medium
@@ -889,14 +875,19 @@ def _possible_medium_ids(
     stated = _stated_medium(point)
     if stated is not None and stated.iri in enum_ids:
         return {enum_ids[stated.iri]}
-    roots = _point_roots(point)
-    if not roots:
-        return set(enum_ids.values())
     return {
-        enum_ids[value.iri]
-        for value in media
-        if any(value.is_a(root) for root in roots)
+        enum_ids[value.iri] for value in _matching_media(_point_roots(point), media)
     }
+
+
+def _matching_media(
+    roots: Iterable[str], media: Iterable[EnumValue]
+) -> tuple[EnumValue, ...]:
+    """Select descendants of any root; empty roots impose no restriction."""
+    roots = tuple(roots)
+    return tuple(
+        value for value in media if not roots or any(value.is_a(root) for root in roots)
+    )
 
 
 def _medium_in_roots(
@@ -905,12 +896,12 @@ def _medium_in_roots(
     media: list[EnumValue],
     enum_ids: dict[str, int],
 ) -> z3.BoolRef:
-    allowed = [
-        enum_ids[value.iri]
-        for value in media
-        if any(value.is_a(root) for root in roots)
-    ]
-    return z3.Or([variable == value for value in allowed])
+    roots = tuple(roots)
+    if not roots:
+        return z3.BoolVal(True)
+    return z3.Or(
+        [variable == enum_ids[value.iri] for value in _matching_media(roots, media)]
+    )
 
 
 def _minimize_active(solver: z3.Solver, points: list[_Point]) -> None:
@@ -1203,13 +1194,12 @@ def _explain_intent(intent: _IntentResult) -> ResolutionExplanation:
 
 
 def _point_medium_evidence(point: _PointResult) -> str | None:
-    if point.authored is not None and point.authored.medium is not None:
-        return f"{point.authored.name}.medium = {_local(point.authored.medium.iri)}"
-    if point.existing is not None:
-        medium = getattr(point.existing, "medium", None)
-        if medium is not None:
-            return f"{point.existing.name}.medium = {_local(medium.iri)}"
-    return None
+    medium = _stated_medium(point)
+    if medium is None:
+        return None
+    origin = point.authored if point.authored is not None else point.existing
+    assert origin is not None
+    return f"{origin.name}.medium = {_local(medium.iri)}"
 
 
 def _paired_medium_evidence(point: _PointResult) -> str | None:
@@ -1233,28 +1223,16 @@ def _paired_medium_evidence(point: _PointResult) -> str | None:
 
 
 def _ontology_determines_medium(intent: _IntentResult) -> bool:
-    source_roots = _result_roots(intent.source)
-    target_roots = _result_roots(intent.target)
+    source_roots = _point_roots(intent.source)
+    target_roots = _point_roots(intent.target)
     roots = source_roots | target_roots
     if not roots:
         return False
     registry = intent.source.owner.meta.registry
     allowed = {
-        value.iri
-        for value in registry.enums_by_iri.values()
-        if any(value.is_a(root) for root in roots)
+        value.iri for value in _matching_media(roots, registry.enums_by_iri.values())
     }
     return allowed == {intent.medium.iri}
-
-
-def _result_roots(point: _PointResult) -> set[str]:
-    registry = point.owner.meta.registry
-    return {
-        root
-        for slot in _all_slots(type(point.owner)) + _constraint_slots(type(point.owner))
-        if point.cls.meta.is_a(registry.resolve(slot.cp_class))
-        for root in _slot_roots(slot)
-    }
 
 
 def _owner(endpoint: Entity | PortHandle | PointGroupRef) -> Entity:
