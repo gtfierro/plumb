@@ -272,6 +272,7 @@ class Registry:
         self.by_iri: dict[str, type[Entity]] = {}
         self.enums_by_iri: dict[str, EnumValue] = {}
         self.terms_by_iri: dict[str, object] = {}
+        self._dependencies: tuple[Registry, ...] = ()
         self.schema_graph = None
         #: QUDT quantity kind IRI -> Sensor subclass name, for ``.sensor()``
         self.sensor_classes: dict[str, str] = {}
@@ -304,6 +305,8 @@ class Registry:
             if rule not in self.containment.rules
         )
         self.sensor_classes.update(dependency.sensor_classes)
+        if dependency not in self._dependencies:
+            self._dependencies += (dependency,)
 
     def resolve(self, name: str) -> type[Entity]:
         """Look up a class by its Python name (used for range checking)."""

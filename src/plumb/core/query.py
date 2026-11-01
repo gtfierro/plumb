@@ -15,7 +15,7 @@ from rdflib import RDF, RDFS, OWL, Literal, URIRef
 
 from .entity import Entity
 from .errors import ModelingError
-from .meta import PropertySpec, Registry
+from .meta import OntologyInfo, PropertySpec, Registry
 from .terms import TermValue
 from .traversal import matches as matches
 
@@ -44,6 +44,11 @@ def load_graph(
     )
     if not registry_list:
         raise ValueError("at least one generated package registry is required")
+    # Resolve the selected symbol set before inference can mutate the input.
+    # Canonical classes cannot know their future extension terms and enums.
+    symbols = Registry(OntologyInfo("Loaded model", ""))
+    for registry in registry_list:
+        symbols.include(registry)
     if infer:
         import shifty
 
@@ -62,13 +67,9 @@ def load_graph(
         else:
             graph = inferred
 
-    classes_by_iri: dict[str, list[type[Entity]]] = {}
-    for registry in registry_list:
-        for iri, entity_type in registry.by_iri.items():
-            classes_by_iri.setdefault(iri, []).append(entity_type)
-
-    model = model_type(namespace or _infer_namespace(graph, classes_by_iri))
+    model = model_type(namespace or _infer_namespace(graph, symbols.by_iri))
     model._loaded_graph = graph
+    model._loaded_registries = registry_list
     by_node: dict[URIRef, Entity] = {}
 
     subjects = sorted(set(graph.subjects(RDF.type)), key=str)
@@ -77,7 +78,8 @@ def load_graph(
             continue
         candidates: list[type[Entity]] = []
         for rdf_type in graph.objects(subject, RDF.type):
-            candidates.extend(classes_by_iri.get(str(rdf_type), ()))
+            if (candidate := symbols.by_iri.get(str(rdf_type))) is not None:
+                candidates.append(candidate)
         entity_type = _most_specific(subject, candidates, strict=strict)
         if entity_type is None:
             continue
@@ -116,7 +118,7 @@ def load_graph(
                     graph,
                     value,
                     spec,
-                    entity.meta.registry,
+                    symbols,
                     by_node,
                     strict=strict,
                 )
@@ -430,7 +432,7 @@ def _local_name(iri: str) -> str:
 
 def _infer_namespace(
     graph: rdflib.Graph,
-    classes_by_iri: Mapping[str, list[type[Entity]]],
+    classes_by_iri: Mapping[str, type[Entity]],
 ) -> str:
     namespaces: Counter[str] = Counter()
     for subject in set(graph.subjects(RDF.type)):

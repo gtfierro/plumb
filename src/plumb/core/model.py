@@ -100,6 +100,9 @@ class Model:
         self._frozen = False
         self._resolving = False
         self._loaded_graph: rdflib.Graph | None = None
+        # Selected schemas belong to the model, even if every hydrated entity
+        # uses an imported canonical class rather than a local extension class.
+        self._loaded_registries: tuple[Registry, ...] = ()
         self._managed_triples: dict[str, set[tuple[Any, Any, Any]]] = {}
 
     # -- ambient binding --------------------------------------------------
@@ -563,7 +566,7 @@ class Model:
         is supplied it is serialized as Turtle and the graph is also returned.
         """
         graph = rdflib.Graph()
-        registries = {
+        registries = set(self._loaded_registries) | {
             entity.meta.registry
             for entity in self.entities
             if getattr(entity.meta.registry, "schema_graph", None) is not None

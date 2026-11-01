@@ -140,6 +140,14 @@ def shapes_for(classes: Iterable[type], registries: Iterable[Registry]) -> rdfli
     """
     package_files: set[Path] = set()
     sources: set[str] = set()
+    selected: set[Registry] = set()
+    pending = list(registries)
+    while pending:
+        registry = pending.pop()
+        if registry in selected:
+            continue
+        selected.add(registry)
+        pending.extend(registry._dependencies)
     for entity_type in classes:
         for cls in entity_type.__mro__:
             if "_classinfo" not in cls.__dict__:
@@ -156,7 +164,7 @@ def shapes_for(classes: Iterable[type], registries: Iterable[Registry]) -> rdfli
                 sources.add(source)
     schemas = [
         schema
-        for registry in registries
+        for registry in selected
         if (schema := getattr(registry, "schema_graph", None)) is not None
     ]
     if not package_files and not sources and not schemas:
@@ -183,7 +191,10 @@ def _package_shapes(model: Model) -> rdflib.Graph:
     """
     g = shapes_for(
         [type(entity) for entity in model.entities],
-        {entity.meta.registry for entity in model.entities},
+        {
+            *model._loaded_registries,
+            *(entity.meta.registry for entity in model.entities),
+        },
     )
     # Vocabulary references carry authoritative types compiled from their
     # catalogs. A base package's bundled closure need not contain every unit

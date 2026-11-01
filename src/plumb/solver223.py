@@ -1294,6 +1294,7 @@ def _clone_model(model: Model) -> tuple[Model, dict[Entity, Entity]]:
         prefixes=model.prefixes,
     )
     clone._resolving = True
+    clone._loaded_registries = model._loaded_registries
     mapping: dict[Entity, Entity] = {}
     for entity in model.entities:
         copied = object.__new__(type(entity))
