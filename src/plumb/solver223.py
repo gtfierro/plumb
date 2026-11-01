@@ -807,10 +807,6 @@ def _eligible(
 ) -> list[_Point]:
     from .core.points import PointGroupRef
 
-    names = {
-        "out": {"OutletConnectionPoint", "BidirectionalConnectionPoint"},
-        "in": {"InletConnectionPoint", "BidirectionalConnectionPoint"},
-    }[direction]
     return [
         point
         for point in points
@@ -825,7 +821,7 @@ def _eligible(
             or getattr(endpoint, "owner", None) is None
             or point.existing is endpoint
         )
-        and any(base.__name__ in names for base in point.cls.__mro__)
+        and _direction_of(point.cls) in {direction, "bi"}
     ]
 
 

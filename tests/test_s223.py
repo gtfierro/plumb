@@ -806,3 +806,79 @@ def test_changing_maps_to_invalidates_resolution(m):
     assert m.resolve()["coil-water_inlet"].maps_to.name == "chw-b"
     coil.water_inlet.maps_to = None
     assert m.resolve()["coil-water_inlet"].maps_to is None
+
+
+@pytest.mark.parametrize(
+    ("point_class", "as_source"),
+    [
+        (s223.OutletConnectionPoint, True),
+        (s223.InletConnectionPoint, False),
+        (s223.BidirectionalConnectionPoint, True),
+        (s223.BidirectionalConnectionPoint, False),
+    ],
+)
+def test_point_eligibility_uses_rdf_ancestry_after_mro_repair(point_class, as_source):
+    from plumb.core import ClassInfo, OntologyInfo, Registry
+
+    registry = Registry(OntologyInfo("Projected points", "urn:projected-points"))
+    registry.include(s223.REGISTRY)
+
+    # Model a direction ancestor omitted from the emitted Python bases.
+    class ProjectedPoint(s223.ConnectionPoint):
+        _classinfo = ClassInfo(
+            "urn:projected-points#Point",
+            registry.ontology,
+            registry,
+            parent_iris=(point_class.meta.iri,),
+            ancestor_iris=(point_class.meta.iri, s223.ConnectionPoint.meta.iri),
+        )
+
+    with Model("urn:test/projected-direction#") as model:
+        source, target = s223.Equipment("source"), s223.Equipment("target")
+        projected = ProjectedPoint(
+            "projected",
+            medium=enums.values.Fluid_Air,
+            owner=source if as_source else target,
+        )
+        other_class = (
+            s223.InletConnectionPoint if as_source else s223.OutletConnectionPoint
+        )
+        other = other_class(
+            "other",
+            medium=enums.values.Fluid_Air,
+            owner=target if as_source else source,
+        )
+        handle = connect(projected, other) if as_source else connect(other, projected)
+    assert model.check().complete
+    snapshot = model.resolve()
+    assert snapshot["projected"] in snapshot.connection(handle).connects_at
+
+
+def test_point_eligibility_ignores_misleading_python_class_names():
+    from plumb.core import ClassInfo, OntologyInfo, Registry
+
+    registry = Registry(OntologyInfo("Renamed points", "urn:renamed-points"))
+    registry.include(s223.REGISTRY)
+
+    class OutletConnectionPoint(s223.InletConnectionPoint):
+        _classinfo = ClassInfo(
+            "urn:renamed-points#Inlet",
+            registry.ontology,
+            registry,
+            parent_iris=(s223.InletConnectionPoint.meta.iri,),
+            ancestor_iris=(
+                s223.InletConnectionPoint.meta.iri,
+                s223.ConnectionPoint.meta.iri,
+            ),
+        )
+
+    with Model("urn:test/renamed-direction#") as model:
+        source, target = s223.Equipment("source"), s223.Equipment("target")
+        wrong = OutletConnectionPoint(
+            "wrong", owner=source, medium=enums.values.Fluid_Air
+        )
+        inlet = s223.InletConnectionPoint(
+            "inlet", owner=target, medium=enums.values.Fluid_Air
+        )
+        connect(wrong, inlet)
+    assert model.check().status == "unsatisfiable"
