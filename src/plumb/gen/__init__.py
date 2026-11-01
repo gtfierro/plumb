@@ -10,15 +10,16 @@ from __future__ import annotations
 
 from pathlib import Path
 import hashlib
-import json
 
 import rdflib
 
 from . import overlays
+from .diagnostics import FILENAME as SUPPORT_FILE, CompilationError, support_report
 from .emit import emit_enums_module, emit_module
 from .schema import SchemaIR, extract
 
 __all__ = [
+    "CompilationError",
     "SchemaIR",
     "compile_modules",
     "compile_source",
@@ -53,6 +54,10 @@ def compile_modules(
     from .configurations import CODEGEN, compile_configurations
 
     if any(graph.objects(None, CODEGEN.baseModule)):
+        if overlay not in ("auto", None):
+            raise ValueError(
+                "configuration packages inherit base policy; custom overlay bindings are not supported"
+            )
         from rdflib.compare import to_canonical_graph
 
         canonical = to_canonical_graph(graph)
@@ -75,19 +80,14 @@ def compile_modules(
         class_properties=resolved.class_properties if resolved else (),
         deferred_properties=resolved.deferred_properties if resolved else (),
     )
-    modules = {"__init__.py": emit_module(ir, resolved)}
-    if ir.connection_support:
-        modules["_connection_support.json"] = (
-            json.dumps(
-                sorted(
-                    ir.connection_support,
-                    key=lambda item: json.dumps(item, sort_keys=True),
-                ),
-                indent=2,
-                sort_keys=True,
-            )
-            + "\n"
-        )
+    bindings = overlays.resolve(resolved, ir, graph) if resolved is not None else None
+    modules = {"__init__.py": emit_module(ir, bindings)}
+    modules[SUPPORT_FILE] = support_report(
+        graph,
+        ir.classes,
+        bindings=bindings.diagnostics if bindings else (),
+        connections=ir.connection_support,
+    )
     # Keep validation reproducible: generated packages carry the exact graph
     # that their Python API and solver metadata were compiled from.
     modules["_shapes.ttl"] = str(graph.serialize(format="turtle"))

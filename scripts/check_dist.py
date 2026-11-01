@@ -38,7 +38,7 @@ def main() -> None:
         for filename in (
             "_build.json",
             "_generated.json",
-            "_connection_support.json",
+            "_support.json",
             "_symbols.json",
         ):
             if not (resources.files(f"plumb.{name}") / filename).is_file():

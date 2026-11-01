@@ -84,9 +84,10 @@ behind `generate(...)` / `plumb gen`. These are internal responsibilities:
    (so ontology names like RealEstateCore's `Entity` can't shadow the base),
    specs, classes with docstrings from the ontology text, and explicit typed
    `__init__` methods wherever a class changes the property set.
-5. **`overlays.py`** — per-ontology UX hints (rshift property, containment
-   rules), applied at the end of the module with unresolvable entries
-   skipped-with-comment.
+5. **`overlays.py`** — resolves authoring policy targets once, by IRI or generated
+   name, with required/optional binding diagnostics. The emitter renders resolved
+   registrations without re-interpreting policy. **`diagnostics.py`** emits the
+   shared source inventory and enforcement report for both front ends.
 
 `sources.py` verifies locked local inputs. `scripts/regenerate.py` stages an
 offline build of S223, WaTr, QUDT, and the example domains; configurations import
@@ -95,8 +96,7 @@ is published. `artifacts.py` records file ownership and cleans stale generated
 files without touching nested packages or handwritten files. `make regen-check`
 checks output bytes and owned file sets in CI.
 
-The [hardening plan](compiler-hardening-plan.md) tracks remaining work: fully
-shared front-end constraint semantics and diagnostics, dependency symbol linking,
+The [hardening plan](compiler-hardening-plan.md) tracks remaining work:
 canonical S223/WaTr identities with explicit profile restrictions, a core/backend
 lifecycle boundary, and semantic upgrade reports. The current runtime still
 delegates snapshot creation to the S223 solver for ordinary models.

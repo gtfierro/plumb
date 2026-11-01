@@ -15,9 +15,9 @@ carry the property's definition and predicate.
 from __future__ import annotations
 
 from dataclasses import replace
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Mapping
 
-from .overlays import Overlay
+from .overlays import ResolvedBindings
 from .ir import CPConstraintIR, ClassIR, PropIR, SchemaIR
 from rdflib import Literal, URIRef
 from rdflib.term import Node
@@ -71,7 +71,7 @@ REGISTRY = _REGISTRY
 '''
 
 
-def emit_module(ir: SchemaIR, overlay: Overlay | None = None) -> str:
+def emit_module(ir: SchemaIR, overlay: ResolvedBindings | None = None) -> str:
     """Render the complete generated (package) module."""
     parts = [
         _HEADER.format(
@@ -122,7 +122,7 @@ def emit_module(ir: SchemaIR, overlay: Overlay | None = None) -> str:
         parts.append(_emit_class(cls, emitted, ir, init))
         emitted.add(cls.name)
     if overlay is not None:
-        parts.append(_emit_overlay(overlay, ir))
+        parts.append(_emit_overlay(overlay))
     names = ", ".join(repr(c.name) for c in ir.classes)
     parts.append(f'\n__all__ = ["ONTOLOGY", "REGISTRY", {names}]\n')
     return "\n".join(parts)
@@ -300,7 +300,12 @@ def emit_shape_values(
             continue
 
         def values(items):
-            items = [reference(value) for value in items]
+            try:
+                items = [reference(value) for value in items]
+            except ValueError as error:
+                raise ValueError(
+                    f"{prop.predicate}: {error}; sources: {prop.sources}"
+                ) from error
             return "(" + ", ".join(items) + ("," if items else "") + ")"
 
         choices = values(prop.choices) if prop.choices is not None else "None"
@@ -328,7 +333,7 @@ def emit_descriptor(prop: PropIR, var: str, *, target: str | None = None) -> str
         return f"{prop.name}: _EnumSet[_EnumValue] = _EnumSet({var})"
     if prop.kind == "term":
         return f"{prop.name}: _TermOne[_TermValue] = _TermOne({var})"
-    target = target or _range_union(prop)
+    target = target or range_annotation(prop)
     if prop.kind == "class":
         target = f"type[{target}]"
     if prop.max_count == 1:
@@ -336,12 +341,35 @@ def emit_descriptor(prop: PropIR, var: str, *, target: str | None = None) -> str
     return f"{prop.name}: _Rel[{target}] = _Rel({var})"
 
 
-def _range_union(prop: PropIR) -> str:
-    union = " | ".join(prop.ranges) if prop.ranges else "_EntityBase"
-    if prop.predicate in {
-        "http://qudt.org/schema/qudt/hasUnit",
-        "http://qudt.org/schema/qudt/hasQuantityKind",
-    }:
+def range_annotation(
+    prop: PropIR,
+    *,
+    class_names: Mapping[str, str] | None = None,
+    entity_base: str = "_EntityBase",
+) -> str:
+    """Render the common range projection with package-qualified class names."""
+    union = (
+        " | ".join(
+            class_names[name] if class_names is not None else name
+            for name in prop.ranges
+        )
+        or entity_base
+    )
+    if prop.kind == "object" and (
+        prop.predicate
+        in {
+            "http://qudt.org/schema/qudt/hasUnit",
+            "http://qudt.org/schema/qudt/hasQuantityKind",
+        }
+        or any(
+            isinstance(value, URIRef)
+            for value in (
+                *prop.required_values,
+                *prop.default_values,
+                *(prop.choices or ()),
+            )
+        )
+    ):
         union += " | _TermValue"
     if prop.deferred:
         union += " | _DeferredEndpoint"
@@ -439,7 +467,7 @@ def _param_annotation(prop: PropIR) -> str:
             return annotation if prop.required else f"{annotation} = None"
         annotation = "_Iterable[_EnumValue]"
         return annotation if prop.required else f"{annotation} = ()"
-    union = _range_union(prop)
+    union = range_annotation(prop)
     if prop.kind == "class":
         union = f"type[{union}]"
     if prop.max_count == 1:
@@ -548,56 +576,22 @@ def emit_enums_module(ir: SchemaIR) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _emit_overlay(overlay: Overlay, ir: SchemaIR) -> str:
-    """UX registrations (>> sugar, containment table) from the overlay.
-
-    Entries referencing classes/properties the ontology didn't yield are
-    skipped with a comment, so an overlay can be written against the union
-    of ontology versions.
-    """
-    names = ir.class_names()
-    props = {c.name: set(c.effective_props) for c in ir.classes}
-    lines = ["", "# -- UX overlay: operator sugar and containment rules --", ""]
-    if overlay.connector:
-        if "Connectable" in names:
-            lines.append("from plumb.connect223 import S223Connector as _S223Connector")
-            lines.append("")
-            lines.append(
-                "Connectable._CONNECTOR = _S223Connector("
-                f"_REGISTRY, connection_classes={overlay.connection_classes!r})"
-            )
-        else:
-            lines.append("# skipped: connector (no Connectable in this ontology)")
-    sensors = {
-        kind: name for kind, name in overlay.sensor_classes.items() if name in names
-    }
-    for kind, name in overlay.sensor_classes.items():
-        if name not in names:
-            lines.append(f"# skipped: sensor class {name} (not in this ontology)")
-    if sensors:
-        lines.append(f"_REGISTRY.sensor_classes = {sensors!r}")
-    for class_name, prop in overlay.rshift.items():
-        if class_name in names and prop in props.get(class_name, set()):
-            lines.append(f"{class_name}._RSHIFT = {prop!r}")
-        else:
-            lines.append(
-                f"# skipped: rshift {class_name}.{prop} (not in this ontology)"
-            )
-    for rule in overlay.containment:
-        container, child, prop, edge_from = rule
-        prop_owner = container if edge_from == "container" else child
-        if (
-            container in names
-            and child in names
-            and prop in props.get(prop_owner, set())
-        ):
-            lines.append(
-                f"_REGISTRY.containment.register("
-                f"{container!r}, {child!r}, {prop!r}, edge_from={edge_from!r})"
-            )
-        else:
-            lines.append(
-                f"# skipped: containment {container}/{child} via {prop} "
-                f"(not in this ontology)"
-            )
+def _emit_overlay(overlay: ResolvedBindings) -> str:
+    """Render already-validated policy bindings; resolution belongs to overlays."""
+    lines = ["", "# -- Authoring policy --", ""]
+    if overlay.connector is not None:
+        lines.append("from plumb.connect223 import S223Connector as _S223Connector")
+        lines.append(
+            f"{overlay.connector}._CONNECTOR = _S223Connector("
+            f"_REGISTRY, connection_classes={overlay.connection_classes!r})"
+        )
+    if overlay.sensor_classes:
+        lines.append(f"_REGISTRY.sensor_classes = {overlay.sensor_classes!r}")
+    for cls, prop in overlay.rshift.items():
+        lines.append(f"{cls}._RSHIFT = {prop!r}")
+    for container, child, prop, edge in overlay.containment:
+        lines.append(
+            f"_REGISTRY.containment.register("
+            f"{container!r}, {child!r}, {prop!r}, edge_from={edge!r})"
+        )
     return "\n".join(lines) + "\n"

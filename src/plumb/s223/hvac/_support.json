@@ -1,0 +1,246 @@
+{
+  "bindings": [],
+  "connections": [
+    {
+      "asserted_directly": true,
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "projection": {
+        "count": 1,
+        "cp_class": "InletConnectionPoint",
+        "direction": "in",
+        "label": "air_inlet",
+        "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+        "name": "air_inlet",
+        "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0"
+      },
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0",
+      "support": "solver",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil"
+    },
+    {
+      "asserted_directly": true,
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "projection": {
+        "count": 1,
+        "cp_class": "OutletConnectionPoint",
+        "direction": "out",
+        "label": "air_outlet",
+        "medium": "http://data.ashrae.org/standard223#Fluid-Air",
+        "name": "air_outlet",
+        "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1"
+      },
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1",
+      "support": "solver",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil"
+    },
+    {
+      "asserted_directly": true,
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "projection": {
+        "count": 1,
+        "cp_class": "InletConnectionPoint",
+        "direction": "in",
+        "label": "water_inlet",
+        "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+        "name": "water_inlet",
+        "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2"
+      },
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2",
+      "support": "solver",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil"
+    },
+    {
+      "asserted_directly": true,
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "projection": {
+        "count": 1,
+        "cp_class": "OutletConnectionPoint",
+        "direction": "out",
+        "label": "water_outlet",
+        "medium": "http://data.ashrae.org/standard223#Fluid-Water",
+        "name": "water_outlet",
+        "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3"
+      },
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3",
+      "support": "solver",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil"
+    }
+  ],
+  "constraints": [
+    {
+      "enforcement": [
+        "solver",
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#qualifiedMaxCount",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "S223 connection projection; see connections for expression and assertion scope.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+    },
+    {
+      "enforcement": [
+        "solver",
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#qualifiedMaxCount",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "S223 connection projection; see connections for expression and assertion scope.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+    },
+    {
+      "enforcement": [
+        "solver",
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#qualifiedMaxCount",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "S223 connection projection; see connections for expression and assertion scope.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+    },
+    {
+      "enforcement": [
+        "solver",
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#qualifiedMaxCount",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "S223 connection projection; see connections for expression and assertion scope.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+    },
+    {
+      "enforcement": [
+        "solver",
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#qualifiedMinCount",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "S223 connection projection; see connections for expression and assertion scope.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+    },
+    {
+      "enforcement": [
+        "solver",
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#qualifiedMinCount",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "S223 connection projection; see connections for expression and assertion scope.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+    },
+    {
+      "enforcement": [
+        "solver",
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#qualifiedMinCount",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "S223 connection projection; see connections for expression and assertion scope.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+    },
+    {
+      "enforcement": [
+        "solver",
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#qualifiedMinCount",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "S223 connection projection; see connections for expression and assertion scope.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+    },
+    {
+      "enforcement": [
+        "solver",
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#qualifiedValueShape",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "S223 connection projection; see connections for expression and assertion scope.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape>"
+    },
+    {
+      "enforcement": [
+        "solver",
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#qualifiedValueShape",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "S223 connection projection; see connections for expression and assertion scope.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape>"
+    },
+    {
+      "enforcement": [
+        "solver",
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#qualifiedValueShape",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "S223 connection projection; see connections for expression and assertion scope.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape>"
+    },
+    {
+      "enforcement": [
+        "solver",
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#qualifiedValueShape",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "S223 connection projection; see connections for expression and assertion scope.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape>"
+    },
+    {
+      "enforcement": [
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#maxCount",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "Outside this generated projection; retained for SHACL validation.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/4",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+    },
+    {
+      "enforcement": [
+        "validation"
+      ],
+      "parameter": "http://www.w3.org/ns/shacl#minCount",
+      "path": "http://data.ashrae.org/standard223#hasConnectionPoint",
+      "reason": "Outside this generated projection; retained for SHACL validation.",
+      "source": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/4",
+      "target": "https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil",
+      "value": "\"4\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+    }
+  ],
+  "format": 1,
+  "quantities": [],
+  "summary": {
+    "constructor": 0,
+    "optional_bindings_missing": 0,
+    "runtime": 0,
+    "solver": 12,
+    "validation_only": 2
+  }
+}

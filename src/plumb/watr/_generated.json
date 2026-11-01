@@ -3,8 +3,8 @@
   "files": [
     "__init__.py",
     "_build.json",
-    "_connection_support.json",
     "_shapes.ttl",
+    "_support.json",
     "_symbols.json",
     "enums.py"
   ]

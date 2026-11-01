@@ -21,12 +21,20 @@ through Python alias changes. Unrelated predicates named `hasConnectionPoint`,
 validation-only boolean branches are excluded from solver assertions and
 candidate restrictions; full SHACL validation remains authoritative.
 
-`_connection_support.json` records each connection projection's source,
-target, supported structure, and reason when it remains validation-only.
-This makes omitted qualifiers visible: for example, the paired-point qualifier
-on heat exchangers currently remains in SHACL validation rather than becoming
-an unconditional medium/count requirement. This report covers connection
-projections; constructor/default checks are separate compiler projections.
+Every ontology and configuration package carries `_support.json`. Its source
+inventory distinguishes constructor, runtime, solver, and validation checks;
+it also records policy bindings, connection expressions, and quantity projections.
+Each constraint names its target, source shape, path, and parameter. A summary
+counts the enforcement categories and missing optional bindings. Descriptions
+identify approximations, such as Python type checks that leave exact RDF
+datatype validation to SHACL.
+Anonymous source identifiers name content/context groups; target and path retain
+their scope when equivalent anonymous RDF nodes have interchangeable labels.
+
+This makes omitted qualifiers visible: the paired-point qualifier on heat
+exchangers remains in SHACL validation rather than becoming an unconditional
+medium/count requirement. Unsupported constructive forms fail with source-linked
+errors. The report replaces the earlier connection-only report.
 
 Media likelihood comes from the ontology's permitted-media domains, not a
 class-specific preservation flag. For every pair of active ports on an entity,
@@ -112,11 +120,28 @@ maximum counts and inverse links, before changing the model.
 ## UX overlays
 
 Operator sugar and containment rules are *policy*, not ontology fact, so they
-live in overlays (`plumb/gen/overlays.py`), keyed by ontology name. An
-overlay entry that doesn't resolve against a given ontology version is
-skipped with a comment in the generated file, so one overlay can serve many
-versions. Pass `--no-overlay` to disable, or supply your own
-`Overlay` via the Python API (`plumb.gen.compile_source`).
+live in overlays (`plumb/gen/overlays.py`), keyed by ontology name. Bindings accept
+IRIs or generated names; S223/WaTr built-ins use IRIs so Python alias changes
+cannot redirect them. Targets are required by default. Missing required targets
+or incompatible bindings fail before writing files, with structured
+`CompilationError.diagnostics`. A missing optional target is recorded in the
+support report and omitted; an incompatible target remains an error.
+
+```python
+from plumb.gen.overlays import Binding, Overlay
+
+policy = Overlay(
+    rshift={"urn:example#Equipment": "urn:example#feeds"},
+    sensor_classes={
+        "http://qudt.org/vocab/quantitykind/Temperature":
+            Binding("urn:example#TemperatureSensor", required=False),
+    },
+)
+```
+
+Pass `--no-overlay` to disable built-in registrations, or supply an `Overlay`
+to ontology compilation. Configurations inherit their base package's policy;
+custom configuration overlays are rejected instead of silently ignored.
 
 ## Regenerating the committed packages
 

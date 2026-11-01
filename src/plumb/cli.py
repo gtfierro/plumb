@@ -55,7 +55,10 @@ def main(argv: list[str] | None = None) -> int:
 
     args = parser.parse_args(argv)
     if args.command == "gen":
-        return _cmd_gen(args)
+        try:
+            return _cmd_gen(args)
+        except ValueError as error:
+            gen.error(str(error))
     return 2  # pragma: no cover - argparse enforces the subcommand
 
 
@@ -84,8 +87,8 @@ def _load_via_ontoenv(iri: str) -> tuple[rdflib.Graph, str]:
     """Fetch an ontology and its owl:imports closure through ontoenv.
 
     Uses a temporary environment, so the closure reflects the network state
-    at generation time. Pinning it with a lockfile is deferred (see
-    docs/roadmap.md).
+    at generation time. Committed packages instead use the locked offline
+    workflow in scripts/regenerate.py.
     """
     from ontoenv import OntoEnv
 

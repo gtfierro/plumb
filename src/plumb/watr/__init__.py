@@ -21947,7 +21947,7 @@ class UnsignedType(NumericType):
         properties=(_P_UnsignedType_signedness,),
     )
 
-    signedness: _RelOne[SignednessType] = _RelOne(_P_UnsignedType_signedness)
+    signedness: _RelOne[SignednessType | _TermValue] = _RelOne(_P_UnsignedType_signedness)
     """signedness (http://qudt.org/schema/qudt/signedness)"""
     _shape_constraints = (
         _ShapeValues('abbreviation', 'http://qudt.org/schema/qudt/Concept-abbreviation', required=(), defaults=(), choices=None, minimum=0, maximum=1),
@@ -22031,7 +22031,7 @@ class UnsignedType(NumericType):
         protocol_buffers_name: str | None = None,
         python_name: str | None = None,
         rdfs_datatype: _EntityBase | None = None,
-        signedness: SignednessType | None = None,
+        signedness: SignednessType | _TermValue | None = None,
         vb_name: str | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -31106,7 +31106,7 @@ class StringUTF16(TextStringType):
         properties=(_P_StringUTF16_member_datatype,),
     )
 
-    member_datatype: _Rel[CharacterType] = _Rel(_P_StringUTF16_member_datatype)
+    member_datatype: _Rel[CharacterType | _TermValue] = _Rel(_P_StringUTF16_member_datatype)
     """member datatype (http://qudt.org/schema/qudt/memberDatatype)"""
     _shape_constraints = (
         _ShapeValues('abbreviation', 'http://qudt.org/schema/qudt/Concept-abbreviation', required=(), defaults=(), choices=None, minimum=0, maximum=1),
@@ -31181,7 +31181,7 @@ class StringUTF16(TextStringType):
         max_exclusive: str | None = None,
         max_inclusive: _EntityBase | None = None,
         max_length: int | None = None,
-        member_datatype: _Iterable[CharacterType] = (),
+        member_datatype: _Iterable[CharacterType | _TermValue] = (),
         microsoft_sql_server_name: str | None = None,
         min_exclusive: _EntityBase | None = None,
         min_inclusive: _EntityBase | None = None,
@@ -31282,7 +31282,7 @@ class StringUTF8(TextStringType):
         properties=(_P_StringUTF8_member_datatype,),
     )
 
-    member_datatype: _Rel[CharacterType] = _Rel(_P_StringUTF8_member_datatype)
+    member_datatype: _Rel[CharacterType | _TermValue] = _Rel(_P_StringUTF8_member_datatype)
     """member datatype (http://qudt.org/schema/qudt/memberDatatype)"""
     _shape_constraints = (
         _ShapeValues('abbreviation', 'http://qudt.org/schema/qudt/Concept-abbreviation', required=(), defaults=(), choices=None, minimum=0, maximum=1),
@@ -31357,7 +31357,7 @@ class StringUTF8(TextStringType):
         max_exclusive: str | None = None,
         max_inclusive: _EntityBase | None = None,
         max_length: int | None = None,
-        member_datatype: _Iterable[CharacterType] = (),
+        member_datatype: _Iterable[CharacterType | _TermValue] = (),
         microsoft_sql_server_name: str | None = None,
         min_exclusive: _EntityBase | None = None,
         min_inclusive: _EntityBase | None = None,
@@ -34557,7 +34557,7 @@ class UnsignedBigIntegerType(BigIntegerType, UnsignedIntegerType):
         protocol_buffers_name: str | None = None,
         python_name: str | None = None,
         rdfs_datatype: _EntityBase | None = None,
-        signedness: SignednessType | None = None,
+        signedness: SignednessType | _TermValue | None = None,
         vb_name: str | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -34753,7 +34753,7 @@ class UnsignedLongIntegerType(LongIntegerType, UnsignedIntegerType):
         protocol_buffers_name: str | None = None,
         python_name: str | None = None,
         rdfs_datatype: _EntityBase | None = None,
-        signedness: SignednessType | None = None,
+        signedness: SignednessType | _TermValue | None = None,
         vb_name: str | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -35002,7 +35002,7 @@ class UnsignedShortIntegerType(ShortIntegerType, UnsignedIntegerType):
         protocol_buffers_name: str | None = None,
         python_name: str | None = None,
         rdfs_datatype: _EntityBase | None = None,
-        signedness: SignednessType | None = None,
+        signedness: SignednessType | _TermValue | None = None,
         vb_name: str | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -36073,10 +36073,9 @@ class pHSensor(ConcentrationSensor):
     )
 
 
-# -- UX overlay: operator sugar and containment rules --
+# -- Authoring policy --
 
 from plumb.connect223 import S223Connector as _S223Connector
-
 Connectable._CONNECTOR = _S223Connector(_REGISTRY, connection_classes={'http://data.ashrae.org/standard223#Fluid-Air': 'Duct', 'http://data.ashrae.org/standard223#Fluid-Water': 'Pipe', 'http://data.ashrae.org/standard223#Fluid-NaturalGas': 'Pipe', 'http://data.ashrae.org/standard223#Fluid-Oil': 'Pipe', 'http://data.ashrae.org/standard223#Mix-Fluid': 'Pipe'})
 _REGISTRY.sensor_classes = {'http://qudt.org/vocab/quantitykind/AbsoluteHumidity': 'HumiditySensor', 'http://qudt.org/vocab/quantitykind/AmountOfSubstanceConcentration': 'ConcentrationSensor', 'http://qudt.org/vocab/quantitykind/CorrelatedColorTemperature': 'CorrelatedColorTemperatureSensor', 'http://qudt.org/vocab/quantitykind/Duv': 'DuvSensor', 'http://qudt.org/vocab/quantitykind/ElectricCurrent': 'ElectricCurrentSensor', 'http://qudt.org/vocab/quantitykind/GaugePressure': 'GaugePressureSensor', 'http://qudt.org/vocab/quantitykind/Illuminance': 'IlluminanceSensor', 'http://qudt.org/vocab/quantitykind/MassConcentration': 'ConcentrationSensor', 'http://qudt.org/vocab/quantitykind/MassFlowRate': 'FlowSensor', 'http://qudt.org/vocab/quantitykind/Population': 'OccupantCountSensor', 'http://qudt.org/vocab/quantitykind/Pressure': 'PressureSensor', 'http://qudt.org/vocab/quantitykind/RelativeHumidity': 'HumiditySensor', 'http://qudt.org/vocab/quantitykind/Temperature': 'TemperatureSensor', 'http://qudt.org/vocab/quantitykind/Voltage': 'VoltageSensor', 'http://qudt.org/vocab/quantitykind/VolumeFlowRate': 'FlowSensor', 'http://qudt.org/vocab/quantitykind/Conductivity': 'ConductivitySensor', 'http://qudt.org/vocab/quantitykind/ElectricConductivity': 'ConductivitySensor', 'http://qudt.org/vocab/quantitykind/Frequency': 'FrequencySensor', 'http://qudt.org/vocab/quantitykind/Turbidity': 'TurbidityMeter', 'http://qudt.org/vocab/quantitykind/Volume': 'VolumeSensor'}
 _REGISTRY.containment.register('PhysicalSpace', 'PhysicalSpace', 'contains_', edge_from='container')

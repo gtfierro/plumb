@@ -21,6 +21,11 @@ Implemented so far: verified offline input snapshots and regeneration CI;
 effective property intersections and numeric counts; RDF ancestry independent
 of Python MRO; predicate name disambiguation; atomic collection updates; and
 an initial S223 semantic adapter using vocabulary IRIs and subclass ancestry.
+Both compiler fronts now share property refinement and rendering, including
+required/default values and finite choices. Extensions link through versioned,
+hashed compiler symbol exports rather than private runtime registries. Required
+and optional policy bindings have structured diagnostics, and every generated
+package carries a source-linked enforcement report.
 
 Design criterion: deep modules with simple interfaces. These phases assign
 ownership of complexity; they should reduce caller coordination and keep

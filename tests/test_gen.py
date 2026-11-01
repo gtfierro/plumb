@@ -11,7 +11,7 @@ import rdflib
 from plumb import Model, ModelingError
 from plumb.gen import compile_modules, compile_source, extract, generate
 from plumb.gen import naming
-from plumb.gen.overlays import Overlay
+from plumb.gen.overlays import Binding, Overlay
 
 FIXTURE = Path(__file__).parent / "fixtures" / "mini.ttl"
 
@@ -20,7 +20,7 @@ MINI_OVERLAY = Overlay(
     containment=(
         ("Equipment", "Sensor", "has_sensor", "container"),
         # deliberately references a class this ontology doesn't define:
-        ("Zone", "Equipment", "has_location", "child"),
+        (Binding("Zone", required=False), "Equipment", "has_location", "child"),
     ),
 )
 
@@ -296,8 +296,10 @@ def test_overlay_rshift_and_containment(mini, m):
 
 
 def test_overlay_entries_for_missing_classes_are_skipped(mini):
-    source = Path(mini.__file__).read_text()
-    assert "# skipped: containment Zone/Equipment" in source
+    report = json.loads(Path(mini.__file__).with_name("_support.json").read_text())
+    record = next(item for item in report["bindings"] if "Zone" in item["target"])
+    assert record["status"] == "missing"
+    assert not record["required"]
 
 
 def test_serialization_uses_ontology_predicates(mini, m):
@@ -624,7 +626,7 @@ def test_unrelated_medium_predicate_does_not_select_a_domain():
         name="Ports",
         overlay=Overlay(enum_root="http://data.ashrae.org/standard223#EnumerationKind"),
     )
-    report = json.loads(modules["_connection_support.json"])
+    report = json.loads(modules["_support.json"])["connections"]
     record = next(
         item
         for item in report
@@ -874,18 +876,24 @@ def test_overlay_sensor_classes_register_only_known_classes():
         format="turtle",
     )
     kind = "http://qudt.org/vocab/quantitykind/"
-    source = compile_source(
+    modules = compile_modules(
         graph,
         name="Sensors",
         overlay=Overlay(
             sensor_classes={
                 f"{kind}Turbidity": "TurbidityMeter",
-                f"{kind}Temperature": "TemperatureSensor",
+                f"{kind}Temperature": Binding("TemperatureSensor", required=False),
             }
         ),
     )
+    source = modules["__init__.py"]
 
     assert (
         f"_REGISTRY.sensor_classes = {{'{kind}Turbidity': 'TurbidityMeter'}}" in source
     )
-    assert "# skipped: sensor class TemperatureSensor" in source
+    record = next(
+        item
+        for item in json.loads(modules["_support.json"])["bindings"]
+        if item["target"] == ["TemperatureSensor"]
+    )
+    assert record["status"] == "missing" and not record["required"]

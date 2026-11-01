@@ -25,6 +25,20 @@ from rdflib.term import Node
 
 _PREFIX_CHARS = re.compile(r"[^A-Za-z0-9_-]")
 _AUTO_PREFIX = re.compile(r"^(ns|default)\d+$")
+_SOURCE_GROUP = re.compile(r"^(b[0-9a-f]{24})(?:_\d+)?$")
+
+
+def source_id(node: rdflib.term.Node) -> str:
+    """Identify an anonymous diagnostic source by its content/context group.
+
+    Equal normalized nodes receive interchangeable numeric suffixes so they
+    remain distinct RDF nodes. Those suffixes carry no stable diagnostic
+    meaning; the report's target and path retain the source's scope.
+    """
+    label = str(node)
+    if isinstance(node, BNode) and (match := _SOURCE_GROUP.fullmatch(label)):
+        return match.group(1)
+    return label
 
 
 def stable_graph(graph: rdflib.Graph) -> rdflib.Graph:

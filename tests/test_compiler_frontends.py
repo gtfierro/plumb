@@ -221,3 +221,48 @@ def test_linked_extensions_use_exports_and_reject_stale_dependencies(compiler):
     path.write_text(path.read_text() + "\n")
     with pytest.raises(ValueError, match="regenerate the dependent package"):
         Symbols.load(second.__name__)
+
+
+@pytest.mark.parametrize("configuration", [False, True])
+def test_both_frontends_report_runtime_and_validation_boundaries(
+    compiler, configuration
+):
+    build, root = compiler
+    api = build(
+        """
+        ex:Special a owl:Class, sh:NodeShape ; rdfs:subClassOf ex:Owner ;
+            sh:property ex:SpecialMode .
+        ex:SpecialMode sh:path ex:mode ; sh:defaultValue "b" ; sh:in ("b") ;
+            sh:sparql [ sh:select "SELECT $this WHERE { FILTER(false) }" ] .
+    """,
+        configuration=configuration,
+    )
+    report = json.loads((root / api.__name__ / "_support.json").read_text())
+    records = {
+        item["parameter"].rsplit("#", 1)[-1]: item
+        for item in report["constraints"]
+        if item["source"] == "urn:front#SpecialMode"
+    }
+    assert records["in"]["enforcement"] == ["runtime", "validation"]
+    assert records["defaultValue"]["enforcement"] == ["constructor"]
+    assert records["sparql"]["enforcement"] == ["validation"]
+
+
+@pytest.mark.parametrize("configuration", [False, True])
+def test_named_reference_defaults_preserve_declared_subtype(compiler, configuration):
+    build, root = compiler
+    api = build(
+        """
+        ex:Rover a ex:Dog .
+        ex:Special a owl:Class, sh:NodeShape ; rdfs:subClassOf ex:Owner ;
+            sh:property [ sh:path ex:favourite ; sh:class ex:Animal ;
+                          sh:maxCount 1 ; sh:hasValue ex:Rover ] .
+    """,
+        configuration=configuration,
+    )
+    with Model("urn:instance:"):
+        owner = api.Special()
+        assert owner.favourite.iri == "urn:front#Rover"
+        assert "urn:front#Dog" in owner.favourite.types
+    source = (root / api.__name__ / "__init__.py").read_text()
+    assert "_TermValue]" in source

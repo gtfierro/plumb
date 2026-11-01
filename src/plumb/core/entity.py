@@ -979,7 +979,14 @@ class Entity:
         def conforms(candidate: type[Entity] | TermValue) -> bool:
             return all(
                 any(
-                    iri in candidate.types
+                    any(
+                        declared == iri
+                        or (
+                            (symbol := registry.by_iri.get(declared)) is not None
+                            and symbol.meta.is_a(iri)
+                        )
+                        for declared in candidate.types
+                    )
                     if isinstance(candidate, TermValue)
                     else candidate.meta.is_a(iri)
                     for iri in group

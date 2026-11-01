@@ -1,12 +1,12 @@
 """Compile reusable SHACL property groups and ontology extension classes.
 
-The optional codegen annotations select Python projections and the installed
-base package. Domain facts always come from RDF classes and SHACL constraints.
+The optional codegen annotations select Python projections and a compiler symbol
+dependency. Domain facts come from RDF and SHACL, never live Python classes.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import asdict, dataclass, replace
 from keyword import iskeyword
 from math import isfinite
 from typing import Any
@@ -29,10 +29,12 @@ from .emit import (
     emit_property_spec,
     emit_shape_values,
     constant_source,
+    range_annotation,
 )
 from .ir import ClassIR, CPSlotIR, PointIR, PropIR, SchemaIR
 from .symbols import FILENAME, Symbols, export_symbols
 from . import s223 as adapter
+from .diagnostics import FILENAME as SUPPORT_FILE, support_report
 import hashlib
 
 CODEGEN = rdflib.Namespace("https://watermetadata.org/plumb/codegen#")
@@ -406,7 +408,7 @@ def compile_configurations(
     name: str,
     source: str | None,
 ) -> dict[str, str]:
-    """Compile a shape-defined extension linked to an installed base package."""
+    """Compile an extension against data-only dependency symbols."""
     ontologies = sorted(graph.subjects(RDF.type, OWL.Ontology), key=str)
     selected = [node for node in ontologies if graph.value(node, CODEGEN.baseModule)]
     if len(selected) != 1:
@@ -504,6 +506,7 @@ def compile_configurations(
         return reference(node)
 
     body = []
+    quantity_records = []
     for item in configurations:
         body.extend(
             _emit_configuration(
@@ -540,6 +543,7 @@ def compile_configurations(
             ]
         )
         for field in fields:
+            quantity_records.append(asdict(field))
             if (
                 field.property_class not in dependency.classes
                 and field.property_class not in known
@@ -721,6 +725,23 @@ def compile_configurations(
     shapes = "\n".join(sorted(graph.serialize(format="nt").splitlines())) + "\n"
     return {
         "__init__.py": "\n".join(lines) + "\n",
+        SUPPORT_FILE: support_report(
+            graph,
+            ir.classes,
+            quantities=quantity_records,
+            connections=[
+                {
+                    "target": item.iri,
+                    "source": point.source,
+                    "path": str(S223.hasConnectionPoint),
+                    "support": "solver",
+                    "projection": asdict(point),
+                    "asserted_directly": True,
+                }
+                for item in configurations
+                for point in item.points
+            ],
+        ),
         FILENAME: export_symbols(
             ir, graph_digest=hashlib.sha256(shapes.encode()).hexdigest()
         ),
@@ -734,9 +755,11 @@ def _value_annotation(spec: PropIR, ref: Any, class_names: dict[str, str]) -> st
         return "_TermValue" if spec.kind == "term" else "object"
     if spec.kind == "enum":
         return "_EnumValue"
-    value = " | ".join(ref(class_names[name]) for name in spec.ranges) or "_Entity"
-    if spec.deferred:
-        value += " | _DeferredEndpoint"
+    value = range_annotation(
+        spec,
+        entity_base="_Entity",
+        class_names={name: ref(class_names[name]) for name in spec.ranges},
+    )
     return f"type[{value}]" if spec.kind == "class" else value
 
 

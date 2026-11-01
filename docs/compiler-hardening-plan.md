@@ -1,17 +1,25 @@
 # Compiler and runtime hardening plan
 
-Status: implementation in progress, 2026-10-30. Phase 1 has an offline build
+Status: implementation in progress, 2026-10-31. Phase 1 has an offline build
 and CI gate. Effective property composition, semantic ancestry, numeric counts,
 predicate name disambiguation, and atomic relationship updates have landed.
-An initial S223 semantic adapter and connection support report have landed.
+The ontology and configuration fronts now share effective property refinement,
+Python descriptors, required/default values, choices, and annotation rendering.
+Configurations consume versioned compiler symbols without executing dependency
+packages; extension exports carry transitive dependency digests and defining
+modules. Required/optional policy bindings and a unified support report have
+landed. S223/WaTr built-in policy targets use semantic IRIs.
 The user has explicitly authorized
 breaking changes: prefer the coherent final interfaces over compatibility
 wrappers or preservation of the previous generated API.
 
-Still pending: complete front-end unification and support diagnostics; canonical
-import linking with explicit WaTr profile behavior; the core/backend lifecycle
+Still pending: canonical S223/WaTr identity linking with explicit WaTr profile
+behavior; the core/backend lifecycle
 split; and semantic upgrade reports. The initial source lock intentionally
 captures historical closures rather than claiming recovered import boundaries.
+Configuration named ports and scalar quantity schemas remain distinct Python
+projections. This work does not claim support for arbitrary SHACL constructive
+forms; unsupported constraints remain explicit in validation or fail compilation.
 
 ## Objective
 

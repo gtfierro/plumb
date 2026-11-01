@@ -7392,10 +7392,9 @@ class Zone_2(Zone):
         )
 
 
-# -- UX overlay: operator sugar and containment rules --
+# -- Authoring policy --
 
 from plumb.connect223 import S223Connector as _S223Connector
-
 Connectable._CONNECTOR = _S223Connector(_REGISTRY, connection_classes={'http://data.ashrae.org/standard223#Fluid-Air': 'Duct', 'http://data.ashrae.org/standard223#Fluid-Water': 'Pipe', 'http://data.ashrae.org/standard223#Fluid-NaturalGas': 'Pipe', 'http://data.ashrae.org/standard223#Fluid-Oil': 'Pipe'})
 _REGISTRY.sensor_classes = {'http://qudt.org/vocab/quantitykind/AbsoluteHumidity': 'HumiditySensor', 'http://qudt.org/vocab/quantitykind/AmountOfSubstanceConcentration': 'ConcentrationSensor', 'http://qudt.org/vocab/quantitykind/CorrelatedColorTemperature': 'CorrelatedColorTemperatureSensor', 'http://qudt.org/vocab/quantitykind/Duv': 'DuvSensor', 'http://qudt.org/vocab/quantitykind/ElectricCurrent': 'ElectricCurrentSensor', 'http://qudt.org/vocab/quantitykind/GaugePressure': 'GaugePressureSensor', 'http://qudt.org/vocab/quantitykind/Illuminance': 'IlluminanceSensor', 'http://qudt.org/vocab/quantitykind/MassConcentration': 'ConcentrationSensor', 'http://qudt.org/vocab/quantitykind/MassFlowRate': 'FlowSensor', 'http://qudt.org/vocab/quantitykind/Population': 'OccupantCountSensor', 'http://qudt.org/vocab/quantitykind/Pressure': 'PressureSensor', 'http://qudt.org/vocab/quantitykind/RelativeHumidity': 'HumiditySensor', 'http://qudt.org/vocab/quantitykind/Temperature': 'TemperatureSensor', 'http://qudt.org/vocab/quantitykind/Voltage': 'VoltageSensor', 'http://qudt.org/vocab/quantitykind/VolumeFlowRate': 'FlowSensor'}
 _REGISTRY.containment.register('PhysicalSpace', 'PhysicalSpace', 'contains_', edge_from='container')
