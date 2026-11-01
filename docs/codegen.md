@@ -143,6 +143,28 @@ Pass `--no-overlay` to disable built-in registrations, or supply an `Overlay`
 to ontology compilation. Configurations inherit their base package's policy;
 custom configuration overlays are rejected instead of silently ignored.
 
+## Imported-class profiles
+
+A configuration can target an imported class with a SHACL shape. It keeps the
+dependency's exact Python class and enum objects; constraints on imported classes
+are enforced by model validation. They appear with `profile: true` and
+`enforcement: ["validation"]` in `_support.json`, and their targets are listed in
+`profile_targets`. Complex paths and boolean expressions remain in SHACL.
+
+Profiles do not mutate canonical constructors or install properties on dependency
+classes. Imported constructor defaults, renamed Python classes, and added
+ancestry fail compilation with the affected target. Declare a local subclass
+when a separate constructive Python projection is needed.
+
+Authored extension instances select their package's shapes automatically.
+`Model.from_graph(..., registries=...)` also retains explicitly selected profiles
+when every instance has an imported class. Dependency profiles compose by
+conjunction and survive resolution. Canonical class-valued links resolve local
+extension terms without changing the dependency's registry.
+
+See the [identity/profile decision](shared-identities-and-profiles.md) for the
+tested prototype and why the actual WaTr migration remains a separate step.
+
 ## Regenerating the committed packages
 
 ```bash

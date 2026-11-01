@@ -954,6 +954,7 @@
     }
   ],
   "format": 1,
+  "profile_targets": [],
   "quantities": [],
   "summary": {
     "constructor": 10,

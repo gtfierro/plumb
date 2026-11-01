@@ -418,6 +418,7 @@ def compile_configurations(
     ontology = selected[0]
     module_name = str(_one(graph, ontology, CODEGEN.baseModule))
     dependency = Symbols.load(module_name)
+    profiles = _imported_profiles(graph, dependency)
     imported_modules: dict[str, str] = {}
 
     def class_reference(iri: str) -> str:
@@ -729,6 +730,7 @@ def compile_configurations(
             graph,
             ir.classes,
             quantities=quantity_records,
+            profiles=profiles,
             connections=[
                 {
                     "target": item.iri,
@@ -746,6 +748,58 @@ def compile_configurations(
             ir, graph_digest=hashlib.sha256(shapes.encode()).hexdigest()
         ),
     }
+
+
+def _imported_profiles(graph: rdflib.Graph, dependency: Symbols) -> list[ClassIR]:
+    """Separate validation profiles from the dependency's canonical symbols.
+
+    Profiles may constrain instances but cannot redefine imported identities or
+    promise constructor defaults on classes owned by another package.
+    """
+    profiles = []
+    for iri, symbol in sorted(dependency.classes.items()):
+        node = URIRef(iri)
+        for parent in graph.objects(node, RDFS.subClassOf):
+            if not isinstance(parent, URIRef) or str(parent) not in {
+                *symbol.parent_iris,
+                *symbol.ancestor_iris,
+            }:
+                raise ValueError(
+                    f"{iri}: cannot redefine imported ancestry with {parent.n3()}; "
+                    "declare a local subclass instead"
+                )
+        python_name = _one(graph, node, CODEGEN.pythonName)
+        if python_name is not None and str(python_name) != symbol.name:
+            raise ValueError(f"{iri}: cannot rename imported class {symbol.name}")
+        roots = [node, *graph.subjects(SH.targetClass, node)]
+        if not any(
+            str(parameter).startswith(str(SH))
+            for root in roots
+            for parameter in graph.predicates(root)
+        ):
+            continue
+        pending = list(roots)
+        visited = set()
+        while pending:
+            constraint = pending.pop()
+            if constraint in visited:
+                continue
+            visited.add(constraint)
+            if graph.value(constraint, SH.defaultValue) is not None:
+                raise ValueError(
+                    f"{iri}: imported profile default at {constraint.n3()} "
+                    "cannot change the canonical constructor; "
+                    "declare a local subclass instead"
+                )
+            # This is a validation profile: preserve complex paths and boolean
+            # constraints without trying to construct a Python projection.
+            for parameter in (SH.property, SH.node, SH.qualifiedValueShape, SH["not"]):
+                pending.extend(graph.objects(constraint, parameter))
+            for parameter in (SH["and"], SH["or"], SH.xone):
+                for members in graph.objects(constraint, parameter):
+                    pending.extend(graph.items(members))
+        profiles.append(symbol)
+    return profiles
 
 
 def _value_annotation(spec: PropIR, ref: Any, class_names: dict[str, str]) -> str:

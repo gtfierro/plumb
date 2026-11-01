@@ -1,6 +1,7 @@
 """Prototype: canonical S223 classes and model-scoped extension shapes."""
 
 import importlib
+import json
 import os
 from pathlib import Path
 import subprocess
@@ -11,7 +12,7 @@ from rdflib import Graph, URIRef
 
 from plumb import Model, connect, s223
 from plumb.core.errors import RangeError
-from plumb.gen import generate
+from plumb.gen import compile_modules, generate
 from plumb.gen.overlays import Overlay
 from plumb.qudt import quantity_kinds, units
 
@@ -254,3 +255,149 @@ def invalid(fan: Fan, value: WaterEquipment) -> None:
     assert bad.returncode != 0 and "invalid-argument-type" in bad.stdout, (
         bad.stdout + bad.stderr
     )
+
+
+def test_imported_profile_report_does_not_claim_canonical_runtime_enforcement(profile):
+    report = json.loads(Path(profile.__file__).with_name("_support.json").read_text())
+    assert report["profile_targets"] == [s223.QuantifiableObservableProperty.meta.iri]
+    (limit,) = [
+        row
+        for row in report["constraints"]
+        if row["source"] == "urn:profile:water#ValueLimit"
+    ]
+    assert limit["profile"]
+    assert limit["enforcement"] == ["validation"]
+    assert limit["path"] == "http://data.ashrae.org/standard223#hasValue"
+    exported = json.loads(Path(profile.__file__).with_name("_symbols.json").read_text())
+    assert {item["iri"] for item in exported["classes"]} == {
+        "urn:profile:water#WaterTemperature",
+        "urn:profile:water#WaterEquipment",
+    }
+
+
+@pytest.mark.parametrize(
+    ("addition", "message"),
+    [
+        (
+            "s223:Pump rdfs:subClassOf water:WaterEquipment .",
+            "cannot redefine imported ancestry",
+        ),
+        (
+            "s223:Pump rdfs:subClassOf [ a owl:Restriction ] .",
+            "cannot redefine imported ancestry",
+        ),
+        (
+            's223:Equipment codegen:pythonName "DifferentEquipment" .',
+            "cannot rename imported class",
+        ),
+        (
+            """
+            s223:QuantifiableObservableProperty sh:node [
+                sh:and ([ sh:property [ sh:path s223:hasValue ; sh:defaultValue 20.0 ] ])
+            ] .
+            """,
+            "imported profile default",
+        ),
+    ],
+)
+def test_imported_redefinitions_and_constructor_defaults_fail_before_writing(
+    tmp_path, addition, message
+):
+    graph = Graph().parse(data=PREFIXES + PROFILE + addition, format="turtle")
+    destination = tmp_path / "invalid"
+    with pytest.raises(ValueError, match=message):
+        generate(graph, destination, name="InvalidProfile")
+    assert not destination.exists()
+
+
+def test_profile_compilation_is_deterministic_with_redundant_imported_ancestry():
+    source = PREFIXES + PROFILE + "s223:Pump rdfs:subClassOf s223:Equipment ."
+    first = compile_modules(Graph().parse(data=source, format="turtle"), name="Profile")
+    second = compile_modules(
+        Graph().parse(data=source, format="turtle"), name="Profile"
+    )
+    assert first == second
+
+
+def test_imported_profiles_keep_complex_paths_and_booleans_for_validation():
+    source = (
+        PREFIXES
+        + PROFILE
+        + """
+        water:GraphOnly a sh:NodeShape ; sh:targetClass s223:Equipment ;
+            sh:or (
+                [ sh:property [ sh:path [ sh:inversePath s223:hasProperty ] ;
+                                sh:minCount 1 ] ]
+                [ sh:property [ sh:path (s223:hasProperty s223:hasValue) ;
+                                sh:minCount 1 ] ]
+            ) .
+    """
+    )
+    output = compile_modules(
+        Graph().parse(data=source, format="turtle"), name="Profile"
+    )
+    report = json.loads(output["_support.json"])
+    (boolean,) = [
+        row
+        for row in report["constraints"]
+        if row["source"] == "urn:profile:water#GraphOnly"
+    ]
+    assert boolean["profile"] and boolean["enforcement"] == ["validation"]
+    assert "inversePath" in output["_shapes.ttl"]
+
+
+@pytest.mark.parametrize("reverse", [False, True])
+def test_profiles_without_local_classes_compose_by_conjunction(
+    profile, tmp_path, reverse
+):
+    source = (
+        PREFIXES
+        + """
+        <urn:profile:other> a owl:Ontology ; codegen:baseModule "plumb.s223" .
+        water:OtherLimit a sh:NodeShape ;
+            sh:targetClass s223:QuantifiableObservableProperty ;
+            sh:property [ sh:path s223:hasValue ; sh:minInclusive 30.0 ] .
+    """
+    )
+    generate(
+        Graph().parse(data=source, format="turtle"),
+        tmp_path / "prototype_other",
+        name="OtherProfile",
+    )
+    other = importlib.import_module("prototype_other")
+    with Model("urn:profile:conjunction#") as model:
+        temperature(s223.QuantifiableObservableProperty, "temperature", 20.0)
+    registries = [profile.REGISTRY, other.REGISTRY]
+    if reverse:
+        registries.reverse()
+    loaded = Model.from_graph(model.graph(), registries=registries)
+    assert not loaded.validate(infer=False)
+    loaded["temperature"].has_value = 120.0
+    assert not loaded.validate(infer=False)
+    loaded["temperature"].has_value = 50.0
+    assert loaded.validate(infer=False)
+
+
+def test_incompatible_shared_class_identities_fail_before_inference(monkeypatch):
+    import shifty
+    from plumb.core import ClassInfo, Entity, OntologyInfo, Registry
+
+    first = Registry(OntologyInfo("First", "urn:first"))
+    second = Registry(OntologyInfo("Second", "urn:second"))
+
+    class First(Entity):
+        _classinfo = ClassInfo("urn:shared", first.ontology, first)
+
+    class Second(Entity):
+        _classinfo = ClassInfo("urn:shared", second.ontology, second)
+
+    def unexpected(*args, **kwargs):
+        raise AssertionError("inference must not run on incompatible symbols")
+
+    monkeypatch.setattr(shifty, "infer", unexpected)
+    graph = Graph()
+    with pytest.raises(
+        ValueError, match="incompatible imported class identity urn:shared"
+    ):
+        Model.from_graph(graph, registries=[first, second], infer=True)
+    assert not graph

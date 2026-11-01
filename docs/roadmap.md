@@ -26,6 +26,11 @@ required/default values and finite choices. Extensions link through versioned,
 hashed compiler symbol exports rather than private runtime registries. Required
 and optional policy bindings have structured diagnostics, and every generated
 package carries a source-linked enforcement report.
+The [identity/profile prototype](shared-identities-and-profiles.md) proves
+canonical S223 reuse with model-scoped extension validation, transitive profile
+selection, mixed hydration, connections, containment, and static typing.
+Actual WaTr migration remains next: its added properties and changed Pump
+ancestry need explicit authoring projections before duplicate classes are removed.
 
 Design criterion: deep modules with simple interfaces. These phases assign
 ownership of complexity; they should reduce caller coordination and keep

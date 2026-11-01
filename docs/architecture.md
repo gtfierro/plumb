@@ -96,6 +96,14 @@ is published. `artifacts.py` records file ownership and cleans stale generated
 files without touching nested packages or handwritten files. `make regen-check`
 checks output bytes and owned file sets in CI.
 
+Extensions include canonical dependency classes in their registry. Imported-class
+SHACL restrictions are model-scoped validation profiles, recorded separately from
+the canonical class's Python projection. Hydration keeps the selected schemas
+even when no local extension instance is present, resolves class-valued links
+against the selected symbols, and preserves transitive profiles in snapshots.
+The [identity/profile decision](shared-identities-and-profiles.md) records the
+prototype and the remaining differences in the actual WaTr closure.
+
 The [hardening plan](compiler-hardening-plan.md) tracks remaining work:
 canonical S223/WaTr identities with explicit profile restrictions, a core/backend
 lifecycle boundary, and semantic upgrade reports. The current runtime still

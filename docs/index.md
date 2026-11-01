@@ -13,6 +13,8 @@ The pages here describe how plumb works inside and how to change it:
 - [Traversal API](traversal.md): find, containment navigation, and topology
   walks over loaded and resolved models.
 - [Implementation roadmap](roadmap.md): what is done, deferred, and next.
+- [Shared identities and profiles](shared-identities-and-profiles.md): the
+  S223 identity prototype, model-scoped restrictions, and WaTr migration boundary.
 - [DESIGN.md](../DESIGN.md): the full design rationale.
 - [Book sources](book/README.md): how the learning book is laid out and built.
 

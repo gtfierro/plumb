@@ -62,10 +62,13 @@ def support_report(
     bindings: Iterable[dict[str, Any]] = (),
     connections: Iterable[dict[str, object]] = (),
     quantities: Iterable[dict[str, Any]] = (),
+    profiles: Iterable[ClassIR] = (),
 ) -> str:
     """Inventory source constraints and the checks generated from them."""
     records: list[dict[str, Any]] = []
     seen = set()
+    profiles = list(profiles)
+    profile_targets = {symbol.iri for symbol in profiles}
 
     def source_groups(value: Any) -> Any:
         if isinstance(value, dict):
@@ -186,6 +189,9 @@ def support_report(
                 } and parameter in {SH.hasValue, SH.defaultValue, SH["in"]}:
                     enforcement = ["constructor", "runtime", "validation"]
                     reason = "Quantity kind/unit projection; see quantities for fixed and replaceable values."
+            if target in profile_targets:
+                enforcement = ["validation"]
+                reason = "Model-scoped profile constraint on a canonical imported class; checked by SHACL validation."
             records.append(
                 {
                     "target": target,
@@ -197,6 +203,7 @@ def support_report(
                     else value.n3(),
                     "enforcement": enforcement,
                     "reason": reason,
+                    **({"profile": True} if target in profile_targets else {}),
                 }
             )
             if parameter == SH.node:
@@ -207,8 +214,12 @@ def support_report(
             # Disjunctions and qualified branches are reported as expressions,
             # never as independently enforced conjuncts.
 
-    for symbol in sorted(classes, key=lambda item: item.iri):
-        props = {prop.predicate: prop for prop in symbol.effective_props.values()}
+    for symbol in sorted([*classes, *profiles], key=lambda item: item.iri):
+        props = (
+            {}
+            if symbol.iri in profile_targets
+            else {prop.predicate: prop for prop in symbol.effective_props.values()}
+        )
         for root in [
             URIRef(symbol.iri),
             *sorted(graph.subjects(SH.targetClass, URIRef(symbol.iri)), key=str),
@@ -237,6 +248,7 @@ def support_report(
                     records, key=lambda item: json.dumps(item, sort_keys=True)
                 ),
                 "bindings": bindings,
+                "profile_targets": sorted(profile_targets),
                 "connections": connections,
                 "quantities": quantities,
             },
