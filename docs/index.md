@@ -14,7 +14,7 @@ The pages here describe how plumb works inside and how to change it:
   walks over loaded and resolved models.
 - [Implementation roadmap](roadmap.md): what is done, deferred, and next.
 - [Shared identities and profiles](shared-identities-and-profiles.md): the
-  S223 identity prototype, model-scoped restrictions, and WaTr migration boundary.
+  canonical S223 imports, typed WaTr views, and model-scoped restrictions.
 - [DESIGN.md](../DESIGN.md): the full design rationale.
 - [Book sources](book/README.md): how the learning book is laid out and built.
 

@@ -65,5 +65,12 @@ When both define a name, WaTr's keeps it and S223's gets a suffix: `Pump` is
 including sludge; S223's admits only water, oil, or refrigerant. Check
 `Pump.meta.iri` when it matters.
 
+Unchanged imports share the exact S223 object: `watr.Pipe is s223.Pipe`.
+When WaTr adds properties or profile ancestry, it provides a typed Python
+subclass whose `meta.canonical` points to the original S223 class. These views
+work in S223 property ranges without changing S223's classes or constructors.
+`Pump_2` carries WaTr's added Pump parent edge; its canonical S223 base retains
+the original ancestry.
+
 WaTr's enum additions, such as `Fluid_Sludge` and `Role_Backwash`, sit
 alongside the S223 values in `plumb.watr.enums`.

@@ -1,87 +1,111 @@
 # Shared ontology identities and model profiles
 
-Decision: use canonical dependency classes and model-scoped SHACL profiles.
-The integration prototype is implemented; migration of the committed WaTr
-package is a separate step. This decision narrows that migration's contract
-rather than claiming it is complete.
+Decision: reuse canonical dependency objects and represent added authoring
+surfaces with explicit nominal Python views. The committed WaTr package now
+links to S223 through compiler symbols; the earlier integration prototype remains
+a regression fixture for model-scoped SHACL restrictions.
 
 ## Identity and public imports
 
-S223 owns its Python classes and enumeration values. An extension includes
-these exact objects in its registry and declares local subclasses for its own
-ontology terms. Import canonical classes from `plumb.s223` and extension terms
-from their defining package. A subclass remains a nominal Python subtype, so
-runtime and static range checks agree. Do not create parallel class definitions
-or a second enumeration tree merely because a dependency occurs in a closure.
+S223 owns its ontology classes and enumeration values. An unchanged imported
+class is the exact S223 Python object, also available through WaTr. When WaTr
+adds properties, ancestry, or authoring policy, its compiler emits a typed
+subclass of the canonical class with the same RDF IRI. This view owns descriptors
+for additions/refinements and inherits unchanged descriptors and connection
+constraints from its canonical base.
 
-The executable prototype in `tests/test_linked_profiles.py` uses the real S223
-package as a dependency and compiles a small water extension. It exercises
-canonical identity, subtype checks, both import orders, containment, connection
-resolution, hydration, and positive/negative static typing. It does not replace
-the committed `plumb.watr` package.
+```python
+from plumb import s223, watr
 
-## Profile constraints
+assert watr.Pipe is s223.Pipe
+assert issubclass(watr.QuantifiableObservableProperty,
+                  s223.QuantifiableObservableProperty)
+assert watr.QuantifiableObservableProperty.meta.canonical is s223.QuantifiableObservableProperty
+```
 
-An extension may put a SHACL shape on an imported class. That shape constrains
-the model graph when the extension is selected. It does not modify the shared
-class, install descriptors globally, change the defining registry, or alter its
-constructor defaults. Such constraints are reported as profile constraints
-enforced by SHACL validation. A canonical constructor can therefore accept a
-value that a selected profile later rejects; `Model.compile()` validates the
-finished model by default.
+Import canonical classes from `plumb.s223` and water authoring classes from
+`plumb.watr`. Existing water imports select the water property surface. A view
+has its own package metadata but does not declare another ontology class or
+modify its canonical base. `meta.iri` identifies the RDF term; `meta.canonical`
+identifies its defining Python class; `meta.registry` identifies the selected
+projection. Python range annotations use canonical dependency types so ordinary
+instances and water views type-check together.
 
-For example, the prototype limits the value of every quantifiable observable
-property to 100 in a model using the water extension. A shared S223 property
-with value 120 remains valid in a plain S223 model and fails validation in the
-water model, regardless of which package was imported first. The restriction
-also applies to imported instances, not only extension subclasses.
+The pinned closures share 181 class IRIs: 54 reuse canonical objects and 127
+have explicit views, including the Connectable view that owns WaTr policy.
+These counts follow from source constraints and policy, rather than a class
+list maintainers must update. Local WaTr terms remain ordinary generated classes.
 
-Ordinary authored models select extension shapes through their generated local
-classes. Hydration also retains the registries explicitly selected by
-`Model.from_graph(..., registries=...)`, even if the graph contains only shared
-class instances. Selection and dependency shapes survive snapshot creation.
-Transitive profiles compose by conjunction; there is no import-order winner.
-Validation loads each selected shape bundle once, preserving anonymous SHACL
-lists rather than duplicating them through both registry and file loading.
-Importing a module alone does not activate its profile in unrelated models.
-For a custom profile with no local instances, use the existing explicit
-hydration registry argument. A graph without an installed package mapping must
-still supply that registry when loaded again.
+## Profiles and hydration
 
-Class-valued links resolve against the selected model's symbols, since a base
-registry cannot know future extension classes. Hydration does not add those
-classes to the dependency's registry. Conflicting class identities are rejected.
-Hydration preserves invalid graphs for inspection; profile validity is checked
-by `validate()` or `compile()`, not by inventing replacement values on load.
+SHACL constraints on imported classes apply to the model graph when the water
+schema is selected. They do not modify shared constructors, install descriptors
+globally, or change S223's registry. Water views additionally expose compiled
+authoring constraints in signatures and descriptors. A canonical constructor
+may accept a value that a selected profile later rejects; `Model.compile()`
+validates the finished graph by default.
 
-An imported class cannot silently acquire new RDF parents or a new Python
-name. Imported authoring defaults cannot silently change its constructor.
-The extension compiler rejects these attempts with the target and source;
-declare a local subclass for a separate constructive authoring projection.
+The prototype limits quantifiable observable properties to 100 in its water
+profile. A shared property with value 120 remains valid in a plain S223 model
+and fails in the profile model, including when hydrated as an imported class.
+Profile-only constraints are marked `profile: true` and validation-only in the
+support report. Canonical constructors do not silently acquire profile defaults;
+the configuration compiler rejects those defaults and imported identity changes.
 
-## What the actual WaTr migration must handle
+Ordinary authored models select schemas through local classes and views.
+Hydration retains explicitly selected registries even if every instance uses an
+imported term. Compatible views are selected by nominal subtyping, independently
+of registry order; unrelated equal-IRI definitions and incompatible sibling views
+fail explicitly. Class-valued links resolve against the selected model symbols,
+since a canonical registry cannot know future extension classes. Invalid graphs
+remain inspectable until validation.
 
-The pinned closures share 181 class IRIs. Comparing semantic constraints,
-rather than Python aliases and anonymous source labels, reveals additions:
+Transitive local profiles compose by conjunction and survive snapshot creation.
+A linked ontology's full closure covers its dependency bundles; validation loads
+that closure once rather than duplicating anonymous SHACL expressions. Local
+configuration schemas add their own shapes. Large closures are parsed once on
+first use. `export_ontology()` exports local configuration schemas without
+copying complete dependency closures into each configuration export.
 
-- WaTr adds `hasProcess` and `hasTreatmentObjective` to 123 imported classes.
-- It adds `hasMeasurementRange` to 21 imported sensor classes and additional
-  measurement metadata to the three quantifiable property classes.
-- Its closure adds `watr:Pump` as a parent of `s223:Pump` and adds an inverse
-  for QUDT's `hasUnit` projection.
+The loader selects installed packages through RDF `owl:imports`. Custom profiles
+without a package mapping still supply `registries=` on hydration. Importing a
+module alone does not activate its profile in unrelated models.
 
-These changes cannot be handled by discarding every repeated class definition
-and assuming their authoring surfaces are identical. The migration must decide
-how to expose the added properties on imported terms and represent the Pump
-ancestry change. New enum branches and adapter policy also need extension-local
-selection without mutating dependency enum trees or connector registrations;
-the prototype covers imported enum identity and the existing S223 backend.
-If typed Python views are necessary, they need explicit
-canonical identity, registry selection, hydration, and profile semantics before
-they are generated. This prototype deliberately does not introduce an untested
-view mechanism or modify the pinned ontology to conceal those differences.
+## Enumeration and authoring policy
 
-Acceptance for migration remains the full phase 4 matrix in
-[the hardening plan](compiler-hardening-plan.md): mixed properties, containment,
-connections, class-valued terms, enums, hydration, typing, and deterministic
-shape selection against the actual WaTr package.
+All 412 imported enum values are the exact S223 objects. WaTr adds 160 local
+values with canonical parents and shared mixture constituents, without registering
+children into S223's enum trees. `enums.values` is the complete package index;
+an enum object's `children`, `descendants`, and tree browsing describe its
+defining package's tree. Use the flat index for extension members. Ancestry and
+compatibility checks work across packages.
+Generated values retain their defining vocabulary. A WaTr enum on a plain
+S223 object selects WaTr's validation shapes and records its import/version;
+an explicit water medium also selects water connection and sensor policy.
+
+Registry composition orders dependencies before extensions and selects compatible
+views. It supplies hydration symbols, quantity and sensor construction, and mixed
+connection policy. Endpoint order does not select the solver's package.
+Inherited containment registrations are deduplicated, and matching uses semantic
+ancestry so canonical objects remain usable in water assemblies and systems.
+S223 connector registrations remain unchanged.
+
+## Pump ancestry and dependency exports
+
+The WaTr closure adds `watr:Pump` as a parent of `s223:Pump`. The generated
+`watr.Pump_2` is a view of `s223.Pump` and a subtype of `watr.Pump`. `watr.Pump`
+itself still derives from Equipment and accepts the broader Mix-Fluid domain.
+S223 Pump and its allowed media remain unchanged. Water graphs retain the
+profile parent edge for authoritative validation.
+
+Compiler export format 3 separates new identities from `views`, omits redeclared
+aliases/enums, and records the S223 dependency digest. Configuration compilation
+consumes selected view metadata without importing generated packages. A dependency
+change requires regeneration; conflicting class/enum definitions and unsupported
+imported enum hierarchy changes fail explicitly.
+
+`tests/test_watr_linking.py` covers the committed packages: canonical identity,
+both import orders, unchanged S223 metadata and enum trees, mixed properties,
+containment, connection endpoint orders, class-valued terms, hydration, positive
+and negative static typing, and shape-bundle selection. `tests/test_linked_profiles.py`
+covers profile-only and transitive restrictions.

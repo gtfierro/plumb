@@ -101,12 +101,15 @@ SHACL restrictions are model-scoped validation profiles, recorded separately fro
 the canonical class's Python projection. Hydration keeps the selected schemas
 even when no local extension instance is present, resolves class-valued links
 against the selected symbols, and preserves transitive profiles in snapshots.
+WaTr reuses unchanged S223 imports and generates nominal typed views for added
+properties, profile ancestry, and authoring policy. `meta.canonical` identifies
+the defining dependency class. The compiler linker and export format 3 keep
+new identities separate from these projections; shared enums retain identity.
 The [identity/profile decision](shared-identities-and-profiles.md) records the
-prototype and the remaining differences in the actual WaTr closure.
+implementation, shape-bundle coverage, and selection rules.
 
 The [hardening plan](compiler-hardening-plan.md) tracks remaining work:
-canonical S223/WaTr identities with explicit profile restrictions, a core/backend
-lifecycle boundary, and semantic upgrade reports. The current runtime still
+a core/backend lifecycle boundary and semantic upgrade reports. The runtime still
 delegates snapshot creation to the S223 solver for ordinary models.
 
 `tests/toy.py` is a hand-written module in exactly the emitter's shape; the

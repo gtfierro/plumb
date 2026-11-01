@@ -9,17 +9,17 @@ Configurations consume versioned compiler symbols without executing dependency
 packages; extension exports carry transitive dependency digests and defining
 modules. Required/optional policy bindings and a unified support report have
 landed. S223/WaTr built-in policy targets use semantic IRIs.
-The [shared-identity prototype](shared-identities-and-profiles.md) now exercises
-canonical S223 classes with model-scoped extension shapes, mixed hydration,
-containment/connections, enum identity, and positive/negative typing. Hydrated
-models retain their selected schemas and transitive profiles through resolution.
+The committed WaTr package now links canonical S223 classes and enum objects,
+with explicit typed views for added authoring surfaces and ancestry. Mixed
+hydration, containment, connections, class-valued terms, import orders, and
+positive/negative typing are covered. The
+[identity/profile decision](shared-identities-and-profiles.md) records the contract.
 The user has explicitly authorized
 breaking changes: prefer the coherent final interfaces over compatibility
 wrappers or preservation of the previous generated API.
 
-Still pending: migrating the actual WaTr package to canonical identities,
-including its additive property surfaces and changed Pump ancestry; the core/backend lifecycle
-split; and semantic upgrade reports. The initial source lock intentionally
+Still pending: the core/backend lifecycle split and semantic upgrade reports.
+The initial source lock intentionally
 captures historical closures rather than claiming recovered import boundaries.
 Configuration named ports and scalar quantity schemas remain distinct Python
 projections. This work does not claim support for arbitrary SHACL constructive
@@ -215,8 +215,9 @@ Begin with a small prototype and a recorded design decision before migrating
 all generated packages. This is the highest semantic integration-risk phase.
 The prototype and decision are now recorded in
 [Shared ontology identities and model profiles](shared-identities-and-profiles.md).
-The committed WaTr package still contains duplicate definitions; this gate has
-established profile selection and hydration semantics, not finished migration.
+The committed WaTr package now reuses unchanged imports and generates explicit
+nominal views for additions. The actual-package acceptance matrix is covered by
+`tests/test_watr_linking.py`; profile-only behavior remains separately tested.
 
 Deliverables:
 

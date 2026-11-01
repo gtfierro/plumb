@@ -89,6 +89,9 @@ water.tree(max_depth=2)
 
 Values have `children`, `descendants`, `parent`, and `parents`, without a
 `.meta` step. `tree_text()` returns the tree as a string.
+Shared values are the canonical S223 objects. Tree browsing shows the defining
+package's children; WaTr additions are available in `enums.values` and retain
+their ancestry without changing S223's enum trees.
 
 ## Select a value
 

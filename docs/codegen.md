@@ -162,8 +162,14 @@ when every instance has an imported class. Dependency profiles compose by
 conjunction and survive resolution. Canonical class-valued links resolve local
 extension terms without changing the dependency's registry.
 
-See the [identity/profile decision](shared-identities-and-profiles.md) for the
-tested prototype and why the actual WaTr migration remains a separate step.
+Linked ontology closures, including WaTr, reuse unchanged dependency classes
+and enum objects. Added property surfaces and ancestry use explicit nominal
+views with `meta.canonical` pointing to the dependency class. Export format 3
+records these separately from new identities and pins the dependency digest.
+The linker classifies imported terms from normalized behavior, without a manual
+list of duplicated classes. See the
+[identity/profile decision](shared-identities-and-profiles.md) for selection,
+typing, validation, enum-tree ownership, and Pump ancestry semantics.
 
 ## Regenerating the committed packages
 
