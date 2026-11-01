@@ -7,6 +7,46 @@ the version is below 1.0, minor releases may change the public API.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-01
+
+### Added
+
+- Locked, verified ontology snapshots and offline regeneration for S223, WaTr,
+  QUDT, and domain configurations. Generated packages record their source inputs,
+  exported symbols, and constraint support for review.
+- `plumb diff BEFORE AFTER` compares saved compiler packages without importing
+  them. Text and JSON reports distinguish contract changes from source provenance
+  changes. See [the ontology upgrade guide](docs/ontology-upgrades.md).
+- Structured compiler diagnostics for missing adapter bindings, incompatible
+  dependencies, and unsupported projections.
+
+### Changed
+
+- Ontologies and domain configurations now compile through a shared intermediate
+  representation. Property constraints compose before rendering, and ontology
+  ancestry is preserved independently of Python inheritance.
+- WaTr reuses canonical S223 classes and enumeration values. Water-specific
+  constructors and properties live in typed views; selected validation profiles
+  remain scoped to the model and survive RDF hydration and snapshots. Import
+  canonical classes from `plumb.s223` and water authoring classes from
+  `plumb.watr`; see [shared identities and profiles](docs/shared-identities-and-profiles.md).
+- Optional collection arguments in generated constructors use `None` to request
+  defaults. An explicit empty collection now overrides those defaults.
+- The runtime owns transactions, immutable snapshots, and bounded resolution
+  caches. S223 connection rules sit behind a domain interface; plain RDF models
+  do not load the connection planner.
+- Generated packages use symbol manifest format 3 and support report format 2.
+  Regenerate custom packages with this compiler before using them as dependencies.
+
+### Fixed
+
+- Conjunctive property ranges, count refinements, enum defaults, and inverse
+  relation updates now preserve their combined constraints.
+- Connection-point selection follows semantic direction rather than Python class
+  names or inheritance. Resolution explanations share the planner's medium rules.
+- Failed construction restores model state, and cached plans and snapshots retain
+  consistent labels, pairings, provenance, and validation profiles.
+
 ## [0.1.0] - 2026-10-21
 
 First public release.
@@ -75,5 +115,6 @@ First public release.
   media its class's shapes mention, so a `Fan` can have a declared
   electricity inlet. Medium-domain conflicts now appear in unsatisfiable cores.
 
-[Unreleased]: https://github.com/gtfierro/plumb/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/gtfierro/plumb/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/gtfierro/plumb/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/gtfierro/plumb/releases/tag/v0.1.0
