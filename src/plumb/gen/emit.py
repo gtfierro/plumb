@@ -132,8 +132,9 @@ def emit_module(
         )
     by_name = {c.name: c for c in ir.classes}
     emitted: set[str] = set()
-    # Stand-in classes with the emitted bases, so each class can find the
-    # __init__ Python's MRO will actually resolve for it.
+    # Stand-ins execute Python's C3 calculation using metadata-only empty
+    # classes. This tells us which constructor would be inherited without
+    # importing dependency code or treating the first RDF parent as special.
     mro_stand_ins: dict[str, type] = {}
     with_init: set[str] = set()
     canonical_dummies: dict[tuple[str, str], type] = {}
@@ -228,8 +229,9 @@ def _emit_class(
     annotations: Mapping[str, str] | None = None,
     canonical: str | None = None,
 ) -> str:
-    # Only inherit from parents already emitted; a dropped link (cycle) still
-    # leaves the class rooted at the runtime Entity base.
+    # Only local, already emitted parents can supply Python bases. Semantic
+    # RDF parents outside that projection remain in ClassInfo; extraction has
+    # already rejected cycles and repaired unrepresentable Python parent sets.
     bases = bases or [p for p in cls.parents if p in emitted] or ["_EntityBase"]
 
     lines: list[str] = []
@@ -521,6 +523,10 @@ def _emit_init(
     ``cls`` if it defines none. Classes whose signature matches it simply
     inherit (keeps generated files compact for deep taxonomies like Brick's).
     """
+    # A constructor is a typed view of the effective metadata, not another
+    # implementation of constraint inheritance. Emit it when needed, then pass
+    # all values straight to Entity so a narrowed child signature cannot invoke
+    # a parent's broader or differently required generated constructor.
     effective = _init_props(cls, by_name)
     if not effective:
         return ""

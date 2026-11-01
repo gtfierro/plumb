@@ -39,6 +39,13 @@ def _resolve_overlay(
     return overlay
 
 
+# Compiler entry point and side-effect boundary
+# --------------------------------------------
+# Both source fronts return a complete filename -> text build in memory. They
+# share constraint normalization and rendering, but configurations have explicit
+# named-port/quantity projections that a general ontology does not imply.
+# No output directory is touched until extraction, linking, policy binding, and
+# diagnostics have all succeeded. generate() owns the eventual file publication.
 def compile_modules(
     graph: rdflib.Graph,
     *,
@@ -68,6 +75,9 @@ def compile_modules(
         return modules
     from .stable import stable_graph
 
+    # Normalize input identity/order before extraction. Stable Python output is
+    # insufficient on its own: bundled RDF, source diagnostics, and dependency
+    # digests must also survive fresh parses with new blank-node labels.
     graph = stable_graph(graph)
     resolved = _resolve_overlay(name, overlay)
     ir = extract(

@@ -83,6 +83,9 @@ type _Facts = dict[_Key, dict[str, Any]]
 
 def _read(directory: Path) -> tuple[_Facts, _Facts]:
     try:
+        # decode(), not load(): historical dependencies may be unavailable or
+        # incompatible with today's installation. Compare their recorded digests
+        # as provenance instead of resolving them against current Python code.
         text = (directory / SYMBOLS_FILE).read_text()
         symbols = Symbols.decode(text, module="review", source=str(directory))
         export = json.loads(text)
@@ -94,6 +97,11 @@ def _read(directory: Path) -> tuple[_Facts, _Facts]:
             )
         facts: _Facts = {}
         for iri, symbol in symbols.classes.items():
+            # Direct slots and boolean requirements are conjunctive at the
+            # class level. Normalize them together so moving a supported slot
+            # between declaration forms does not create two different contracts.
+            # Opaque-only trees impose no port projection; their source checks
+            # are still compared through the support inventory below.
             requirements = CPConstraintIR(
                 "and",
                 children=[

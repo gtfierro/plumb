@@ -8,6 +8,16 @@ from typing import Literal
 from rdflib.term import Node
 
 
+# The IR carries two kinds of truth side by side:
+#   semantic: IRIs, RDF ancestry, conjunctive ranges, counts, source provenance
+#   projected: Python names/bases, descriptor kind, constructor requirements
+# Lowering may approximate the latter, but must not overwrite the former. For
+# example, repairing a Python MRO cannot erase an RDF parent, and deferring a
+# constructor argument cannot erase its graph-level minimum count.
+# RDF constants remain Nodes until emission so lexical/datatype information is
+# not lost by an early conversion to a convenient Python scalar.
+
+
 @dataclass
 class PropIR:
     """One attribute on one class, ready to emit."""

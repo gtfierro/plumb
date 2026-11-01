@@ -143,6 +143,11 @@ def extract(
     _type_untyped_enum_properties(classes, enum_iris)
     _name_properties(classes, primary_ns)
 
+    # Order matters here. Compose over the original RDF parent graph first;
+    # only then choose C3-compatible Python bases. After constructor-cycle
+    # deferral, materialize descriptors/ports that the chosen MRO would miss.
+    # Doing repair first would make a Python implementation limit weaken the
+    # ontology's constraints and make the result depend on parent ordering.
     _compose_properties(ordered, graph, enum_iris)
     _resolve_mro(ordered)
     _demote_cyclic_required(ordered)
@@ -818,6 +823,9 @@ def _resolve_mro(ordered: list[ClassIR]) -> None:
 
 def _name_properties(classes: dict[str, ClassIR], primary_ns: str) -> None:
     """Assign one unambiguous Python name to each semantic predicate."""
+    # Allocate names globally after equivalent predicates have been merged.
+    # Assigning by local spelling during attachment would conflate unrelated
+    # namespace terms, or let the first class visited choose a public alias.
     predicates = {prop.predicate for cls in classes.values() for prop in cls.own_props}
     names = naming.disambiguate(
         {iri: naming.property_name(iri) for iri in predicates},
@@ -903,6 +911,11 @@ def _demote_cyclic_required(ordered: list[ClassIR]) -> None:
 
 def _complete_properties(ordered: list[ClassIR]) -> None:
     """Materialize constraints Python's chosen bases would otherwise lose."""
+    # Python inheritance can lose both attribute implementations and static
+    # subtype relationships. Repair those separately: expand annotation ranges
+    # to include legitimate RDF subtypes, then redeclare missing/refined
+    # descriptors and port requirements. Runtime checks still consult the full
+    # semantic groups; an annotation union is not the enforcement authority.
     by_name = {cls.name: cls for cls in ordered}
     by_iri = {cls.iri: cls for cls in ordered}
     stand_ins: dict[str, type] = {}

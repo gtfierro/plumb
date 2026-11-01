@@ -44,6 +44,9 @@ class Symbols:
         """Read a generated package's export without importing that package."""
         if module in _active:
             raise ValueError(f"{module}: cyclic compiler dependency")
+        # Walk package search locations directly. Importing the dependency (or
+        # using discovery that imports its parent) could run arbitrary setup,
+        # consult a stale runtime registry, and defeat data-only compilation.
         locations = None
         for part in _module_parts(module):
             spec = PathFinder.find_spec(part, locations)
@@ -63,6 +66,9 @@ class Symbols:
         classes, enums, term_types = {}, {}, {}
         for record in symbols.dependencies:
             dependency = cls.load(record["module"], _active | {module})
+            # A transitive export is valid only against the exact dependency it
+            # was compiled from. Equal ontology IRIs do not establish that the
+            # effective constraints or defining Python modules still agree.
             if dependency.digest != record["sha256"]:
                 raise ValueError(
                     f"{module}: compiler dependency {dependency.module} changed; "
@@ -180,6 +186,10 @@ class Symbols:
 
 def export_symbols(ir: SchemaIR, *, graph_digest: str) -> str:
     """Emit deterministic dependency symbols; Python classes are not inspected."""
+    # Intern complete property records by content. Large taxonomies inherit the
+    # same effective specs many times; class records reference those specs by
+    # digest rather than duplicating them. New identities and nominal views stay
+    # distinct so the loader can reject redefinitions of an imported class.
     classes, views = [], []
     properties: dict[str, Any] = {}
     for symbol in sorted(ir.classes, key=lambda item: item.iri):

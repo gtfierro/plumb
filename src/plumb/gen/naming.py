@@ -121,6 +121,9 @@ def disambiguate(
     for iri in sorted(assignments):
         by_name.setdefault(assignments[iri], []).append(iri)
     final: dict[str, str] = {}
+    # Reserve natural names before allocating suffixes. If the ontology already
+    # contains Foo_2, a collision on Foo must skip that spelling rather than
+    # steal it and force an unrelated term to acquire a new public name.
     reserved = set(assignments.values())
     used: set[str] = set()
     for name, iris in by_name.items():

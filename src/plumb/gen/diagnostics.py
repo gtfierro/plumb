@@ -78,6 +78,10 @@ def support_report(
     profiles: Iterable[ClassIR] = (),
 ) -> str:
     """Inventory source constraints and the checks generated from them."""
+    # This inventory records enforcement, not just recognized syntax. A source
+    # can be present in the IR yet remain validation-only (an unknown boolean
+    # branch or an imported-class profile, for example). Only advertise runtime
+    # or solver support when the corresponding projection actually owns it.
     records: list[dict[str, Any]] = []
     seen = set()
     profiles = list(profiles)
@@ -112,6 +116,9 @@ def support_report(
         owner: Node | None = None,
         quantity: dict[str, Any] | None = None,
     ) -> None:
+        # A shared source shape can apply to different targets or property
+        # paths. Those are separate checks even if their RDF node is identical;
+        # deduplicating solely by shape would hide part of the support inventory.
         key = (target, shape, path, owner)
         if key in seen:
             return
@@ -309,6 +316,11 @@ def _value_key(
     }:
         key = value.n3()
     else:
+        # Diagnostic source labels include incoming context for location. A
+        # review fingerprint must exclude that context: moving an unchanged
+        # expression beneath another wrapper must not change its value identity.
+        # Anchor the rooted subgraph and canonicalize it independently, following
+        # explicit shape references but not arbitrary class/vocabulary graphs.
         rooted = Graph()
         rooted.add((URIRef("urn:plumb:review:root"), RDF_VALUE, value))
         pending, seen = [(value, parameter)], set()

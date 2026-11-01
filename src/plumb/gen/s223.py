@@ -44,6 +44,10 @@ def connection_slot(
     enum_iris: set[str],
 ) -> tuple[CPSlotIR | None, str | None]:
     """Project one supported qualified hasConnectionPoint shape into a slot."""
+    # Qualifier syntax alone does not imply a port requirement. Establish the
+    # exact equipment-point predicate, semantic point ancestry, and supported
+    # qualifier fields before constructing any slot. An unrelated property with
+    # the same local name must remain an ordinary validation constraint.
     if graph.value(shape, SH.path) != NS.hasConnectionPoint:
         return (
             None,
@@ -111,6 +115,9 @@ def connection_expression(
     active: set[Node],
 ) -> CPConstraintIR:
     """Preserve boolean structure and validation-only branches conservatively."""
+    # Preserve the boolean tree, including opaque leaves. Dropping an unknown
+    # branch can change or/xone truth conditions; opaque marks the affected
+    # expression as validation-only instead of silently weakening it for Z3.
     if shape in active:
         return CPConstraintIR(
             operator="opaque",

@@ -124,8 +124,8 @@ class Model:
             return
         # Preserve object identity while copying mutable containers. Replacing
         # existing entities with clones on rollback would strand references held
-        # by callers and inverse relations. The journal restores their stores
-        # in place, along with revisions and the previously published snapshot.
+        # by callers and inverse relations. The journal restores stores on those
+        # same objects, along with revisions and the previously published snapshot.
         loaded_triples = (
             set(self._loaded_graph) if self._loaded_graph is not None else None
         )
