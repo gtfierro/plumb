@@ -1,7 +1,7 @@
 """The Model: the session object that collects entities and emits RDF.
 
-A Model owns a namespace, mints IRIs for entities, and is the only place in
-the runtime that touches rdflib. Users interact with it three ways:
+A Model owns entity identity, authored state, and serialization. RDF hydration
+and validation live in neighboring modules. Users interact with it three ways:
 
 - ``with Model("urn:ex/bldg#") as m:`` — ambient binding; entities created
   inside the block belong to ``m`` without passing it around;
@@ -82,6 +82,12 @@ class Model:
         self.prefixes = dict(prefixes or {})
         if "" in self.prefixes:
             raise ValueError("the default prefix is reserved for the model namespace")
+        # State has three layers:
+        #   entities/indexes       concrete authored objects and their identities
+        #   *_intents              requests for objects that planning will create
+        #   caches                 derived views, never the authoring authority
+        # Reserving a future point/connection name prevents a later constructor
+        # from taking an identity the planner has already promised to a handle.
         self.entities: list[Entity] = []
         self._by_name: dict[str, Entity] = {}
         self._by_iri: dict[str, Entity] = {}
@@ -116,6 +122,10 @@ class Model:
             # An unpublished snapshot build is discarded as a unit on failure.
             yield
             return
+        # Preserve object identity while copying mutable containers. Replacing
+        # existing entities with clones on rollback would strand references held
+        # by callers and inverse relations. The journal restores their stores
+        # in place, along with revisions and the previously published snapshot.
         loaded_triples = (
             set(self._loaded_graph) if self._loaded_graph is not None else None
         )
@@ -226,6 +236,9 @@ class Model:
             if isinstance(entity, EntityBase):
                 touched[entity._iri] = entity
         for iri, entity in touched.items():
+            # Replace our previous projection, not every outgoing RDF triple.
+            # The rest of the graph belongs to its original author and may
+            # contain predicates or values this package cannot represent.
             for triple in self._managed_triples.get(iri, ()):
                 self._loaded_graph.remove(triple)
             current: set[tuple[Any, Any, Any]] = set()

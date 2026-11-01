@@ -98,11 +98,15 @@ def validate_model(
     """Run shifty over the model's graph and map results to entities.
 
     ``shapes`` may be an rdflib Graph, a Turtle file path/URL, or None; with
-    None, the ontology sources of the generated packages present in the model
-    are used (each package's Registry knows its ontology's source).
+    None, the selected packages' bundled schemas and profiles are used, with
+    recorded ontology sources as a fallback for packages without a bundle.
     """
     import shifty
 
+    # Validation reads a graph, not a mutable authoring session. Authored models
+    # must resolve first so SHACL sees concrete points and connections. The
+    # fallback maps those derived focus nodes back to useful Python entities
+    # even though they do not exist in the original author's entity index.
     shapes_graph = _resolve_shapes(model, shapes)
     if model._loaded_graph is not None:
         data_graph = model.graph()
@@ -205,10 +209,10 @@ def shapes_for(classes: Iterable[type], registries: Iterable[Registry]) -> rdfli
 
 
 def _package_shapes(model: Model) -> rdflib.Graph:
-    """Collect shapes from the ontology sources of the packages in use.
+    """Collect selected package schemas, profiles, and vocabulary type facts.
 
-    Each generated package records where its ontology was loaded from
-    (``OntologyInfo.source``); we parse the union of the distinct sources.
+    Explicitly loaded registries and referenced enums may select an extension
+    even when every entity uses a canonical dependency class.
     """
     from .enums import EnumValue
 

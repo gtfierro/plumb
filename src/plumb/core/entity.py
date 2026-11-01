@@ -270,8 +270,8 @@ class Entity:
 
     Construction requires an active :class:`~plumb.core.model.Model`
     (either ambient, via ``with Model(...)``, or passed as ``model=``).
-    The first argument is the entity's local name; the model's namespace
-    turns it into an IRI at serialization time. When omitted, a name is
+    The first argument is the entity's local name; binding mints its IRI
+    under the model's namespace. When omitted, a name is
     auto-generated per model as ``<class>_<n>`` (``vav_1``, ``vav_2``, ...).
 
     Reserved attribute names (``name``, ``type``, ``label``, ``comment``,
@@ -327,6 +327,10 @@ class Entity:
                 f"no active Model: create entities inside `with Model(...):` "
                 f"or pass model= to {type(self).__name__}(...)"
             )
+        # Binding comes before property assignment: inverse edges and generated
+        # helpers need a real model/IRI. The transaction makes that early binding
+        # safe when a later required-value or containment check rejects the
+        # constructor. No ghost object or consumed automatic name may survive.
         with m._atomic():
             if name is None:
                 name = m._auto_name(type(self))
@@ -877,6 +881,10 @@ class Entity:
         cached = cls.__dict__.get("_specs_cache")
         if cached is not None:
             return cached
+        # Each declaration already contains its effective compiled constraint.
+        # The MRO selects the nearest descriptor; it must not recompute range
+        # intersections or reintroduce a broader inherited range. Look up the
+        # cache in __dict__ so a subclass never borrows its parent's spec set.
         specs: dict[str, PropertySpec] = {}
         for klass in reversed(cls.__mro__):
             info = klass.__dict__.get("_classinfo")
@@ -908,6 +916,10 @@ class Entity:
             (tuple(sorted(allowed_iris)),) if allowed else ()
         )
 
+        # A group is a union; the tuple of groups is a conjunction. For example,
+        # ((Dog, Cat), (Tagged,)) means (Dog OR Cat) AND Tagged. Flattening this
+        # into one list would silently accept untagged animals. RDF ancestry,
+        # not the repaired Python MRO, decides membership in each group.
         def conforms(candidate: type[Entity] | TermValue) -> bool:
             return all(
                 any(

@@ -1,6 +1,6 @@
 """Typed descriptors that back generated attributes.
 
-Three descriptor flavors cover the SHACL cardinality/kind matrix:
+The basic object/literal descriptors cover the SHACL cardinality matrix:
 
 - :class:`Rel` — object property, unbounded: ``ahu.feeds`` is a
   :class:`RelSet` you ``.add()`` to.
@@ -12,7 +12,8 @@ Three descriptor flavors cover the SHACL cardinality/kind matrix:
 The descriptors carry a :class:`~plumb.core.meta.PropertySpec` and perform
 runtime range checks that mirror what a static type checker enforces from the
 generated annotations — so users who don't run a checker still get immediate,
-readable errors.
+readable errors. Enum, vocabulary-term, and mixed-value descriptors specialize
+the same storage and mutation rules below.
 """
 
 from __future__ import annotations
@@ -49,6 +50,10 @@ class RelSet(Generic[T]):
         """Validate the complete update before touching either side of an edge."""
         owner, spec = self._owner, self._spec
         owner._model._assert_mutable()
+        # Consume the input exactly once, then preflight the full proposed set
+        # and every new inverse edge. A failure on the final item must leave
+        # earlier items untouched. Only after all checks pass may either side
+        # change; the single _touch() then synchronizes RDF and invalidates views.
         proposed = list(dict.fromkeys(_link_value(spec, item) for item in items))
         for item in proposed:
             owner._check_range(spec, item)
@@ -557,6 +562,9 @@ def _check_inverse(owner: Entity, spec: PropertySpec, target: object) -> None:
 
 def _link_inverse(owner: Entity, spec: PropertySpec, target: object) -> None:
     """Write a preflighted inverse edge without recursively invoking descriptors."""
+    # Calling a public descriptor here would mirror the edge back again and
+    # recurse. These raw writes are safe only after _check_inverse() has checked
+    # the target's range, capacity, and fixed-value constraints.
     from .entity import Entity
 
     if spec.inverse is None or not isinstance(target, Entity):

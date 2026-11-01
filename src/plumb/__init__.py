@@ -110,6 +110,10 @@ def connect(
         raise ValueError("connection name must not be empty")
     if ports not in {"match", "new"}:
         raise ValueError("ports must be 'match' or 'new'")
+    # The same authoring verb has two representations. S223 needs a deferred
+    # resource between endpoints, while Brick can store a direct feeds edge.
+    # Dispatch through generated policy so callers never select that machinery
+    # and importing this public facade does not itself import the native solver.
     connector = endpoint_owner(a)._CONNECTOR
     if connector is not None:
         return connector.connect(

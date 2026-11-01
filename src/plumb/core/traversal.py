@@ -224,6 +224,10 @@ _Edge = tuple[str, type, bool]
 
 
 def _build_containment(model: Model) -> _Containment:
+    # The containment table owns direction: hasPart stores an outward edge,
+    # while hasLocation stores the same conceptual edge on the child. Normalize
+    # both into parent/children indexes once, so navigation never has to guess
+    # from property spelling or repeat domain-specific rules.
     order = _order(model)
     registries: dict[int, Any] = {}
     for entity in model.entities:

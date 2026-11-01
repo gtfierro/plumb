@@ -285,6 +285,10 @@ def apply_properties(
     stem = target.name if prefix is None else prefix
     if not stem:
         raise ValueError("property prefix must not be empty")
+    # A schema is a value specification, not a reusable set of RDF entities.
+    # Prepare every quantity and name first, then create fresh properties as
+    # one transaction. This keeps partial applications and shared mutable
+    # properties from leaking between equipment, ports, or connections.
     prepared = []
     for definition in schema._definitions:
         value, unit = definition.unpack(getattr(schema, definition.name))

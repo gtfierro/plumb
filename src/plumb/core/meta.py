@@ -320,6 +320,10 @@ class Registry:
 
     def include(self, dependency: Registry) -> None:
         """Include a dependency's symbols and policy without changing its classes."""
+        # Inclusion is a selection of existing objects, not a copy of classes.
+        # Validate all shared identities before publishing any table updates.
+        # Mutating dependency classes here would make import order alter every
+        # model using that package, including models that never chose this view.
         combined = dict(self.by_iri)
         for iri, cls in dependency.by_iri.items():
             combined[iri] = (
@@ -351,6 +355,9 @@ class Registry:
     @classmethod
     def compose(cls, registries: Iterable[Registry]) -> Registry:
         """Select compatible symbols and policy, dependencies before extensions."""
+        # Dependencies contribute policy first; extensions may then refine it.
+        # Sorting independent roots makes this choice independent of set order
+        # and of the order in which a caller supplied hydration registries.
         ordered: list[Registry] = []
         visited: set[Registry] = set()
 
@@ -505,6 +512,9 @@ class ClassInfo:
 
 def _select_class(first: type[Entity], second: type[Entity]) -> type[Entity]:
     """Select a compatible projection, independently of package import order."""
+    # An equal IRI is necessary but not enough to merge Python classes. A view
+    # must share the canonical definition, and one view must refine the other.
+    # Incomparable sibling views are an error, not a last-import-wins choice.
     if first is second:
         return first
     if first.meta.canonical is second.meta.canonical:

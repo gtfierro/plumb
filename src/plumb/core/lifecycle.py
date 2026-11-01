@@ -17,6 +17,10 @@ from .resolution import ResolutionReport, ResolvedModel
 from .snapshot import Snapshot
 
 
+# Resolution has a read phase and a write phase. Planning reads authored facts
+# and reports ambiguity/contradiction; apply() writes only into a private copy.
+# Keeping publication here lets every domain share rollback and immutability
+# rules, and lets models with no deferred work avoid loading a native planner.
 class Plan(Protocol):
     """A domain decision that can populate a core-owned snapshot build."""
 
@@ -57,6 +61,9 @@ class Domain(Protocol):
 
 def domain_for(model: Model) -> Domain | None:
     """Select the capability shared by this model's generated classes."""
+    # Capability identity, rather than a package name, selects the backend.
+    # S223 classes, WaTr views, and configurations all share the same object;
+    # otherwise mixing those packages would look like mixing competing solvers.
     domains = {
         entity.meta.registry._domain
         for entity in model

@@ -35,6 +35,10 @@ class Snapshot:
         self.entities: dict[Entity, Entity] = {}
         self.connections: dict[int, Entity] = {}
         self.explanations: dict[int, ResolutionExplanation] = {}
+        # Copy in two passes, as for a graph with cycles: allocate every shell,
+        # then translate edges through the complete old -> new identity map.
+        # Constructors would apply defaults, containment, and domain hooks, so
+        # they must never run merely to copy an already authored fact.
         for entity in source.entities:
             copied = object.__new__(type(entity))
             copied.__dict__.update(entity.__dict__)
@@ -52,6 +56,9 @@ class Snapshot:
                 new_store._items = self.copy(store._items)
                 copied._rels[name] = new_store
         if source._loaded_graph is not None:
+            # The Python projection may cover only part of a loaded graph.
+            # Copy its backing RDF too; rebuilding from descriptors would lose
+            # unknown predicates, blank nodes, and external resource identities.
             graph = rdflib.Graph()
             for prefix, namespace in source._loaded_graph.namespaces():
                 graph.bind(prefix, namespace, replace=True)
@@ -94,6 +101,9 @@ class Snapshot:
         domain = domain_for(self.model)
         if domain is not None:
             domain.finish_snapshot(self.model)
+        # Publication is the ownership boundary. Until this point the backend
+        # may populate the private build; ResolvedModel freezes it, and only the
+        # successful result can become Model.resolve()'s revision cache entry.
         self.model._resolving = False
         self.model._revision = self._source_revision
         result = ResolvedModel(

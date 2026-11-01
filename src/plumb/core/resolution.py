@@ -529,6 +529,10 @@ class ResolvedModel:
         self._connections = dict(connections)
         self._explanations = dict(explanations)
         self._source_revision = source_revision
+        # Freeze the endpoint index as well as the decision dictionaries.
+        # Looking at the author's live intention list later would let a newly
+        # added parallel connection make an old snapshot's explain(a, b)
+        # ambiguous, even though its concrete graph has not changed.
         self._intent_endpoints = tuple(
             (
                 handle.identifier,

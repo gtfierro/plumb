@@ -58,6 +58,10 @@ class _Topology:
 
 
 def _build_topology(model: Model) -> _Topology:
+    # Build both directions of each conceptual link even when the loaded graph
+    # asserts only one RDF predicate (connectsAt or connectsThrough, for example).
+    # Deduplicate before sorting by model order: inverse assertions must neither
+    # duplicate a hop nor let RDF iteration order choose the reported path.
     order = _order(model)
     topology = _Topology(order)
     links: defaultdict[str, defaultdict[Entity, dict[Entity, None]]] = defaultdict(
@@ -162,6 +166,10 @@ class _Walk:
         self.descend = descend
         self.include_connections = include_connections
         self.max_hops = max_hops
+        # These sets have different jobs: reached suppresses duplicate results,
+        # while entered/left bound point traversal. Reaching equipment through
+        # one inlet must not prevent exploring its other points or its mapsTo
+        # boundaries; one visited set for everything would lose valid paths.
         self.left: set[Entity] = set()
         self.entered: set[Entity] = set()
         self.reached: set[Entity] = set()

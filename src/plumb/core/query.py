@@ -23,6 +23,11 @@ if TYPE_CHECKING:
     from .model import Model
 
 
+# Hydration preserves facts; construction creates authoring conveniences.
+# Keep those operations separate: loading must not insert defaults, synthesize
+# points, run containment hooks, or enforce constructor-only requirements.
+# Strict mode controls which RDF values can be projected into Python. SHACL
+# validation remains a separate operation on the full backing graph.
 def load_graph(
     model_type: type[Model],
     source: rdflib.Graph | str | Path,
@@ -70,6 +75,9 @@ def load_graph(
     model._loaded_registries = registry_list
     by_node: dict[URIRef, Entity] = {}
 
+    # Allocate all typed resources before reading properties. A relation may
+    # point forward in iteration order, or close a cycle, and every occurrence
+    # of a given resource must resolve to the very same Python object.
     subjects = sorted(set(graph.subjects(RDF.type)), key=str)
     for subject in subjects:
         if not isinstance(subject, URIRef):
@@ -130,6 +138,10 @@ def load_graph(
                 converted,
                 strict=strict,
             )
+            # Own only the triples actually represented by the projection.
+            # In permissive mode a scalar may accept one of several RDF values;
+            # later edits may replace that managed value, but must preserve the
+            # extra values and unknown RDF the loader did not understand.
             for value in accepted_nodes[:managed_count]:
                 model._managed_triples[str(subject)].add(
                     (subject, URIRef(predicate), value)
